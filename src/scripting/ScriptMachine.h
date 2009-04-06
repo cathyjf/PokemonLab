@@ -89,7 +89,7 @@ public:
     explicit ScriptValue(void *val = NULL): m_val(val), m_fail(false) { }
     ScriptValue(int i);
     ScriptValue(bool b);
-    explicit ScriptValue(const ScriptObject *object);
+    ScriptValue(const ScriptObject *object);
     ScriptValue(ObjectWrapper *obj) {
         m_fail = false;
         m_val = NULL;
