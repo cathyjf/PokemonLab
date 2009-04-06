@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="51">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+      <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f2" displayName="mechanics" projectFiles="true">
+        <itemPath>src/mechanics/BattleMechanics.h</itemPath>
+        <itemPath>src/mechanics/JewelMechanics.cpp</itemPath>
+        <itemPath>src/mechanics/JewelMechanics.h</itemPath>
+        <itemPath>src/mechanics/PokemonNature.cpp</itemPath>
+        <itemPath>src/mechanics/PokemonNature.h</itemPath>
+        <itemPath>src/mechanics/PokemonType.cpp</itemPath>
+        <itemPath>src/mechanics/PokemonType.h</itemPath>
+        <itemPath>src/mechanics/stat.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="moves" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="scripting" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="shoddybattle" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h</itemPath>
+        <itemPath>src/shoddybattle/ObjectTeamFile.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/ObjectTeamFile.h</itemPath>
+        <itemPath>src/shoddybattle/Pokemon.cpp</itemPath>
+        <itemPath>src/shoddybattle/Pokemon.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="text" projectFiles="true">
+        <itemPath>src/text/Text.cpp</itemPath>
+        <itemPath>src/text/Text.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <ccCompilerTool>
+          <includeDirectories>
+            <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
+          </includeDirectories>
+          <commandLine>-ljs -lboost_thread-mt -lnspr -lxerces-c</commandLine>
+        </ccCompilerTool>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/ObjectTeamFile.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/BattleMechanics.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/JewelMechanics.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/JewelMechanics.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonNature.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonNature.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonType.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonType.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/stat.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/ObjectTeamFile.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/Pokemon.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/Pokemon.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/text/Text.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/text/Text.h">
+        <itemTool>1</itemTool>
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cCompilerTool>
+          <developmentMode>5</developmentMode>
+        </cCompilerTool>
+        <ccCompilerTool>
+          <developmentMode>5</developmentMode>
+          <includeDirectories>
+            <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
+          </includeDirectories>
+          <commandLine>-ljs -lboost_thread-mt -lnspr -lxerces-c</commandLine>
+        </ccCompilerTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/ObjectTeamFile.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/BattleMechanics.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/JewelMechanics.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/JewelMechanics.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonNature.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonNature.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonType.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/PokemonType.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/mechanics/stat.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/ObjectTeamFile.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/Pokemon.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/shoddybattle/Pokemon.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/text/Text.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/text/Text.h">
+        <itemTool>1</itemTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

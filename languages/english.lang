@@ -1,0 +1,70 @@
+//
+// File:   english.lang
+// Author: Catherine & Ben
+//
+// Created on March 28, 2009, 3:33 PM
+//
+// This file is a part of Shoddy Battle.
+// Copyright (C) 2009  Catherine Fitzpatrick and Benjamin Gwin
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Affero General Public License
+// as published by the Free Software Foundation; either version 3
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program; if not, visit the Free Software Foundation, Inc.
+// online at http://gnu.org.
+//
+
+[types]
+0: Normal
+1: Fire
+2: Water
+3: Electric
+4: Grass
+5: Ice
+6: Fighting
+7: Poison
+8: Ground
+9: Flying
+10: Psychic
+11: Bug
+12: Rock
+13: Ghost
+14: Dragon
+15: Dark
+16: Steel
+17: Typeless
+
+[natures]
+0: Hardy
+1: Lonely
+2: Brave
+3: Adamant
+4: Naughty
+5: Bold
+6: Docile
+7: Relaxed
+8: Impish
+9: Lax
+10: Timid
+11: Hasty
+12: Serious
+13: Jolly
+14: Naive
+15: Modest
+16: Mild
+17: Quiet
+18: Bashful
+19: Rash
+20: Calm
+21: Gentle
+22: Sassy
+23: Careful
+24: Quirky
