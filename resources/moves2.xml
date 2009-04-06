@@ -1,0 +1,9138 @@
+<shoddybattle>
+
+<move name="Pound" id="0">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Karate Chop" id="1">
+<type>Fighting</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Doubleslap" id="2">
+<type>Normal</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Comet Punch" id="3">
+<type>Normal</type>
+<class>Physical</class>
+<power>18</power>
+<accuracy>0.85</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mega Punch" id="4">
+<type>Normal</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Pay Day" id="5">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fire Punch" id="6">
+<type>Fire</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ice Punch" id="7">
+<type>Ice</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thunderpunch" id="8">
+<type>Electric</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Scratch" id="9">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Vicegrip" id="10">
+<type>Normal</type>
+<class>Physical</class>
+<power>55</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Guillotine" id="11">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>0.30</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Razor Wind" id="12">
+<type>Normal</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Swords Dance" id="13">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Cut" id="14">
+<type>Normal</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>0.95</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Gust" id="15">
+<type>Flying</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wing Attack" id="16">
+<type>Flying</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Whirlwind" id="17">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fly" id="18">
+<type>Flying</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bind" id="19">
+<type>Normal</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.75</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Slam" id="20">
+<type>Normal</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>0.75</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Vine Whip" id="21">
+<type>Grass</type>
+<class>Physical</class>
+<power>35</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Stomp" id="22">
+<type>Normal</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Double Kick" id="23">
+<type>Fighting</type>
+<class>Physical</class>
+<power>30</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mega Kick" id="24">
+<type>Normal</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>0.75</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Jump Kick" id="25">
+<type>Fighting</type>
+<class>Physical</class>
+<power>85</power>
+<accuracy>0.95</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rolling Kick" id="26">
+<type>Fighting</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>0.85</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sand-Attack" id="27">
+<type>Ground</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Headbutt" id="28">
+<type>Normal</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Horn Attack" id="29">
+<type>Normal</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fury Attack" id="30">
+<type>Normal</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Horn Drill" id="31">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>0.30</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tackle" id="32">
+<type>Normal</type>
+<class>Physical</class>
+<power>35</power>
+<accuracy>0.95</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Body Slam" id="33">
+<type>Normal</type>
+<class>Physical</class>
+<power>85</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wrap" id="34">
+<type>Normal</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Take Down" id="35">
+<type>Normal</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thrash" id="36">
+<type>Normal</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Randenemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Double-edge" id="37">
+<type>Normal</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tail Whip" id="38">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poison Sting" id="39">
+<type>Poison</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Twineedle" id="40">
+<type>Bug</type>
+<class>Physical</class>
+<power>25</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Pin Missile" id="41">
+<type>Bug</type>
+<class>Physical</class>
+<power>14</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Leer" id="42">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bite" id="43">
+<type>Dark</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Growl" id="44">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Roar" id="45">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sing" id="46">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.55</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Supersonic" id="47">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.55</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sonicboom" id="48">
+<type>Normal</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>0.90</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Disable" id="49">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.80</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Acid" id="50">
+<type>Poison</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ember" id="51">
+<type>Fire</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flamethrower" id="52">
+<type>Fire</type>
+<class>Special</class>
+<power>95</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mist" id="53">
+<type>Ice</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Water Gun" id="54">
+<type>Water</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hydro Pump" id="55">
+<type>Water</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.80</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Surf" id="56">
+<type>Water</type>
+<class>Special</class>
+<power>95</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ice Beam" id="57">
+<type>Ice</type>
+<class>Special</class>
+<power>95</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Blizzard" id="58">
+<type>Ice</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.70</accuracy>
+<pp>5</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psybeam" id="59">
+<type>Psychic</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bubblebeam" id="60">
+<type>Water</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aurora Beam" id="61">
+<type>Ice</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hyper Beam" id="62">
+<type>Normal</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Peck" id="63">
+<type>Flying</type>
+<class>Physical</class>
+<power>35</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Drill Peck" id="64">
+<type>Flying</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Submission" id="65">
+<type>Fighting</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>0.80</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Low Kick" id="66">
+<type>Fighting</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Counter" id="67">
+<type>Fighting</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<contact/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Seismic Toss" id="68">
+<type>Fighting</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Strength" id="69">
+<type>Normal</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Absorb" id="70">
+<type>Grass</type>
+<class>Special</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mega Drain" id="71">
+<type>Grass</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Leech Seed" id="72">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Growth" id="73">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Razor Leaf" id="74">
+<type>Grass</type>
+<class>Physical</class>
+<power>55</power>
+<accuracy>0.95</accuracy>
+<pp>25</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Solarbeam" id="75">
+<type>Grass</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poisonpowder" id="76">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Stun Spore" id="77">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sleep Powder" id="78">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Petal Dance" id="79">
+<type>Grass</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Randenemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="String Shot" id="80">
+<type>Bug</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.95</accuracy>
+<pp>40</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragon Rage" id="81">
+<type>Dragon</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fire Spin" id="82">
+<type>Fire</type>
+<class>Special</class>
+<power>15</power>
+<accuracy>0.70</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thundershock" id="83">
+<type>Electric</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thunderbolt" id="84">
+<type>Electric</type>
+<class>Special</class>
+<power>95</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thunder Wave" id="85">
+<type>Electric</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thunder" id="86">
+<type>Electric</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.70</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Throw" id="87">
+<type>Rock</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Earthquake" id="88">
+<type>Ground</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fissure" id="89">
+<type>Ground</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>0.30</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dig" id="90">
+<type>Ground</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Toxic" id="91">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Confusion" id="92">
+<type>Psychic</type>
+<class>Special</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psychic" id="93">
+<type>Psychic</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hypnosis" id="94">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.70</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Meditate" id="95">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Agility" id="96">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Quick Attack" id="97">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rage" id="98">
+<type>Normal</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Teleport" id="99">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Night Shade" id="100">
+<type>Ghost</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mimic" id="101">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Screech" id="102">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.85</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Double Team" id="103">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Recover" id="104">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Harden" id="105">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Minimize" id="106">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Smokescreen" id="107">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Confuse Ray" id="108">
+<type>Ghost</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Withdraw" id="109">
+<type>Water</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Defense Curl" id="110">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Barrier" id="111">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Light Screen" id="112">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Haze" id="113">
+<type>Ice</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Reflect" id="114">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Focus Energy" id="115">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bide" id="116">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<contact/>
+	<protect/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Metronome" id="117">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mirror Move" id="118">
+<type>Flying</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Selfdestruct" id="119">
+<type>Normal</type>
+<class>Physical</class>
+<power>200</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Egg Bomb" id="120">
+<type>Normal</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.75</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lick" id="121">
+<type>Ghost</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Smog" id="122">
+<type>Poison</type>
+<class>Special</class>
+<power>20</power>
+<accuracy>0.70</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sludge" id="123">
+<type>Poison</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bone Club" id="124">
+<type>Ground</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fire Blast" id="125">
+<type>Fire</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.85</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Waterfall" id="126">
+<type>Water</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Clamp" id="127">
+<type>Water</type>
+<class>Physical</class>
+<power>35</power>
+<accuracy>0.75</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Swift" id="128">
+<type>Normal</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Skull Bash" id="129">
+<type>Normal</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spike Cannon" id="130">
+<type>Normal</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Constrict" id="131">
+<type>Normal</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>1.00</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Amnesia" id="132">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Kinesis" id="133">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.80</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Softboiled" id="134">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hi Jump Kick" id="135">
+<type>Fighting</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.90</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Glare" id="136">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dream Eater" id="137">
+<type>Psychic</type>
+<class>Special</class>
+<power>100</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poison Gas" id="138">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.55</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Barrage" id="139">
+<type>Normal</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Leech Life" id="140">
+<type>Bug</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lovely Kiss" id="141">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sky Attack" id="142">
+<type>Flying</type>
+<class>Physical</class>
+<power>140</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Transform" id="143">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bubble" id="144">
+<type>Water</type>
+<class>Special</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dizzy Punch" id="145">
+<type>Normal</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spore" id="146">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flash" id="147">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psywave" id="148">
+<type>Psychic</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>0.80</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Splash" id="149">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Acid Armor" id="150">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Crabhammer" id="151">
+<type>Water</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Explosion" id="152">
+<type>Normal</type>
+<class>Physical</class>
+<power>250</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fury Swipes" id="153">
+<type>Normal</type>
+<class>Physical</class>
+<power>18</power>
+<accuracy>0.80</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bonemerang" id="154">
+<type>Ground</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rest" id="155">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Slide" id="156">
+<type>Rock</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hyper Fang" id="157">
+<type>Normal</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sharpen" id="158">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Conversion" id="159">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tri Attack" id="160">
+<type>Normal</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Super Fang" id="161">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Slash" id="162">
+<type>Normal</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Substitute" id="163">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Struggle" id="164">
+<type>Normal</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>1</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sketch" id="165">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>1</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Triple Kick" id="166">
+<type>Fighting</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thief" id="167">
+<type>Dark</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spider Web" id="168">
+<type>Bug</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mind Reader" id="169">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Nightmare" id="170">
+<type>Ghost</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flame Wheel" id="171">
+<type>Fire</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Snore" id="172">
+<type>Normal</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Curse" id="173">
+<type>?????</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flail" id="174">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Conversion 2" id="175">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aeroblast" id="176">
+<type>Flying</type>
+<class>Special</class>
+<power>100</power>
+<accuracy>0.95</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Cotton Spore" id="177">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.85</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Reversal" id="178">
+<type>Fighting</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spite" id="179">
+<type>Ghost</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Powder Snow" id="180">
+<type>Ice</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Protect" id="181">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mach Punch" id="182">
+<type>Fighting</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Scary Face" id="183">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Faint Attack" id="184">
+<type>Dark</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sweet Kiss" id="185">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Belly Drum" id="186">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sludge Bomb" id="187">
+<type>Poison</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mud-Slap" id="188">
+<type>Ground</type>
+<class>Special</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Octazooka" id="189">
+<type>Water</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spikes" id="190">
+<type>Ground</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemyfield</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Zap Cannon" id="191">
+<type>Electric</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.50</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Foresight" id="192">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Destiny Bond" id="193">
+<type>Ghost</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Perish Song" id="194">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Icy Wind" id="195">
+<type>Ice</type>
+<class>Special</class>
+<power>55</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Detect" id="196">
+<type>Fighting</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bone Rush" id="197">
+<type>Ground</type>
+<class>Physical</class>
+<power>25</power>
+<accuracy>0.80</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lock-on" id="198">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Outrage" id="199">
+<type>Dragon</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Randenemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sandstorm" id="200">
+<type>Rock</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Giga Drain" id="201">
+<type>Grass</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Endure" id="202">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Charm" id="203">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rollout" id="204">
+<type>Rock</type>
+<class>Physical</class>
+<power>30</power>
+<accuracy>0.90</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="False Swipe" id="205">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Swagger" id="206">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Milk Drink" id="207">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spark" id="208">
+<type>Electric</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fury Cutter" id="209">
+<type>Bug</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>0.95</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Steel Wing" id="210">
+<type>Steel</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>0.90</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mean Look" id="211">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Attract" id="212">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sleep Talk" id="213">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Heal Bell" id="214">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Return" id="215">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Present" id="216">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Frustration" id="217">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Safeguard" id="218">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Pain Split" id="219">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sacred Fire" id="220">
+<type>Fire</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.95</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magnitude" id="221">
+<type>Ground</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dynamicpunch" id="222">
+<type>Fighting</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.50</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Megahorn" id="223">
+<type>Bug</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragonbreath" id="224">
+<type>Dragon</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Baton Pass" id="225">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Encore" id="226">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Pursuit" id="227">
+<type>Dark</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rapid Spin" id="228">
+<type>Normal</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sweet Scent" id="229">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Iron Tail" id="230">
+<type>Steel</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.75</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Metal Claw" id="231">
+<type>Steel</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>0.95</accuracy>
+<pp>35</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Vital Throw" id="232">
+<type>Fighting</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Morning Sun" id="233">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Synthesis" id="234">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Moonlight" id="235">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hidden Power" id="236">
+<type>Normal</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Cross Chop" id="237">
+<type>Fighting</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.80</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Twister" id="238">
+<type>Dragon</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rain Dance" id="239">
+<type>Water</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>5</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sunny Day" id="240">
+<type>Fire</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>5</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Crunch" id="241">
+<type>Dark</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mirror Coat" id="242">
+<type>Psychic</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psych Up" id="243">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Extremespeed" id="244">
+<type>Normal</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ancientpower" id="245">
+<type>Rock</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shadow Ball" id="246">
+<type>Ghost</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Future Sight" id="247">
+<type>Psychic</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Smash" id="248">
+<type>Fighting</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Whirlpool" id="249">
+<type>Water</type>
+<class>Special</class>
+<power>15</power>
+<accuracy>0.70</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Beat Up" id="250">
+<type>Dark</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fake Out" id="251">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Uproar" id="252">
+<type>Normal</type>
+<class>Special</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Randenemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Stockpile" id="253">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spit Up" id="254">
+<type>Normal</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Swallow" id="255">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Heat Wave" id="256">
+<type>Fire</type>
+<class>Special</class>
+<power>100</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hail" id="257">
+<type>Ice</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>All</target>
+<flags>
+	<protect/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Torment" id="258">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flatter" id="259">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Will-o-wisp" id="260">
+<type>Fire</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.75</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Memento" id="261">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Facade" id="262">
+<type>Normal</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Focus Punch" id="263">
+<type>Fighting</type>
+<class>Physical</class>
+<power>150</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Smellingsalt" id="264">
+<type>Normal</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Follow Me" id="265">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Nature Power" id="266">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Charge" id="267">
+<type>Electric</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Taunt" id="268">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Helping Hand" id="269">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Ally</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Trick" id="270">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Role Play" id="271">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wish" id="272">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Assist" id="273">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ingrain" id="274">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Superpower" id="275">
+<type>Fighting</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magic Coat" id="276">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Recycle" id="277">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Revenge" id="278">
+<type>Fighting</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Brick Break" id="279">
+<type>Fighting</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Yawn" id="280">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Knock Off" id="281">
+<type>Dark</type>
+<class>Physical</class>
+<power>20</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Endeavor" id="282">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Eruption" id="283">
+<type>Fire</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Skill Swap" id="284">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Imprison" id="285">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Refresh" id="286">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Grudge" id="287">
+<type>Ghost</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Snatch" id="288">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Secret Power" id="289">
+<type>Normal</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dive" id="290">
+<type>Water</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Arm Thrust" id="291">
+<type>Fighting</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Camouflage" id="292">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tail Glow" id="293">
+<type>Bug</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Luster Purge" id="294">
+<type>Psychic</type>
+<class>Special</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mist Ball" id="295">
+<type>Psychic</type>
+<class>Special</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Featherdance" id="296">
+<type>Flying</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Teeter Dance" id="297">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Blaze Kick" id="298">
+<type>Fire</type>
+<class>Physical</class>
+<power>85</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mud Sport" id="299">
+<type>Ground</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ice Ball" id="300">
+<type>Ice</type>
+<class>Physical</class>
+<power>30</power>
+<accuracy>0.90</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Needle Arm" id="301">
+<type>Grass</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Slack Off" id="302">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hyper Voice" id="303">
+<type>Normal</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poison Fang" id="304">
+<type>Poison</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Crush Claw" id="305">
+<type>Normal</type>
+<class>Physical</class>
+<power>75</power>
+<accuracy>0.95</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+function TestEffect() { }
+TestEffect.prototype = new StatusEffect();
+TestEffect.prototype.id = "TestEffect";
+TestEffect.prototype.tick = function() {
+	print(this.subject.name + " was hurt by the test!");
+	this.subject.hp -= 10;
+};
+TestEffect.prototype.applyEffect = function() {
+	print("Applying TestEffect to " + this.subject.name);
+	return true;
+};
+TestEffect.prototype.modifier = function(field, user, target, move, critical) {
+	if (user.name == "Smeargle") {
+		return [1, 0.5, 5];
+	}
+	return null;
+}
+
+var status = new TestEffect();
+status = target.applyStatus(user, status);
+print(status.inducer.name);
+]]>
+</use>
+</move>
+
+<move name="Blast Burn" id="306">
+<type>Fire</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hydro Cannon" id="307">
+<type>Water</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Meteor Mash" id="308">
+<type>Steel</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Astonish" id="309">
+<type>Ghost</type>
+<class>Physical</class>
+<power>30</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Weather Ball" id="310">
+<type>Normal</type>
+<class>Special</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aromatherapy" id="311">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fake Tears" id="312">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Air Cutter" id="313">
+<type>Flying</type>
+<class>Special</class>
+<power>55</power>
+<accuracy>0.95</accuracy>
+<pp>25</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Overheat" id="314">
+<type>Fire</type>
+<class>Special</class>
+<power>140</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Odor Sleuth" id="315">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Tomb" id="316">
+<type>Rock</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>0.80</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Silver Wind" id="317">
+<type>Bug</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Metal Sound" id="318">
+<type>Steel</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.85</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Grasswhistle" id="319">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.55</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tickle" id="320">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Cosmic Power" id="321">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Water Spout" id="322">
+<type>Water</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Signal Beam" id="323">
+<type>Bug</type>
+<class>Special</class>
+<power>75</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shadow Punch" id="324">
+<type>Ghost</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Extrasensory" id="325">
+<type>Psychic</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sky Uppercut" id="326">
+<type>Fighting</type>
+<class>Physical</class>
+<power>85</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sand Tomb" id="327">
+<type>Ground</type>
+<class>Physical</class>
+<power>15</power>
+<accuracy>0.70</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sheer Cold" id="328">
+<type>Ice</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>0.30</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Muddy Water" id="329">
+<type>Water</type>
+<class>Special</class>
+<power>95</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bullet Seed" id="330">
+<type>Grass</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aerial Ace" id="331">
+<type>Flying</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Icicle Spear" id="332">
+<type>Ice</type>
+<class>Physical</class>
+<power>10</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Iron Defense" id="333">
+<type>Steel</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Block" id="334">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Howl" id="335">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragon Claw" id="336">
+<type>Dragon</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Frenzy Plant" id="337">
+<type>Grass</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bulk Up" id="338">
+<type>Fighting</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bounce" id="339">
+<type>Flying</type>
+<class>Physical</class>
+<power>85</power>
+<accuracy>0.85</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mud Shot" id="340">
+<type>Ground</type>
+<class>Special</class>
+<power>55</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poison Tail" id="341">
+<type>Poison</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>25</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Covet" id="342">
+<type>Normal</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Volt Tackle" id="343">
+<type>Electric</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magical Leaf" id="344">
+<type>Grass</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Water Sport" id="345">
+<type>Water</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Calm Mind" id="346">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Leaf Blade" id="347">
+<type>Grass</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragon Dance" id="348">
+<type>Dragon</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Blast" id="349">
+<type>Rock</type>
+<class>Physical</class>
+<power>25</power>
+<accuracy>0.80</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shock Wave" id="350">
+<type>Electric</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Water Pulse" id="351">
+<type>Water</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Doom Desire" id="352">
+<type>Steel</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.85</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psycho Boost" id="353">
+<type>Psychic</type>
+<class>Special</class>
+<power>140</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Roost" id="354">
+<type>Flying</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Gravity" id="355">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>5</pp>
+<target>All</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Miracle Eye" id="356">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>40</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wake-up Slap" id="357">
+<type>Fighting</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Hammer Arm" id="358">
+<type>Fighting</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Gyro Ball" id="359">
+<type>Steel</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Healing Wish" id="360">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Brine" id="361">
+<type>Water</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Natural Gift" id="362">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Feint" id="363">
+<type>Normal</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Pluck" id="364">
+<type>Flying</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Tailwind" id="365">
+<type>Flying</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>30</pp>
+<target>Allies</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Acupressure" id="366">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>30</pp>
+<target>Unknown1</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Metal Burst" id="367">
+<type>Steel</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Lastenemy</target>
+<flags>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="U-turn" id="368">
+<type>Bug</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Close Combat" id="369">
+<type>Fighting</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Payback" id="370">
+<type>Dark</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Assurance" id="371">
+<type>Dark</type>
+<class>Physical</class>
+<power>50</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Embargo" id="372">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fling" id="373">
+<type>Dark</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psycho Shift" id="374">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Trump Card" id="375">
+<type>Normal</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>0.0</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Heal Block" id="376">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wring Out" id="377">
+<type>Normal</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Power Trick" id="378">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Gastro Acid" id="379">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lucky Chant" id="380">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>30</pp>
+<target>Allies</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Me First" id="381">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Unknown2</target>
+<flags>
+	<protect/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Copycat" id="382">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Power Swap" id="383">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Guard Swap" id="384">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Punishment" id="385">
+<type>Dark</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Last Resort" id="386">
+<type>Normal</type>
+<class>Physical</class>
+<power>130</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Worry Seed" id="387">
+<type>Grass</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Sucker Punch" id="388">
+<type>Dark</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Toxic Spikes" id="389">
+<type>Poison</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Enemyfield</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Heart Swap" id="390">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aqua Ring" id="391">
+<type>Water</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magnet Rise" id="392">
+<type>Electric</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flare Blitz" id="393">
+<type>Fire</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Force Palm" id="394">
+<type>Fighting</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aura Sphere" id="395">
+<type>Fighting</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Polish" id="396">
+<type>Rock</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Poison Jab" id="397">
+<type>Poison</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dark Pulse" id="398">
+<type>Dark</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Night Slash" id="399">
+<type>Dark</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aqua Tail" id="400">
+<type>Water</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Seed Bomb" id="401">
+<type>Grass</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Air Slash" id="402">
+<type>Flying</type>
+<class>Special</class>
+<power>75</power>
+<accuracy>0.95</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="X-Scissor" id="403">
+<type>Bug</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bug Buzz" id="404">
+<type>Bug</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragon Pulse" id="405">
+<type>Dragon</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dragon Rush" id="406">
+<type>Dragon</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.75</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Power Gem" id="407">
+<type>Rock</type>
+<class>Special</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Drain Punch" id="408">
+<type>Fighting</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Vacuum Wave" id="409">
+<type>Fighting</type>
+<class>Special</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Focus Blast" id="410">
+<type>Fighting</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.70</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Energy Ball" id="411">
+<type>Grass</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Brave Bird" id="412">
+<type>Flying</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Earth Power" id="413">
+<type>Ground</type>
+<class>Special</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Switcheroo" id="414">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Giga Impact" id="415">
+<type>Normal</type>
+<class>Physical</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Nasty Plot" id="416">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bullet Punch" id="417">
+<type>Steel</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Avalanche" id="418">
+<type>Ice</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ice Shard" id="419">
+<type>Ice</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shadow Claw" id="420">
+<type>Ghost</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Thunder Fang" id="421">
+<type>Electric</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ice Fang" id="422">
+<type>Ice</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Fire Fang" id="423">
+<type>Fire</type>
+<class>Physical</class>
+<power>65</power>
+<accuracy>0.95</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shadow Sneak" id="424">
+<type>Ghost</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>30</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mud Bomb" id="425">
+<type>Ground</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Psycho Cut" id="426">
+<type>Psychic</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Zen Headbutt" id="427">
+<type>Psychic</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>0.90</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Mirror Shot" id="428">
+<type>Steel</type>
+<class>Special</class>
+<power>65</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Flash Cannon" id="429">
+<type>Steel</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Climb" id="430">
+<type>Normal</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>0.85</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Defog" id="431">
+<type>Flying</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Trick Room" id="432">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>5</pp>
+<target>All</target>
+<flags>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Draco Meteor" id="433">
+<type>Dragon</type>
+<class>Special</class>
+<power>140</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Discharge" id="434">
+<type>Electric</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lava Plume" id="435">
+<type>Fire</type>
+<class>Special</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Others</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Leaf Storm" id="436">
+<type>Grass</type>
+<class>Special</class>
+<power>140</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Power Whip" id="437">
+<type>Grass</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>0.85</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Rock Wrecker" id="438">
+<type>Rock</type>
+<class>Physical</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Cross Poison" id="439">
+<type>Poison</type>
+<class>Physical</class>
+<power>70</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Gunk Shot" id="440">
+<type>Poison</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>0.70</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Iron Head" id="441">
+<type>Steel</type>
+<class>Physical</class>
+<power>80</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magnet Bomb" id="442">
+<type>Steel</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Stone Edge" id="443">
+<type>Rock</type>
+<class>Physical</class>
+<power>100</power>
+<accuracy>0.80</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Captivate" id="444">
+<type>Normal</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Stealth Rock" id="445">
+<type>Rock</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>20</pp>
+<target>Enemyfield</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Grass Knot" id="446">
+<type>Grass</type>
+<class>Special</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Chatter" id="447">
+<type>Flying</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Judgment" id="448">
+<type>Normal</type>
+<class>Special</class>
+<power>100</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Bug Bite" id="449">
+<type>Bug</type>
+<class>Physical</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Charge Beam" id="450">
+<type>Electric</type>
+<class>Special</class>
+<power>50</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Wood Hammer" id="451">
+<type>Grass</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Aqua Jet" id="452">
+<type>Water</type>
+<class>Physical</class>
+<power>40</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Attack Order" id="453">
+<type>Bug</type>
+<class>Physical</class>
+<power>90</power>
+<accuracy>1.00</accuracy>
+<pp>15</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Defend Order" id="454">
+<type>Bug</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Heal Order" id="455">
+<type>Bug</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<snatch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Head Smash" id="456">
+<type>Rock</type>
+<class>Physical</class>
+<power>150</power>
+<accuracy>0.80</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Double Hit" id="457">
+<type>Normal</type>
+<class>Physical</class>
+<power>35</power>
+<accuracy>0.90</accuracy>
+<pp>10</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Roar Of Time" id="458">
+<type>Dragon</type>
+<class>Special</class>
+<power>150</power>
+<accuracy>0.90</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Spacial Rend" id="459">
+<type>Dragon</type>
+<class>Special</class>
+<power>100</power>
+<accuracy>0.95</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Lunar Dance" id="460">
+<type>Psychic</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.0</accuracy>
+<pp>10</pp>
+<target>User</target>
+<flags>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Crush Grip" id="461">
+<type>Normal</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Magma Storm" id="462">
+<type>Fire</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.70</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Dark Void" id="463">
+<type>Dark</type>
+<class>Other</class>
+<power>0</power>
+<accuracy>0.80</accuracy>
+<pp>10</pp>
+<target>Enemies</target>
+<flags>
+	<protect/>
+	<reflect/>
+	<mirrorable/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Seed Flare" id="464">
+<type>Grass</type>
+<class>Special</class>
+<power>120</power>
+<accuracy>0.85</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Ominous Wind" id="465">
+<type>Ghost</type>
+<class>Special</class>
+<power>60</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<protect/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+<move name="Shadow Force" id="466">
+<type>Ghost</type>
+<class>Physical</class>
+<power>120</power>
+<accuracy>1.00</accuracy>
+<pp>5</pp>
+<target>Enemy</target>
+<flags>
+	<contact/>
+	<mirrorable/>
+	<flinch/>
+	<unimplemented/>
+</flags>
+<use>
+<![CDATA[
+
+]]>
+</use>
+</move>
+
+</shoddybattle>
