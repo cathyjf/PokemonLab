@@ -68,3 +68,189 @@
 22: Sassy
 23: Careful
 24: Quirky
+
+[stats]
+0: HP
+1: Atk
+2: Def
+3: Spd
+4: SAtk
+5: SDef
+6: Spd
+7: Acc
+8: Evas
+
+[stats-long]
+0: HP
+1: attack
+2: defense
+3: speed
+4: special attack
+5: special defense
+6: accuracy
+7: evasion
+
+[status-effects-burn]
+0: Burn
+1: $1 was burned!
+2: $1 was hurt by its burn!
+
+[status-effects-confusion]
+0: Confusion
+1: $1 became confused!
+2: $1 snapped out of confusion!
+3: $1 is confused!
+4: It hurt itself in confusion!
+5: $1 is already confused!
+
+[status-effects-freeze]
+0: Freeze
+1: $1 was frozen solid!
+2: $1 was defrosted!
+3: $1 is frozen solid!
+
+[status-effects-paralysis]
+0: Paralysis
+1: $1 is paralysed! It may be unable to move!
+2: $1 is paralysed! It can't move!
+
+[status-effects-poison]
+0: Poison
+1: $1 was poisoned!
+2: $1 was badly poisoned!
+3: $1 is hurt by poison!
+
+[status-effects-sleep]
+0: Sleep
+1: $1 fell asleep!
+2: $1 woke up!
+3: $1 is fast asleep.
+
+[status-effects-awesome]
+0: Awesomeness
+1: $1 insulted God out of anger!
+2: $1 is punished by God!
+3: God punishes $1 for leaving His presence!
+4: God struck down $1 will all His might!
+5: God forgave $1
+6: $1 was too God-fearing to move!
+
+[status-effects-stockpile]
+0: Stockpile - $1
+2: $1 stockpiled $2 levels!
+3: But it failed to spit up a thing!
+3: But it failed to swallow a thing!
+4: $1 couldn't stockpile any more!
+
+[status-effects-leech-seed]
+0: Leech Seed
+1: $1 was seeded!
+2: $1's health was sapped by Leech Seed!
+3: $1 sucked up liquid ooze!
+
+[field-effects-spikes]
+0: Spikes - $1
+1: Toxic Spikes
+2: Stealth Rock
+3: $1 was hurt by ${moves, 123}! //TODO: spikes
+4: $1 absorbed the ${moves, 124}! //TODO: toxic spikes
+5: $1 was poisoned by the ${moves, 124}! //TODO: toxic spikes
+6: Pointed stones dug into $1!
+7: Pointed stones float in the air around your foe's team!
+
+[weather-hail]
+0: Hail
+1: Hail began to fall!
+2: The hail continues to fall.
+3: $1 is pelted by hail!
+4: The hail stopped.
+
+[weather-rain]
+0: Rain
+1: Rain began to fall!
+2: The rain continues to fall.
+3: The rain stopped.
+
+[weather-sandstorm]
+0: Sandstorm
+1: A sandstorm brewed!
+2: The sandstorm rages.
+3: $1 is buffeted by the sandstorm!
+4: The sandstorm stopped.
+
+[weather-sun]
+0: Sun
+1: The sun began to shine!
+2: The sun continues to shine.
+3: The sun faded.
+
+[battle-messages]
+0: But it failed!
+1: It doesn't affect $1...
+2: $1's attack missed!
+3: But there was no target!
+4: It failed to affect $1!
+5: $1 regained health!
+6: $1's attack missed!
+7: It's super effective!
+8: It's not very effective...
+8: A critical hit!
+
+[battle-messages-unique]
+0: Hit $1 time(s)!
+1: $1 was cured of paralysis!
+2: But nothing happened!
+3: Coins scattered everywhere!
+5: $1 is having a nightmare!
+6: The Pokémon swapped stats!
+7: $1 ($2)'s attack! //beat up
+8: $1 cut it's health and laid a curse on $2!
+9: $1 became the $2 type!
+10: $1 stole $2's $3!
+11: Could not steal the $1 from $2
+12: $1 knocked off foe $2's $3!
+13: $1 obtained $2! //trick
+14: Magnitude $1!
+15: $1 swapped abilities with its opponent!
+16: $1 copied its opponent's ability!
+17: $1 copied the opponent's stat changes!
+18: $1 was released!
+19: $1 blew away the spikes!
+20: The wall shattered!
+21: $1 became the centre of attention!
+22: $1 is tightening its focus!
+23: $1 lost its focus and couldn't move!
+24: $1 twisted the dimensions!
+25: The twisted dimensions returned to normal!
+26: $1's taunt wore off!
+27: $1 can't use $2 after the taunt!
+28: It reduced the PP of the foe's $2's $3 by $4!
+29: $1 is trying to take its foe with it!
+30: $1 took $2 with it!
+31: $1 lost its PP due to the Grudge!
+32: $1 got an encore!
+33: $1's encore ended.
+34: $1's $2 is disabled!
+35: $1 sealed the opponent's moves!
+36: $1 unleashed energy!
+37: $1 learned $2!
+38: $1's ability was suppressed
+39: $1 can use items again!
+40: $1 waits for a target to make a move!
+41: $1 snatched $2's move!
+42: $1's rage is building!
+43: $1 created a barrier!
+44: $1 can't use $2 because of $3 //heal block
+45: $1's $2 wore off // heal block
+46: $1 is no longer immune to Ground attacks!
+47: $1 kept going and crashed!
+48: It's a OHKO!
+49: All affected Pokémon will faint in three turns!
+50: $1's count fell to $2! //perish song
+51: $1's power was weakened!
+52: $1 transformed into $2!
+53: $1 was released from $2!
+54: $1 is hurt by $2!
+55: $1 absorbed nutrients with its roots!
+56: $1's $2 restored health //aqua ring
+67: $1 must recharge!
