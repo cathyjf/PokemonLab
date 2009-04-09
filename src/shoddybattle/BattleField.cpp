@@ -219,6 +219,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         const PokemonTurn *turn = ordered[i];
 
         cout << p->getSpeciesName() << ", ";
+        cout << p->getMove(turn->id)->getName(m_impl->context) << ", ";
         cout << p->getStat(S_SPEED) << endl;
     }
 }

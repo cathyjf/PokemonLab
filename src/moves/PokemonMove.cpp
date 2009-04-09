@@ -343,28 +343,30 @@ using namespace shoddybattle;
 
 int main() {
     ScriptMachine machine;
-    SpeciesDatabase species("resources/species.xml");
-    MoveDatabase moves(machine);
-    moves.loadMoves("resources/moves2.xml");
-    species.populateMoveLists(moves);
+    ScriptContext *cx = machine.acquireContext();
+    cx->runFile("resources/main.js");
+    cx->runFile("resources/StatusEffect.js");
+    cx->runFile("resources/statuses.js");
+    machine.releaseContext(cx);
+
+    SpeciesDatabase *species = machine.getSpeciesDatabase();
+    MoveDatabase *moves = machine.getMoveDatabase();
 
     Pokemon::ARRAY team[2];
-    loadTeam("/home/Catherine/randomteam", species, team[0]);
-    loadTeam("/home/Catherine/toxicorb", species, team[1]);
+    loadTeam("/home/Catherine/randomteam", *species, team[0]);
+    loadTeam("/home/Catherine/toxicorb", *species, team[1]);
 
     BattleField field;
     JewelMechanics mechanics;
     field.initialise(&mechanics, &machine, team, 2);
-    ScriptContext *cx = field.getContext();
-    
-    cx->runFile("resources/StatusEffect.js");
-    cx->runFile("resources/statuses.js");
 
     vector<int> targets;
     targets.push_back(0);    // target #0
 
     Target target;
     target.targets = targets;
+
+    cx = field.getContext();
 
     cout << team[0][0]->getMove(0)->getName(cx) << endl;
     cout << team[0][1]->getMove(0)->getName(cx) << endl;

@@ -237,6 +237,8 @@ public:
 
     void runFile(const std::string file);
 
+    ScriptMachine *getMachine() { return m_machine; }
+
     void gc();
     void maybeGc();
 
@@ -257,6 +259,11 @@ private:
     ScriptContext &operator=(const ScriptContext &);
 };
 
+class Text;
+class SpeciesDatabase;
+class MoveDatabase;
+class TextLookup;
+
 /**
  * A script machine is used to work with scripts without having to contend
  * with the JavaScript API.
@@ -271,6 +278,17 @@ public:
 
     /** Release a context for running scripts. **/
     void releaseContext(ScriptContext *cx);
+
+    /** Global program state. **/
+    Text *getText() const;
+    SpeciesDatabase *getSpeciesDatabase() const;
+    MoveDatabase *getMoveDatabase() const;
+
+    std::string getText(int i, int j, int argc, char **argv);
+    void loadText(const std::string file, TextLookup &func);
+    void includeMoves(const std::string);
+    void includeSpecies(const std::string);
+    void populateMoveLists();
     
 private:
     friend class ScriptContext;

@@ -97,12 +97,5 @@ const double PokemonType::m_multiplier[18][18] = {
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
 
-/**
- * Get the name of a type.
- */
-string PokemonType::getName(Text &text) const {
-    return text.getText(SC_TYPE, m_type);
-}
-
 }
 

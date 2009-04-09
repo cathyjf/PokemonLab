@@ -64,11 +64,6 @@ public:
         }
         return NULL;
     }
-
-    /**
-     * Get the name of this type.
-     */
-    std::string getName(Text &) const;
     
     int getTypeValue() const {
         return m_type;

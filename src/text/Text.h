@@ -25,16 +25,11 @@
 #ifndef _TEXT_H_
 #define _TEXT_H_
 
+#include <boost/function.hpp>
 #include <string>
 #include <map>
 
 namespace shoddybattle {
-
-enum STRING_CATEGORY {
-    SC_NONE = -1,
-    SC_TYPE = 0,
-    SC_NATURE
-};
 
 class SyntaxException {
 public:
@@ -46,23 +41,10 @@ private:
     unsigned int m_line;
 };
 
-class StringCategory {
-public:
-    StringCategory(const STRING_CATEGORY category, std::string name):
-        m_category(category), m_name(name) { }
-    STRING_CATEGORY getCategory() const {
-        return m_category;
-    }
-    std::string getName() const {
-        return m_name;
-    }
-private:
-    STRING_CATEGORY m_category;
-    std::string m_name;
-};
-
 typedef std::map<int, std::string> INDEX_MAP;
-typedef std::map<STRING_CATEGORY, INDEX_MAP> TEXT_MAP;
+typedef std::map<int, INDEX_MAP> TEXT_MAP;
+
+typedef boost::function<int (std::string)> LOOKUP_FUNCTION;
 
 /**
  * All loading of text is done through this class. Generally speaking, there
@@ -70,45 +52,24 @@ typedef std::map<STRING_CATEGORY, INDEX_MAP> TEXT_MAP;
  */
 class Text {
 public:
-
-    /**
-     * Construct a new Text object by loading a file.
-     */
-    Text(std::string file) throw(SyntaxException) {
-        loadFile(file);
-    }
+    
+    Text() { }
 
     /**
      * Load text from the string table.
      *
-     * The first argument is the type of sting to load (e.g. nature, type,
-     * etc.). The second argument is the index of the string of that type.
-     * The additional arguments are strings (specified as char *) that
-     * parameterise the desired text. The number of additional arguments must
-     * be provided (in the 'count' parameter).
-     *
-     * For example, if "X's attack missed!" has type BATTLE_MESSAGE and
-     * an id of MISS_MESSAGE then we might call
-     *
-     * getText(BATTLE_MESSAGE, MISS_MESSAGE, p.getName().c_str());
-     *
-     * Notice the c_str() call. The additional arguments must be of type char *
-     * not of type std::string.
-     *
      */
-    std::string getText(const STRING_CATEGORY type,
-            const int id, const int count = 0, ...) const;
+    std::string getText(const int type,
+            const int id, const int count, char **args) const;
 
     /**
      * Populate the string table by reading a file.
      */
-    bool loadFile(const std::string file) throw(SyntaxException);
+    bool loadFile(const std::string file, LOOKUP_FUNCTION lookup)
+            throw(SyntaxException);
 
 private:
-    static STRING_CATEGORY getCategory(const std::string name);
-
     TEXT_MAP m_text;
-    static const StringCategory m_categories[];
 };
 
 }

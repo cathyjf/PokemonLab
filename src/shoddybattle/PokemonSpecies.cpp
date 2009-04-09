@@ -313,6 +313,10 @@ bool PokemonSpecies::loadSpecies(const string file, SpeciesDatabase &set) {
         DOMElement *item = (DOMElement *)list->item(i);
         SPECIES species;
         getSpecies(item, &species);
+        if (set.m_set.find(species.id) != set.m_set.end()) {
+            cout << "Warning: Duplicate species ID: " << species.id << endl;
+            continue;
+        }
         PokemonSpecies *p = new PokemonSpecies((void *)&species);
         set.m_set[species.id] = p;
     }

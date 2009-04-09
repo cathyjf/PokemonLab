@@ -33,6 +33,9 @@
 #include <boost/thread/locks.hpp>
 
 #include "ScriptMachine.h"
+#include "../text/Text.h"
+#include "../shoddybattle/PokemonSpecies.h"
+#include "../moves/PokemonMove.h"
 
 using namespace std;
 using namespace boost;
@@ -51,6 +54,13 @@ typedef set<ScriptContext *> CONTEXT_SET;
 
 void reportError(JSContext *cx, const char *message, JSErrorReport *report);
 
+struct GlobalState {
+    Text text;
+    SpeciesDatabase species;
+    MoveDatabase moves;
+    GlobalState(ScriptMachine *p): moves(*p) { }
+};
+
 struct ScriptMachineImpl {
     JSRuntime *runtime;
     JSObject *global;
@@ -58,9 +68,12 @@ struct ScriptMachineImpl {
     CONTEXT_SET contexts;
     set<ScriptObject *> roots;
     ScriptMachine *machine;
+    GlobalState *state;
     mutex lock;         // lock for contexts set
     mutex rootLock;     // lock for roots set
 
+    ScriptMachineImpl(ScriptMachine *p): machine(p) { }
+    
     ScriptContext *newContext() {
         JSContext *cx = JS_NewContext(runtime, 8192);
         JS_SetGlobalObject(cx, global);
@@ -73,6 +86,114 @@ struct ScriptMachineImpl {
         return context;
     }
 };
+
+Text *ScriptMachine::getText() const {
+    return &m_impl->state->text;
+}
+SpeciesDatabase *ScriptMachine::getSpeciesDatabase() const {
+    return &m_impl->state->species;
+}
+MoveDatabase *ScriptMachine::getMoveDatabase() const {
+    return &m_impl->state->moves;
+}
+
+JSBool includeMoves(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    scx->getMachine()->includeMoves(str);
+    return JS_TRUE;
+}
+
+JSBool includeSpecies(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    scx->getMachine()->includeSpecies(str);
+    return JS_TRUE;
+}
+
+class TextLookup {
+public:
+    TextLookup(JSContext *cx, ScriptContext *scx, ScriptFunction func) {
+        m_cx = cx;
+        m_scx = scx;
+        m_func = func;
+    }
+    int operator()(const string name) {
+        char *pstr = JS_strdup(m_cx, name.c_str());
+        JSString *str = JS_NewString(m_cx, pstr, name.length());
+        jsval jsv = STRING_TO_JSVAL(str);
+        ScriptValue argv[1] = { ScriptValue((void *)jsv) };
+        ScriptValue v = m_scx->callFunction(NULL, &m_func, 1, argv);
+        return v.getInt();
+    }
+private:
+    JSContext *m_cx;
+    ScriptContext *m_scx;
+    ScriptFunction m_func;
+};
+
+JSBool getText(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    int32 category, text;
+    JS_ConvertArguments(cx, 2, argv, "ii", &category, &text);
+    const int count = argc - 2;
+    char *args[count];
+    for (int i = 0; i < count; ++i) {
+        jsval v = argv[2 + i];
+        JSString *str = JS_ValueToString(cx, v);
+        char *pstr = JS_GetStringBytes(str);
+        args[i] = pstr;
+    }
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    string sret = scx->getMachine()->getText(category, text, count, args);
+    char *pstr = JS_strdup(cx, sret.c_str());
+    JSString *str = JS_NewString(cx, pstr, sret.length());
+    *ret = STRING_TO_JSVAL(str);
+    return JS_TRUE;
+}
+
+string ScriptMachine::getText(int i, int j, int argc, char **argv) {
+    return m_impl->state->text.getText(i, j, argc, argv);
+}
+
+JSBool loadText(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    jsval v2 = argv[1];
+    if (!JSVAL_IS_OBJECT(v2)) {
+        return JS_FALSE;
+    }
+    ScriptFunction func(JSVAL_TO_OBJECT(v2));
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    TextLookup lookup(cx, scx, func);
+    try {
+        scx->getMachine()->loadText(str, lookup);
+    } catch (SyntaxException e) {
+        cout << "loadText: Syntax error on line " << e.getLine() << endl;
+    }
+    return JS_TRUE;
+}
+
+JSBool populateMoveLists(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    scx->getMachine()->populateMoveLists();
+    return JS_TRUE;
+}
 
 JSBool printFunction(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
@@ -87,6 +208,22 @@ JSBool printFunction(JSContext *cx,
     char *str = JS_GetStringBytes(jsstr);
     cout << str << endl;
     return JS_TRUE;
+}
+
+void ScriptMachine::populateMoveLists() {
+    m_impl->state->species.populateMoveLists(m_impl->state->moves);
+}
+
+void ScriptMachine::includeSpecies(const std::string file) {
+    m_impl->state->species.loadSpecies(file);
+}
+
+void ScriptMachine::loadText(const std::string file, TextLookup &func) {
+    m_impl->state->text.loadFile(file, func);
+}
+
+void ScriptMachine::includeMoves(const std::string file) {
+    m_impl->state->moves.loadMoves(file);
 }
 
 void reportError(JSContext *cx, const char *message, JSErrorReport *report) {
@@ -341,12 +478,16 @@ void ScriptMachine::releaseContext(ScriptContext *cx) {
 
 static JSFunctionSpec globalFunctions[] = {
     JS_FS("print", printFunction, 1, 0, 0),
+    JS_FS("loadText", loadText, 2, 0, 0),
+    JS_FS("getText", getText, 2, 0, 0),
+    JS_FS("includeMoves", includeMoves, 1, 0, 0),
+    JS_FS("includeSpecies", includeSpecies, 1, 0, 0),
+    JS_FS("populateMoveLists", populateMoveLists, 0, 0, 0),
     JS_FS_END
 };
 
 ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
-    m_impl = new ScriptMachineImpl();
-    m_impl->machine = this;
+    m_impl = new ScriptMachineImpl(this);
 
     m_impl->runtime = JS_NewRuntime(8L * 1024L * 1024L);
     if (m_impl->runtime == NULL) {
@@ -380,9 +521,12 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     JS_InitStandardClasses(m_impl->cx, m_impl->global);
     JS_DefineFunctions(m_impl->cx, m_impl->global, globalFunctions);
     JS_EndRequest(m_impl->cx);
+
+    m_impl->state = new GlobalState(this);
 }
 
 ScriptMachine::~ScriptMachine() {
+    delete m_impl->state;
     CONTEXT_SET::iterator i = m_impl->contexts.begin();
     for (; i != m_impl->contexts.end(); ++i) {
         ScriptContext *cx = *i;

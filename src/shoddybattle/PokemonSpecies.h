@@ -116,7 +116,11 @@ private:
  */
 class SpeciesDatabase {
 public:
+    SpeciesDatabase() { }
     SpeciesDatabase(const std::string file) {
+        loadSpecies(file);
+    }
+    void loadSpecies(const std::string file) {
         PokemonSpecies::loadSpecies(file, *this);
     }
     const PokemonSpecies *getSpecies(const int id) const {

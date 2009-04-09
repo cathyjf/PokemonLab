@@ -27,27 +27,11 @@
 #include <string>
 #include <sstream>
 #include <cstdarg>
+#include <iostream>
 
 using namespace std;
 
 namespace shoddybattle {
-
-const StringCategory Text::m_categories[] = {
-    StringCategory(SC_TYPE, "types"),
-    StringCategory(SC_NATURE, "natures")
-};
-
-/** Get a category by name. **/
-STRING_CATEGORY Text::getCategory(const string name) {
-    int length = sizeof(m_categories) / sizeof(m_categories[0]);
-    for (int i = 0; i < length; ++i) {
-        const StringCategory &c = m_categories[i];
-        if (c.getName() == name) {
-            return c.getCategory();
-        }
-    }
-    return SC_NONE;
-}
 
 /** Trim a string. **/
 string trim(string &s, const string &space = " ") {
@@ -58,12 +42,12 @@ string trim(string &s, const string &space = " ") {
 /**
  * Load a string from the table.
  */
-string Text::getText(const STRING_CATEGORY type, const int id,
-        const int count, ...) const {
+string Text::getText(const int type, const int id, const int count, char **args) const {
     TEXT_MAP::const_iterator itr = m_text.find(type);
     if (itr == m_text.end()) {
         return string();
     }
+
     const INDEX_MAP &j = itr->second;
     INDEX_MAP::const_iterator k = j.find(id);
     if (k == j.end()) {
@@ -72,19 +56,15 @@ string Text::getText(const STRING_CATEGORY type, const int id,
     string text = k->second;
 
     // Replace $n entities in the string.
-    va_list list;
-    va_start(list, count);
     for (int i = 1; i <= count; ++i) {
-        const char *p = va_arg(list, const char *);
         stringstream ss;
         ss << "$" << i;
         string str = ss.str();
         size_t pos = text.find(str);
         if (pos != string::npos) {
-            text.replace(pos, str.length(), p);
+            text.replace(pos, str.length(), args[i - 1]);
         }
     }
-    va_end(list);
 
     return text;
 }
@@ -92,13 +72,15 @@ string Text::getText(const STRING_CATEGORY type, const int id,
 /**
  * Load a language file.
  */
-bool Text::loadFile(const string path) throw(SyntaxException) {
+bool Text::loadFile(const string path, LOOKUP_FUNCTION lookup)
+        throw(SyntaxException) {
     ifstream ifs(path.c_str());
     if (!ifs.is_open()) {
         return false;
     }
     int lineNumber = 0;
-    STRING_CATEGORY category = SC_NONE;
+    int category = -1;
+    map<string, int> categories;
     while (!ifs.eof()) {
         string line;
         getline(ifs, line);
@@ -127,14 +109,24 @@ bool Text::loadFile(const string path) throw(SyntaxException) {
                 throw SyntaxException(lineNumber);
             }
             string header = line.substr(1, pos - 1);
-            category = getCategory(header);
-            if (category == SC_NONE) {
+
+            map<string, int>::iterator j = categories.find(header);
+            if (j != categories.end()) {
+                category = j->second;
+                continue;
+            }
+
+            // Try the lookup function.
+            category = lookup(header);
+            if (category == -1) {
                 throw SyntaxException(lineNumber);
             }
+
+            categories[header] = category;
             continue;
         }
 
-        if (category == SC_NONE) {
+        if (category == -1) {
             throw SyntaxException(lineNumber);
         }
 
