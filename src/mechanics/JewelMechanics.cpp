@@ -22,10 +22,7 @@
  * online at http://gnu.org.
  */
 
-#include <boost/random/variate_generator.hpp>
-#include <boost/random/inversive_congruential.hpp>
-#include <boost/random/bernoulli_distribution.hpp>
-#include <boost/random/uniform_int.hpp>
+#include <boost/random.hpp>
 
 #include "JewelMechanics.h"
 #include "PokemonNature.h"
@@ -42,12 +39,12 @@ using namespace boost;
 namespace shoddybattle {
 
 struct JewelMechanicsImpl {
-    hellekalek1995 rand;
+    mt11213b rand;
 };
 
 JewelMechanics::JewelMechanics() {
     m_impl = new JewelMechanicsImpl();
-    m_impl->rand = hellekalek1995(clock());
+    m_impl->rand = mt11213b(clock());
 }
 
 JewelMechanics::~JewelMechanics() {
@@ -71,6 +68,13 @@ unsigned int JewelMechanics::calculateStat(const Pokemon &p, const STAT i) const
         }
     }
     return (int)((common + 5) * p.getNature()->getEffect(i));
+}
+
+bool JewelMechanics::getCoinFlip() const {
+    boost::bernoulli_distribution<> dist;
+    variate_generator<mt11213b &, bernoulli_distribution<> >
+            coin(m_impl->rand, dist);
+    return coin();
 }
 
 bool isCriticalHit(BattleField &field, MoveObject &move,
@@ -126,7 +130,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     multiplyBy(damage, 1, mods); // "Mod2"
 
     boost::uniform_int<> range(217, 255);
-    variate_generator<hellekalek1995 &, uniform_int<> > r(m_impl->rand, range);
+    variate_generator<mt11213b &, uniform_int<> > r(m_impl->rand, range);
 
     damage *= r() * 100;
     damage /= 255;

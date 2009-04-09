@@ -24,13 +24,37 @@
 
 #include <boost/shared_array.hpp>
 #include "BattleField.h"
+#include "../mechanics/BattleMechanics.h"
 #include "../scripting/ScriptMachine.h"
 #include <iostream>
+#include <list>
 
 using namespace std;
 using namespace boost;
 
 namespace shoddybattle {
+
+struct PokemonSlot {
+    Pokemon::PTR pokemon;
+    string item;
+};
+
+struct PokemonParty {
+public:
+    PokemonParty(const int size): m_size(size) {
+        m_party = shared_array<PokemonSlot>(new PokemonSlot[size]);
+    }
+    PokemonSlot &operator[](const int i) {
+        return m_party[i];
+    }
+    const STATUSES &getEffects() const {
+        return m_effects;
+    }
+private:
+    const int m_size;
+    shared_array<PokemonSlot> m_party;
+    STATUSES m_effects;     // party-specific status effects
+};
 
 struct BattleFieldImpl {
     const BattleMechanics *mech;
@@ -38,8 +62,102 @@ struct BattleFieldImpl {
     ScriptContext *context;
     Pokemon::ARRAY teams[TEAM_COUNT];
     int partySize;
-    shared_array<Pokemon::PTR> active[TEAM_COUNT];
+    shared_ptr<PokemonParty> active[TEAM_COUNT];
+    STATUSES m_effects;      // field effects
+    bool descendingSpeed;
+
+    void sortInTurnOrder(vector<Pokemon::PTR> &, vector<PokemonTurn *> &);
 };
+
+struct TurnOrder {
+    struct Entity {
+        Pokemon::PTR pokemon;
+        PokemonTurn *turn;
+        bool move;
+        int party, position;
+        int priority;
+        int speed;
+        int inherentPriority;
+    };
+    const BattleMechanics *mechanics;
+    bool descendingSpeed;
+    bool operator()(const Entity &p1, const Entity &p2) {
+        // first: is one pokemon switching?
+        if (!p1.move && p2.move) {
+            return true;    // p1 goes first
+        } else if (p2.move && !p2.move) {
+            return false;   // p2 goes first
+        } else if (!p1.move && !p2.move) {
+            if (p1.party == p2.party) {
+                return (p1.position < p2.position);
+            }
+            // default to coinflip
+            return mechanics->getCoinFlip();
+        }
+
+        // second: move priority
+        if (p1.priority != p2.priority) {
+            return (p1.priority > p2.priority);
+        }
+
+        // third: inherent priority (certain items, abilities, etc.)
+        if (p1.inherentPriority != p2.inherentPriority) {
+            return (p1.inherentPriority > p2.inherentPriority);
+        }
+
+        // fourth: speed
+        if (p1.speed > p2.speed) {
+            return descendingSpeed;
+        } else if (p1.speed < p2.speed) {
+            return !descendingSpeed;
+        }
+
+        // finally: coin flip
+        return mechanics->getCoinFlip();
+    }
+};
+
+/**
+ * Sort a list of pokemon in turn order.
+ */
+void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
+        vector<PokemonTurn *> &turns) {
+    vector<TurnOrder::Entity> entities;
+
+    const int count = pokemon.size();
+    assert(count == turns.size());
+    for (int i = 0; i < count; ++i) {
+        TurnOrder::Entity entity;
+        Pokemon::PTR p = pokemon[i];
+        PokemonTurn *turn = turns[i];
+        entity.pokemon = p;
+        entity.turn = turn;
+        entity.move = (turn->type == TT_MOVE);
+        if (entity.move) {
+            MoveObject *move = p->getMove(turn->id);
+            assert(move != NULL);
+            entity.priority = move->getPriority(context);
+        }
+        entity.party = p->getParty();
+        entity.position = p->getPosition();
+        entity.speed = p->getStat(S_SPEED);
+        entity.inherentPriority = p->getInherentPriority(context);
+        entities.push_back(entity);
+    }
+
+    // sort the entities
+    TurnOrder order;
+    order.descendingSpeed = descendingSpeed;
+    order.mechanics = mech;
+    sort(entities.begin(), entities.end(), order);
+
+    // reorder the parameter vectors
+    for (int i = 0; i < count; ++i) {
+        TurnOrder::Entity &entity = entities[i];
+        pokemon[i] = entity.pokemon;
+        turns[i] = entity.turn;
+    }
+}
 
 BattleField::BattleField() {
     m_impl = new BattleFieldImpl();
@@ -66,7 +184,8 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
         MoveObject &obj, const bool critical, MODIFIERS &mods) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            Pokemon::PTR p = m_impl->active[i][j];
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
             if (p) {
                 p->getModifiers(m_impl->context,
                         this, &user, &target, &obj, critical, mods);
@@ -96,10 +215,11 @@ void BattleField::initialise(const BattleMechanics *mech,
     m_impl->mech = mech;
     m_impl->machine = machine;
     m_impl->partySize = activeParty;
+    m_impl->descendingSpeed = true;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         m_impl->teams[i] = teams[i];
-        m_impl->active[i] = shared_array<Pokemon::PTR>(
-                new Pokemon::PTR[activeParty]);
+        m_impl->active[i] =
+                shared_ptr<PokemonParty>(new PokemonParty(activeParty));
 
         // Set first n pokemon to be the active pokemon.
         int bound = activeParty;
@@ -108,7 +228,8 @@ void BattleField::initialise(const BattleMechanics *mech,
             bound = size;
         }
         for (int j = 0; j < bound; ++j) {
-            m_impl->active[i][j] = m_impl->teams[i][j];
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            slot.pokemon = m_impl->teams[i][j];
         }
 
         // Do some basic initialisation on each pokemon.

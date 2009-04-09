@@ -35,6 +35,9 @@ const int TEAM_COUNT = 2;
 const int MAX_TEAM_SIZE = 6;
 
 class BattleFieldImpl;
+class PokemonSlotImpl;
+
+
 class BattleMechanics;
 class ScriptMachine;
 class ScriptContext;

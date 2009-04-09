@@ -55,6 +55,7 @@ public:
     MOVE_CLASS moveClass;
     TARGET targetClass;
     unsigned int pp;
+    int priority;
     bitset<FLAG_COUNT> flags;
     double accuracy;
     const PokemonType *type;
@@ -88,6 +89,9 @@ unsigned int MoveTemplate::getPp() const {
 }
 unsigned int MoveTemplate::getPower() const {
     return m_pImpl->power;
+}
+int MoveTemplate::getPriority() const {
+    return m_pImpl->priority;
 }
 double MoveTemplate::getAccuracy() const {
     return m_pImpl->accuracy;
@@ -198,6 +202,13 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove, ScriptContext *cx) {
     if (!strPp.empty()) {
         int i = atoi(strPp.c_str());
         pMove->pp = i;
+    }
+
+    // priority
+    string strPriority = getElementText(node, "priority");
+    if (!strPriority.empty()) {
+        int i = atoi(strPriority.c_str());
+        pMove->priority = i;
     }
 
     // accuracy
@@ -336,6 +347,7 @@ int main() {
     field.initialise(&mechanics, &machine, team, 2);
     ScriptContext *cx = field.getContext();
     
+    cx->runFile("resources/StatusEffect.js");
     cx->runFile("resources/statuses.js");
 
     const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");

@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 #include <string>
+#include <list>
 #include <map>
 #include "../mechanics/stat.h"
 #include "../scripting/ObjectWrapper.h"
@@ -48,7 +49,7 @@ class ScriptMachine;
 class ScriptContext;
 
 typedef std::vector<const PokemonType *> TYPE_ARRAY;
-typedef std::vector<StatusObject *> STATUSES;
+typedef std::list<StatusObject *> STATUSES;
 
 // map<position, map<priority, value>>
 typedef std::map<int, std::map<int, double> > MODIFIERS;
@@ -80,9 +81,13 @@ public:
 
     void initialise(BattleField *field, const int i, const int j);
 
+    int getInherentPriority(ScriptContext *) const;
+
+    const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
     void getModifiers(ScriptContext *, BattleField *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
+    void removeStatuses(ScriptContext *);
     
     int getHp() const { return m_hp; }
     void setHp(const int hp);   // note: has side effects
@@ -111,6 +116,9 @@ public:
     }
 
     int getMoveCount() const { return m_moves.size(); }
+
+    int getParty() const { return m_party; }
+    int getPosition() const { return m_position; }
     
     ~Pokemon();
 
@@ -135,7 +143,7 @@ private:
 
     ScriptMachine *m_machine;
     BattleField *m_field;
-    int m_party, m_slot;
+    int m_party, m_position;
 
     STATUSES m_effects;
 

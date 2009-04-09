@@ -5,7 +5,9 @@
                    displayName="Resource Files"
                    projectFiles="true">
       <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/moves2.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
@@ -77,6 +79,12 @@
         </linkerTool>
       </compileType>
       <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/moves2.xml">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
@@ -196,6 +204,12 @@
         </linkerTool>
       </compileType>
       <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/moves2.xml">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">

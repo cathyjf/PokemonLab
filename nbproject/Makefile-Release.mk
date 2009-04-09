@@ -114,11 +114,6 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h.gc
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h
 
-${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h.gch: /home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h
-
 ${OBJECTDIR}/src/mechanics/PokemonType.o: src/mechanics/PokemonType.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
@@ -128,6 +123,11 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.o: /home
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.o /home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h.gch: /home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h
 
 ${OBJECTDIR}/src/mechanics/JewelMechanics.o: src/mechanics/JewelMechanics.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
@@ -149,15 +149,15 @@ ${OBJECTDIR}/src/mechanics/PokemonNature.o: src/mechanics/PokemonNature.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/PokemonNature.o src/mechanics/PokemonNature.cpp
 
-${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.o: /home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.o /home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp
-
 ${OBJECTDIR}/src/mechanics/JewelMechanics.h.gch: src/mechanics/JewelMechanics.h 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ src/mechanics/JewelMechanics.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.o: /home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.o /home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp
 
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.o: /home/Catherine/ShoddyBattle2/src/scripting/StatusObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting

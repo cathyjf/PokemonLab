@@ -106,6 +106,19 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
 }
 
 /**
+ * Remove defunct statuses from this pokemon.
+ */
+void Pokemon::removeStatuses(ScriptContext *cx) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if (!(*i)->isRemovable(cx))
+            continue;
+
+        // this is a list so it is safe to remove an arbitrary element
+        m_effects.erase(i);
+    }
+}
+
+/**
  * Apply a StatusEffect to this pokemon. Makes a copy of the parameter before
  * applying it to the pokemon.
  */
@@ -128,6 +141,24 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
 }
 
 /**
+ * Check if this Pokemon has "inherent priority". This is used for certain
+ * items and abilities.
+ */
+int Pokemon::getInherentPriority(ScriptContext *cx) const {
+    int ret = 0;
+    for (STATUSES::const_iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        int v = (*i)->getInherentPriority(cx);
+        if (abs(v) > abs(ret)) {
+            ret = v;
+        }
+    }
+    return ret;
+}
+
+/**
  * Check for modifiers on all status effects.
  */
 void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
@@ -136,6 +167,9 @@ void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
         // TODO: look in overrides
+
+        if (!(*i)->isActive(cx))
+            continue;
 
         if ((*i)->getModifier(cx, field, user, target, obj, critical, mod)) {
             mods[mod.position][mod.priority] = mod.value;
@@ -160,7 +194,7 @@ void Pokemon::setHp(const int hp) {
 void Pokemon::initialise(BattleField *field, const int party, const int j) {
     m_field = field;
     m_party = party;
-    m_slot = j;
+    m_position = j;
     const BattleMechanics *mech = field->getMechanics();
     for (int i = 0; i < STAT_COUNT; ++i) {
         m_stat[i] = mech->calculateStat(*this, (STAT)i);

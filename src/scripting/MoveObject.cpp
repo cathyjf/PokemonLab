@@ -70,6 +70,15 @@ unsigned int MoveObject::getPower(ScriptContext *scx) const {
     return JSVAL_TO_INT(val);
 }
 
+int MoveObject::getPriority(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "priority", &val);
+    JS_EndRequest(cx);
+    return JSVAL_TO_INT(val);
+}
+
 /*
 TARGET MoveObject::getTargetClass(ScriptContext *) const;
 bool MoveObject::attemptHit(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
@@ -108,6 +117,9 @@ MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {
 
     val = INT_TO_JSVAL(p->getPp());
     JS_SetProperty(cx, obj, "pp", &val);
+
+    val = INT_TO_JSVAL(p->getPriority());
+    JS_SetProperty(cx, obj, "priority", &val);
 
     JS_NewNumberValue(cx, p->getAccuracy(), &val);
     JS_SetProperty(cx, obj, "accuracy", &val);

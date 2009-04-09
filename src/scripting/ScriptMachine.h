@@ -137,6 +137,7 @@ public:
     MOVE_CLASS getMoveClass(ScriptContext *) const;
     TARGET getTargetClass(ScriptContext *) const;
     unsigned int getPower(ScriptContext *) const;
+    int getPriority(ScriptContext *) const;
     void use(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
     bool attemptHit(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
     unsigned int getPp(ScriptContext *) const;
@@ -152,9 +153,22 @@ public:
 
 class StatusObject : public ScriptObject {
 public:
+    static const int STATE_ACTIVE = 0;
+    static const int STATE_DEACTIVATED = 1;
+    static const int STATE_REMOVABLE = 2;
+    
     StatusObject(void *p): ScriptObject(p) { }
 
     StatusObject *cloneAndRoot(ScriptContext *);
+
+    // State.
+    int getState(ScriptContext *) const;
+    bool isActive(ScriptContext *cx) const {
+        return getState(cx) == STATE_ACTIVE;
+    }
+    bool isRemovable(ScriptContext *cx) const {
+        return getState(cx) == STATE_REMOVABLE;
+    }
     
     // Basic properties.
     std::string getId(ScriptContext *) const;
@@ -163,11 +177,11 @@ public:
     Pokemon *getSubject(ScriptContext *) const;
     void setSubject(ScriptContext *, Pokemon *);
     int getLock(ScriptContext *) const;
-    int getState(ScriptContext *) const;
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
     int getTier(ScriptContext *) const;
     ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
+    int getInherentPriority(ScriptContext *);
 
     // Methods.
     bool applyEffect(ScriptContext *);
