@@ -65,21 +65,6 @@ enum MOVE_FLAG {
     F_UNIMPLEMENTED     // Is this move unimplemented?
 };
 
-enum TURN_TYPE {
-    TT_MOVE = 0,
-    TT_SWITCH = 1
-};
-
-struct Target {
-    std::vector<int> targets;
-};
-
-struct PokemonTurn {
-    TURN_TYPE type;
-    int id;         // either id of move or the pokemon to which to switch
-    Target target;  // target of the move
-};
-
 class ScriptMachine;
 class ScriptContext;
 class ScriptObject;

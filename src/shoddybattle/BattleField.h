@@ -37,8 +37,8 @@ const int MAX_TEAM_SIZE = 6;
 class BattleFieldImpl;
 class PokemonSlotImpl;
 
-
 class BattleMechanics;
+
 class ScriptMachine;
 class ScriptContext;
 class MoveObject;
@@ -47,6 +47,30 @@ class ScriptObject;
 
 class BattleFieldException {
     
+};
+
+struct Target {
+    std::vector<int> targets;
+};
+
+enum TURN_TYPE {
+    TT_MOVE = 0,
+    TT_SWITCH = 1
+};
+
+struct PokemonTurn {
+    TURN_TYPE type;
+    int id;         // either id of move or the pokemon to which to switch
+    Target target;  // target of the move
+
+    PokemonTurn(int target):
+            type(TT_SWITCH),
+            id(target) { }
+
+    PokemonTurn(int move, Target target):
+            type(TT_MOVE),
+            id(move),
+            target(target) { }
 };
 
 /**
@@ -73,6 +97,11 @@ public:
             ScriptMachine *machine,
             Pokemon::ARRAY teams[TEAM_COUNT],
             const int activeParty);
+
+    /**
+     * Process a turn.
+     */
+    void processTurn(const std::vector<PokemonTurn> &turn);
 
     /**
      * Get the modifiers in play for a particular hit.

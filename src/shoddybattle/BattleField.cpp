@@ -66,13 +66,32 @@ struct BattleFieldImpl {
     STATUSES m_effects;      // field effects
     bool descendingSpeed;
 
-    void sortInTurnOrder(vector<Pokemon::PTR> &, vector<PokemonTurn *> &);
+    void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
+    void getActivePokemon(vector<Pokemon::PTR> &);
 };
 
+/**
+ * Place the active pokemon into a single vector, indepedent of party.
+ */
+void BattleFieldImpl::getActivePokemon(vector<Pokemon::PTR> &v) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        PokemonParty &party = *active[i];
+        for (int j = 0; j < partySize; ++j) {
+            Pokemon::PTR p = party[j].pokemon;
+            if (p) { // could be an empty slot
+                v.push_back(p);
+            }
+        }
+    }
+}
+
+/**
+ * Used for sorting pokemon into turn order.
+ */
 struct TurnOrder {
     struct Entity {
         Pokemon::PTR pokemon;
-        PokemonTurn *turn;
+        const PokemonTurn *turn;
         bool move;
         int party, position;
         int priority;
@@ -104,7 +123,7 @@ struct TurnOrder {
         if (p1.inherentPriority != p2.inherentPriority) {
             return (p1.inherentPriority > p2.inherentPriority);
         }
-
+        
         // fourth: speed
         if (p1.speed > p2.speed) {
             return descendingSpeed;
@@ -121,7 +140,7 @@ struct TurnOrder {
  * Sort a list of pokemon in turn order.
  */
 void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
-        vector<PokemonTurn *> &turns) {
+        vector<const PokemonTurn *> &turns) {
     vector<TurnOrder::Entity> entities;
 
     const int count = pokemon.size();
@@ -129,7 +148,7 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
     for (int i = 0; i < count; ++i) {
         TurnOrder::Entity entity;
         Pokemon::PTR p = pokemon[i];
-        PokemonTurn *turn = turns[i];
+        const PokemonTurn *turn = turns[i];
         entity.pokemon = p;
         entity.turn = turn;
         entity.move = (turn->type == TT_MOVE);
@@ -174,6 +193,34 @@ ScriptMachine *BattleField::getScriptMachine() {
 
 const BattleMechanics *BattleField::getMechanics() const {
     return m_impl->mech;
+}
+
+/**
+ * Process a turn.
+ */
+void BattleField::processTurn(const vector<PokemonTurn> &turns) {
+    vector<Pokemon::PTR> pokemon;
+    m_impl->getActivePokemon(pokemon);
+    const int count = pokemon.size();
+    if (count != turns.size())
+        throw BattleFieldException();
+
+    vector<const PokemonTurn *> ordered;
+    for (int i = 0; i < count; ++i) {
+        ordered.push_back(&turns[i]);
+    }
+    
+    m_impl->sortInTurnOrder(pokemon, ordered);
+
+    // TODO: beginTurn
+
+    for (int i = 0; i < count; ++i) {
+        Pokemon::PTR p = pokemon[i];
+        const PokemonTurn *turn = ordered[i];
+
+        cout << p->getSpeciesName() << ", ";
+        cout << p->getStat(S_SPEED) << endl;
+    }
 }
 
 /**

@@ -48,6 +48,14 @@ public:
         initFunction = NULL;
         useFunction = NULL;
         attemptHit = NULL;
+        power = 0;
+        moveClass = MC_PHYSICAL;
+        targetClass = T_ENEMY;
+        pp = 0;
+        priority = 0;
+        flags = 0;
+        accuracy = 1.00;
+        type = &PokemonType::NORMAL;
     }
     
     string name;
@@ -209,6 +217,8 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove, ScriptContext *cx) {
     if (!strPriority.empty()) {
         int i = atoi(strPriority.c_str());
         pMove->priority = i;
+    } else {
+        pMove->priority = 0;
     }
 
     // accuracy
@@ -350,7 +360,26 @@ int main() {
     cx->runFile("resources/StatusEffect.js");
     cx->runFile("resources/statuses.js");
 
-    const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");
+    vector<int> targets;
+    targets.push_back(0);    // target #0
+
+    Target target;
+    target.targets = targets;
+
+    cout << team[0][0]->getMove(0)->getName(cx) << endl;
+    cout << team[0][1]->getMove(0)->getName(cx) << endl;
+    cout << team[1][0]->getMove(0)->getName(cx) << endl;
+    cout << team[0][1]->getMove(0)->getName(cx) << endl;
+
+    vector<PokemonTurn> turns;
+    turns.push_back(PokemonTurn(0, target));
+    turns.push_back(PokemonTurn(0, target));
+    turns.push_back(PokemonTurn(0, target));
+    turns.push_back(PokemonTurn(0, target));
+
+    field.processTurn(turns);
+
+    /**const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");
     vector<string> move;
     move.push_back("Crush Claw");
     vector<int> ppUp;
@@ -368,6 +397,6 @@ int main() {
         int d = mechanics.calculateDamage(field, *pMove, pokemon, pokemon, 1);
         cout << d << endl;
         cx->gc();
-    }
+    }*/
 }
 
