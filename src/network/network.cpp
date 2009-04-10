@@ -201,8 +201,9 @@ public:
         lock_guard<mutex> lock(m_queueMutex);
         const bool empty = m_queue.empty();
         m_queue.push_back(msg);
+        const OutMessage &post = m_queue.back();
         if (empty) {
-            async_write(m_socket, msg(), boost::bind(&ClientImpl::handleWrite,
+            async_write(m_socket, post(), boost::bind(&ClientImpl::handleWrite,
                     shared_from_this(), placeholders::error));
         }
     }
