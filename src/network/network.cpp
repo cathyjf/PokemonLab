@@ -330,8 +330,9 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         client->start();
         cout << "Accepted client from " << client->getIp() << "." << endl;
         OutMessage msg(OutMessage::WELCOME_MESSAGE);
-        msg << "Official Server"
-            << "Welcome to Shoddy Battle 2!";
+        msg << 2;
+        msg << "Official Server";
+        msg << "Welcome to Shoddy Battle 2!";
         msg.finalise();
         client->sendMessage(msg);
     }
