@@ -123,10 +123,10 @@ string StatusObject::getId(ScriptContext *scx) const {
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "id", &val);
-    JS_EndRequest(cx);
     assert(JSVAL_IS_STRING(val));
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(val));
-    return str;
+    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    JS_EndRequest(cx);
+    return ret;
 }
 
 Pokemon *StatusObject::getInducer(ScriptContext *scx) const {
@@ -202,10 +202,10 @@ string StatusObject::getName(ScriptContext *scx) const {
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "name", &val);
-    JS_EndRequest(cx);
     assert(JSVAL_IS_STRING(val));
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(val));
-    return str;
+    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    JS_EndRequest(cx);
+    return ret;
 }
 
 bool StatusObject::isPassable(ScriptContext *scx) const {

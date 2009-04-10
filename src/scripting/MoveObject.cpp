@@ -46,9 +46,9 @@ string MoveObject::getName(ScriptContext *scx) const {
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "name", &val);
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
-    return str;
+    return ret;
 }
 
 MOVE_CLASS MoveObject::getMoveClass(ScriptContext *scx) const {

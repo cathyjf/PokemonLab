@@ -28,6 +28,7 @@ OBJECTDIR=build/Release/${PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.o \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
@@ -74,20 +75,25 @@ ${OBJECTDIR}/src/mechanics/BattleMechanics.h.gch: src/mechanics/BattleMechanics.
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ src/mechanics/BattleMechanics.h
 
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.o: /home/Catherine/ShoddyBattle2/src/network/network.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.o /home/Catherine/ShoddyBattle2/src/network/network.cpp
+
 ${OBJECTDIR}/src/mechanics/stat.h.gch: src/mechanics/stat.h 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ src/mechanics/stat.h
 
-${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o: /home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o /home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp
-
 ${OBJECTDIR}/src/mechanics/PokemonNature.h.gch: src/mechanics/PokemonNature.h 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ src/mechanics/PokemonNature.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o: /home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o /home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp
 
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h.gch: /home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting

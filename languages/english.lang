@@ -83,10 +83,10 @@
 [stats-long]
 0: HP
 1: attack
-2: defense
+2: defence
 3: speed
 4: special attack
-5: special defense
+5: special defence
 6: accuracy
 7: evasion
 

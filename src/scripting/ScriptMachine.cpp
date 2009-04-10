@@ -105,7 +105,9 @@ JSBool includeMoves(JSContext *cx,
     }
     char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    jsrefcount ref = JS_SuspendRequest(cx);
     scx->getMachine()->includeMoves(str);
+    JS_ResumeRequest(cx, ref);
     return JS_TRUE;
 }
 
@@ -117,7 +119,9 @@ JSBool includeSpecies(JSContext *cx,
     }
     char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    jsrefcount ref = JS_SuspendRequest(cx);
     scx->getMachine()->includeSpecies(str);
+    JS_ResumeRequest(cx, ref);
     return JS_TRUE;
 }
 
@@ -180,11 +184,13 @@ JSBool loadText(JSContext *cx,
     char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     TextLookup lookup(cx, scx, func);
+    jsrefcount ref = JS_SuspendRequest(cx);
     try {
         scx->getMachine()->loadText(str, lookup);
     } catch (SyntaxException e) {
         cout << "loadText: Syntax error on line " << e.getLine() << endl;
     }
+    JS_ResumeRequest(cx, ref);
     return JS_TRUE;
 }
 

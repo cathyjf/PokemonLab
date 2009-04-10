@@ -332,6 +332,8 @@ MoveDatabase::~MoveDatabase() {
 
 } // namespace shoddybattle
 
+#if 0
+
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/Team.h"
@@ -371,7 +373,7 @@ int main() {
     cout << team[0][0]->getMove(0)->getName(cx) << endl;
     cout << team[0][1]->getMove(0)->getName(cx) << endl;
     cout << team[1][0]->getMove(0)->getName(cx) << endl;
-    cout << team[0][1]->getMove(0)->getName(cx) << endl;
+    cout << team[1][1]->getMove(0)->getName(cx) << endl;
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(0, target));
@@ -402,3 +404,4 @@ int main() {
     }*/
 }
 
+#endif

@@ -28,6 +28,9 @@
         <itemPath>/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f6" displayName="network" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f5" displayName="scripting" projectFiles="true">
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h</itemPath>
@@ -72,7 +75,7 @@
           <includeDirectories>
             <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
           </includeDirectories>
-          <commandLine>-ljs -lboost_thread-mt -lnspr -lxerces-c</commandLine>
+          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c</commandLine>
         </ccCompilerTool>
         <linkerTool>
           <linkerLibItems>
@@ -101,6 +104,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
@@ -229,6 +235,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
