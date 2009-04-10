@@ -24,7 +24,7 @@
 
 /**
  * In Shoddy Battle 2, a "message" consists of a five byte header followed by
- * a message body.  The first byte identifies the type of message. The next
+ * a message body. The first byte identifies the type of message. The next
  * four bytes are an int in network byte order specifying the length of the
  * message body.
  */
@@ -61,11 +61,15 @@ typedef set<ClientImplPtr> CLIENT_LIST;
  */
 class InMessage {
 public:
+    enum TYPE {
+
+    };
+
     InMessage() {
         reset();
     }
 
-    char getType() const {
+    TYPE getType() const {
         return m_type;
     }
 
@@ -75,7 +79,7 @@ public:
     }
 
     void processHeader() {
-        m_type = m_data[0];
+        m_type = (TYPE)m_data[0];
         ++m_pos;
         int32_t size;
         *this >> size;
@@ -95,16 +99,18 @@ public:
     }
 
     InMessage &operator>>(string &str) {
-        int16_t *p = reinterpret_cast<int16_t *>(&m_data[m_pos]);
-        int16_t length = ntohs(*p);
-        str = string(&m_data[m_pos + sizeof(int16_t)], length);
+        uint16_t *p = reinterpret_cast<uint16_t *>(&m_data[m_pos]);
+        uint16_t length = ntohs(*p);
+        str = string(&m_data[m_pos + sizeof(uint16_t)], length);
         m_pos += length + sizeof(int16_t);
         return *this;
     }
 
+    virtual ~InMessage() { }
+
 private:
     vector<char> m_data;
-    char m_type;
+    TYPE m_type;
     int m_pos;
 };
 
@@ -113,8 +119,12 @@ private:
  */
 class OutMessage {
 public:
-    OutMessage(const char type = 0) {
-        m_data.push_back(type);
+    enum TYPE {
+        WELCOME_MESSAGE = 0,
+    };
+
+    OutMessage(const TYPE type) {
+        m_data.push_back((char)type);
         m_data.resize(HEADER_SIZE, 0);    // insert in 0 size for now
     }
 
@@ -136,14 +146,21 @@ public:
         return *this;
     }
 
+    /**
+     * Write a string in a format similar to the UTF-8 format used by the
+     * Java DataInputStream.
+     *
+     * The first two bytes are an network byte order unsigned short specifying
+     * the number of additional bytes to be written.
+     */
     OutMessage &operator<<(const std::string &str) {
         const int pos = m_data.size();
         const int length = str.length();
-        m_data.resize(pos + length + sizeof(int16_t), 0);
-        int16_t l = htons(length);
+        m_data.resize(pos + length + sizeof(uint16_t), 0);
+        uint16_t l = htons(length);
         char *p = &m_data[pos];
-        *reinterpret_cast<int16_t *>(p) = l;
-        memcpy(p + sizeof(int16_t), str.c_str(), length);
+        *reinterpret_cast<uint16_t *>(p) = l;
+        memcpy(p + sizeof(uint16_t), str.c_str(), length);
         return *this;
     }
 
@@ -312,8 +329,9 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         }
         client->start();
         cout << "Accepted client from " << client->getIp() << "." << endl;
-        OutMessage msg;
-        msg << "This is a test!" << 4 << "!";
+        OutMessage msg(OutMessage::WELCOME_MESSAGE);
+        msg << "Official Server"
+            << "Welcome to Shoddy Battle 2!";
         msg.finalise();
         client->sendMessage(msg);
     }
