@@ -281,6 +281,8 @@ void ServerImpl::run() {
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
     // TODO: other removal logic
+
+    lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
 }
 
