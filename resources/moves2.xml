@@ -12,13 +12,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Karate Chop" id="1">
@@ -35,11 +29,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Doubleslap" id="2">
@@ -96,13 +85,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Pay Day" id="5">
@@ -197,13 +180,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Vicegrip" id="10">
@@ -218,13 +195,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Guillotine" id="11">
@@ -297,13 +268,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Gust" id="15">
@@ -317,13 +282,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Wing Attack" id="16">
@@ -338,13 +297,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Whirlwind" id="17">
@@ -421,13 +374,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Vine Whip" id="21">
@@ -504,13 +451,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Jump Kick" id="25">
@@ -546,13 +487,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Sand-Attack" id="27">
@@ -607,13 +542,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Fury Attack" id="30">
@@ -669,13 +598,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Body Slam" id="33">
@@ -1105,13 +1028,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Hydro Pump" id="55">
@@ -1125,13 +1042,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Surf" id="56">
@@ -1145,13 +1056,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Ice Beam" id="57">
@@ -1281,13 +1186,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Drill Peck" id="64">
@@ -1302,13 +1201,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Submission" id="65">
@@ -1405,13 +1298,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Absorb" id="70">
@@ -1503,11 +1390,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Solarbeam" id="75">
@@ -1759,13 +1641,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Earthquake" id="88">
@@ -1779,13 +1655,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Fissure" id="89">
@@ -2383,13 +2253,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Lick" id="121">
@@ -2992,11 +2856,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Explosion" id="152">
@@ -3205,11 +3064,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Substitute" id="163">
@@ -3474,11 +3328,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Cotton Spore" id="177">
@@ -4225,13 +4074,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Present" id="216">
@@ -4265,13 +4108,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Safeguard" id="218">
@@ -4382,13 +4219,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Dragonbreath" id="224">
@@ -4658,11 +4489,6 @@
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Twister" id="238">
@@ -5909,13 +5735,7 @@
 <flags>
 	<protect/>
 	<mirrorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Poison Fang" id="304">
@@ -6130,11 +5950,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Overheat" id="314">
@@ -6384,13 +6199,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Sand Tomb" id="327">
@@ -6581,13 +6390,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Frenzy Plant" id="337">
@@ -7807,11 +7610,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Aqua Tail" id="400">
@@ -8234,11 +8032,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Thunder Fang" id="421">
@@ -8359,11 +8152,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Zen Headbutt" id="427">
@@ -8703,11 +8491,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Captivate" id="444">
@@ -8903,11 +8686,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Defend Order" id="454">
@@ -9021,11 +8799,6 @@ print(status.inducer.name);
 	<flinch/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Lunar Dance" id="460">
