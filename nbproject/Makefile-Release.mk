@@ -31,7 +31,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.o \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o \
 	${OBJECTDIR}/src/mechanics/PokemonType.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.o \
 	${OBJECTDIR}/src/mechanics/JewelMechanics.o \
@@ -42,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.o \
 	${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/sha2.o \
 	${OBJECTDIR}/src/text/Text.o
 
 # C Compiler Flags
@@ -100,10 +103,25 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h.gch
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.h
 
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h.gch: /home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h
+
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.o: /home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.o /home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.cpp
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.h.gch: /home/Catherine/ShoddyBattle2/src/database/rijndael.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/database/rijndael.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.o: /home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.o /home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp
 
 ${OBJECTDIR}/src/shoddybattle/Pokemon.o: src/shoddybattle/Pokemon.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
@@ -114,6 +132,11 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h.gch: /hom
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o: /home/Catherine/ShoddyBattle2/src/database/rijndael.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o /home/Catherine/ShoddyBattle2/src/database/rijndael.c
 
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h.gch: /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
@@ -139,6 +162,11 @@ ${OBJECTDIR}/src/mechanics/JewelMechanics.o: src/mechanics/JewelMechanics.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/JewelMechanics.o src/mechanics/JewelMechanics.cpp
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.h.gch: /home/Catherine/ShoddyBattle2/src/network/network.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/network/network.h
 
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.o: /home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
@@ -190,6 +218,11 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o: /
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.cpp
 
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/sha2.o: /home/Catherine/ShoddyBattle2/src/database/sha2.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/sha2.o /home/Catherine/ShoddyBattle2/src/database/sha2.c
+
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h.gch: /home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/moves
 	${RM} $@.d
@@ -204,6 +237,11 @@ ${OBJECTDIR}/src/text/Text.h.gch: src/text/Text.h
 	${MKDIR} -p ${OBJECTDIR}/src/text
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ src/text/Text.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/sha2.h.gch: /home/Catherine/ShoddyBattle2/src/database/sha2.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/database/sha2.h
 
 ${OBJECTDIR}/src/mechanics/PokemonType.h.gch: src/mechanics/PokemonType.h 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics

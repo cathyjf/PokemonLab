@@ -14,6 +14,14 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f7" displayName="database" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/rijndael.c</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/rijndael.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/sha2.c</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/database/sha2.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2" displayName="mechanics" projectFiles="true">
         <itemPath>src/mechanics/BattleMechanics.h</itemPath>
         <itemPath>src/mechanics/JewelMechanics.cpp</itemPath>
@@ -30,6 +38,7 @@
       </logicalFolder>
       <logicalFolder name="f6" displayName="network" projectFiles="true">
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="scripting" projectFiles="true">
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp</itemPath>
@@ -74,10 +83,15 @@
         <ccCompilerTool>
           <includeDirectories>
             <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
+            <directoryPath>/usr/local/include/mysql++</directoryPath>
+            <directoryPath>/usr/include/mysql</directoryPath>
           </includeDirectories>
-          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c</commandLine>
+          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c -lmysqlpp</commandLine>
         </ccCompilerTool>
         <linkerTool>
+          <linkerAddLib>
+            <directoryPath>/usr/local/lib</directoryPath>
+          </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>
@@ -100,6 +114,24 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/rijndael.c">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/rijndael.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.c">
+        <itemTool>0</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.h">
+        <itemTool>1</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -107,6 +139,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/network.h">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
@@ -231,6 +266,24 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/rijndael.c">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/rijndael.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.c">
+        <itemTool>0</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.h">
+        <itemTool>1</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">
         <itemTool>1</itemTool>
       </item>
@@ -238,6 +291,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/network.h">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">

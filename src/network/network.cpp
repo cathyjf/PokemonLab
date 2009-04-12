@@ -39,15 +39,15 @@
 #include <vector>
 #include <deque>
 #include <set>
+#include "network.h"
+#include "../database/DatabaseRegistry.h"
 
 using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::asio::ip;
 
-namespace shoddybattle {
-
-const int HEADER_SIZE = sizeof(char) + sizeof(int32_t);
+namespace shoddybattle { namespace network {
 
 class ClientImpl;
 class ServerImpl;
@@ -56,13 +56,58 @@ typedef shared_ptr<ServerImpl> ServerImplPtr;
 
 typedef set<ClientImplPtr> CLIENT_LIST;
 
+void OutMessage::finalise() {
+    // insert the size into the data
+    *reinterpret_cast<int32_t *>(&m_data[1]) =
+            htonl(m_data.size() - HEADER_SIZE);
+}
+
+const std::vector<unsigned char> &OutMessage::operator()() const {
+    return m_data;
+}
+
+OutMessage &OutMessage::operator<<(const int32_t i) {
+    const int pos = m_data.size();
+    m_data.resize(pos + sizeof(int32_t), 0);
+    unsigned char *p = &m_data[pos];
+    *reinterpret_cast<int32_t *>(p) = htonl(i);
+    return *this;
+}
+
+OutMessage &OutMessage::operator<<(const unsigned char byte) {
+    m_data.push_back(byte);
+}
+
+/**
+ * Write a string in a format similar to the UTF-8 format used by the
+ * Java DataInputStream.
+ *
+ * The first two bytes are an network byte order unsigned short specifying
+ * the number of additional bytes to be written.
+ */
+OutMessage &OutMessage::operator<<(const std::string &str) {
+    const int pos = m_data.size();
+    const int length = str.length();
+    m_data.resize(pos + length + sizeof(uint16_t), 0);
+    uint16_t l = htons(length);
+    unsigned char *p = &m_data[pos];
+    *reinterpret_cast<uint16_t *>(p) = l;
+    memcpy(p + sizeof(uint16_t), str.c_str(), length);
+    return *this;
+}
+
 /**
  * A message that the client sends to the server.
  */
 class InMessage {
 public:
-    enum TYPE {
+    class InvalidMessage {
+        
+    };
 
+    enum TYPE {
+        REQUEST_CHALLENGE = 0,
+        CHALLENGE_RESPONSE = 1,
     };
 
     InMessage() {
@@ -87,21 +132,38 @@ public:
         m_pos = 0;
     }
 
-    mutable_buffers_1 operator()() {
-        return buffer(m_data);
+    vector<unsigned char> &operator()() {
+        return m_data;
     }
 
     InMessage &operator>>(int32_t &i) {
+        if (!hasMoreData(sizeof(int32_t)))
+            throw InvalidMessage();
         int32_t *p = reinterpret_cast<int32_t *>(&m_data[m_pos]);
         i = ntohl(*p);
         m_pos += sizeof(int32_t);
         return *this;
     }
 
+    InMessage &operator>>(unsigned char &c) {
+        if (!hasMoreData(sizeof(unsigned char)))
+            throw InvalidMessage();
+        c = *(unsigned char *)(&m_data[m_pos]);
+        m_pos += sizeof(unsigned char);
+        return *this;
+    }
+    
     InMessage &operator>>(string &str) {
+        if (!hasMoreData(sizeof(uint16_t)))
+            throw InvalidMessage();
+
         uint16_t *p = reinterpret_cast<uint16_t *>(&m_data[m_pos]);
         uint16_t length = ntohs(*p);
-        str = string(&m_data[m_pos + sizeof(uint16_t)], length);
+
+        if (!hasMoreData(sizeof(uint16_t) + length))
+            throw InvalidMessage();
+
+        str = string((char *)&m_data[m_pos + sizeof(uint16_t)], length);
         m_pos += length + sizeof(int16_t);
         return *this;
     }
@@ -109,64 +171,35 @@ public:
     virtual ~InMessage() { }
 
 private:
-    vector<char> m_data;
+    bool hasMoreData(const int count) const {
+        const int length = m_data.size();
+        return (length - m_pos) >= count;
+    }
+
+    vector<unsigned char> m_data;
     TYPE m_type;
     int m_pos;
 };
 
-/**
- * A message that the server sends to a client.
- */
-class OutMessage {
+class WelcomeMessage : public OutMessage {
 public:
-    enum TYPE {
-        WELCOME_MESSAGE = 0,
-    };
-
-    OutMessage(const TYPE type) {
-        m_data.push_back((char)type);
-        m_data.resize(HEADER_SIZE, 0);    // insert in 0 size for now
+    WelcomeMessage(const int version, const string name, const string message):
+            OutMessage(WELCOME_MESSAGE) {
+        *this << version;
+        *this << name;
+        *this << message;
+        finalise();
     }
+};
 
-    void finalise() {
-        // insert the size into the data
-        *reinterpret_cast<int32_t *>(&m_data[1]) =
-                htonl(m_data.size() - HEADER_SIZE);
+class ChallengeMessage : public OutMessage {
+public:
+    ChallengeMessage(const unsigned char *challenge):
+            OutMessage(PASSWORD_CHALLENGE, 16) {
+        for (int i = 0; i < 16; ++i) {
+            *this << challenge[i];
+        }
     }
-    
-    const_buffers_1 operator()() const {
-        return buffer(m_data);
-    }
-
-    OutMessage &operator<<(const int32_t i) {
-        const int pos = m_data.size();
-        m_data.resize(pos + sizeof(int32_t), 0);
-        char *p = &m_data[pos];
-        *reinterpret_cast<int32_t *>(p) = htonl(i);
-        return *this;
-    }
-
-    /**
-     * Write a string in a format similar to the UTF-8 format used by the
-     * Java DataInputStream.
-     *
-     * The first two bytes are an network byte order unsigned short specifying
-     * the number of additional bytes to be written.
-     */
-    OutMessage &operator<<(const std::string &str) {
-        const int pos = m_data.size();
-        const int length = str.length();
-        m_data.resize(pos + length + sizeof(uint16_t), 0);
-        uint16_t l = htons(length);
-        char *p = &m_data[pos];
-        *reinterpret_cast<uint16_t *>(p) = l;
-        memcpy(p + sizeof(uint16_t), str.c_str(), length);
-        return *this;
-    }
-
-    virtual ~OutMessage() { }
-private:
-    vector<char> m_data;
 };
 
 class ServerImpl {
@@ -175,7 +208,8 @@ public:
     void run();
     void removeClient(ClientImplPtr client);
     void broadcast(OutMessage &msg);
-
+    database::DatabaseRegistry *getRegistry() { return &m_registry; }
+    
 private:
     void acceptClient();
     void handleAccept(ClientImplPtr client,
@@ -185,37 +219,55 @@ private:
     shared_mutex m_clientMutex;
     io_service m_service;
     tcp::acceptor m_acceptor;
+    database::DatabaseRegistry m_registry;
 };
 
-class ClientImpl : public enable_shared_from_this<ClientImpl> {
+class Client {
+public:
+    virtual void sendMessage(const OutMessage &msg) = 0;
+    virtual std::string getName() const = 0;
+    virtual std::string getIp() const = 0;
+
+protected:
+    Client() { }
+    virtual ~Client() { }
+};
+
+class ClientImpl : public Client, public enable_shared_from_this<ClientImpl> {
 public:
     ClientImpl(io_service &service, ServerImpl *server):
             m_server(server),
             m_service(service),
-            m_socket(service) { }
+            m_socket(service),
+            m_authenticated(false),
+            m_challenge(0) { }
 
     tcp::socket &getSocket() {
         return m_socket;
     }
-    void sendMessage(OutMessage &msg) {
+    void sendMessage(const OutMessage &msg) {
         lock_guard<mutex> lock(m_queueMutex);
         const bool empty = m_queue.empty();
         m_queue.push_back(msg);
         const OutMessage &post = m_queue.back();
         if (empty) {
-            async_write(m_socket, post(), boost::bind(&ClientImpl::handleWrite,
+            async_write(m_socket, buffer(post()),
+                    boost::bind(&ClientImpl::handleWrite,
                     shared_from_this(), placeholders::error));
         }
     }
     void start() {
         m_ip = m_socket.remote_endpoint().address().to_string();
 
-        async_read(m_socket, m_msg(),
+        async_read(m_socket, buffer(m_msg()),
                 boost::bind(&ClientImpl::handleReadHeader,
                 shared_from_this(), placeholders::error));
     }
     string getIp() const {
         return m_ip;
+    }
+    string getName() const {
+        return m_name;
     }
 private:
 
@@ -229,28 +281,12 @@ private:
         }
 
         m_msg.processHeader();
-        async_read(m_socket, m_msg(),
+        async_read(m_socket, buffer(m_msg()),
                 boost::bind(&ClientImpl::handleReadBody,
                 shared_from_this(), placeholders::error));
     }
 
-    /**
-     * Handle reading in the body of a message.
-     */
-    void handleReadBody(const boost::system::error_code &error) {
-        if (error) {
-            handleError(error);
-            return;
-        }
-
-        // TODO: process the message here
-
-        // Read another message.
-        m_msg.reset();
-        async_read(m_socket, m_msg(),
-                boost::bind(&ClientImpl::handleReadHeader,
-                shared_from_this(), placeholders::error));
-    }
+    void handleReadBody(const boost::system::error_code &error);
 
     /**
      * Handle the completion of writing a message.
@@ -264,7 +300,7 @@ private:
         lock_guard<mutex> lock(m_queueMutex);
         m_queue.pop_front();
         if (!m_queue.empty()) {
-            async_write(m_socket, m_queue.front()(),
+            async_write(m_socket, buffer(m_queue.front()()),
                     boost::bind(&ClientImpl::handleWrite,
                     shared_from_this(), placeholders::error));
         }
@@ -274,6 +310,48 @@ private:
         m_server->removeClient(shared_from_this());
     }
 
+    /**
+     * string : user name
+     */
+    void handleRequestChallenge(InMessage &msg) {
+        string user;
+        msg >> user;
+        unsigned char data[16];
+        m_challenge = m_server->getRegistry()->getAuthChallenge(user, data);
+        if (m_challenge != 0) {
+            // user exists
+            m_name = user;
+            ChallengeMessage msg(data);
+            sendMessage(msg);
+        } else {
+            // TODO: issue an error message
+        }
+    }
+
+    /**
+     * byte[16] : challenge response
+     */
+    void handleChallengeResponse(InMessage &msg) {
+        if (m_challenge == 0) {
+            // no challenge in progress
+            return;
+        }
+
+        unsigned char data[16];
+        for (int i = 0; i < 16; ++i) {
+            msg >> data[i];
+        }
+        database::DatabaseRegistry *registry = m_server->getRegistry();
+        const bool match = registry->isResponseValid(m_name, m_challenge, data);
+        cout << match << endl;
+
+        // TODO: inform whether it was a match
+    }
+
+    string m_name;
+    bool m_authenticated;
+    int m_challenge; // for challenge-response authentication
+
     InMessage m_msg;
     deque<OutMessage> m_queue;
     mutex m_queueMutex;
@@ -281,8 +359,45 @@ private:
     tcp::socket m_socket;
     string m_ip;
     ServerImpl *m_server;
+
+    typedef void (ClientImpl::*MESSAGE_HANDLER)(InMessage &msg);
+    static const MESSAGE_HANDLER m_handlers[];
 };
 
+const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
+    &ClientImpl::handleRequestChallenge,
+    &ClientImpl::handleChallengeResponse
+};
+
+/**
+ * Handle reading in the body of a message.
+ */
+void ClientImpl::handleReadBody(const boost::system::error_code &error) {
+    if (error) {
+        handleError(error);
+        return;
+    }
+
+    const int count = sizeof(m_handlers) / sizeof(m_handlers[0]);
+    const int type = (int)m_msg.getType();
+    if (type < count) {
+        try {
+            // Call the handler for this type of message.
+            (this->*m_handlers[type])(m_msg);
+        } catch (InMessage::InvalidMessage) {
+            // The client sent an invalid message.
+            // Disconnect him immediately.
+            m_server->removeClient(shared_from_this());
+            return;
+        }
+    }
+
+    // Read another message.
+    m_msg.reset();
+    async_read(m_socket, buffer(m_msg()),
+            boost::bind(&ClientImpl::handleReadHeader,
+            shared_from_this(), placeholders::error));
+}
 
 ServerImpl::ServerImpl(tcp::endpoint &endpoint):
         m_acceptor(m_service, endpoint) {
@@ -330,21 +445,31 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         }
         client->start();
         cout << "Accepted client from " << client->getIp() << "." << endl;
-        OutMessage msg(OutMessage::WELCOME_MESSAGE);
-        msg << 2;
-        msg << "Official Server";
-        msg << "Welcome to Shoddy Battle 2!";
-        msg.finalise();
+        WelcomeMessage msg(2,
+                "Official Server",
+                "Welcome to Shoddy Battle 2!");
         client->sendMessage(msg);
     }
 }
 
 
-}
+}} // namespace shoddybattle::network
+
+#include "../database/DatabaseRegistry.h"
 
 int main() {
     using namespace shoddybattle;
+
     tcp::endpoint endpoint(tcp::v4(), 8446);
-    ServerImpl server(endpoint);
+    network::ServerImpl server(endpoint);
+
+    database::DatabaseRegistry *registry = server.getRegistry();
+    registry->connect("shoddybattle2", "localhost", "Catherine", "");
+    registry->startThread();
+    //registry.registerUser("Catherine", "test", "127.0.0.1");
+    //unsigned char challenge[16];
+    //int ch = registry.getAuthChallenge("Catherine", challenge);
+    //cout << registry.isResponseValid("Catherine", ch, challenge) << endl;
+
     server.run();
 }
