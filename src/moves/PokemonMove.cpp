@@ -154,7 +154,8 @@ bool hasChildElement(DOMElement *node, const string child) {
     return (list->getLength() != 0);
 }
 
-void getMove(DOMElement *node, MoveTemplateImpl *pMove, ScriptContext *cx) {
+void getMove(DOMElement *node, MoveTemplateImpl *pMove,
+        ScriptContext *cx, int &implemented) {
     DOMNamedNodeMap *attributes = node->getAttributes();
     XMLCh tempStr[20];
 
@@ -197,6 +198,10 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove, ScriptContext *cx) {
         pMove->flags[F_MIRRORABLE] = hasChildElement(node, "mirrorable");
         pMove->flags[F_HIGH_CRITICAL] = hasChildElement(node, "high-critical");
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
+
+        if (!pMove->flags[F_UNIMPLEMENTED]) {
+            ++implemented;
+        }
     }
 
     // power
@@ -293,14 +298,16 @@ void MoveDatabase::loadMoves(const string file) {
 
     ScriptContext *cx = m_machine.acquireContext();
 
+    int implemented = 0;
     XMLSize_t length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         MoveTemplateImpl *move = new MoveTemplateImpl();
-        shoddybattle::getMove(item, move, cx);
+        shoddybattle::getMove(item, move, cx, implemented);
         MoveTemplate *pMove = new MoveTemplate(move);
         m_data.insert(MOVE_DATABASE::value_type(move->name, pMove));
     }
+    cout << implemented << " / " << length << " moves implemented." << endl;
 
     m_machine.releaseContext(cx);
 }
