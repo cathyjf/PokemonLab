@@ -237,13 +237,18 @@
           <developmentMode>5</developmentMode>
           <includeDirectories>
             <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
+            <directoryPath>/usr/local/include/mysql++</directoryPath>
+            <directoryPath>/usr/include/mysql</directoryPath>
           </includeDirectories>
-          <commandLine>-ljs -lboost_thread-mt -lnspr -lxerces-c</commandLine>
+          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c -lmysqlpp</commandLine>
         </ccCompilerTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
+          <linkerAddLib>
+            <directoryPath>/usr/local/lib</directoryPath>
+          </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>

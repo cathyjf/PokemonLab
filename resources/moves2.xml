@@ -33,7 +33,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -1501,7 +1501,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -2990,7 +2990,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -3203,7 +3203,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -3472,7 +3472,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -4656,7 +4656,7 @@
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -6128,7 +6128,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -6682,6 +6682,7 @@ print(status.inducer.name);
 	<mirrorable/>
 	<flinch/>
 	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -6799,6 +6800,7 @@ print(status.inducer.name);
 	<mirrorable/>
 	<flinch/>
 	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -7803,7 +7805,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -8230,7 +8232,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -8355,7 +8357,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -8618,6 +8620,7 @@ print(status.inducer.name);
 	<mirrorable/>
 	<flinch/>
 	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -8698,7 +8701,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -8898,7 +8901,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[
@@ -9016,7 +9019,7 @@ print(status.inducer.name);
 	<protect/>
 	<mirrorable/>
 	<flinch/>
-	<unimplemented/>
+	<high-critical/>
 </flags>
 <use>
 <![CDATA[

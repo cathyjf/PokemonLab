@@ -25,6 +25,7 @@
 #ifndef _BATTLE_FIELD_H_
 #define _BATTLE_FIELD_H_
 
+#include <boost/shared_array.hpp>
 #include <vector>
 #include "Pokemon.h"
 #include "../scripting/ObjectWrapper.h"
@@ -73,6 +74,28 @@ struct PokemonTurn {
             target(target) { }
 };
 
+struct PokemonSlot {
+    Pokemon::PTR pokemon;
+    std::string item;
+};
+
+struct PokemonParty {
+public:
+    PokemonParty(const int size): m_size(size) {
+        m_party = boost::shared_array<PokemonSlot>(new PokemonSlot[size]);
+    }
+    PokemonSlot &operator[](const int i) {
+        return m_party[i];
+    }
+    const STATUSES &getEffects() const {
+        return m_effects;
+    }
+private:
+    const int m_size;
+    boost::shared_array<PokemonSlot> m_party;
+    STATUSES m_effects;     // party-specific status effects
+};
+
 /**
  * Encapsulate the idea of a battle, including turn processing, move execution,
  * field effects, and more.
@@ -107,6 +130,11 @@ public:
      * Get the modifiers in play for a particular hit.
      */
     void getModifiers(Pokemon &, Pokemon &, MoveObject &, const bool, MODIFIERS &);
+
+    /**
+     * Get the active pokemon.
+     */
+    boost::shared_ptr<PokemonParty> *getActivePokemon();
 
     /**
      * Obtain the BattleMechanics in use on this BattleField.

@@ -82,6 +82,7 @@ public:
     void initialise(BattleField *field, const int i, const int j);
 
     int getInherentPriority(ScriptContext *) const;
+    int getCriticalModifier(ScriptContext *) const;
 
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);

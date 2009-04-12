@@ -51,6 +51,18 @@ string MoveObject::getName(ScriptContext *scx) const {
     return ret;
 }
 
+
+bool MoveObject::getFlag(ScriptContext *scx, const MOVE_FLAG flag) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "flags", &val);
+    JSObject *obj = JSVAL_TO_OBJECT(val);
+    JS_GetElement(cx, obj, flag, &val);
+    JS_EndRequest(cx);
+    return JSVAL_TO_BOOLEAN(val);
+}
+
 MOVE_CLASS MoveObject::getMoveClass(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;

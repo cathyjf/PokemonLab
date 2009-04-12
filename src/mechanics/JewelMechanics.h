@@ -43,6 +43,8 @@ public:
     unsigned int calculateStat(const Pokemon &p, const STAT i) const;
     int calculateDamage(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target, const int targets) const;
+    bool isCriticalHit(BattleField &field, MoveObject &move,
+            Pokemon &user, Pokemon &target) const;
 private:
     JewelMechanicsImpl *m_impl;
 };

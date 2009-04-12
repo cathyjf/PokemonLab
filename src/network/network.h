@@ -28,9 +28,28 @@
 #include <vector>
 #include <string>
 
+namespace shoddybattle { namespace database {
+    class DatabaseRegistry;
+}} // namespace shoddybattle::database
+
 namespace shoddybattle { namespace network {
 
 const int HEADER_SIZE = sizeof(char) + sizeof(int32_t);
+
+class ServerImpl;
+
+class Server {
+public:
+    Server(const int port);
+    ~Server();
+    void run();
+    database::DatabaseRegistry *getRegistry();
+
+private:
+    ServerImpl *m_impl;
+    Server(const Server &);
+    Server &operator=(const Server &);
+};
 
 /**
  * A message that the server sends to a client.

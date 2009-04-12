@@ -38,13 +38,18 @@ using namespace boost;
 
 namespace shoddybattle {
 
+/**
+ * Table of chances to get a critical hit.
+ */
+static const bool CRITICAL_TABLE[] = { 0.0625, 0.125, 0.25, 0.375, 0.5 };
+
 struct JewelMechanicsImpl {
     mt11213b rand;
 };
 
 JewelMechanics::JewelMechanics() {
     m_impl = new JewelMechanicsImpl();
-    m_impl->rand = mt11213b(clock());
+    m_impl->rand = mt11213b(time(NULL));
 }
 
 JewelMechanics::~JewelMechanics() {
@@ -54,14 +59,16 @@ JewelMechanics::~JewelMechanics() {
 /**
  * Calculate a pokemon stat using the Pokemon DPP formula.
  */
-unsigned int JewelMechanics::calculateStat(const Pokemon &p, const STAT i) const {
+unsigned int JewelMechanics::calculateStat(
+        const Pokemon &p, const STAT i) const {
+    unsigned int base = p.getBaseStat(i);
     unsigned int common =
-            (int)((int)(((2.0 * p.getBaseStat(i))
+            (int)((int)(((2.0 * base)
             + p.getIv(i)
             + (p.getEv(i) / 4.0)))
             * (p.getLevel() / 100.0));
     if (i == S_HP) {
-        if (/*shedinja*/ false) {
+        if (base == 1) {    // base 1 hp => 1 hp total
             return 1;
         } else {
             return common + 10 + p.getLevel();
@@ -77,10 +84,21 @@ bool JewelMechanics::getCoinFlip() const {
     return coin();
 }
 
-bool isCriticalHit(BattleField &field, MoveObject &move,
-        Pokemon &user, Pokemon &target) {
-    // TODO: use bernoulli_distribution
-    return false;
+bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
+        Pokemon &user, Pokemon &target) const {
+    int term = 0;
+    ScriptContext *cx = field.getContext();
+    if (move.getFlag(cx, F_HIGH_CRITICAL)) {
+        term += 1;
+    }
+    term += user.getCriticalModifier(cx);
+    if (term > 4) {
+        term = 4;
+    }
+    boost::bernoulli_distribution<> dist(CRITICAL_TABLE[term]);
+    variate_generator<mt11213b &, bernoulli_distribution<> >
+            generator(m_impl->rand, dist);
+    return generator();
 }
 
 void multiplyBy(int &damage, const int position, MODIFIERS &mods) {

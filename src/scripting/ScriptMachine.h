@@ -182,6 +182,7 @@ public:
     int getTier(ScriptContext *) const;
     ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
     int getInherentPriority(ScriptContext *);
+    int getCriticalModifier(ScriptContext *);
 
     // Methods.
     bool applyEffect(ScriptContext *);

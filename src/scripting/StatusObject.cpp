@@ -76,8 +76,12 @@ bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
 }
 
 int StatusObject::getInherentPriority(ScriptContext *cx) {
-    ScriptValue v =
-            cx->callFunctionByName(this, "getInherentPriority", 0, NULL);
+    ScriptValue v = cx->callFunctionByName(this, "inherentPriority", 0, NULL);
+    return v.getInt();
+}
+
+int StatusObject::getCriticalModifier(ScriptContext *cx) {
+    ScriptValue v = cx->callFunctionByName(this, "criticalModifier", 0, NULL);
     return v.getInt();
 }
 

@@ -195,6 +195,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove, ScriptContext *cx) {
         pMove->flags[F_REFLECT] = hasChildElement(node, "reflect");
         pMove->flags[F_SNATCH] = hasChildElement(node, "snatch");
         pMove->flags[F_MIRRORABLE] = hasChildElement(node, "mirrorable");
+        pMove->flags[F_HIGH_CRITICAL] = hasChildElement(node, "high-critical");
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
     }
 
@@ -332,8 +333,6 @@ MoveDatabase::~MoveDatabase() {
 
 } // namespace shoddybattle
 
-#if 0
-
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/Team.h"
@@ -403,5 +402,3 @@ int main() {
         cx->gc();
     }*/
 }
-
-#endif

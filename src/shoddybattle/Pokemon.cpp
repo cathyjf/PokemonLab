@@ -141,12 +141,28 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
 }
 
 /**
+ * Get critical hit chance (additive) modifiers.
+ */
+int Pokemon::getCriticalModifier(ScriptContext *cx) const {
+    int ret = 0;
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        ret += (*i)->getCriticalModifier(cx);
+    }
+    return ret;
+}
+
+/**
  * Check if this Pokemon has "inherent priority". This is used for certain
  * items and abilities.
  */
 int Pokemon::getInherentPriority(ScriptContext *cx) const {
     int ret = 0;
-    for (STATUSES::const_iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
         if (!(*i)->isActive(cx))
             continue;
 

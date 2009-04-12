@@ -53,7 +53,7 @@ enum MOVE_CLASS {
     MC_OTHER
 };
 
-const int FLAG_COUNT = 7;
+const int FLAG_COUNT = 8;
 
 enum MOVE_FLAG {
     F_CONTACT,          // Makes contact?
@@ -62,6 +62,7 @@ enum MOVE_FLAG {
     F_REFLECT,          // Can be reflected by Magic Coat?
     F_SNATCH,           // Can be snatched?
     F_MIRRORABLE,       // Can be copied by Mirror Move?
+    F_HIGH_CRITICAL,    // Does this move have a high chance of a critical hit?
     F_UNIMPLEMENTED     // Is this move unimplemented?
 };
 

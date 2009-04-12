@@ -34,28 +34,6 @@ using namespace boost;
 
 namespace shoddybattle {
 
-struct PokemonSlot {
-    Pokemon::PTR pokemon;
-    string item;
-};
-
-struct PokemonParty {
-public:
-    PokemonParty(const int size): m_size(size) {
-        m_party = shared_array<PokemonSlot>(new PokemonSlot[size]);
-    }
-    PokemonSlot &operator[](const int i) {
-        return m_party[i];
-    }
-    const STATUSES &getEffects() const {
-        return m_effects;
-    }
-private:
-    const int m_size;
-    shared_array<PokemonSlot> m_party;
-    STATUSES m_effects;     // party-specific status effects
-};
-
 struct BattleFieldImpl {
     const BattleMechanics *mech;
     ScriptMachine *machine;
@@ -69,6 +47,10 @@ struct BattleFieldImpl {
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     void getActivePokemon(vector<Pokemon::PTR> &);
 };
+
+shared_ptr<PokemonParty> *BattleField::getActivePokemon() {
+    return m_impl->active;
+}
 
 /**
  * Place the active pokemon into a single vector, indepedent of party.

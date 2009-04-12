@@ -142,6 +142,11 @@ StatusEffect.prototype = {
 		return 0;
 	},
 
+	// A term in the subject's critical hit sum.
+	criticalModifier : function() {
+		return 0;
+	},
+
     /**
      * Methods that may be implemented to achieve a desired function, but have no
      * default implementation.

@@ -222,6 +222,23 @@ private:
     database::DatabaseRegistry m_registry;
 };
 
+Server::Server(const int port) {
+    tcp::endpoint endpoint(tcp::v4(), 8446);
+    m_impl = new ServerImpl(endpoint);
+}
+
+void Server::run() {
+    m_impl->run();
+}
+
+database::DatabaseRegistry *Server::getRegistry() {
+    return m_impl->getRegistry();
+}
+
+Server::~Server() {
+    delete m_impl;
+}
+
 class Client {
 public:
     virtual void sendMessage(const OutMessage &msg) = 0;
@@ -456,6 +473,8 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
+#if 0
+
 #include "../database/DatabaseRegistry.h"
 
 int main() {
@@ -474,3 +493,5 @@ int main() {
 
     server.run();
 }
+
+#endif
