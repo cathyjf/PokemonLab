@@ -187,13 +187,14 @@ bool DatabaseRegistry::isResponseValid(const string name,
     Query query =
             conn->query("select password from users where name = %0q");
     query.parse();
-    vector<users> v;
-    query.storein(v, name);
-    if (v.empty())
+    StoreQueryResult result = query.store(name);
+    if (result.empty())
         return false;
 
     const int responseInt = challenge + 1;
-    const string key = fromHex(v[0].password);
+    string password;
+    result[0][0].to_string(password);
+    const string key = fromHex(password);
 
     unsigned char data[16];
     unsigned char middle[16];
@@ -219,12 +220,13 @@ int DatabaseRegistry::getAuthChallenge(const string name,
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query("select password from users where name = %0q");
     query.parse();
-    vector<users> v;
-    query.storein(v, name);
-    if (v.empty())
+    StoreQueryResult result = query.store(name);
+    if (result.empty())
         return 0;
 
-    const string key = fromHex(v[0].password);
+    string password;
+    result[0][0].to_string(password);
+    const string key = fromHex(password);
     const int32_t challengeInt = m_impl->getChallenge();
     unsigned char data[16];
     unsigned char part[16];
