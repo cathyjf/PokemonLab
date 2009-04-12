@@ -343,6 +343,7 @@ private:
         }
         database::DatabaseRegistry *registry = m_server->getRegistry();
         const bool match = registry->isResponseValid(m_name, m_challenge, data);
+        m_challenge = 0;
         cout << match << endl;
 
         // TODO: inform whether it was a match
