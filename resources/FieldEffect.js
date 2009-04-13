@@ -81,6 +81,13 @@ FieldEffect.prototype.tickWeather = function(subject, i) {
             return;
         }
     }
+    if (this.flags[FieldEffect.RAIN]) {
+        if (subject.hasAbility("Dry Skin")) {
+            // heal here
+
+            return; // done ticking
+        }
+    }
     if (this.flags[FieldEffect.HAIL]) {
         if (subject.hasAbility("Ice Body")) {
             if (subject.hp != subject.stat[S_HP]) {
