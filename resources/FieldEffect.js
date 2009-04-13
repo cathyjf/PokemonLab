@@ -76,9 +76,6 @@ FieldEffect.prototype.tickWeather = function(subject, i) {
     if (i == FieldEffect.RAIN) {
         if (subject.hasAbility("Rain Dish")) {
             // heal here
-
-            // we are done ticking this weather
-            return;
         }
     }
     if (this.flags[FieldEffect.RAIN]) {
