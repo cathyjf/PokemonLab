@@ -113,7 +113,7 @@ FieldEffect.prototype.tick = function(subject) {
         if (this.flags[i]) {
             if (i > FieldEffect.UPROAR) {
                 // weather
-                tickWeather(subject, i);
+                this.tickWeather(subject, i);
             } else if (i == FieldEffect.TRICK_ROOM) {
 
             } else if (i == FieldEffect.FOG) {
