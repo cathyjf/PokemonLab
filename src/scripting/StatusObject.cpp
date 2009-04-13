@@ -102,6 +102,15 @@ bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
     return b;
 }
 
+bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
+        Pokemon *user, Pokemon *target, MoveObject *move) {
+    if (!scx->hasProperty(this, "vetoExecution"))
+        return false;
+    ScriptValue argv[] = { field, user, target, move };
+    ScriptValue v = scx->callFunctionByName(this, "vetoExecution", 4, argv);
+    return v.getBool();
+}
+
 int StatusObject::getInherentPriority(ScriptContext *cx) {
     ScriptValue v = cx->callFunctionByName(this, "inherentPriority", 0, NULL);
     return v.getInt();

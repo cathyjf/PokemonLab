@@ -92,7 +92,8 @@ public:
     int getCriticalModifier(ScriptContext *) const;
 
     bool executeMove(ScriptContext *, MoveObject *, std::vector<PTR> &);
-    
+    bool vetoExecution(ScriptContext *, Pokemon *, Pokemon *, MoveObject *);
+
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
     void getModifiers(ScriptContext *, BattleField *,

@@ -107,6 +107,23 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
 }
 
 /**
+ * Determine whether the execution of a move should be vetoed, according to
+ * the effects on this pokemon.
+ */
+bool Pokemon::vetoExecution(ScriptContext *cx,
+        Pokemon *user, Pokemon *target, MoveObject *move) {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        if ((*i)->vetoExecution(cx, m_field, user, target, move))
+            return true;
+    }
+    return false;
+}
+
+/**
  * Execute an arbitrary move on a set of targets.
  */
 bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
@@ -115,6 +132,11 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     // TODO: check for immobilisation
 
     cout << getName() << " used " << move->getName(cx) << "!" << endl;
+
+    if (m_field->vetoExecution(this, NULL, move)) {
+        // vetoed
+        return false;
+    }
 
     if (move->getFlag(cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;
@@ -130,8 +152,13 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     for (vector<PTR>::iterator i = targets.begin();
             i != targets.end(); ++i) {
         PTR target = *i;
-        if (move->attemptHit(cx, m_field, this, target.get())) {
-            move->use(cx, m_field, this, target.get(), targetCount);
+        Pokemon *t = target.get();
+        if (m_field->vetoExecution(this, t, move)) {
+            // vetoed for this target
+            continue;
+        }
+        if (move->attemptHit(cx, m_field, this, t)) {
+            move->use(cx, m_field, this, t, targetCount);
             if (target->isFainted()) {
                 --targetCount;
             }

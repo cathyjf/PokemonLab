@@ -406,7 +406,11 @@ int main() {
     turns.push_back(PokemonTurn(0, target));
     turns.push_back(PokemonTurn(0, target));
 
+    time_t initial = clock();
     field.processTurn(turns);
+    time_t final = clock();
+    double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
+    cout << delta << " seconds to process the turn." << endl;
 
     /**const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");
     vector<string> move;

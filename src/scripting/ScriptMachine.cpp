@@ -286,7 +286,12 @@ bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {
     JS_BeginRequest(cx);
     JSBool ret;
     JS_HasProperty(cx, (JSObject *)obj->getObject(), name.c_str(), &ret);
-    JS_EndRequest(cx);
+    if (ret) {
+        jsval val;
+        JS_GetProperty(cx, (JSObject *)obj->getObject(), name.c_str(), &val);
+        JS_EndRequest(cx);
+        ret = !JSVAL_IS_NULL(val);
+    }
     return ret;
 }
 

@@ -165,6 +165,11 @@ public:
     boost::shared_ptr<PokemonParty> *getActivePokemon();
 
     /**
+     * Determine whether the execution of a move should be vetoed.
+     */
+    bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);
+    
+    /**
      * Obtain the BattleMechanics in use on this BattleField.
      */
     const BattleMechanics *getMechanics() const;

@@ -52,7 +52,9 @@ struct BattleFieldImpl {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
         if (s1 != s2) {
-            return (s1 > s2);
+            if (descendingSpeed)
+                return (s1 > s2);
+            return (s2 > s1);
         }
         return mech->getCoinFlip();
     }
@@ -230,6 +232,24 @@ void BattleField::informFainted(Pokemon *p) {
 }
 
 /**
+ * Determine whether to veto the execution of a move. A single effect wanting
+ * to veto the execution is enough to do so.
+ */
+bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
+        MoveObject *move) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && p->vetoExecution(m_impl->context, user, target, move)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
  * Process a turn.
  */
 void BattleField::processTurn(const vector<PokemonTurn> &turns) {
@@ -270,6 +290,11 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = ordered[i];
 
+        if (p->isFainted()) {
+            // Can't execute anything if we've fainted.
+            continue;
+        }
+        
         if (turn->type == TT_MOVE) {
             const vector<int> &idxes = turn->target.targets;
             vector<Pokemon::PTR> targets;
