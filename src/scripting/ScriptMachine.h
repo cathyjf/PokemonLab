@@ -99,7 +99,7 @@ public:
     ScriptObject getObject() const;
     int getInt() const;
     bool getBool() const;
-    double getDouble() const;
+    double getDouble(ScriptContext *cx) const;
     void *getValue() const {
         return m_val;
     }
@@ -253,6 +253,7 @@ public:
 private:
     friend class ScriptMachine;
     friend class ScriptMachineImpl;
+    friend class ScriptValue;
     friend class MoveObject;
     friend class StatusObject;
     friend class ScriptArray;

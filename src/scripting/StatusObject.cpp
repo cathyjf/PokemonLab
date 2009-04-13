@@ -70,7 +70,7 @@ bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
         if (!arr.isNull()) {
             b = true;
             mod.position = arr[0].getInt();
-            mod.value = arr[1].getDouble();
+            mod.value = arr[1].getDouble(scx);
             mod.priority = arr[2].getInt();
         }
     }
@@ -94,7 +94,7 @@ bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
         if (!arr.isNull()) {
             b = true;
             mod.position = -1;  // unused here
-            mod.value = arr[0].getDouble();
+            mod.value = arr[0].getDouble(scx);
             mod.priority = arr[1].getInt();
         }
     }

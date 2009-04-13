@@ -267,9 +267,14 @@ int ScriptValue::getInt() const {
     return JSVAL_TO_INT((jsval)m_val);
 }
 
-double ScriptValue::getDouble() const {
-    jsdouble *p = JSVAL_TO_DOUBLE((jsval)m_val);
-    return *p;
+double ScriptValue::getDouble(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    jsval val = (jsval)m_val;
+    jsdouble p;
+    JS_ValueToNumber(cx, val, &p);
+    JS_EndRequest(cx);
+    return p;
 }
 
 ScriptObject ScriptValue::getObject() const {
