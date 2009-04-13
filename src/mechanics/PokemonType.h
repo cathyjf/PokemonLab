@@ -56,6 +56,10 @@ public:
         return m_multiplier[m_type][type.m_type];
     }
 
+    static const PokemonType *getByValue(const int idx) {
+        return m_list[idx];
+    }
+
     static const PokemonType *getByCanonicalName(const std::string name) {
         for (int i = 0; i < TYPE_COUNT; ++i) {
             const PokemonType *p = m_list[i];

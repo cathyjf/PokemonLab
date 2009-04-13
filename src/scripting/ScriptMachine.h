@@ -32,6 +32,7 @@
 
 #include "ObjectWrapper.h"
 #include "../moves/PokemonMove.h"
+#include "../mechanics/stat.h"
 
 namespace shoddybattle {
 
@@ -138,7 +139,8 @@ public:
     TARGET getTargetClass(ScriptContext *) const;
     unsigned int getPower(ScriptContext *) const;
     int getPriority(ScriptContext *) const;
-    void use(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
+    void beginTurn(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
+    void use(ScriptContext *, BattleField *, Pokemon *, Pokemon *, const int);
     bool attemptHit(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
     unsigned int getPp(ScriptContext *) const;
     double getAccuracy(ScriptContext *) const;
@@ -195,12 +197,15 @@ public:
     // Transformers.
     bool getModifier(ScriptContext *, BattleField *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIER &);
-    bool transformMove(ScriptContext *, Pokemon *, MoveObject **);
-    bool vetoMove(ScriptContext *, Pokemon *, MoveObject *);
+    bool getStatModifier(ScriptContext *, BattleField *,
+            STAT, Pokemon *, MODIFIER &);
+    bool vetoExecution(ScriptContext *, BattleField *,
+            Pokemon *, Pokemon *, MoveObject *);
+    bool vetoSelection(ScriptContext *, Pokemon *, MoveObject *);
     bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
     bool vetoSwitch(ScriptContext *, Pokemon *);
-    bool transformEffectiveness(int, int, Pokemon *, double *);
-    bool transformHealthChange(int, int *);
+    bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
+    bool transformHealthChange(ScriptContext *, int, int *);
     // TODO: transformMultiplier
 
 };
@@ -285,7 +290,7 @@ public:
     SpeciesDatabase *getSpeciesDatabase() const;
     MoveDatabase *getMoveDatabase() const;
 
-    std::string getText(int i, int j, int argc, char **argv);
+    std::string getText(int i, int j, int argc, const char **argv);
     void loadText(const std::string file, TextLookup &func);
     void includeMoves(const std::string);
     void includeSpecies(const std::string);

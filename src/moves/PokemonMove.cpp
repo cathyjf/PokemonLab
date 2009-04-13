@@ -50,7 +50,7 @@ public:
         attemptHit = NULL;
         power = 0;
         moveClass = MC_PHYSICAL;
-        targetClass = T_ENEMY;
+        targetClass = T_SINGLE;
         pp = 0;
         priority = 0;
         flags = 0;
@@ -236,6 +236,30 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
 
     // TODO: target
     string strTarget = getElementText(node, "target");
+    TARGET tc = T_SINGLE;
+    if (strTarget == "Enemy") {
+        tc = T_SINGLE;
+    } else if (strTarget == "Enemies") {
+        tc = T_ENEMIES;
+    } else if (strTarget == "User") {
+        tc = T_USER;
+    } else if (strTarget == "Randenemy") {
+        tc = T_RANDOM_ENEMY;
+    } else if (strTarget == "Allies") {
+        tc = T_ALLIES;
+    } else if (strTarget == "Others") {
+        tc = T_OTHERS;
+    } else if (strTarget == "Lastenemy") {
+        tc = T_LAST_ENEMY;
+    } else if (strTarget == "All") {
+        tc = T_ALL;
+    } else if (strTarget == "Enemyfield") {
+        tc = T_ENEMY_FIELD;
+    } else if (strTarget == "Ally") {
+        tc = T_ALLY;
+    } else {
+        cout << "Unknown target class: " << strTarget << endl;
+    }
 
     // init function
     string body = getElementText(node, "init", true);
@@ -253,6 +277,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         args.push_back("field");
         args.push_back("user");
         args.push_back("target");
+        args.push_back("targets");  // number of targets remaining alive
         pMove->useFunction = cx->compileFunction(args, body, error, 1);
     }
 
@@ -370,16 +395,10 @@ int main() {
 
     vector<int> targets;
     targets.push_back(0);    // target #0
+    targets.push_back(1);    // target #1
 
     Target target;
     target.targets = targets;
-
-    cx = field.getContext();
-
-    cout << team[0][0]->getMove(0)->getName(cx) << endl;
-    cout << team[0][1]->getMove(0)->getName(cx) << endl;
-    cout << team[1][0]->getMove(0)->getName(cx) << endl;
-    cout << team[1][1]->getMove(0)->getName(cx) << endl;
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(0, target));
@@ -409,3 +428,4 @@ int main() {
         cx->gc();
     }*/
 }
+

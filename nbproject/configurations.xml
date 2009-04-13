@@ -5,6 +5,7 @@
                    displayName="Resource Files"
                    projectFiles="true">
       <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/FieldEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/main.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/moves2.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
@@ -97,6 +98,9 @@
         </linkerTool>
       </compileType>
       <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/FieldEffect.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
@@ -254,6 +258,9 @@
         </linkerTool>
       </compileType>
       <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/FieldEffect.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">

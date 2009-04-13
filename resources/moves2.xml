@@ -6963,7 +6963,7 @@ print(status.inducer.name);
 <power>0</power>
 <accuracy>0.0</accuracy>
 <pp>30</pp>
-<target>Unknown1</target>
+<target>User</target>
 <flags>
 	<snatch/>
 	<unimplemented/>
@@ -7255,7 +7255,7 @@ print(status.inducer.name);
 <power>0</power>
 <accuracy>0.0</accuracy>
 <pp>20</pp>
-<target>Unknown2</target>
+<target>Enemy</target>
 <flags>
 	<protect/>
 	<unimplemented/>

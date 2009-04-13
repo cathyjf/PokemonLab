@@ -41,15 +41,17 @@ namespace shoddybattle {
 /**
  * Table of chances to get a critical hit.
  */
-static const bool CRITICAL_TABLE[] = { 0.0625, 0.125, 0.25, 0.375, 0.5 };
+static const double CRITICAL_TABLE[] = { 0.0625, 0.125, 0.25, 0.375, 0.5 };
+
+typedef mt11213b GENERATOR;
 
 struct JewelMechanicsImpl {
-    mt11213b rand;
+    GENERATOR rand;
 };
 
 JewelMechanics::JewelMechanics() {
     m_impl = new JewelMechanicsImpl();
-    m_impl->rand = mt11213b(time(NULL));
+    m_impl->rand = GENERATOR(time(NULL));
 }
 
 JewelMechanics::~JewelMechanics() {
@@ -78,10 +80,16 @@ unsigned int JewelMechanics::calculateStat(
 }
 
 bool JewelMechanics::getCoinFlip() const {
-    boost::bernoulli_distribution<> dist;
-    variate_generator<mt11213b &, bernoulli_distribution<> >
+    bernoulli_distribution<> dist;
+    variate_generator<GENERATOR &, bernoulli_distribution<> >
             coin(m_impl->rand, dist);
     return coin();
+}
+
+bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
+        Pokemon &user, Pokemon &target) const {
+    // TODO: implement this
+    return true;
 }
 
 bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
@@ -95,15 +103,15 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
     if (term > 4) {
         term = 4;
     }
-    boost::bernoulli_distribution<> dist(CRITICAL_TABLE[term]);
-    variate_generator<mt11213b &, bernoulli_distribution<> >
+    bernoulli_distribution<> dist(CRITICAL_TABLE[term]);
+    variate_generator<GENERATOR &, bernoulli_distribution<> >
             generator(m_impl->rand, dist);
     return generator();
 }
 
 void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
-    map<int, double> &elements = mods[position];
-    map<int, double>::const_iterator i = elements.begin();
+    PRIORITY_MAP &elements = mods[position];
+    PRIORITY_MAP::const_iterator i = elements.begin();
     for (; i != elements.end(); ++i) {
         double val = i->second;
         damage *= val;
@@ -126,29 +134,36 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     STAT stat0 = (cls == MC_PHYSICAL) ? S_ATTACK : S_SPATTACK;
     STAT stat1 = (cls == MC_PHYSICAL) ? S_DEFENCE : S_SPDEFENCE;
 
-    int attack = user.getStat(stat0);
-    int defence = target.getStat(stat1);
-    int power = move.getPower(cx);
-    bool critical = isCriticalHit(field, move, user, target);
-
+    const bool critical = isCriticalHit(field, move, user, target);
     MODIFIERS mods;
     field.getModifiers(user, target, move, critical, mods);
 
+    if (targets > 1) {
+        mods[1][2] = 0.75;
+    }
+
+    int attack = user.getStat(stat0);
+    int defence = target.getStat(stat1);
+    int power = move.getPower(cx);
+
+    mods[0][0] = power; // base power
+
     int damage = user.getLevel() * 2 / 5;
     damage += 2;
-    damage *= power;
+    multiplyBy(damage, 0, mods);
     damage *= attack;
     damage /= 50;
     damage /= defence;
-    multiplyBy(damage, 0, mods); // "Mod1" in X-Act's essay
+    multiplyBy(damage, 1, mods); // "Mod1" in X-Act's essay
     damage += 2;
     if (critical) {
+        field.print(TextMessage(4, 8));
         damage *= 2;
     }
-    multiplyBy(damage, 1, mods); // "Mod2"
+    multiplyBy(damage, 2, mods); // "Mod2"
 
     boost::uniform_int<> range(217, 255);
-    variate_generator<mt11213b &, uniform_int<> > r(m_impl->rand, range);
+    variate_generator<GENERATOR &, uniform_int<> > r(m_impl->rand, range);
 
     damage *= r() * 100;
     damage /= 255;
@@ -160,7 +175,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     // TODO: effectiveness
 
-    multiplyBy(damage, 2, mods); // "Mod3"
+    multiplyBy(damage, 3, mods); // "Mod3"
 
     if (damage < 1) damage = 1;
     return damage;

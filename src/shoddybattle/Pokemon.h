@@ -40,6 +40,7 @@ class PokemonNature;
 class PokemonType;
 class PokemonSpecies;
 class MoveTemplate;
+class PokemonTurn;
 
 class PokemonObject;
 class MoveObject;
@@ -48,11 +49,14 @@ class StatusObject;
 class ScriptMachine;
 class ScriptContext;
 
+class Target;
+
 typedef std::vector<const PokemonType *> TYPE_ARRAY;
 typedef std::list<StatusObject *> STATUSES;
 
+typedef std::map<int, double> PRIORITY_MAP;
 // map<position, map<priority, value>>
-typedef std::map<int, std::map<int, double> > MODIFIERS;
+typedef std::map<int, PRIORITY_MAP> MODIFIERS;
 
 /**
  * The pokemon class contains all of the information about an arbitrary
@@ -81,13 +85,20 @@ public:
 
     void initialise(BattleField *field, const int i, const int j);
 
+    void setTurn(PokemonTurn *turn) { m_turn = turn; }
+    PokemonTurn *getTurn() { return m_turn; }
+
     int getInherentPriority(ScriptContext *) const;
     int getCriticalModifier(ScriptContext *) const;
 
+    bool executeMove(ScriptContext *, MoveObject *, std::vector<PTR> &);
+    
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
     void getModifiers(ScriptContext *, BattleField *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
+    void getStatModifiers(ScriptContext *, BattleField *,
+            STAT, Pokemon *, PRIORITY_MAP &);
     void removeStatuses(ScriptContext *);
     
     int getHp() const { return m_hp; }
@@ -120,6 +131,8 @@ public:
 
     int getParty() const { return m_party; }
     int getPosition() const { return m_position; }
+
+    bool isFainted() const { return m_fainted; }
     
     ~Pokemon();
 
@@ -127,6 +140,7 @@ private:
     const PokemonSpecies *m_species;
     unsigned int m_level;
     int m_hp; // The remaining health of the pokemon.
+    bool m_fainted;
     unsigned int m_stat[STAT_COUNT];
     unsigned int m_iv[STAT_COUNT];
     unsigned int m_ev[STAT_COUNT];
@@ -147,6 +161,8 @@ private:
     int m_party, m_position;
 
     STATUSES m_effects;
+
+    PokemonTurn *m_turn;
 
     PokemonObject *m_object; // Pokemon object.
 

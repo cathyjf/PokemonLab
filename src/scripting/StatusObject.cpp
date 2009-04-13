@@ -55,6 +55,9 @@ namespace shoddybattle {
 bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
         Pokemon *user, Pokemon *target, MoveObject *mobj, const bool critical,
         MODIFIER &mod) {
+    if (!scx->hasProperty(this, "modifier"))
+        return false;
+    
     ScriptValue argv[5] = { field, user, target, mobj, critical };
 
     // need request to avoid the gc freeing the return value of the call
@@ -69,6 +72,30 @@ bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
             mod.position = arr[0].getInt();
             mod.value = arr[1].getDouble();
             mod.priority = arr[2].getInt();
+        }
+    }
+    JS_EndRequest(cx);
+    return b;
+}
+
+bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
+        STAT stat, Pokemon *subject, MODIFIER &mod) {
+    if (!scx->hasProperty(this, "statModifier"))
+        return false;
+
+    ScriptValue argv[3] = { field, stat, subject };
+
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    ScriptValue ret = scx->callFunctionByName(this, "statModifier", 3, argv);
+    bool b = false;
+    if (!ret.failed()) {
+        ScriptArray arr(ret.getObject().getObject(), scx);
+        if (!arr.isNull()) {
+            b = true;
+            mod.position = -1;  // unused here
+            mod.value = arr[0].getDouble();
+            mod.priority = arr[1].getInt();
         }
     }
     JS_EndRequest(cx);

@@ -43,6 +43,8 @@ public:
     virtual unsigned int calculateStat(const Pokemon &p, const STAT i) const = 0;
     virtual int calculateDamage(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target, const int targets) const = 0;
+    virtual bool attemptHit(BattleField &field, MoveObject &move,
+            Pokemon &user, Pokemon &target) const = 0;
     virtual ~BattleMechanics() { }
 protected:
     BattleMechanics() { }

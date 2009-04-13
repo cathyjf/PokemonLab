@@ -72,6 +72,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_machine = NULL;
     m_field = NULL;
     m_object = NULL;
+    m_fainted = false;
 }
 
 Pokemon::~Pokemon() {
@@ -103,6 +104,46 @@ string Pokemon::getSpeciesName() const {
 
 unsigned int Pokemon::getBaseStat(const STAT i) const {
     return m_species->getBaseStat(i);
+}
+
+/**
+ * Execute an arbitrary move on a set of targets.
+ */
+bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
+        vector<PTR> &targets) {
+
+    // TODO: check for immobilisation
+
+    cout << getName() << " used " << move->getName(cx) << "!" << endl;
+
+    if (move->getFlag(cx, F_UNIMPLEMENTED)) {
+        cout << "But it's unimplemented..." << endl;
+        return false;
+    }
+
+    int targetCount = targets.size();
+    if (targetCount == 0) {
+        m_field->print(TextMessage(4, 3, vector<string>())); // no target
+        return false;
+    }
+
+    for (vector<PTR>::iterator i = targets.begin();
+            i != targets.end(); ++i) {
+        PTR target = *i;
+        if (move->attemptHit(cx, m_field, this, target.get())) {
+            move->use(cx, m_field, this, target.get(), targetCount);
+            if (target->isFainted()) {
+                --targetCount;
+            }
+        } else {
+            vector<string> args;
+            args.push_back(getName());
+            args.push_back(target->getName());
+            TextMessage msg(4, 2, args); // attack missed
+            m_field->print(msg);
+        }
+    }
+    return true;
 }
 
 /**
@@ -175,6 +216,23 @@ int Pokemon::getInherentPriority(ScriptContext *cx) const {
 }
 
 /**
+ * Check for stat modifiers on all status effects.
+ */
+void Pokemon::getStatModifiers(ScriptContext *cx, BattleField *field,
+        STAT stat, Pokemon *subject, PRIORITY_MAP &mods) {
+    MODIFIER mod;
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        if ((*i)->getStatModifier(cx, field, stat, subject, mod)) {
+            // position unused
+            mods[mod.priority] = mod.value;
+        }
+    }
+}
+
+/**
  * Check for modifiers on all status effects.
  */
 void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
@@ -182,8 +240,6 @@ void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
         MoveObject *obj, const bool critical, MODIFIERS &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        // TODO: look in overrides
-
         if (!(*i)->isActive(cx))
             continue;
 
@@ -201,9 +257,10 @@ void Pokemon::setHp(const int hp) {
     // TODO: implement this function properly
     const int delta = m_hp - hp;
     m_hp = hp;
-    cout << m_nickname << " lost " << delta << " hp!" << endl;
+    m_field->informHealthChange(this, delta);
     if (m_hp <= 0) {
-        cout << m_nickname << " fainted!" << endl;
+        m_field->informFainted(this);
+        m_fainted = true;
     }
 }
 
@@ -240,22 +297,3 @@ void Pokemon::initialise(BattleField *field, const int party, const int j) {
 }
 
 }
-
-/**int main(int argc, char **argv) {
-    Text text("languages/english.lang");
-    string nature = text.getText(SC_NATURE, 6, 2, "[a]", "[b]");
-    cout << nature << endl;
-
-    int base[] = { 10, 20, 30, 40, 50, 60 };
-    int iv[] = { 21, 30, 15, 31, 25, 31 };
-    int ev[] = { 200, 120, 100, 0, 0, 0 };
-    vector<const PokemonType *> types;
-    types.push_back(&PokemonType::GROUND);
-    Pokemon pokemon(base,
-            iv, ev, PokemonNature::getNature(5), 100, types);
-    JewelMechanics mechanics;
-    for (int i = 0; i < 6; ++i) {
-        cout << "Stat " << i << ": "
-            << mechanics.calculateStat(pokemon, (STAT)i) << "\n";
-    }
-}**/

@@ -50,6 +50,28 @@ class BattleFieldException {
     
 };
 
+class TextMessage {
+public:
+    TextMessage(const int category, const int msg,
+            const std::vector<std::string> &args = std::vector<std::string>()):
+            m_category(category),
+            m_msg(msg),
+            m_args(args) { }
+    int getCategory() const {
+        return m_category;
+    }
+    int getMessage() const {
+        return m_msg;
+    }
+    const std::vector<std::string> &getArgs() const {
+        return m_args;
+    }
+private:
+    const int m_category;
+    const int m_msg;
+    const std::vector<std::string> m_args;
+};
+
 struct Target {
     std::vector<int> targets;
 };
@@ -129,7 +151,13 @@ public:
     /**
      * Get the modifiers in play for a particular hit.
      */
-    void getModifiers(Pokemon &, Pokemon &, MoveObject &, const bool, MODIFIERS &);
+    void getModifiers(Pokemon &, Pokemon &, MoveObject &,
+            const bool, MODIFIERS &);
+
+    /**
+     * Sort a set of pokemon by speed.
+     */
+    void sortBySpeed(std::vector<Pokemon::PTR> &pokemon);
 
     /**
      * Get the active pokemon.
@@ -140,6 +168,15 @@ public:
      * Obtain the BattleMechanics in use on this BattleField.
      */
     const BattleMechanics *getMechanics() const;
+
+    /**
+     * Print a message to the BattleField.
+     */
+    virtual void print(const TextMessage &msg);
+
+    virtual void informHealthChange(Pokemon *, const int);
+
+    virtual void informFainted(Pokemon *);
 
     ScriptMachine *getScriptMachine();
 

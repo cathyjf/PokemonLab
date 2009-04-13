@@ -155,7 +155,7 @@ StatusEffect.prototype = {
     /**
      * Return a modifier to the damage formula.
      *
-     * Return an Array(position, value, priority).
+     * Return a [position, value, priority].
      *        position is the position in the damage formula
      *        value is the value of the multiplier (e.g. 0.5)
      *        priority is how this multiplier should be sorted with others
@@ -172,15 +172,40 @@ StatusEffect.prototype = {
     modifier : null,
 
     /**
-     * Transform a move before it is executed.
+     * Return a modifier to a stat.
+     * 
+     * Return [value, priority]
+     *      stat is the id of the stat
+     *      value is the value of the multiplier
+     *      priority is where to place this multiplier in order
+     * Return null for no modifier.
      *
      * Example:
      *
-     *    function(user, move) {
-     *        return move;
+     *      // Hypothetical implementation of Pure Power.
+     *      function(field, stat, subject) {
+     *          if (subject != this.subject)
+     *              return null;
+     *          if (stat == S_ATTACK)
+     *              return [2, 1];  // priority == 1 for abilities
+     *          return null;
+     *      }
+     */
+    statModifier : null,
+
+    /**
+     * Veto a move right before it is executed on a particular target. This is
+     * also called before the move is executed in general, with target = null.
+     * If the status effect completely prevents the execution of the move, it
+     * should return true to the initial call.
+     *
+     * Example:
+     *
+     *    function(field, user, target, move) {
+     *        return true; // veto all moves
      *    }
      */
-    transformMove : null,
+    vetoExecution : null,
 
     /**
      * Prevent a move from being _selected_. This does not prevent the move
@@ -196,7 +221,7 @@ StatusEffect.prototype = {
      *        return (move.name == "U-turn");
      *    }
      */
-    vetoMove : null,
+    vetoSelection : null,
 
     /**
      * Transform a status effect right before it is applied. If the new

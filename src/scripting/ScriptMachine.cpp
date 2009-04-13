@@ -151,7 +151,7 @@ JSBool getText(JSContext *cx,
     int32 category, text;
     JS_ConvertArguments(cx, 2, argv, "ii", &category, &text);
     const int count = argc - 2;
-    char *args[count];
+    const char *args[count];
     for (int i = 0; i < count; ++i) {
         jsval v = argv[2 + i];
         JSString *str = JS_ValueToString(cx, v);
@@ -166,7 +166,7 @@ JSBool getText(JSContext *cx,
     return JS_TRUE;
 }
 
-string ScriptMachine::getText(int i, int j, int argc, char **argv) {
+string ScriptMachine::getText(int i, int j, int argc, const char **argv) {
     return m_impl->state->text.getText(i, j, argc, argv);
 }
 

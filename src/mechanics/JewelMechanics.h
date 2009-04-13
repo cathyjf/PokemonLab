@@ -45,6 +45,8 @@ public:
             Pokemon &user, Pokemon &target, const int targets) const;
     bool isCriticalHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const;
+    bool attemptHit(BattleField &field, MoveObject &move,
+            Pokemon &user, Pokemon &target) const;
 private:
     JewelMechanicsImpl *m_impl;
 };

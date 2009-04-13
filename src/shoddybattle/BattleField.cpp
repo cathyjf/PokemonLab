@@ -22,10 +22,12 @@
  * online at http://gnu.org.
  */
 
+#include <boost/bind.hpp>
 #include <boost/shared_array.hpp>
 #include "BattleField.h"
 #include "../mechanics/BattleMechanics.h"
 #include "../scripting/ScriptMachine.h"
+#include "../text/Text.h"
 #include <iostream>
 #include <list>
 
@@ -46,7 +48,32 @@ struct BattleFieldImpl {
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     void getActivePokemon(vector<Pokemon::PTR> &);
+    bool speedComparator(Pokemon::PTR p1, Pokemon::PTR p2) {
+        const int s1 = p1->getStat(S_SPEED);
+        const int s2 = p2->getStat(S_SPEED);
+        if (s1 != s2) {
+            return (s1 > s2);
+        }
+        return mech->getCoinFlip();
+    }
+
+    inline void decodeIndex(int &idx, int &party) {
+        if (idx >= partySize) {
+            idx -= partySize;
+            party = 1;
+        } else {
+            party = 0;
+        }
+    }
 };
+
+/**
+ * Sort a set of pokemon by speed.
+ */
+void BattleField::sortBySpeed(std::vector<Pokemon::PTR> &pokemon) {
+    sort(pokemon.begin(), pokemon.end(),
+            boost::bind(&BattleFieldImpl::speedComparator, m_impl, _1, _2));
+}
 
 shared_ptr<PokemonParty> *BattleField::getActivePokemon() {
     return m_impl->active;
@@ -178,6 +205,31 @@ const BattleMechanics *BattleField::getMechanics() const {
 }
 
 /**
+ * Print a message to the BattleField.
+ */
+void BattleField::print(const TextMessage &msg) {
+    const vector<string> &args = msg.getArgs();
+    const int argc = args.size();
+    const char *argv[argc];
+    for (int i = 0; i < argc; ++i) {
+        argv[i] = args[i].c_str();
+    }
+    string message = m_impl->machine->getText(
+            msg.getCategory(), msg.getMessage(), argc, argv);
+    cout << message << endl;
+}
+
+void BattleField::informHealthChange(Pokemon *p, const int delta) {
+    const int numerator = 48.0 * (double)delta / (double)p->getStat(S_HP) + 0.5;
+    cout << p->getName() << " lost " << numerator << "/48 of its health!"
+            << endl;
+}
+
+void BattleField::informFainted(Pokemon *p) {
+    cout << p->getName() << " fainted!" << endl;
+}
+
+/**
  * Process a turn.
  */
 void BattleField::processTurn(const vector<PokemonTurn> &turns) {
@@ -194,15 +246,51 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     
     m_impl->sortInTurnOrder(pokemon, ordered);
 
-    // TODO: beginTurn
-
+    // begin the turn
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = ordered[i];
 
-        cout << p->getSpeciesName() << ", ";
-        cout << p->getMove(turn->id)->getName(m_impl->context) << ", ";
-        cout << p->getStat(S_SPEED) << endl;
+        if (turn->type == TT_MOVE) {
+            MoveObject *move = p->getMove(turn->id);
+            Pokemon *target = NULL;
+            const vector<int> &targets = turn->target.targets;
+            if (targets.size() == 1) { // exactly one target
+                int idx = targets[0];
+                int party = 0;
+                m_impl->decodeIndex(idx, party);
+                target = (*m_impl->active[party])[idx].pokemon.get();
+            }
+            move->beginTurn(m_impl->context, this, p.get(), target);
+        }
+    }
+
+    // execute the actions
+    for (int i = 0; i < count; ++i) {
+        Pokemon::PTR p = pokemon[i];
+        const PokemonTurn *turn = ordered[i];
+
+        if (turn->type == TT_MOVE) {
+            const vector<int> &idxes = turn->target.targets;
+            vector<Pokemon::PTR> targets;
+
+            for (vector<int>::const_iterator j = idxes.begin();
+                    j != idxes.end(); ++j) {
+                int party = 0;
+                int idx = *j;
+                m_impl->decodeIndex(idx, party);
+                Pokemon::PTR target = (*m_impl->active[party])[idx].pokemon;
+                if (!target->isFainted()) {
+                    targets.push_back(target);
+                }
+            }
+            sortBySpeed(targets);
+            MoveObject *move = p->getMove(turn->id);
+            p->executeMove(m_impl->context, move, targets);
+            
+        } else {
+            // handle switch
+        }
     }
 }
 

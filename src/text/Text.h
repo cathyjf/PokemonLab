@@ -60,7 +60,7 @@ public:
      *
      */
     std::string getText(const int type,
-            const int id, const int count, char **args) const;
+            const int id, const int count, const char **args) const;
 
     /**
      * Populate the string table by reading a file.

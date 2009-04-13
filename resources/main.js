@@ -2,8 +2,6 @@
  * Main entry point for Shoddy Battle 2.
  */
 
-print("Started ShoddyBattle2 at " + new Date() + ".");
-
 var Text = { idx : 0 };
 
 loadText("languages/english.lang", function(name) {
@@ -20,9 +18,6 @@ loadText("languages/english.lang", function(name) {
     };
     return idx;
 });
-
-// Test Text object.
-print(Text.status_effects_confusion(1, "Benjamin"));
 
 includeSpecies("resources/species.xml");
 includeMoves("resources/moves2.xml");

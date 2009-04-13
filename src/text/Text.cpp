@@ -42,7 +42,8 @@ string trim(string &s, const string &space = " ") {
 /**
  * Load a string from the table.
  */
-string Text::getText(const int type, const int id, const int count, char **args) const {
+string Text::getText(const int type, const int id, const int count,
+        const char **args) const {
     TEXT_MAP::const_iterator itr = m_text.find(type);
     if (itr == m_text.end()) {
         return string();

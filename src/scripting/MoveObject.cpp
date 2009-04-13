@@ -35,7 +35,9 @@
 
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"
+#include "../shoddybattle/BattleField.h"
 #include "../mechanics/PokemonType.h"
+#include "../mechanics/BattleMechanics.h"
 
 using namespace std;
 
@@ -73,6 +75,25 @@ MOVE_CLASS MoveObject::getMoveClass(ScriptContext *scx) const {
     return mc;
 }
 
+const PokemonType *MoveObject::getType(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "type", &val);
+    int type = JSVAL_TO_INT(val);
+    JS_EndRequest(cx);
+    return PokemonType::getByValue(type);
+}
+
+unsigned int MoveObject::getPp(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "pp", &val);
+    JS_EndRequest(cx);
+    return JSVAL_TO_INT(val);
+}
+
 unsigned int MoveObject::getPower(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
@@ -91,18 +112,46 @@ int MoveObject::getPriority(ScriptContext *scx) const {
     return JSVAL_TO_INT(val);
 }
 
-/*
-TARGET MoveObject::getTargetClass(ScriptContext *) const;
-bool MoveObject::attemptHit(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
-unsigned int MoveObject::getPp(ScriptContext *) const;
-double MoveObject::getAccuracy(ScriptContext *) const;
-const PokemonType *MoveObject::getType(ScriptContext *) const;
-bool MoveObject::getFlag(ScriptContext *, const MOVE_FLAG flag) const;**/
+TARGET MoveObject::getTargetClass(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "targetClass", &val);
+    JS_EndRequest(cx);
+    return (TARGET)JSVAL_TO_INT(val);
+}
 
-void MoveObject::use(ScriptContext *scx,
-        BattleField *field, Pokemon *user, Pokemon *target) {
-    ScriptValue val[3] = { field, user, target };
-    scx->callFunctionByName(this, "use", 3, val);
+/*
+double MoveObject::getAccuracy(ScriptContext *) const;**/
+
+bool MoveObject::attemptHit(ScriptContext *scx, BattleField *field,
+        Pokemon *user, Pokemon *target) {
+    if (scx->hasProperty(this, "attemptHit")) {
+        ScriptValue val[] = { field, user, target };
+        return scx->callFunctionByName(this, "attemptHit", 3, val).getBool();
+    }
+    return field->getMechanics()->attemptHit(*field, *this, *user, *target);
+}
+
+void MoveObject::beginTurn(ScriptContext *scx, BattleField *field,
+        Pokemon *user, Pokemon *target) {
+    if (!scx->hasProperty(this, "beginTurn"))
+        return;
+    ScriptValue val[] = { field, user, target };
+    scx->callFunctionByName(this, "beginTurn", 3, val);
+}
+
+void MoveObject::use(ScriptContext *scx, BattleField *field,
+        Pokemon *user, Pokemon *target, const int targets) {
+    if (scx->hasProperty(this, "use")) {
+        ScriptValue val[4] = { field, user, target, targets };
+        scx->callFunctionByName(this, "use", 4, val);
+    } else {
+        // just do a basic move use
+        int damage = field->getMechanics()->calculateDamage(*field,
+                *this, *user, *target, targets);
+        target->setHp(target->getHp() - damage);
+    }
 }
 
 MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {

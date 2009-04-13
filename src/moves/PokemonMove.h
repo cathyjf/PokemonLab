@@ -37,14 +37,15 @@ class BattleField;
 
 enum TARGET {
     T_USER,
-    T_ENEMY,
+    T_ALLY,
+    T_ALLIES,
+    T_SINGLE,
+    T_ENEMIES,
     T_RANDOM_ENEMY,
-    T_ALL_ENEMIES,
-    T_ALL_OTHERS,
-    T_LAST_ENEMY,   // Last pokemon to take a turn.
-    T_USER_PARTY,
-    T_ENEMY_PARTY,  // Enemy's "field".
-    T_FIELD
+    T_LAST_ENEMY,
+    T_ENEMY_FIELD,
+    T_OTHERS,
+    T_ALL,
 };
 
 enum MOVE_CLASS {
