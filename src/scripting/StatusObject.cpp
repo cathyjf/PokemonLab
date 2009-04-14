@@ -102,6 +102,18 @@ bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
     return b;
 }
 
+bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
+        bool indirect, int *pHp) {
+    if (!scx->hasProperty(this, "transformHealthChange"))
+        return false;
+
+    ScriptValue argv[] = { hp, indirect };
+    ScriptValue v = scx->callFunctionByName(this,
+            "transformHealthChange", 2, argv);
+    *pHp = v.getInt();
+    return true;
+}
+
 bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
         Pokemon *user, Pokemon *target, MoveObject *move) {
     if (!scx->hasProperty(this, "vetoExecution"))

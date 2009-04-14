@@ -211,7 +211,7 @@ public:
     bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
     bool vetoSwitch(ScriptContext *, Pokemon *);
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
-    bool transformHealthChange(ScriptContext *, int, int *);
+    bool transformHealthChange(ScriptContext *, int, bool, int *);
     // TODO: transformMultiplier
 
 };
@@ -242,6 +242,8 @@ public:
     void addRoot(ScriptObject *obj);
     void removeRoot(ScriptObject *obj);
 
+    StatusObject getAbility(const std::string) const;
+    
     ScriptValue callFunction(ScriptObject *obj,
             const ScriptFunction *func,
             const int argc, ScriptValue *argv);

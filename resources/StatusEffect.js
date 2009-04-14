@@ -281,6 +281,12 @@ StatusEffect.prototype = {
 	transformMultiplier : null,
 
 	/**
+     * Transform the amount of hp by which the subject's hp is about to
+     * change.
+     *
+     *      function(hp, indirect) {
+     *          return hp;
+     *      }
 	 */
 	transformHealthChange : null,
 

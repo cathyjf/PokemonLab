@@ -378,9 +378,11 @@ using namespace shoddybattle;
 int main() {
     ScriptMachine machine;
     ScriptContext *cx = machine.acquireContext();
-    cx->runFile("resources/main.js");
+    cx->runFile("resources/types.js");
     cx->runFile("resources/StatusEffect.js");
     cx->runFile("resources/statuses.js");
+    cx->runFile("resources/abilities.js");
+    cx->runFile("resources/main.js");
     machine.releaseContext(cx);
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();

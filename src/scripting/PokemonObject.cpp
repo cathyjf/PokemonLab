@@ -78,7 +78,8 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
         case PTI_HP: {
-            p->setHp(JSVAL_TO_INT(*vp));
+            ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+            p->setHp(scx, JSVAL_TO_INT(*vp));
         } break;
     }
     return JS_TRUE;

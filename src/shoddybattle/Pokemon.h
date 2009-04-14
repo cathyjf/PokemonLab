@@ -105,9 +105,11 @@ public:
     void getStatModifiers(ScriptContext *,
             STAT, Pokemon *, PRIORITY_MAP &);
     void removeStatuses(ScriptContext *);
+
+    int transformHealthChange(ScriptContext *, int, bool) const;
     
     int getHp() const { return m_hp; }
-    void setHp(const int hp, const bool indirect = false);
+    void setHp(ScriptContext *, const int hp, const bool indirect = false);
 
     std::string getSpeciesName() const;
     std::string getName() const { return m_nickname; }
@@ -160,6 +162,9 @@ private:
     std::string m_nickname;
     std::string m_itemName;
     std::string m_abilityName;
+
+    StatusObject *m_item;
+    StatusObject *m_ability;
 
     ScriptMachine *m_machine;
     BattleField *m_field;

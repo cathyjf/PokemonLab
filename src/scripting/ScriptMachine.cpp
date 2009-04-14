@@ -286,6 +286,27 @@ bool ScriptValue::getBool() const {
     return JSVAL_TO_BOOLEAN((jsval)m_val);
 }
 
+/**
+ * Get an ability object by looking in the Ability property of the global
+ * object for a property by the name of the ability.
+ */
+StatusObject ScriptContext::getAbility(const string name) const {
+    JSContext *cx = (JSContext *)m_p;
+    JS_BeginRequest(cx);
+    jsval val;
+    JS_GetProperty(cx, m_machine->m_impl->global, "Ability", &val);
+    JSObject *obj = JSVAL_TO_OBJECT(val);
+    JSBool has;
+    JS_HasProperty(cx, obj, name.c_str(), &has);
+    StatusObject ret(NULL);
+    if (has) {
+        JS_GetProperty(cx, obj, name.c_str(), &val);
+        ret = StatusObject(JSVAL_TO_OBJECT(val));
+    }
+    JS_EndRequest(cx);
+    return ret;
+}
+
 bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
@@ -294,9 +315,9 @@ bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {
     if (ret) {
         jsval val;
         JS_GetProperty(cx, (JSObject *)obj->getObject(), name.c_str(), &val);
-        JS_EndRequest(cx);
         ret = !JSVAL_IS_NULL(val);
     }
+    JS_EndRequest(cx);
     return ret;
 }
 

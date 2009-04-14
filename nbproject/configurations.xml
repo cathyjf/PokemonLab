@@ -4,6 +4,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/abilities.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/FieldEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/main.js</itemPath>
@@ -11,6 +12,7 @@
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/types.js</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -107,6 +109,9 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
         <itemTool>3</itemTool>
       </item>
@@ -117,6 +122,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/types.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
@@ -270,6 +278,9 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
         <itemTool>3</itemTool>
       </item>
@@ -280,6 +291,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/types.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">

@@ -74,6 +74,8 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_field = NULL;
     m_object = NULL;
     m_fainted = false;
+    m_item = NULL;
+    m_ability = NULL;
 }
 
 Pokemon::~Pokemon() {
@@ -187,8 +189,6 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         move->use(cx, m_field, this, NULL, 0);
         return true;
     }
-
-    // ALLY, ALLIES
     
     // Build a list of targets.
     vector<Pokemon *> targets;
@@ -304,7 +304,9 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
     // TODO: implement properly
 
     StatusObject *applied = effect->cloneAndRoot(cx);
-    applied->setInducer(cx, inducer);
+    if (inducer != NULL) {
+        applied->setInducer(cx, inducer);
+    }
     applied->setSubject(cx, this);
     if (!applied->applyEffect(cx)) {
         cx->removeRoot(applied);
@@ -328,6 +330,21 @@ int Pokemon::getCriticalModifier(ScriptContext *cx) const {
         ret += (*i)->getCriticalModifier(cx);
     }
     return ret;
+}
+
+/**
+ * Transform a health change.
+ */
+int Pokemon::transformHealthChange(ScriptContext *cx, int hp,
+        bool indirect) const {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        (*i)->transformHealthChange(cx, hp, indirect, &hp);
+    }
+    return hp;
 }
 
 /**
@@ -387,13 +404,13 @@ void Pokemon::getModifiers(ScriptContext *cx,
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
-void Pokemon::setHp(const int hp, const bool indirect) {
+void Pokemon::setHp(ScriptContext *cx, const int hp, const bool indirect) {
     // TODO: implement this function properly
     if (m_fainted) {
         return;
     }
-    const int delta = m_hp - hp;
-    m_hp = hp;
+    const int delta = transformHealthChange(cx, m_hp - hp, indirect);
+    m_hp -= delta;
     m_field->informHealthChange(this, delta);
     if (m_hp <= 0) {
         m_field->informFainted(this);
@@ -435,6 +452,14 @@ void Pokemon::initialise(BattleField *field, const int party, const int j) {
     for (; i != m_moveProto.end(); ++i) {
         MoveObject *obj = cx->newMoveObject(*i);
         m_moves.push_back(obj);
+    }
+
+    // Create ability object.
+    StatusObject ability = cx->getAbility(m_abilityName);
+    if (!ability.isNull()) {
+        m_ability = applyStatus(cx, NULL, &ability);
+    } else {
+        cout << "No such ability: " << m_abilityName << endl;
     }
 
     m_machine->releaseContext(cx);
