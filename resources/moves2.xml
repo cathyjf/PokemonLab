@@ -3261,7 +3261,7 @@
 </move>
 
 <move name="Curse" id="173">
-<type>?????</type>
+<type>Typeless</type>
 <class>Other</class>
 <power>0</power>
 <accuracy>1.00</accuracy>
