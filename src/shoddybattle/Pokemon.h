@@ -91,19 +91,23 @@ public:
     int getInherentPriority(ScriptContext *) const;
     int getCriticalModifier(ScriptContext *) const;
 
-    bool executeMove(ScriptContext *, MoveObject *, std::vector<PTR> &);
+    bool executeMove(ScriptContext *, MoveObject *, Pokemon *target);
+    bool useMove(ScriptContext *, MoveObject *, Pokemon *, const int);
     bool vetoExecution(ScriptContext *, Pokemon *, Pokemon *, MoveObject *);
 
+    void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
+    
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
-    void getModifiers(ScriptContext *, BattleField *,
+    StatusObject *getStatus(ScriptContext *, const std::string);
+    void getModifiers(ScriptContext *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
-    void getStatModifiers(ScriptContext *, BattleField *,
+    void getStatModifiers(ScriptContext *,
             STAT, Pokemon *, PRIORITY_MAP &);
     void removeStatuses(ScriptContext *);
     
     int getHp() const { return m_hp; }
-    void setHp(const int hp);   // note: has side effects
+    void setHp(const int hp, const bool indirect = false);
 
     std::string getSpeciesName() const;
     std::string getName() const { return m_nickname; }

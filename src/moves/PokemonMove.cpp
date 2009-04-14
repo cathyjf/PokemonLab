@@ -234,7 +234,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         pMove->accuracy = acc;
     }
 
-    // TODO: target
+    // target
     string strTarget = getElementText(node, "target");
     TARGET tc = T_SINGLE;
     if (strTarget == "Enemy") {
@@ -260,6 +260,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
     } else {
         cout << "Unknown target class: " << strTarget << endl;
     }
+    pMove->targetClass = tc;
 
     // init function
     string body = getElementText(node, "init", true);
@@ -393,18 +394,11 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, &machine, team, 2);
 
-    vector<int> targets;
-    targets.push_back(0);    // target #0
-    targets.push_back(1);    // target #1
-
-    Target target;
-    target.targets = targets;
-
     vector<PokemonTurn> turns;
-    turns.push_back(PokemonTurn(0, target));
-    turns.push_back(PokemonTurn(0, target));
-    turns.push_back(PokemonTurn(0, target));
-    turns.push_back(PokemonTurn(0, target));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
+    turns.push_back(PokemonTurn(TT_MOVE, 2, 2));
+    turns.push_back(PokemonTurn(TT_MOVE, 3, 3));
 
     time_t initial = clock();
     field.processTurn(turns);

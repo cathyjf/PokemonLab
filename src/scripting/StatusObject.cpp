@@ -226,6 +226,17 @@ int StatusObject::getLock(ScriptContext *scx) const {
     return ret;
 }
 
+bool StatusObject::isSingleton(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "singleton", &val);
+    JS_EndRequest(cx);
+    assert(JSVAL_IS_BOOLEAN(val));
+    bool ret = JSVAL_TO_BOOLEAN(val);
+    return ret;
+}
+
 int StatusObject::getState(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;

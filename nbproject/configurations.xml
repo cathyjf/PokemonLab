@@ -42,6 +42,7 @@
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="scripting" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/ObjectWrapper.h</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.cpp</itemPath>
@@ -146,6 +147,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">
@@ -306,6 +310,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.cpp">

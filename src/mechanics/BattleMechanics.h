@@ -45,6 +45,7 @@ public:
         Pokemon &user, Pokemon &target, const int targets) const = 0;
     virtual bool attemptHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const = 0;
+    virtual int getRandomInt(const int lower, const int upper) const = 0;
     virtual ~BattleMechanics() { }
 protected:
     BattleMechanics() { }

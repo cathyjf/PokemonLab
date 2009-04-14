@@ -31,8 +31,8 @@
  *        function AwesomeEffect() { // AwesomeEffect constructor
  *            this.turns = 4;
  *        }
- *        AwesomeEffect.prototype = new StatusEffect(); // inherit the StatusEffect prototype
- *        AwesomeEffect.prototype.id = "AwesomeEffect";
+ *        // inherit the StatusEffect prototype
+ *        AwesomeEffect.prototype = new StatusEffect("AwesomeEffect");
  *        AwesomeEffect.prototype.tick = function() {
  *            subject.field.print(subject.name + " was struck down by God!");
  *            subject.hp -= 1000;
@@ -42,7 +42,9 @@
  *        target.addStatus(new AwesomeEffect());
  *
  */
-function StatusEffect() { }
+function StatusEffect(id) {
+    this.id = id;
+}
 
 /**
  * Some StatusEffect constants.
@@ -68,6 +70,7 @@ StatusEffect.prototype = {
     subject : null,                 // Subject (i.e. victim) of this status effect.
     lock : 0,                       // Special category of status effects, which cannot coexist.
 	state : StatusEffect.STATE_ACTIVE,
+    singleton : true,
 
     // Properties specific to each type of status effect
     name : "A Status Effect",       // English name of the effect

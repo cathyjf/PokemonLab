@@ -37,6 +37,7 @@ using namespace boost;
 namespace shoddybattle {
 
 struct BattleFieldImpl {
+    FieldObject *object;
     const BattleMechanics *mech;
     ScriptMachine *machine;
     ScriptContext *context;
@@ -48,7 +49,7 @@ struct BattleFieldImpl {
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     void getActivePokemon(vector<Pokemon::PTR> &);
-    bool speedComparator(Pokemon::PTR p1, Pokemon::PTR p2) {
+    bool speedComparator(Pokemon *p1, Pokemon *p2) {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
         if (s1 != s2) {
@@ -69,10 +70,14 @@ struct BattleFieldImpl {
     }
 };
 
+ScriptObject *BattleField::getObject() {
+    return m_impl->object;
+}
+
 /**
  * Sort a set of pokemon by speed.
  */
-void BattleField::sortBySpeed(std::vector<Pokemon::PTR> &pokemon) {
+void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
     sort(pokemon.begin(), pokemon.end(),
             boost::bind(&BattleFieldImpl::speedComparator, m_impl, _1, _2));
 }
@@ -194,6 +199,7 @@ BattleField::BattleField() {
 }
 
 BattleField::~BattleField() {
+    m_impl->context->removeRoot(m_impl->object);
     m_impl->machine->releaseContext(m_impl->context);
     delete m_impl;
 }
@@ -274,9 +280,8 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         if (turn->type == TT_MOVE) {
             MoveObject *move = p->getMove(turn->id);
             Pokemon *target = NULL;
-            const vector<int> &targets = turn->target.targets;
-            if (targets.size() == 1) { // exactly one target
-                int idx = targets[0];
+            int idx = turn->target;
+            if (idx != -1) { // exactly one target
                 int party = 0;
                 m_impl->decodeIndex(idx, party);
                 target = (*m_impl->active[party])[idx].pokemon.get();
@@ -296,23 +301,20 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         }
         
         if (turn->type == TT_MOVE) {
-            const vector<int> &idxes = turn->target.targets;
-            vector<Pokemon::PTR> targets;
-
-            for (vector<int>::const_iterator j = idxes.begin();
-                    j != idxes.end(); ++j) {
+            MoveObject *move = p->getMove(turn->id);
+            Pokemon *target = NULL;
+            if (move->getTargetClass(m_impl->context) == T_SINGLE) {
+                int idx = turn->target;
+                assert(idx != -1);
                 int party = 0;
-                int idx = *j;
                 m_impl->decodeIndex(idx, party);
-                Pokemon::PTR target = (*m_impl->active[party])[idx].pokemon;
-                if (!target->isFainted()) {
-                    targets.push_back(target);
+                Pokemon::PTR p = (*m_impl->active[party])[idx].pokemon;
+                if (!p->isFainted()) {
+                    target = p.get();
                 }
             }
-            sortBySpeed(targets);
-            MoveObject *move = p->getMove(turn->id);
-            p->executeMove(m_impl->context, move, targets);
-            
+
+            p->executeMove(m_impl->context, move, target);
         } else {
             // handle switch
         }
@@ -331,7 +333,7 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
             Pokemon::PTR p = slot.pokemon;
             if (p) {
                 p->getModifiers(m_impl->context,
-                        this, &user, &target, &obj, critical, mods);
+                        &user, &target, &obj, critical, mods);
             }
         }
     }
@@ -387,6 +389,7 @@ void BattleField::initialise(const BattleMechanics *mech,
         }
     }
     m_impl->context = m_impl->machine->acquireContext();
+    m_impl->object = m_impl->context->newFieldObject(this);
 }
 
 }

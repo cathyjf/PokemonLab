@@ -118,6 +118,12 @@ void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
     }
 }
 
+int JewelMechanics::getRandomInt(const int lower, const int upper) const {
+    boost::uniform_int<> range(lower, upper);
+    variate_generator<GENERATOR &, uniform_int<> > r(m_impl->rand, range);
+    return r();
+}
+
 /**
  * Calculate damage.
  */

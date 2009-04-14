@@ -72,10 +72,6 @@ private:
     const std::vector<std::string> m_args;
 };
 
-struct Target {
-    std::vector<int> targets;
-};
-
 enum TURN_TYPE {
     TT_MOVE = 0,
     TT_SWITCH = 1
@@ -84,16 +80,14 @@ enum TURN_TYPE {
 struct PokemonTurn {
     TURN_TYPE type;
     int id;         // either id of move or the pokemon to which to switch
-    Target target;  // target of the move
+    int target;  // target of the move
 
-    PokemonTurn(int target):
-            type(TT_SWITCH),
-            id(target) { }
+    PokemonTurn(const TURN_TYPE tt, const int idx, const int ta = -1):
+            type(tt),
+            id(idx),
+            target(ta) {
 
-    PokemonTurn(int move, Target target):
-            type(TT_MOVE),
-            id(move),
-            target(target) { }
+    }
 };
 
 struct PokemonSlot {
@@ -111,6 +105,9 @@ public:
     }
     const STATUSES &getEffects() const {
         return m_effects;
+    }
+    int getSize() const {
+        return m_size;
     }
 private:
     const int m_size;
@@ -157,7 +154,7 @@ public:
     /**
      * Sort a set of pokemon by speed.
      */
-    void sortBySpeed(std::vector<Pokemon::PTR> &pokemon);
+    void sortBySpeed(std::vector<Pokemon *> &pokemon);
 
     /**
      * Get the active pokemon.
@@ -187,7 +184,7 @@ public:
 
     ScriptContext *getContext();
 
-    ScriptObject *getObject() { return NULL; }
+    ScriptObject *getObject();
 
 private:
     BattleFieldImpl *m_impl;

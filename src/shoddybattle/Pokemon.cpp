@@ -35,6 +35,7 @@
 
 using namespace shoddybattle;
 using namespace std;
+using namespace boost;
 
 namespace shoddybattle {
 
@@ -124,52 +125,150 @@ bool Pokemon::vetoExecution(ScriptContext *cx,
 }
 
 /**
+ * Get a status effect by ID.
+ */
+StatusObject *Pokemon::getStatus(ScriptContext *cx, const string id) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if ((*i)->isRemovable(cx))
+            continue;
+
+        if ((*i)->getId(cx) == id)
+            return *i;
+    }
+    return NULL;
+}
+
+/**
+ * Execute an arbitrary move on a particular target.
+ */
+bool Pokemon::useMove(ScriptContext *cx, MoveObject *move,
+        Pokemon *target, const int targets) {
+    if (m_field->vetoExecution(this, target, move)) {
+        // vetoed for this target
+        return false;
+    }
+    if (move->attemptHit(cx, m_field, this, target)) {
+        move->use(cx, m_field, this, target, targets);
+    } else {
+        vector<string> args;
+        args.push_back(getName());
+        args.push_back(target->getName());
+        TextMessage msg(4, 2, args); // attack missed
+        m_field->print(msg);
+    }
+    return true;
+}
+
+/**
  * Execute an arbitrary move on a set of targets.
  */
 bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
-        vector<PTR> &targets) {
+        Pokemon *target) {
 
     // TODO: check for immobilisation
-
-    cout << getName() << " used " << move->getName(cx) << "!" << endl;
 
     if (m_field->vetoExecution(this, NULL, move)) {
         // vetoed
         return false;
     }
+    
+    cout << getName() << " used " << move->getName(cx) << "!" << endl;
 
     if (move->getFlag(cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;
         return false;
     }
 
-    int targetCount = targets.size();
-    if (targetCount == 0) {
-        m_field->print(TextMessage(4, 3, vector<string>())); // no target
-        return false;
+    TARGET mc = move->getTargetClass(cx);
+
+    shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
+
+    if ((mc == T_USER) || (mc == T_ALLY) || (mc == T_ALLIES)) {
+        move->use(cx, m_field, this, NULL, 0);
+        return true;
     }
 
-    for (vector<PTR>::iterator i = targets.begin();
-            i != targets.end(); ++i) {
-        PTR target = *i;
-        Pokemon *t = target.get();
-        if (m_field->vetoExecution(this, t, move)) {
-            // vetoed for this target
-            continue;
+    // ALLY, ALLIES
+    
+    // Build a list of targets.
+    vector<Pokemon *> targets;
+    if (mc == T_SINGLE) {
+        targets.push_back(target);
+    } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
+        PokemonParty &party = *active[1 - m_party].get();
+        for (int i = 0; i < party.getSize(); ++i) {
+            PTR p = party[i].pokemon;
+            if (p && !p->isFainted()) {
+                targets.push_back(p.get());
+            }
         }
-        if (move->attemptHit(cx, m_field, this, t)) {
-            move->use(cx, m_field, this, t, targetCount);
-            if (target->isFainted()) {
+        m_field->sortBySpeed(targets);
+    } else if (mc == T_RANDOM_ENEMY) {
+        // build a list of all possible targets
+        vector<PTR> intermediate;
+        PokemonParty &party = *active[1 - m_party].get();
+        for (int i = 0; i < party.getSize(); ++i) {
+            PTR p = party[i].pokemon;
+            if (p && !p->isFainted()) {
+                intermediate.push_back(p);
+            }
+        }
+
+        if (!intermediate.empty()) {
+            const int r = m_field->getMechanics()->getRandomInt(
+                    0, intermediate.size() - 1);
+            targets.push_back(intermediate[r].get());
+        }
+    } else if (mc == T_LAST_ENEMY) {
+        // TODO
+    } else if (mc == T_OTHERS) {
+        for (int i = 0; i < 2; ++i) {
+            PokemonParty &party = *active[i].get();
+            for (int j = 0; j < party.getSize(); ++j) {
+                PTR p = party[j].pokemon;
+                if (p && !p->isFainted() && (p.get() != this)) {
+                    targets.push_back(p.get());
+                }
+            }
+        }
+        m_field->sortBySpeed(targets);
+    } else if (mc == T_ALL) {
+        for (int i = 0; i < 2; ++i) {
+            PokemonParty &party = *active[i].get();
+            for (int j = 0; j < party.getSize(); ++j) {
+                PTR p = party[j].pokemon;
+                if (p && !p->isFainted()) {
+                    targets.push_back(p.get());
+                }
+            }
+        }
+        m_field->sortBySpeed(targets);
+    }
+
+    int targetCount = targets.size();
+    if (targetCount == 0) {
+        m_field->print(TextMessage(4, 3)); // no target
+        return true;
+    }
+
+    for (vector<Pokemon *>::iterator i = targets.begin();
+            i != targets.end(); ++i) {
+        (*i)->informTargeted(cx, this, move);
+    }
+
+    if (isEnemyTarget(mc)) {
+        for (vector<Pokemon *>::iterator i = targets.begin();
+                i != targets.end(); ++i) {
+            useMove(cx, move, *i, targetCount);
+            if ((*i)->isFainted()) {
                 --targetCount;
             }
-        } else {
-            vector<string> args;
-            args.push_back(getName());
-            args.push_back(target->getName());
-            TextMessage msg(4, 2, args); // attack missed
-            m_field->print(msg);
         }
+    } else {
+        // no target as such
+        move->use(cx, m_field, this, NULL, 0);
     }
+
     return true;
 }
 
@@ -182,6 +281,7 @@ void Pokemon::removeStatuses(ScriptContext *cx) {
             continue;
 
         // this is a list so it is safe to remove an arbitrary element
+        cx->removeRoot(*i);
         m_effects.erase(i);
     }
 }
@@ -194,6 +294,13 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
         Pokemon *inducer, StatusObject *effect) {
     if (!effect)
         return NULL;
+
+    if (effect->isSingleton(cx)) {
+        StatusObject *singleton = getStatus(cx, effect->getId(cx));
+        if (singleton)
+            return singleton;
+    }
+    
     // TODO: implement properly
 
     StatusObject *applied = effect->cloneAndRoot(cx);
@@ -245,14 +352,14 @@ int Pokemon::getInherentPriority(ScriptContext *cx) const {
 /**
  * Check for stat modifiers on all status effects.
  */
-void Pokemon::getStatModifiers(ScriptContext *cx, BattleField *field,
+void Pokemon::getStatModifiers(ScriptContext *cx,
         STAT stat, Pokemon *subject, PRIORITY_MAP &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
         if (!(*i)->isActive(cx))
             continue;
 
-        if ((*i)->getStatModifier(cx, field, stat, subject, mod)) {
+        if ((*i)->getStatModifier(cx, m_field, stat, subject, mod)) {
             // position unused
             mods[mod.priority] = mod.value;
         }
@@ -262,7 +369,7 @@ void Pokemon::getStatModifiers(ScriptContext *cx, BattleField *field,
 /**
  * Check for modifiers on all status effects.
  */
-void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
+void Pokemon::getModifiers(ScriptContext *cx,
         Pokemon *user, Pokemon *target,
         MoveObject *obj, const bool critical, MODIFIERS &mods) {
     MODIFIER mod;
@@ -270,7 +377,7 @@ void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
         if (!(*i)->isActive(cx))
             continue;
 
-        if ((*i)->getModifier(cx, field, user, target, obj, critical, mod)) {
+        if ((*i)->getModifier(cx, m_field, user, target, obj, critical, mod)) {
             mods[mod.position][mod.priority] = mod.value;
         }
     }
@@ -280,8 +387,11 @@ void Pokemon::getModifiers(ScriptContext *cx, BattleField *field,
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
-void Pokemon::setHp(const int hp) {
+void Pokemon::setHp(const int hp, const bool indirect) {
     // TODO: implement this function properly
+    if (m_fainted) {
+        return;
+    }
     const int delta = m_hp - hp;
     m_hp = hp;
     m_field->informHealthChange(this, delta);
@@ -289,6 +399,13 @@ void Pokemon::setHp(const int hp) {
         m_field->informFainted(this);
         m_fainted = true;
     }
+}
+
+/**
+ * Inform that this pokemon was targeted by a move.
+ */
+void Pokemon::informTargeted(ScriptContext *, Pokemon *, MoveObject *) {
+    // TODO: implement this function
 }
 
 void Pokemon::initialise(BattleField *field, const int party, const int j) {

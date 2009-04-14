@@ -48,6 +48,14 @@ enum TARGET {
     T_ALL,
 };
 
+inline bool isEnemyTarget(const TARGET t) {
+    return ((t == T_SINGLE) ||
+            (t == T_ENEMIES) ||
+            (t == T_RANDOM_ENEMY) ||
+            (t == T_LAST_ENEMY) ||
+            (t == T_OTHERS));
+}
+
 enum MOVE_CLASS {
     MC_PHYSICAL,
     MC_SPECIAL,

@@ -47,6 +47,7 @@ public:
             Pokemon &user, Pokemon &target) const;
     bool attemptHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const;
+    int getRandomInt(const int lower, const int upper) const;
 private:
     JewelMechanicsImpl *m_impl;
 };

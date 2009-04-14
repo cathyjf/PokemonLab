@@ -124,6 +124,11 @@ public:
     PokemonObject(void *p = NULL): ScriptObject(p) { }
 };
 
+class FieldObject : public ScriptObject {
+public:
+    FieldObject(void *p): ScriptObject(p) { }
+};
+
 struct MODIFIER {
     int position;
     double value;
@@ -182,6 +187,7 @@ public:
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
     int getTier(ScriptContext *) const;
+    bool isSingleton(ScriptContext *) const;
     ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
     int getInherentPriority(ScriptContext *);
     int getCriticalModifier(ScriptContext *);
@@ -227,6 +233,11 @@ public:
      * Create a new MoveObject from the given MoveTemplate.
      */
     MoveObject *newMoveObject(const MoveTemplate *p);
+
+    /**
+     * Create a new FieldObject for the given BattleField.
+     */
+    FieldObject *newFieldObject(BattleField *field);
 
     void addRoot(ScriptObject *obj);
     void removeRoot(ScriptObject *obj);
