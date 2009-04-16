@@ -1825,13 +1825,7 @@
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Rage" id="98">
@@ -3448,13 +3442,7 @@ user.execute(move);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Scary Face" id="183">
@@ -4622,13 +4610,7 @@ user.execute(move);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Ancientpower" id="245">
@@ -7815,13 +7797,7 @@ print(status.inducer.name);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Focus Blast" id="410">
@@ -7974,13 +7950,7 @@ print(status.inducer.name);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Avalanche" id="418">
@@ -8017,13 +7987,7 @@ print(status.inducer.name);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Shadow Claw" id="420">
@@ -8672,13 +8636,7 @@ print(status.inducer.name);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Attack Order" id="453">

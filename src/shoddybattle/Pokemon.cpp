@@ -22,10 +22,8 @@
  * online at http://gnu.org.
  */
 
-#include <list>
-
-
 #include <iostream>
+#include <list>
 
 #include "Pokemon.h"
 #include "PokemonSpecies.h"
@@ -229,6 +227,44 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
 }
 
 /**
+ * Remove one of this pokemon's memories, perhaps due to a pokemon leaving
+ * the field.
+ */
+void Pokemon::removeMemory(Pokemon *pokemon) {
+    RECENT_MOVE entry = { pokemon, NULL };
+    m_memory.remove(entry);
+}
+
+/**
+ * Set one of this pokemon's moves to a different move.
+ */
+void Pokemon::setMove(const int i, MoveObject *move) {
+    if (m_moves.size() <= i) {
+        m_moves.resize(i + 1, NULL);
+    }
+    MoveObject *p = m_moves[i];
+    if (p) {
+        ScriptContext *cx = m_field->getContext();
+        cx->removeRoot(p);
+    }
+    m_moves[i] = move;
+}
+
+/**
+ * Set one of this pokemon's moves to a different move, by name. This
+ * function will probably only be used for testing, as actual logic is more
+ * likely to be use the MoveObject * version above.
+ */
+void Pokemon::setMove(const int i, const string &name) {
+    ScriptContext *cx = m_field->getContext();
+    MoveDatabase *moves = m_machine->getMoveDatabase();
+    const MoveTemplate *tpl = moves->getMove(name);
+    assert(tpl);
+    MoveObject *move = cx->newMoveObject(tpl);
+    setMove(i, move);
+}
+
+/**
  * Remove defunct statuses from this pokemon.
  */
 void Pokemon::removeStatuses(ScriptContext *cx) {
@@ -240,6 +276,16 @@ void Pokemon::removeStatuses(ScriptContext *cx) {
         cx->removeRoot(*i);
         m_effects.erase(i);
     }
+}
+
+/**
+ * Return whether the pokemon has the specified ability.
+ */
+bool Pokemon::hasAbility(const string &name) {
+    if (m_ability == NULL)
+        return false;
+    ScriptContext *cx = m_field->getContext();
+    return (m_ability->getId(cx) == name);
 }
 
 /**
@@ -271,6 +317,14 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
 
     m_effects.push_back(applied);
     return applied;
+}
+
+/**
+ * Remove a StatusEffect from this pokemon.
+ */
+void Pokemon::removeStatus(ScriptContext *scx, StatusObject *status) {
+    status->unapplyEffect(scx);
+    status->dispose(scx);
 }
 
 /**

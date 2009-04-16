@@ -39,7 +39,7 @@ class MoveObject;
  */
 class BattleMechanics {
 public:
-    virtual bool getCoinFlip() const = 0;
+    virtual bool getCoinFlip(double = 0.5) const = 0;
     virtual unsigned int calculateStat(const Pokemon &p, const STAT i) const = 0;
     virtual int calculateDamage(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target, const int targets) const = 0;

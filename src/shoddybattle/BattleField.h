@@ -35,6 +35,12 @@ namespace shoddybattle {
 const int TEAM_COUNT = 2;
 const int MAX_TEAM_SIZE = 6;
 
+enum GENERATION {
+    GEN_DP,             // Diamond and Pearl
+    GEN_PLATINUM,       // Platinum
+    GEM_PLATINUM_FAKE   // Platinum + incorrect weather mechanics
+};
+
 class BattleFieldImpl;
 class PokemonSlotImpl;
 
@@ -136,6 +142,7 @@ public:
      * no equilvalent mode in the real game.
      */
     void initialise(const BattleMechanics *mech,
+            const GENERATION,
             ScriptMachine *machine,
             Pokemon::ARRAY teams[TEAM_COUNT],
             const int activeParty);
@@ -160,6 +167,9 @@ public:
      * Get the active pokemon.
      */
     boost::shared_ptr<PokemonParty> *getActivePokemon();
+    Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
+        return (*getActivePokemon()[i])[j].pokemon;
+    }
 
     /**
      * Get a random single target from a particular target.
@@ -196,6 +206,8 @@ public:
     ScriptContext *getContext();
 
     ScriptObject *getObject();
+
+    GENERATION getGeneration() const;
 
 private:
     BattleFieldImpl *m_impl;

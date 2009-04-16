@@ -39,7 +39,7 @@ class JewelMechanics : public BattleMechanics {
 public:
     JewelMechanics();
     ~JewelMechanics();
-    bool getCoinFlip() const;
+    bool getCoinFlip(double) const;
     unsigned int calculateStat(const Pokemon &p, const STAT i) const;
     int calculateDamage(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target, const int targets) const;

@@ -80,8 +80,8 @@ unsigned int JewelMechanics::calculateStat(
     return (int)((common + 5) * p.getNature()->getEffect(i));
 }
 
-bool JewelMechanics::getCoinFlip() const {
-    bernoulli_distribution<> dist;
+bool JewelMechanics::getCoinFlip(double p) const {
+    bernoulli_distribution<> dist(p);
     variate_generator<GENERATOR &, bernoulli_distribution<> >
             coin(m_impl->rand, dist);
     return coin();

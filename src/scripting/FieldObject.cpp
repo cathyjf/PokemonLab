@@ -38,6 +38,84 @@ namespace shoddybattle {
 
 namespace {
 
+/**
+ *      field.random(lower, upper)
+ *          Generate a random integer in the range [lower, upper], distributed
+ *          according to a uniform distribution.
+ *
+ *      field.random(chance)
+ *          Return a boolean with the given chance of being true.
+ *
+ */
+JSBool random(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    const BattleMechanics *mech = p->getMechanics();
+
+    if (argc >= 2) {
+        int lower = 0, upper = 0;
+        JS_ConvertArguments(cx, 2, argv, "ii", &lower, &upper);
+        *ret = INT_TO_JSVAL(mech->getRandomInt(lower, upper));
+    } else if (argc == 1) {
+        jsdouble p = 0.0;
+        JS_ConvertArguments(cx, 1, argv, "d", &p);
+        *ret = BOOLEAN_TO_JSVAL(mech->getCoinFlip(p));
+    }
+
+    return JS_TRUE;
+}
+
+JSBool getMove(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    MoveDatabase *moves = p->getScriptMachine()->getMoveDatabase();
+    const MoveTemplate *tpl = moves->getMove(str);
+    if (tpl) {
+        MoveObject *move = scx->newMoveObject(tpl);
+        *ret = OBJECT_TO_JSVAL(move->getObject());
+        scx->removeRoot(move);
+    } else {
+        *ret = JSVAL_NULL;
+    }
+
+    return JS_TRUE;
+}
+
+JSBool print(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    assert(JSVAL_IS_OBJECT(v));
+    JSObject *arr = JSVAL_TO_OBJECT(v);
+    jsuint length = 0;
+    JS_GetArrayLength(cx, arr, &length);
+    jsval msg0, msg1;
+    JS_GetElement(cx, arr, 0, &msg0);
+    JS_GetElement(cx, arr, 1, &msg1);
+    int category = 0, msg = 0;
+    category = JSVAL_TO_INT(msg0);
+    msg = JSVAL_TO_INT(msg1);
+    vector<string> args;
+    int count = length - 2;
+    args.reserve(count);
+    for (int i = 2; i < count; ++i) {
+        JSString *str = JS_ValueToString(cx, argv[i]);
+        char *pstr = JS_GetStringBytes(str);
+        args.push_back(pstr);
+    }
+
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    p->print(TextMessage(category, msg, args));
+
+    return JS_TRUE;
+}
+
 JSBool attemptHit(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
@@ -92,6 +170,9 @@ JSPropertySpec fieldProperties[] = {
 JSFunctionSpec fieldFunctions[] = {
     JS_FS("calculate", calculate, 4, 0, 0),
     JS_FS("attemptHit", attemptHit, 3, 0, 0),
+    JS_FS("random", random, 1, 0, 0),
+    JS_FS("getMove", getMove, 1, 0, 0),
+    JS_FS("print", print, 1, 0, 0),
     JS_FS_END
 };
 

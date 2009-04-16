@@ -23,5 +23,47 @@
  */
 
 /**
+ * Sleep
+ *
+ * For 1-4 turns, the afflicted pokemon is prevented from using a move other
+ * than Sleep Talk or Snore. If the afflicted pokemon has the Early Bird
+ * ability than each turn deducts two turns from the counter rather than
+ * one.
  */
+function SleepEffect() { }
+SleepEffect.prototype = new StatusEffect("SleepEffect");
+SleepEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
+SleepEffect.prototype.name = Text.status_effects_sleep(0);
+SleepEffect.prototype.switchOut = function() { return false; };
+SleepEffect.prototype.applyEffect = function() {
+    var field = this.subject.field;
+    this.turns = field.random(1, 4); // random duration
+    field.print(Text.status_effects_sleep(1, this.subject.name));
+    return true;
+};
+SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
+    if (user != this.subject)
+        return false;
+    // Only handle the "overall veto", not target specific.
+    if (target != null)
+        return false;
+    --this.turns;
+    if (user.hasAbility("Early Bird")) { // this is really a part of Sleep
+        --this.turns;
+    }
+    if (this.turns <= 0) {
+        user.removeStatus(this);
+        field.print(Text.status_effects_sleep(2, user.name));
+        return false;
+    }
+
+    // Sleep Talk and Snore are not vetoed by Sleep.
+    var name = move.name;
+    if ((name == "Sleep Talk") || (name == "Snore"))
+        return false;
+
+    field.print(Text.status_effects_sleep(3, user.name))
+    return true;
+};
+
 

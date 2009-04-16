@@ -207,6 +207,14 @@ void StatusObject::setInducer(ScriptContext *scx, Pokemon *p) {
     JS_EndRequest(cx);
 }
 
+void StatusObject::setState(ScriptContext *scx, const int state) {
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    jsval val = INT_TO_JSVAL(state);
+    JS_SetProperty(cx, (JSObject *)m_p, "state", &val);
+    JS_EndRequest(cx);
+}
+
 Pokemon *StatusObject::getSubject(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;

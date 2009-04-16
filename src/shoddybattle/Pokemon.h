@@ -99,15 +99,18 @@ public:
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
     const MoveTemplate *getMemory() const;
     Pokemon *getMemoryPokemon() const;
+    void removeMemory(Pokemon *);
     
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
+    void removeStatus(ScriptContext *, StatusObject *);
     StatusObject *getStatus(ScriptContext *, const std::string);
     void getModifiers(ScriptContext *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(ScriptContext *,
             STAT, Pokemon *, PRIORITY_MAP &);
     void removeStatuses(ScriptContext *);
+    bool hasAbility(const std::string &);
 
     int transformHealthChange(ScriptContext *, int, bool) const;
     
@@ -130,12 +133,16 @@ public:
     bool isShiny() const { return m_shiny; }
 
     ScriptObject *getObject() { return (ScriptObject *)m_object; }
+    BattleField *getField() { return m_field; }
 
     MoveObject *getMove(const int i) {
         if (m_moves.size() <= i)
             return NULL;
         return m_moves[i];
     }
+
+    void setMove(const int, const std::string &);
+    void setMove(const int, MoveObject *);
 
     int getMoveCount() const { return m_moves.size(); }
 
@@ -169,6 +176,9 @@ private:
     struct RECENT_MOVE {
         Pokemon *user;
         const MoveTemplate *move;
+        bool operator==(const RECENT_MOVE &rhs) const {
+            return user == rhs.user;
+        }
     };
 
     std::list<RECENT_MOVE> m_memory;

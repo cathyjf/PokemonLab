@@ -32,6 +32,7 @@
 
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"
+#include "../shoddybattle/BattleField.h"
 
 #include <iostream>
 
@@ -54,7 +55,8 @@ enum POKEMON_TINYID {
     PTI_TYPES,
     PTI_PPUPS,
     PTI_GENDER,
-    PTI_MEMORY
+    PTI_MEMORY,
+    PTI_FIELD
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -73,6 +75,32 @@ JSBool applyStatus(JSContext *cx,
             *ret = OBJECT_TO_JSVAL(objret->getObject());
         }
     }
+    return JS_TRUE;
+}
+
+JSBool removeStatus(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    *ret = JSVAL_NULL;
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    jsval v = argv[0];
+    assert(JSVAL_IS_OBJECT(v));
+    StatusObject status(JSVAL_TO_OBJECT(v));
+    p->removeStatus(scx, &status);
+    return JS_TRUE;
+}
+
+JSBool hasAbility(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    *ret = BOOLEAN_TO_JSVAL(p->hasAbility(str));
+
     return JS_TRUE;
 }
 
@@ -185,7 +213,11 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             } else {
                 *vp = JSVAL_NULL;
             }
-        }
+        } break;
+        
+        case PTI_FIELD: {
+            *vp = OBJECT_TO_JSVAL(p->getField()->getObject()->getObject());
+        } break;
     }
     return JS_TRUE;
 }
@@ -204,12 +236,15 @@ JSPropertySpec pokemonProperties[] = {
     { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
 JSFunctionSpec pokemonFunctions[] = {
     JS_FS("applyStatus", applyStatus, 2, 0, 0),
     JS_FS("execute", execute, 3, 0, 0),
+    JS_FS("hasAbility", hasAbility, 1, 0, 0),
+    JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS_END
 };
 

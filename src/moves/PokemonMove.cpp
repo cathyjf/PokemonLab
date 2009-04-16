@@ -377,11 +377,11 @@ using namespace shoddybattle;
 int main() {
     ScriptMachine machine;
     ScriptContext *cx = machine.acquireContext();
+    cx->runFile("resources/main.js");
     cx->runFile("resources/types.js");
     cx->runFile("resources/StatusEffect.js");
     cx->runFile("resources/statuses.js");
     cx->runFile("resources/abilities.js");
-    cx->runFile("resources/main.js");
     machine.releaseContext(cx);
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
@@ -393,7 +393,10 @@ int main() {
 
     BattleField field;
     JewelMechanics mechanics;
-    field.initialise(&mechanics, &machine, team, 2);
+    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, 2);
+
+    Pokemon::PTR p = field.getActivePokemon(0, 1);
+    p->setMove(0, "Quick Attack");
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));

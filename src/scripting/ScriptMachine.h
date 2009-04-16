@@ -175,11 +175,15 @@ public:
 
     // State.
     int getState(ScriptContext *) const;
+    void setState(ScriptContext *, const int);
     bool isActive(ScriptContext *cx) const {
         return getState(cx) == STATE_ACTIVE;
     }
     bool isRemovable(ScriptContext *cx) const {
         return getState(cx) == STATE_REMOVABLE;
+    }
+    void dispose(ScriptContext *cx) {
+        setState(cx, STATE_REMOVABLE);
     }
     
     // Basic properties.

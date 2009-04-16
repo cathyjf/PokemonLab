@@ -39,6 +39,7 @@ namespace shoddybattle {
 struct BattleFieldImpl {
     FieldObject *object;
     const BattleMechanics *mech;
+    GENERATION generation;
     ScriptMachine *machine;
     ScriptContext *context;
     Pokemon::ARRAY teams[TEAM_COUNT];
@@ -69,6 +70,10 @@ struct BattleFieldImpl {
         }
     }
 };
+
+GENERATION BattleField::getGeneration() const {
+    return m_impl->generation;
+}
 
 ScriptObject *BattleField::getObject() {
     return m_impl->object;
@@ -424,6 +429,7 @@ ScriptContext *BattleField::getContext() {
 }
 
 void BattleField::initialise(const BattleMechanics *mech,
+        GENERATION generation,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
         const int activeParty) {
@@ -434,6 +440,7 @@ void BattleField::initialise(const BattleMechanics *mech,
         throw BattleFieldException();
     }
     m_impl->mech = mech;
+    m_impl->generation = generation;
     m_impl->machine = machine;
     m_impl->partySize = activeParty;
     m_impl->descendingSpeed = true;

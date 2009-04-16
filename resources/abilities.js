@@ -42,7 +42,7 @@ ability.vetoExecution = function(field, user, target, move) {
 };
 
 // This is just a test.
-ability = new Ability("Own Tempo");
+/**ability = new Ability("Own Tempo");
 ability.modifier = function(field, user, target, move, critical) {
     // make normal attacks by the ability holder 100 times as strong
     if (user != this.subject)
@@ -54,6 +54,6 @@ ability.modifier = function(field, user, target, move, critical) {
 ability.transformHealthChange = function(hp, indirect) {
     // all health changes to the subject take off exactly 10/48 of max hp
     return parseInt(this.subject.stat[0] / 48 * 10);
-}
+}**/
 
 
