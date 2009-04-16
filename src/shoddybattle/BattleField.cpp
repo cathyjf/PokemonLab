@@ -132,10 +132,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
             targets.push_back(rand);
         }
     } else if (mc == T_LAST_ENEMY) {
-        Pokemon *last = user->getMemoryPokemon();
-        if (last) {
-            targets.push_back(last);
-        }
+        targets.push_back(user->getMemoryPokemon());
     } else if (mc == T_OTHERS) {
         for (int i = 0; i < 2; ++i) {
             PokemonParty &party = *active[i].get();

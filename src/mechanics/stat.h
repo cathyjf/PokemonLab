@@ -69,8 +69,8 @@ inline bool isEnemyTarget(const TARGET t) {
     return ((t == T_SINGLE) ||
             (t == T_ENEMIES) ||
             (t == T_RANDOM_ENEMY) ||
-            (t == T_LAST_ENEMY) ||
             (t == T_OTHERS));
+    // T_LAST_ENEMY intentionally omitted
 }
 
 class StatException {

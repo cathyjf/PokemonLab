@@ -194,6 +194,11 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     vector<Pokemon *> targets;
     m_field->getTargetList(tc, targets, this, target);
 
+    if (tc == T_LAST_ENEMY) {
+        move->use(cx, m_field, this, targets[0], 0);
+        return true;
+    }
+
     int targetCount = targets.size();
     if (targetCount == 0) {
         m_field->print(TextMessage(4, 3)); // no target
