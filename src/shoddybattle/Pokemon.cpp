@@ -22,6 +22,9 @@
  * online at http://gnu.org.
  */
 
+#include <list>
+
+
 #include <iostream>
 
 #include "Pokemon.h"
@@ -165,10 +168,9 @@ bool Pokemon::useMove(ScriptContext *cx, MoveObject *move,
  * Execute an arbitrary move on a set of targets.
  */
 bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
-        Pokemon *target) {
+        Pokemon *target, bool inform) {
 
-    // TODO: check for immobilisation
-
+    // TODO: research if this should be inside an inform check
     if (m_field->vetoExecution(this, NULL, move)) {
         // vetoed
         return false;
@@ -181,69 +183,16 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         return false;
     }
 
-    TARGET mc = move->getTargetClass(cx);
+    TARGET tc = move->getTargetClass(cx);
 
-    shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
-
-    if ((mc == T_USER) || (mc == T_ALLY) || (mc == T_ALLIES)) {
+    if ((tc == T_USER) || (tc == T_ALLY) || (tc == T_ALLIES)) {
         move->use(cx, m_field, this, NULL, 0);
         return true;
     }
     
     // Build a list of targets.
     vector<Pokemon *> targets;
-    if (mc == T_SINGLE) {
-        targets.push_back(target);
-    } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
-        PokemonParty &party = *active[1 - m_party].get();
-        for (int i = 0; i < party.getSize(); ++i) {
-            PTR p = party[i].pokemon;
-            if (p && !p->isFainted()) {
-                targets.push_back(p.get());
-            }
-        }
-        m_field->sortBySpeed(targets);
-    } else if (mc == T_RANDOM_ENEMY) {
-        // build a list of all possible targets
-        vector<PTR> intermediate;
-        PokemonParty &party = *active[1 - m_party].get();
-        for (int i = 0; i < party.getSize(); ++i) {
-            PTR p = party[i].pokemon;
-            if (p && !p->isFainted()) {
-                intermediate.push_back(p);
-            }
-        }
-
-        if (!intermediate.empty()) {
-            const int r = m_field->getMechanics()->getRandomInt(
-                    0, intermediate.size() - 1);
-            targets.push_back(intermediate[r].get());
-        }
-    } else if (mc == T_LAST_ENEMY) {
-        // TODO
-    } else if (mc == T_OTHERS) {
-        for (int i = 0; i < 2; ++i) {
-            PokemonParty &party = *active[i].get();
-            for (int j = 0; j < party.getSize(); ++j) {
-                PTR p = party[j].pokemon;
-                if (p && !p->isFainted() && (p.get() != this)) {
-                    targets.push_back(p.get());
-                }
-            }
-        }
-        m_field->sortBySpeed(targets);
-    } else if (mc == T_ALL) {
-        for (int i = 0; i < 2; ++i) {
-            PokemonParty &party = *active[i].get();
-            for (int j = 0; j < party.getSize(); ++j) {
-                PTR p = party[j].pokemon;
-                if (p && !p->isFainted()) {
-                    targets.push_back(p.get());
-                }
-            }
-        }
-        m_field->sortBySpeed(targets);
-    }
+    m_field->getTargetList(tc, targets, this, target);
 
     int targetCount = targets.size();
     if (targetCount == 0) {
@@ -251,12 +200,14 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         return true;
     }
 
-    for (vector<Pokemon *>::iterator i = targets.begin();
-            i != targets.end(); ++i) {
-        (*i)->informTargeted(cx, this, move);
+    if (inform) {
+        for (vector<Pokemon *>::iterator i = targets.begin();
+                i != targets.end(); ++i) {
+            (*i)->informTargeted(cx, this, move);
+        }
     }
 
-    if (isEnemyTarget(mc)) {
+    if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
             useMove(cx, move, *i, targetCount);
@@ -419,10 +370,46 @@ void Pokemon::setHp(ScriptContext *cx, const int hp, const bool indirect) {
 }
 
 /**
+ * Get the last pokemon that targeted this pokemon with a move.
+ */
+Pokemon *Pokemon::getMemoryPokemon() const {
+    if (m_memory.empty())
+        return NULL;
+    return m_memory.back().user;
+}
+
+/**
+ * Get this pokemon's memory of a move that targeted it.
+ */
+const MoveTemplate *Pokemon::getMemory() const {
+    if (m_memory.empty())
+        return NULL;
+    return m_memory.back().move;
+}
+
+/**
  * Inform that this pokemon was targeted by a move.
  */
-void Pokemon::informTargeted(ScriptContext *, Pokemon *, MoveObject *) {
-    // TODO: implement this function
+void Pokemon::informTargeted(ScriptContext *cx,
+        Pokemon *user, MoveObject *move) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        (*i)->informTargeted(cx, user, move);
+    }
+
+    if (move->getFlag(cx, F_MEMORABLE)) {
+        list<RECENT_MOVE>::iterator i = m_memory.begin();
+        for (; i != m_memory.end(); ++i) {
+            if (i->user == user) {
+                m_memory.erase(i);
+                break;
+            }
+        }
+        const RECENT_MOVE entry = { user, move->getTemplate() };
+        m_memory.push_back(entry);
+    }
 }
 
 void Pokemon::initialise(BattleField *field, const int party, const int j) {

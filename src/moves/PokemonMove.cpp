@@ -44,13 +44,12 @@ namespace shoddybattle {
 
 class MoveTemplateImpl {
 public:
-    MoveTemplateImpl() {
+    MoveTemplateImpl(): targetClass(targetClass) {
         initFunction = NULL;
         useFunction = NULL;
         attemptHit = NULL;
         power = 0;
         moveClass = MC_PHYSICAL;
-        targetClass = T_SINGLE;
         pp = 0;
         priority = 0;
         flags = 0;
@@ -195,7 +194,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         pMove->flags[F_FLINCH] = hasChildElement(node, "flinch");
         pMove->flags[F_REFLECT] = hasChildElement(node, "reflect");
         pMove->flags[F_SNATCH] = hasChildElement(node, "snatch");
-        pMove->flags[F_MIRRORABLE] = hasChildElement(node, "mirrorable");
+        pMove->flags[F_MEMORABLE] = hasChildElement(node, "memorable");
         pMove->flags[F_HIGH_CRITICAL] = hasChildElement(node, "high-critical");
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
 
@@ -397,8 +396,8 @@ int main() {
     field.initialise(&mechanics, &machine, team, 2);
 
     vector<PokemonTurn> turns;
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 2, 2));
     turns.push_back(PokemonTurn(TT_MOVE, 3, 3));
 
@@ -407,6 +406,8 @@ int main() {
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
     cout << delta << " seconds to process the turn." << endl;
+
+    field.getContext()->gc();
 
     /**const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");
     vector<string> move;

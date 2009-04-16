@@ -26,6 +26,7 @@
 
 #include "JewelMechanics.h"
 #include "PokemonNature.h"
+#include "PokemonType.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/BattleField.h"
 #include "../moves/PokemonMove.h"
@@ -163,7 +164,6 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     multiplyBy(damage, 1, mods); // "Mod1" in X-Act's essay
     damage += 2;
     if (critical) {
-        field.print(TextMessage(4, 8));
         damage *= 2;
     }
     multiplyBy(damage, 2, mods); // "Mod2"
@@ -179,7 +179,32 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     damage *= stab;
 
-    // TODO: effectiveness
+    double effectiveness = 1.0;
+
+    const PokemonType *moveType = move.getType(cx);
+    const TYPE_ARRAY &types = target.getTypes();
+    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
+        const double factor = moveType->getMultiplier(**i);
+        damage *= factor;
+        effectiveness *= factor;
+    }
+
+    if (effectiveness == 0.0) {
+        vector<string> args;
+        args.push_back(target.getName());
+        field.print(TextMessage(4, 1, args));
+        return 0;
+    }
+
+    if (critical) {
+        field.print(TextMessage(4, 9));
+    }
+
+    if (effectiveness < 1.0) {
+        field.print(TextMessage(4, 8));
+    } else if (effectiveness > 1.0) {
+        field.print(TextMessage(4, 7));
+    }
 
     multiplyBy(damage, 3, mods); // "Mod3"
 

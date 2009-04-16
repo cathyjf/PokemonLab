@@ -39,6 +39,8 @@ using namespace std;
 
 namespace shoddybattle {
 
+namespace {
+
 enum POKEMON_TINYID {
     PTI_SPECIES,
     PTI_NAME,
@@ -52,6 +54,7 @@ enum POKEMON_TINYID {
     PTI_TYPES,
     PTI_PPUPS,
     PTI_GENDER,
+    PTI_MEMORY
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -70,6 +73,27 @@ JSBool applyStatus(JSContext *cx,
             *ret = OBJECT_TO_JSVAL(objret->getObject());
         }
     }
+    return JS_TRUE;
+}
+
+JSBool execute(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    bool inform = false;
+    if (argv[2] != JSVAL_VOID) {
+        assert(JSVAL_IS_BOOLEAN(argv[2]));
+        inform = JSVAL_TO_BOOLEAN(argv[2]);
+    }
+    assert(JSVAL_IS_OBJECT(argv[0]));
+    MoveObject move(JSVAL_TO_OBJECT(argv[0]));
+    Pokemon *target = NULL;
+    if (argv[1] != JSVAL_VOID) {
+        assert(JSVAL_IS_OBJECT(argv[1]));
+        JSObject *objp = JSVAL_TO_OBJECT(argv[1]);
+        target = (Pokemon *)JS_GetPrivate(cx, objp);
+    }
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    p->executeMove(scx, &move, target, inform);
     return JS_TRUE;
 }
 
@@ -150,11 +174,23 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_HP: {
             *vp = INT_TO_JSVAL(p->getHp());
         } break;
+
+        case PTI_MEMORY: {
+            const MoveTemplate *temp = p->getMemory();
+            if (temp) {
+                ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+                MoveObject *move = scx->newMoveObject(temp);
+                *vp = OBJECT_TO_JSVAL(move->getObject());
+                scx->removeRoot(move);
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        }
     }
     return JS_TRUE;
 }
 
-static JSPropertySpec pokemonProperties[] = {
+JSPropertySpec pokemonProperties[] = {
     { "addStatus", 0, JSPROP_PERMANENT, NULL, NULL },
     { "species", PTI_SPECIES, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "name", PTI_NAME, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
@@ -167,13 +203,17 @@ static JSPropertySpec pokemonProperties[] = {
     { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, PokemonSet },
     { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
-static JSFunctionSpec pokemonFunctions[] = {
+JSFunctionSpec pokemonFunctions[] = {
     JS_FS("applyStatus", applyStatus, 2, 0, 0),
+    JS_FS("execute", execute, 3, 0, 0),
     JS_FS_END
 };
+
+} // anonymous namespace
 
 PokemonObject *ScriptContext::newPokemonObject(Pokemon *p) {
     JSContext *cx = (JSContext *)m_p;

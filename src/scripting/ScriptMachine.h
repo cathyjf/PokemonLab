@@ -137,7 +137,10 @@ struct MODIFIER {
 
 class MoveObject : public ScriptObject {
 public:
-    MoveObject(void *p = NULL): ScriptObject(p) { }
+    MoveObject(void *p, const MoveTemplate *temp = NULL):
+            ScriptObject(p), m_template(temp) { }
+
+    const MoveTemplate *getTemplate() const { return m_template; }
 
     std::string getName(ScriptContext *) const;
     MOVE_CLASS getMoveClass(ScriptContext *) const;
@@ -151,6 +154,8 @@ public:
     double getAccuracy(ScriptContext *) const;
     const PokemonType *getType(ScriptContext *) const;
     bool getFlag(ScriptContext *, const MOVE_FLAG flag) const;
+private:
+    const MoveTemplate *m_template;
 };
 
 class ScriptFunction : public ScriptObject {
@@ -197,7 +202,6 @@ public:
     void unapplyEffect(ScriptContext *);
     void switchIn(ScriptContext *);
     bool switchOut(ScriptContext *);
-    bool immobilises(ScriptContext *);
     void tick(ScriptContext *);
 
     // Transformers.
@@ -212,6 +216,7 @@ public:
     bool vetoSwitch(ScriptContext *, Pokemon *);
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
     bool transformHealthChange(ScriptContext *, int, bool, int *);
+    void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
     // TODO: transformMultiplier
 
 };

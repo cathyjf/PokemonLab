@@ -127,11 +127,6 @@ StatusEffect.prototype = {
 	// Unapply the effect.
 	unapplyEffect : function() { },
 
-    // Does this StatusEffect immobilise the subject?
-    immobilises : function() {
-        return false;
-    },
-
     // Called once each round if tier != -1.
     tick : function() { },
 
@@ -295,6 +290,15 @@ StatusEffect.prototype = {
 	informDamaged : null,
 
 	informLostItem : null,
+
+    /**
+     * Inform that the subject was the target of a move.
+     *
+     *      function(user, move) {
+     *
+     *      }
+     */
+    informTargeted : null,
 
 	/** bunch of other informs **/
 

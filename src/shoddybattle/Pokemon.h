@@ -91,11 +91,14 @@ public:
     int getInherentPriority(ScriptContext *) const;
     int getCriticalModifier(ScriptContext *) const;
 
-    bool executeMove(ScriptContext *, MoveObject *, Pokemon *target);
+    bool executeMove(ScriptContext *, MoveObject *,
+            Pokemon *target, bool inform = true);
     bool useMove(ScriptContext *, MoveObject *, Pokemon *, const int);
     bool vetoExecution(ScriptContext *, Pokemon *, Pokemon *, MoveObject *);
 
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
+    const MoveTemplate *getMemory() const;
+    Pokemon *getMemoryPokemon() const;
     
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
@@ -162,6 +165,13 @@ private:
     std::string m_nickname;
     std::string m_itemName;
     std::string m_abilityName;
+
+    struct RECENT_MOVE {
+        Pokemon *user;
+        const MoveTemplate *move;
+    };
+
+    std::list<RECENT_MOVE> m_memory;
 
     StatusObject *m_item;
     StatusObject *m_ability;

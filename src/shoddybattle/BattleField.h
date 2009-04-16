@@ -162,6 +162,17 @@ public:
     boost::shared_ptr<PokemonParty> *getActivePokemon();
 
     /**
+     * Get a random single target from a particular target.
+     */
+    Pokemon *getRandomTarget(const int party) const;
+
+    /**
+     * Get a list of targets for a move.
+     */
+    void getTargetList(TARGET, std::vector<Pokemon *> &,
+            Pokemon *, Pokemon *);
+
+    /**
      * Determine whether the execution of a move should be vetoed.
      */
     bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);

@@ -82,6 +82,85 @@ void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
             boost::bind(&BattleFieldImpl::speedComparator, m_impl, _1, _2));
 }
 
+/**
+ * Get a random target from a particular party.
+ */
+Pokemon *BattleField::getRandomTarget(const int partyIdx) const {
+    // build a list of all possible targets
+    vector<Pokemon::PTR> intermediate;
+    PokemonParty &party = *m_impl->active[partyIdx].get();
+    for (int i = 0; i < party.getSize(); ++i) {
+        Pokemon::PTR p = party[i].pokemon;
+        if (p && !p->isFainted()) {
+            intermediate.push_back(p);
+        }
+    }
+
+    if (intermediate.empty()) {
+        return NULL;
+    }
+
+    // choose one randomly
+    const int r = m_impl->mech->getRandomInt(
+            0, intermediate.size() - 1);
+    return intermediate[r].get();
+}
+
+/**
+ * Build a list of targets for a move.
+ */
+void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
+        Pokemon *user, Pokemon *target) {
+    shared_ptr<PokemonParty> *active = m_impl->active;
+    if (mc == T_SINGLE) {
+        if (target == NULL) {
+            target = getRandomTarget(1 - user->getParty());
+        }
+        targets.push_back(target);
+    } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
+        PokemonParty &party = *active[1 - user->getParty()].get();
+        for (int i = 0; i < party.getSize(); ++i) {
+            Pokemon::PTR p = party[i].pokemon;
+            if (p && !p->isFainted()) {
+                targets.push_back(p.get());
+            }
+        }
+        sortBySpeed(targets);
+    } else if (mc == T_RANDOM_ENEMY) {
+        Pokemon *rand = getRandomTarget(1 - user->getParty());
+        if (rand) {
+            targets.push_back(rand);
+        }
+    } else if (mc == T_LAST_ENEMY) {
+        Pokemon *last = user->getMemoryPokemon();
+        if (last) {
+            targets.push_back(last);
+        }
+    } else if (mc == T_OTHERS) {
+        for (int i = 0; i < 2; ++i) {
+            PokemonParty &party = *active[i].get();
+            for (int j = 0; j < party.getSize(); ++j) {
+                Pokemon::PTR p = party[j].pokemon;
+                if (p && !p->isFainted() && (p.get() != user)) {
+                    targets.push_back(p.get());
+                }
+            }
+        }
+        sortBySpeed(targets);
+    } else if (mc == T_ALL) {
+        for (int i = 0; i < 2; ++i) {
+            PokemonParty &party = *active[i].get();
+            for (int j = 0; j < party.getSize(); ++j) {
+                Pokemon::PTR p = party[j].pokemon;
+                if (p && !p->isFainted()) {
+                    targets.push_back(p.get());
+                }
+            }
+        }
+        sortBySpeed(targets);
+    }
+}
+
 shared_ptr<PokemonParty> *BattleField::getActivePokemon() {
     return m_impl->active;
 }

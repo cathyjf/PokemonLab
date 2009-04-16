@@ -100,7 +100,7 @@
 6: $1's attack missed!
 7: It's super effective!
 8: It's not very effective...
-8: A critical hit!
+9: A critical hit!
 
 [status-effects-burn]
 0: Burn

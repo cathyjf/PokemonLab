@@ -158,7 +158,7 @@ MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
-    MoveObject *ret = new MoveObject(obj);
+    MoveObject *ret = new MoveObject(obj, p);
     addRoot(ret);
     
     string name = p->getName();

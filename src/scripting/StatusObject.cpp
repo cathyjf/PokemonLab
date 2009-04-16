@@ -123,6 +123,14 @@ bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
     return v.getBool();
 }
 
+void StatusObject::informTargeted(ScriptContext *cx,
+        Pokemon *user, MoveObject *move) {
+    if (!cx->hasProperty(this, "informTargeted"))
+        return;
+    ScriptValue argv[] = { user, move };
+    cx->callFunctionByName(this, "informTargeted", 2, argv);
+}
+
 int StatusObject::getInherentPriority(ScriptContext *cx) {
     ScriptValue v = cx->callFunctionByName(this, "inherentPriority", 0, NULL);
     return v.getInt();
@@ -135,11 +143,6 @@ int StatusObject::getCriticalModifier(ScriptContext *cx) {
 
 void StatusObject::tick(ScriptContext *cx) {
     cx->callFunctionByName(this, "tick", 0, NULL);
-}
-
-bool StatusObject::immobilises(ScriptContext *cx) {
-    ScriptValue v = cx->callFunctionByName(this, "immobilises", 0, NULL);
-    return v.getBool();
 }
 
 void StatusObject::switchIn(ScriptContext *cx) {

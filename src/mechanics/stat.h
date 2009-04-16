@@ -52,6 +52,27 @@ enum STAT {
     S_NONE = -1
 };
 
+enum TARGET {
+    T_USER,
+    T_ALLY,
+    T_ALLIES,
+    T_SINGLE,
+    T_ENEMIES,
+    T_RANDOM_ENEMY,
+    T_LAST_ENEMY,
+    T_ENEMY_FIELD,
+    T_OTHERS,
+    T_ALL,
+};
+
+inline bool isEnemyTarget(const TARGET t) {
+    return ((t == T_SINGLE) ||
+            (t == T_ENEMIES) ||
+            (t == T_RANDOM_ENEMY) ||
+            (t == T_LAST_ENEMY) ||
+            (t == T_OTHERS));
+}
+
 class StatException {
     
 };

@@ -28,33 +28,13 @@
 #include <string>
 #include <map>
 #include <bitset>
+#include "../mechanics/stat.h"
 
 namespace shoddybattle {
 
 class Pokemon;
 class PokemonType;
 class BattleField;
-
-enum TARGET {
-    T_USER,
-    T_ALLY,
-    T_ALLIES,
-    T_SINGLE,
-    T_ENEMIES,
-    T_RANDOM_ENEMY,
-    T_LAST_ENEMY,
-    T_ENEMY_FIELD,
-    T_OTHERS,
-    T_ALL,
-};
-
-inline bool isEnemyTarget(const TARGET t) {
-    return ((t == T_SINGLE) ||
-            (t == T_ENEMIES) ||
-            (t == T_RANDOM_ENEMY) ||
-            (t == T_LAST_ENEMY) ||
-            (t == T_OTHERS));
-}
 
 enum MOVE_CLASS {
     MC_PHYSICAL,
@@ -70,7 +50,8 @@ enum MOVE_FLAG {
     F_FLINCH,           // Can gain a flinch chance?
     F_REFLECT,          // Can be reflected by Magic Coat?
     F_SNATCH,           // Can be snatched?
-    F_MIRRORABLE,       // Can be copied by Mirror Move?
+    F_MEMORABLE,        // Using this move qualifies a pokemon for the target
+                        // of a "lastenemy" targeting move.
     F_HIGH_CRITICAL,    // Does this move have a high chance of a critical hit?
     F_UNIMPLEMENTED     // Is this move unimplemented?
 };

@@ -33,7 +33,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/ScriptMachine.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.o \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
-	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o \
 	${OBJECTDIR}/src/mechanics/PokemonType.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/MoveObject.o \
 	${OBJECTDIR}/src/mechanics/JewelMechanics.o \
@@ -43,9 +42,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/PokemonObject.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/StatusObject.o \
 	${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/sha2.o \
-	${OBJECTDIR}/src/text/Text.o
+	${OBJECTDIR}/src/text/Text.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o
 
 # C Compiler Flags
 CFLAGS=
@@ -133,11 +134,6 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h.gch: /hom
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h
 
-${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o: /home/Catherine/ShoddyBattle2/src/database/rijndael.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
-	${RM} $@.d
-	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o /home/Catherine/ShoddyBattle2/src/database/rijndael.c
-
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h.gch: /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
 	${RM} $@.d
@@ -203,6 +199,11 @@ ${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o: src/shoddybattle/ObjectTeamFile.
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o src/shoddybattle/ObjectTeamFile.cpp
 
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.o: /home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.o /home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp
+
 ${OBJECTDIR}/src/shoddybattle/Pokemon.h.gch: src/shoddybattle/Pokemon.h 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
 	${RM} $@.d
@@ -232,6 +233,11 @@ ${OBJECTDIR}/src/text/Text.o: src/text/Text.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/text
 	${RM} $@.d
 	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/text/Text.o src/text/Text.cpp
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o: /home/Catherine/ShoddyBattle2/src/database/rijndael.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/database/rijndael.o /home/Catherine/ShoddyBattle2/src/database/rijndael.cpp
 
 ${OBJECTDIR}/src/text/Text.h.gch: src/text/Text.h 
 	${MKDIR} -p ${OBJECTDIR}/src/text
