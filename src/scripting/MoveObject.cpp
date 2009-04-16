@@ -121,8 +121,16 @@ TARGET MoveObject::getTargetClass(ScriptContext *scx) const {
     return (TARGET)JSVAL_TO_INT(val);
 }
 
-/*
-double MoveObject::getAccuracy(ScriptContext *) const;**/
+double MoveObject::getAccuracy(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "accuracy", &val);
+    jsdouble d;
+    JS_ValueToNumber(cx, val, &d);
+    JS_EndRequest(cx);
+    return d;
+}
 
 bool MoveObject::attemptHit(ScriptContext *scx, BattleField *field,
         Pokemon *user, Pokemon *target) {

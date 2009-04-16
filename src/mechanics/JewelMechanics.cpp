@@ -89,6 +89,12 @@ bool JewelMechanics::getCoinFlip() const {
 
 bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
+    ScriptContext *cx = field.getContext();
+    if (move.getAccuracy(cx) == 0.0) {
+        // "0" accuracy moves never miss.
+        return true;
+    }
+
     // TODO: implement this
     return true;
 }
