@@ -297,19 +297,25 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
     if (!effect)
         return NULL;
 
+    // todo: locks
+
     if (effect->isSingleton(cx)) {
         StatusObject *singleton = getStatus(cx, effect->getId(cx));
         if (singleton)
             return singleton;
     }
-    
-    // TODO: implement properly
 
     StatusObject *applied = effect->cloneAndRoot(cx);
     if (inducer != NULL) {
         applied->setInducer(cx, inducer);
     }
     applied->setSubject(cx, this);
+
+    m_field->transformStatus(this, &applied);
+    if (applied == NULL) {
+        return NULL;
+    }
+
     if (!applied->applyEffect(cx)) {
         cx->removeRoot(applied);
         return NULL;
@@ -317,6 +323,25 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
 
     m_effects.push_back(applied);
     return applied;
+}
+
+/**
+ * Transform a StatusEffect.
+ */
+bool Pokemon::transformStatus(ScriptContext *cx,
+        Pokemon *subject, StatusObject **status) {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        if ((*i)->transformStatus(cx, subject, status)) {
+            if (*status == NULL) {
+                return true;
+            }
+        }
+    }
+    return true;
 }
 
 /**
@@ -471,6 +496,30 @@ void Pokemon::informTargeted(ScriptContext *cx,
     }
 }
 
+/**
+ * Set this pokemon's ability.
+ */
+void Pokemon::setAbility(StatusObject *obj) {
+    ScriptContext *cx = m_field->getContext();
+    if (m_ability != NULL) {
+        removeStatus(cx, m_ability);
+    }
+    m_ability = applyStatus(cx, NULL, obj);
+}
+
+/**
+ * Set this pokemon's ability by name.
+ */
+void Pokemon::setAbility(const std::string &name) {
+    ScriptContext *cx = m_field->getContext();
+    StatusObject ability = cx->getAbility(name);
+    if (!ability.isNull()) {
+        setAbility(&ability);
+    } else {
+        cout << "Warning: No such ability as " << name << "." << endl;
+    }
+}
+
 void Pokemon::initialise(BattleField *field, const int party, const int j) {
     m_field = field;
     m_party = party;
@@ -507,6 +556,7 @@ void Pokemon::initialise(BattleField *field, const int party, const int j) {
     } else {
         cout << "No such ability: " << m_abilityName << endl;
     }
+
 
     m_machine->releaseContext(cx);
 }

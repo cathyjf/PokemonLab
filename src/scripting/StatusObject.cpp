@@ -102,6 +102,30 @@ bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
     return b;
 }
 
+bool StatusObject::transformStatus(ScriptContext *scx,
+        Pokemon *subject, StatusObject **pStatus) {
+    if (!scx->hasProperty(this, "transformStatus"))
+        return false;
+
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    StatusObject *status = *pStatus;
+    ScriptValue argv[] = { subject, status };
+    ScriptValue v = scx->callFunctionByName(this, "transformStatus", 2, argv);
+    void *obj = v.getObject().getObject();
+    if (obj != status->getObject()) {
+        scx->removeRoot(status);
+        if (obj == NULL) {
+            *pStatus = NULL;
+        } else {
+            *pStatus = new StatusObject(obj);
+            scx->addRoot(*pStatus);
+        }
+    }
+    JS_EndRequest(cx);
+    return true;
+}
+
 bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
         bool indirect, int *pHp) {
     if (!scx->hasProperty(this, "transformHealthChange"))

@@ -111,6 +111,7 @@ public:
             STAT, Pokemon *, PRIORITY_MAP &);
     void removeStatuses(ScriptContext *);
     bool hasAbility(const std::string &);
+    bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
 
     int transformHealthChange(ScriptContext *, int, bool) const;
     
@@ -143,6 +144,8 @@ public:
 
     void setMove(const int, const std::string &);
     void setMove(const int, MoveObject *);
+    void setAbility(StatusObject *);
+    void setAbility(const std::string &);
 
     int getMoveCount() const { return m_moves.size(); }
 

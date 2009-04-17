@@ -159,6 +159,11 @@ public:
             const bool, MODIFIERS &);
 
     /**
+     * Transform a status effect.
+     */
+    void transformStatus(Pokemon *, StatusObject **);
+
+    /**
      * Sort a set of pokemon by speed.
      */
     void sortBySpeed(std::vector<Pokemon *> &pokemon);

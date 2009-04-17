@@ -874,13 +874,10 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Supersonic" id="47">
@@ -1463,13 +1460,10 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Petal Dance" id="79">
@@ -1767,13 +1761,10 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Meditate" id="95">
@@ -2664,13 +2655,10 @@ user.execute(move);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Sky Attack" id="142">
@@ -2760,13 +2748,10 @@ user.execute(move);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Flash" id="147">
@@ -6051,13 +6036,10 @@ print(status.inducer.name);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Tickle" id="320">
@@ -8836,13 +8818,10 @@ print(status.inducer.name);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeStatusMove(this, [[SleepEffect]]);
+</init>
 </move>
 
 <move name="Seed Flare" id="464">

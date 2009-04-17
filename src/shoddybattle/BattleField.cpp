@@ -403,6 +403,24 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 }
 
 /**
+ * Transform a status effect.
+ */
+void BattleField::transformStatus(Pokemon *subject, StatusObject **status) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p) {
+                p->transformStatus(m_impl->context, subject, status);
+                if (status == NULL) {
+                    return;
+                }
+            }
+        }
+    }
+}
+
+/**
  * Get the modifiers in play for a particular hit. Checks all of the active
  * pokemon for "modifier" properties.
  */

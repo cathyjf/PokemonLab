@@ -27,6 +27,17 @@ function Ability(name) {
     Ability[name] = this;
 }
 
+function makeStatusImmuneAbility(name, immune) {
+    var ability = new Ability(name);
+    ability.transformStatus = function(subject, status) {
+        if (subject != this.subject)
+            return status;
+        if (status.id == immune)
+            return null;
+        return status;
+    }
+}
+
 Ability.prototype = new StatusEffect();
 
 var ability = new Ability("Levitate");
@@ -41,19 +52,9 @@ ability.vetoExecution = function(field, user, target, move) {
     return true;
 };
 
-// This is just a test.
-/**ability = new Ability("Own Tempo");
-ability.modifier = function(field, user, target, move, critical) {
-    // make normal attacks by the ability holder 100 times as strong
-    if (user != this.subject)
-        return null;
-    if (move.type == Type.NORMAL)
-        return [1, 100, 1];
-    return null;
-};
-ability.transformHealthChange = function(hp, indirect) {
-    // all health changes to the subject take off exactly 10/48 of max hp
-    return parseInt(this.subject.stat[0] / 48 * 10);
-}**/
+makeStatusImmuneAbility("Insomnia", "SleepEffect");
+makeStatusImmuneAbility("Vital Spirit", "SleepEffect");
+
+new Ability("Early Bird"); // no implementation needed
 
 

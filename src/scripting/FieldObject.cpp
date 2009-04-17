@@ -59,6 +59,11 @@ JSBool random(JSContext *cx,
     } else if (argc == 1) {
         jsdouble p = 0.0;
         JS_ConvertArguments(cx, 1, argv, "d", &p);
+        if (p < 0.00) {
+            p = 0.00;
+        } else if (p > 1.00) {
+            p = 1.00;
+        }
         *ret = BOOLEAN_TO_JSVAL(mech->getCoinFlip(p));
     }
 
@@ -102,10 +107,11 @@ JSBool print(JSContext *cx,
     category = JSVAL_TO_INT(msg0);
     msg = JSVAL_TO_INT(msg1);
     vector<string> args;
-    int count = length - 2;
-    args.reserve(count);
-    for (int i = 2; i < count; ++i) {
-        JSString *str = JS_ValueToString(cx, argv[i]);
+    args.reserve(length - 2);
+    for (int i = 2; i < length; ++i) {
+        jsval val;
+        JS_GetElement(cx, arr, i, &val);
+        JSString *str = JS_ValueToString(cx, val);
         char *pstr = JS_GetStringBytes(str);
         args.push_back(pstr);
     }
