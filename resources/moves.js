@@ -38,13 +38,17 @@ function makeCounterMove(move, cls, ratio) {
         if (effect != null) {
             var party = effect.party;
             if ((party == -1) || (party == user.party)) {
-                // The user was not hit by a physical enemy move, so we fail.
+                // The user was not hit by an enemy move, so we fail.
                 field.print(Text.battle_messages(0));
                 return;
             }
             var enemy = field.getActivePokemon(party, effect.position);
             if (enemy != null) {
-                enemy.hp -= effect.damage * ratio;
+                if (enemy.isImmune(move)) {
+                    field.print(Text.battle_messages(1, enemy.name));
+                } else {
+                    enemy.hp -= effect.damage * ratio;
+                }
             }
         }
     };
@@ -66,8 +70,10 @@ function makeStatusMove(move, effects, immunities) {
             }
             target.hp -= damage;
         } else if (immunities) {
-            // check for type immunities
-
+            if (target.isImmune(this)) {
+                field.print(Text.battle_messages(1, target.name));
+                return;
+            }
         }
         var serene = user.hasAbility("Serene Grace");
         var immune = (target.hasAbility("Shield Dust") && (this.power != 0));

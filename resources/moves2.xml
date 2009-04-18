@@ -1275,6 +1275,21 @@ makeCounterMove(this, MoveClass.SPECIAL, 2);
 </init>
 </move>
 
+<move name="Metal Burst" id="367">
+<type>Steel</type>
+<class>Physical</class>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>10</pp>
+<target>Lastenemy</target>
+<flags>
+	<memorable/>
+</flags>
+<init>
+makeCounterMove(this, undefined, 1.5);
+</init>
+</move>
+
 <move name="Seismic Toss" id="68">
 <type>Fighting</type>
 <class>Physical</class>
@@ -6940,21 +6955,6 @@ makeStatusMove(this, [[SleepEffect]]);
 
 ]]>
 </use>
-</move>
-
-<move name="Metal Burst" id="367">
-<type>Steel</type>
-<class>Physical</class>
-<power>1</power>
-<accuracy>1.00</accuracy>
-<pp>10</pp>
-<target>Lastenemy</target>
-<flags>
-	<memorable/>
-</flags>
-<init>
-makeCounterMove(this, undefined, 1.5);
-</init>
 </move>
 
 <move name="U-turn" id="368">
