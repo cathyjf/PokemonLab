@@ -184,7 +184,7 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
             jsdouble d;
             JS_ValueToNumber(cx, *vp, &d);
-            p->setHp(scx, ceil((int)d));
+            p->setHp(scx, ceil(d));
         } break;
     }
     return JS_TRUE;
