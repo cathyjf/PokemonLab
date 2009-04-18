@@ -287,6 +287,15 @@ StatusEffect.prototype = {
 
 	speedComparator : null,
 
+    /**
+     * Inform that the subject was attacked by a particular move, and that it
+     * did a particular amount of damage. Return value is unused.
+     *
+     *      function(user, move, damage) {
+     *
+     *      }
+     *
+     */
 	informDamaged : null,
 
 	informLostItem : null,

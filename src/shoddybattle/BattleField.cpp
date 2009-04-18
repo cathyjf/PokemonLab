@@ -47,6 +47,7 @@ struct BattleFieldImpl {
     shared_ptr<PokemonParty> active[TEAM_COUNT];
     STATUSES m_effects;      // field effects
     bool descendingSpeed;
+    std::stack<BattleField::EXECUTION> executing;
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     void getActivePokemon(vector<Pokemon::PTR> &);
@@ -70,6 +71,21 @@ struct BattleFieldImpl {
         }
     }
 };
+
+const BattleField::EXECUTION *BattleField::topExecution() const {
+    if (m_impl->executing.empty()) {
+        return NULL;
+    }
+    return &m_impl->executing.top();
+}
+
+void BattleField::pushExecution(const BattleField::EXECUTION &exec) {
+    m_impl->executing.push(exec);
+}
+
+void BattleField::popExecution() {
+    m_impl->executing.pop();
+}
 
 GENERATION BattleField::getGeneration() const {
     return m_impl->generation;
@@ -395,7 +411,9 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 }
             }
 
-            p->executeMove(m_impl->context, move, target);
+            if (p->executeMove(m_impl->context, move, target)) {
+                p->deductPp(turn->id);
+            }
         } else {
             // handle switch
         }

@@ -206,6 +206,11 @@ public:
 
     virtual void informFainted(Pokemon *);
 
+    typedef Pokemon::RECENT_MOVE<MoveObject> EXECUTION;
+    const EXECUTION *topExecution() const;
+    void pushExecution(const EXECUTION &exec);
+    void popExecution();
+
     ScriptMachine *getScriptMachine();
 
     ScriptContext *getContext();

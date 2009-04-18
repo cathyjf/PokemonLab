@@ -33,6 +33,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace boost;
 
 namespace shoddybattle {
 
@@ -67,6 +68,34 @@ JSBool random(JSContext *cx,
         *ret = BOOLEAN_TO_JSVAL(mech->getCoinFlip(p));
     }
 
+    return JS_TRUE;
+}
+
+JSBool getActivePokemon(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    int party = 0, idx = 0;
+    JS_ConvertArguments(cx, 2, argv, "ii", &party, &idx);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getActivePokemon: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    if (idx < 0) {
+        JS_ReportError(cx, "getActivePokemon: position must be > 0");
+        return JS_FALSE;
+    }
+    shared_ptr<PokemonParty> p = field->getActivePokemon()[party];
+    const int size = p->getSize();
+    if (idx >= size) {
+        *ret = JSVAL_NULL;
+        return JS_TRUE;
+    }
+    Pokemon::PTR pokemon = (*p)[idx].pokemon;
+    if (!pokemon || pokemon->isFainted()) {
+        *ret = JSVAL_NULL;
+    } else {
+        *ret = OBJECT_TO_JSVAL(pokemon->getObject()->getObject());
+    }
     return JS_TRUE;
 }
 
@@ -179,6 +208,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("random", random, 1, 0, 0),
     JS_FS("getMove", getMove, 1, 0, 0),
     JS_FS("print", print, 1, 0, 0),
+    JS_FS("getActivePokemon", getActivePokemon, 2, 0, 0),
     JS_FS_END
 };
 

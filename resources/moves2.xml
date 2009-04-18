@@ -1253,13 +1253,26 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>Lastenemy</target>
 <flags>
 	<contact/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
+<init>
+makeCounterMove(this, MoveClass.PHYSICAL, 2);
+</init>
+</move>
 
-]]>
-</use>
+<move name="Mirror Coat" id="242">
+<type>Psychic</type>
+<class>Special</class>
+<priority>-5</priority>
+<power>1</power>
+<accuracy>1.00</accuracy>
+<pp>20</pp>
+<target>Lastenemy</target>
+<flags>
+	
+</flags>
+<init>
+makeCounterMove(this, MoveClass.SPECIAL, 2);
+</init>
 </move>
 
 <move name="Seismic Toss" id="68">
@@ -4546,24 +4559,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </use>
 </move>
 
-<move name="Mirror Coat" id="242">
-<type>Psychic</type>
-<class>Special</class>
-<priority>-5</priority>
-<power>1</power>
-<accuracy>1.00</accuracy>
-<pp>20</pp>
-<target>Lastenemy</target>
-<flags>
-	<unimplemented/>
-</flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
-</move>
-
 <move name="Psych Up" id="243">
 <type>Normal</type>
 <class>Other</class>
@@ -6956,13 +6951,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>Lastenemy</target>
 <flags>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
+<init>
+makeCounterMove(this, undefined, 1.5);
+</init>
 </move>
 
 <move name="U-turn" id="368">

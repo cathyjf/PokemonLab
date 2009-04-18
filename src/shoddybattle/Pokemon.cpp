@@ -71,6 +71,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
             m_moveProto.push_back(move);
         }
     }
+    m_pp.resize(m_moveProto.size());
     m_machine = NULL;
     m_field = NULL;
     m_object = NULL;
@@ -130,7 +131,7 @@ bool Pokemon::vetoExecution(ScriptContext *cx,
 /**
  * Get a status effect by ID.
  */
-StatusObject *Pokemon::getStatus(ScriptContext *cx, const string id) {
+StatusObject *Pokemon::getStatus(ScriptContext *cx, const string &id) {
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
         if ((*i)->isRemovable(cx))
             continue;
@@ -210,6 +211,9 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         }
     }
 
+    BattleField::EXECUTION entry = { this, move };
+    m_field->pushExecution(entry);
+
     if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
@@ -223,6 +227,8 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         move->use(cx, m_field, this, NULL, 0);
     }
 
+    m_field->popExecution();
+
     return true;
 }
 
@@ -231,7 +237,7 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
  * the field.
  */
 void Pokemon::removeMemory(Pokemon *pokemon) {
-    RECENT_MOVE entry = { pokemon, NULL };
+    MEMORY entry = { pokemon, NULL };
     m_memory.remove(entry);
 }
 
@@ -447,6 +453,10 @@ void Pokemon::setHp(ScriptContext *cx, const int hp, const bool indirect) {
     const int delta = transformHealthChange(cx, m_hp - hp, indirect);
     m_hp -= delta;
     m_field->informHealthChange(this, delta);
+    const BattleField::EXECUTION *move = m_field->topExecution();
+    if (move) {
+        informDamaged(cx, move->user, move->move, delta);
+    }
     if (m_hp <= 0) {
         m_field->informFainted(this);
         m_fainted = true;
@@ -472,6 +482,19 @@ const MoveTemplate *Pokemon::getMemory() const {
 }
 
 /**
+ * Inform that this pokemon was damaged by a move.
+ */
+void Pokemon::informDamaged(ScriptContext *cx,
+        Pokemon *user, MoveObject *move, int damage) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        (*i)->informDamaged(cx, user, move, damage);
+    }
+}
+
+/**
  * Inform that this pokemon was targeted by a move.
  */
 void Pokemon::informTargeted(ScriptContext *cx,
@@ -484,14 +507,14 @@ void Pokemon::informTargeted(ScriptContext *cx,
     }
 
     if (move->getFlag(cx, F_MEMORABLE)) {
-        list<RECENT_MOVE>::iterator i = m_memory.begin();
+        list<MEMORY>::iterator i = m_memory.begin();
         for (; i != m_memory.end(); ++i) {
             if (i->user == user) {
                 m_memory.erase(i);
                 break;
             }
         }
-        const RECENT_MOVE entry = { user, move->getTemplate() };
+        const MEMORY entry = { user, move->getTemplate() };
         m_memory.push_back(entry);
     }
 }
@@ -520,10 +543,26 @@ void Pokemon::setAbility(const std::string &name) {
     }
 }
 
-void Pokemon::initialise(BattleField *field, const int party, const int j) {
+/**
+ * Deduct PP from a move.
+ */
+void Pokemon::deductPp(MoveObject *move) {
+    void *p = move->getObject();
+    int j = 0;
+    vector<MoveObject *>::const_iterator i = m_moves.begin();
+    for (; i != m_moves.end(); ++i) {
+        if (p == (*i)->getObject()) {
+            deductPp(j);
+            return;
+        }
+        ++j;
+    }
+}
+
+void Pokemon::initialise(BattleField *field, const int party, const int idx) {
     m_field = field;
     m_party = party;
-    m_position = j;
+    m_position = idx;
     const BattleMechanics *mech = field->getMechanics();
     for (int i = 0; i < STAT_COUNT; ++i) {
         m_stat[i] = mech->calculateStat(*this, (STAT)i);
@@ -544,9 +583,12 @@ void Pokemon::initialise(BattleField *field, const int party, const int j) {
 
     // Create move objects.
     vector<const MoveTemplate *>::const_iterator i = m_moveProto.begin();
+    int j = 0;
     for (; i != m_moveProto.end(); ++i) {
         MoveObject *obj = cx->newMoveObject(*i);
         m_moves.push_back(obj);
+        m_pp[j] = obj->getPp(cx) * (5 + m_ppUps[j]) / 5;
+        ++j;
     }
 
     // Create ability object.

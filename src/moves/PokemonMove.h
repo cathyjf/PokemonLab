@@ -37,12 +37,12 @@ class PokemonType;
 class BattleField;
 
 enum MOVE_CLASS {
-    MC_PHYSICAL,
+    MC_PHYSICAL = 0,
     MC_SPECIAL,
     MC_OTHER
 };
 
-const int FLAG_COUNT = 8;
+const int FLAG_COUNT = 9;
 
 enum MOVE_FLAG {
     F_CONTACT,          // Makes contact?
@@ -53,7 +53,8 @@ enum MOVE_FLAG {
     F_MEMORABLE,        // Using this move qualifies a pokemon for the target
                         // of a "lastenemy" targeting move.
     F_HIGH_CRITICAL,    // Does this move have a high chance of a critical hit?
-    F_UNIMPLEMENTED     // Is this move unimplemented?
+    F_UNIMPLEMENTED,    // Is this move unimplemented?
+    F_INTERNAL          // Is this move for internal use only?
 };
 
 class ScriptMachine;

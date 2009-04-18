@@ -30,6 +30,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <stack>
 #include "../mechanics/stat.h"
 #include "../scripting/ObjectWrapper.h"
 
@@ -97,6 +98,7 @@ public:
     bool vetoExecution(ScriptContext *, Pokemon *, Pokemon *, MoveObject *);
 
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
+    void informDamaged(ScriptContext *, Pokemon *, MoveObject *, int);
     const MoveTemplate *getMemory() const;
     Pokemon *getMemoryPokemon() const;
     void removeMemory(Pokemon *);
@@ -104,7 +106,7 @@ public:
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
     void removeStatus(ScriptContext *, StatusObject *);
-    StatusObject *getStatus(ScriptContext *, const std::string);
+    StatusObject *getStatus(ScriptContext *, const std::string &);
     void getModifiers(ScriptContext *,
             Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(ScriptContext *,
@@ -142,6 +144,10 @@ public:
         return m_moves[i];
     }
 
+    int getPp(const int i) const { return m_pp[i]; }
+    void deductPp(const int i) { --m_pp[i]; }
+    void deductPp(MoveObject *);
+
     void setMove(const int, const std::string &);
     void setMove(const int, MoveObject *);
     void setAbility(StatusObject *);
@@ -155,6 +161,15 @@ public:
     bool isFainted() const { return m_fainted; }
     
     ~Pokemon();
+
+    template <class T>
+    struct RECENT_MOVE {
+        Pokemon *user;
+        T *move;
+        bool operator==(const RECENT_MOVE &rhs) const {
+            return user == rhs.user;
+        }
+    };
 
 private:
     const PokemonSpecies *m_species;
@@ -172,19 +187,13 @@ private:
     std::vector<int> m_ppUps;
     std::vector<const MoveTemplate *> m_moveProto;
     std::vector<MoveObject *> m_moves;
+    std::vector<int> m_pp;
     std::string m_nickname;
     std::string m_itemName;
     std::string m_abilityName;
 
-    struct RECENT_MOVE {
-        Pokemon *user;
-        const MoveTemplate *move;
-        bool operator==(const RECENT_MOVE &rhs) const {
-            return user == rhs.user;
-        }
-    };
-
-    std::list<RECENT_MOVE> m_memory;
+    typedef RECENT_MOVE<const MoveTemplate> MEMORY;
+    std::list<MEMORY> m_memory;
 
     StatusObject *m_item;
     StatusObject *m_ability;

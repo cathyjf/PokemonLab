@@ -33,6 +33,7 @@
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/BattleField.h"
+#include "../mechanics/PokemonType.h"
 
 #include <iostream>
 
@@ -56,12 +57,18 @@ enum POKEMON_TINYID {
     PTI_PPUPS,
     PTI_GENDER,
     PTI_MEMORY,
-    PTI_FIELD
+    PTI_FIELD,
+    PTI_PARTY,
+    PTI_POSITION
 };
 
 JSBool applyStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     *ret = JSVAL_NULL;
+    if (argc != 2) {
+        JS_ReportError(cx, "applyStatus: wrong number of arguments");
+        return JS_FALSE;
+    }
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     if (JSVAL_IS_OBJECT(argv[1])) {
         StatusObject status(JSVAL_TO_OBJECT(argv[1]));
@@ -87,6 +94,49 @@ JSBool removeStatus(JSContext *cx,
     assert(JSVAL_IS_OBJECT(v));
     StatusObject status(JSVAL_TO_OBJECT(v));
     p->removeStatus(scx, &status);
+    return JS_TRUE;
+}
+
+JSBool isImmune(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+    MoveObject move(JSVAL_TO_OBJECT(v));
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    // todo: review this (in case effectiveness transformer is needed)
+    const TYPE_ARRAY &types = p->getTypes();
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    const PokemonType *moveType = move.getType(scx);
+    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
+        const double factor = moveType->getMultiplier(**i);
+        if (factor == 0.00) {
+            *ret = JSVAL_TRUE;
+            break;
+        }
+    }
+    *ret = JSVAL_FALSE;
+    return true;
+}
+
+JSBool getStatus(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    StatusObject *sobj = p->getStatus(scx, str);
+    if (sobj) {
+        *ret = OBJECT_TO_JSVAL(sobj->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+
     return JS_TRUE;
 }
 
@@ -131,7 +181,9 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     switch (tid) {
         case PTI_HP: {
             ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-            p->setHp(scx, JSVAL_TO_INT(*vp));
+            jsdouble d;
+            JS_ValueToNumber(cx, *vp, &d);
+            p->setHp(scx, (int)d);
         } break;
     }
     return JS_TRUE;
@@ -218,6 +270,14 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_FIELD: {
             *vp = OBJECT_TO_JSVAL(p->getField()->getObject()->getObject());
         } break;
+
+        case PTI_PARTY: {
+            *vp = INT_TO_JSVAL(p->getParty());
+        } break;
+
+        case PTI_POSITION: {
+            *vp = INT_TO_JSVAL(p->getPosition());
+        } break;
     }
     return JS_TRUE;
 }
@@ -237,6 +297,8 @@ JSPropertySpec pokemonProperties[] = {
     { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "party", PTI_PARTY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "position", PTI_POSITION, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
@@ -245,6 +307,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("execute", execute, 3, 0, 0),
     JS_FS("hasAbility", hasAbility, 1, 0, 0),
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
+    JS_FS("isImmune", isImmune, 1, 0, 0),
+    JS_FS("getStatus", getStatus, 1, 0, 0),
     JS_FS_END
 };
 

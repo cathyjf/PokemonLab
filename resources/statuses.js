@@ -23,6 +23,62 @@
  */
 
 /**
+ * Damage listener.
+ *
+ * Remembers the last attack to hit the subject from an enemy pokemon.
+ * Vanishes at end of turn.
+ */
+function DamageListener() { }
+DamageListener.prototype = new StatusEffect("DamageListener");
+DamageListener.prototype.applyEffect = function() {
+    this.party = -1;
+    this.position = -1;
+    this.move = null;
+    this.damage = 0;
+};
+DamageListener.prototype.predicate = function() {
+    return true;
+};
+DamageListener.prototype.informDamaged = function(user, move, damage) {
+    // Pain Split does not count for the purpose of DamageListener.
+    if (this.predicate(move) && (move.name != "Pain Split")) {
+        this.party = user.party;
+        this.position = user.position;
+        this.move = move;
+        this.damage = damage;
+    }
+};
+DamageListener.prototype.tick = function() {
+    this.subject.removeStatus(this);
+};
+
+/**
+ * Paralysis
+ *
+ */
+function ParalysisEffect() { }
+ParalysisEffect.prototype = new StatusEffect("ParalysisEffect");
+ParalysisEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
+ParalysisEffect.prototype.name = Text.status_effects_paralysis(0);
+ParalysisEffect.prototype.applyEffect = function() {
+    field.print(Text.status_effects_paralysis(1, this.subject.name));
+    return true;
+};
+ParalysisEffect.prototype.vetoExecution = function(field, user, target, move) {
+    if (user != this.subject)
+        return false;
+    if (target != null)
+        return false;
+    if (field.random(0.75))
+        return false;
+    field.print(Text.status_effects_paralysis(2));
+    return true;
+};
+// TODO: speed drop
+
+
+
+/**
  * Sleep
  *
  * For 1-4 turns, the afflicted pokemon is prevented from using a move other

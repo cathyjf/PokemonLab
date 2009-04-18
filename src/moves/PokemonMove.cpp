@@ -154,7 +154,7 @@ bool hasChildElement(DOMElement *node, const string child) {
 }
 
 void getMove(DOMElement *node, MoveTemplateImpl *pMove,
-        ScriptContext *cx, int &implemented) {
+        ScriptContext *cx) {
     DOMNamedNodeMap *attributes = node->getAttributes();
     XMLCh tempStr[20];
 
@@ -197,10 +197,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         pMove->flags[F_MEMORABLE] = hasChildElement(node, "memorable");
         pMove->flags[F_HIGH_CRITICAL] = hasChildElement(node, "high-critical");
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
-
-        if (!pMove->flags[F_UNIMPLEMENTED]) {
-            ++implemented;
-        }
+        pMove->flags[F_INTERNAL] = hasChildElement(node, "internal");
     }
 
     // power
@@ -328,7 +325,12 @@ void MoveDatabase::loadMoves(const string file) {
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         MoveTemplateImpl *move = new MoveTemplateImpl();
-        shoddybattle::getMove(item, move, cx, implemented);
+        shoddybattle::getMove(item, move, cx);
+
+        if (!move->flags[F_UNIMPLEMENTED]) {
+            ++implemented;
+        }
+
         MoveTemplate *pMove = new MoveTemplate(move);
         m_data.insert(MOVE_DATABASE::value_type(move->name, pMove));
     }
@@ -396,14 +398,15 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Dark Void");
-    field.getActivePokemon(1, 0)->setAbility("Insomnia");
+    field.getActivePokemon(0, 1)->setMove(0, "Quick Attack");
+    //field.getActivePokemon(1, 0)->setAbility("Stall");
+    field.getActivePokemon(1, 0)->setMove(0, "Metal Burst");
 
     vector<PokemonTurn> turns;
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
-    turns.push_back(PokemonTurn(TT_MOVE, 2, 2));
-    turns.push_back(PokemonTurn(TT_MOVE, 3, 3));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
 
     time_t initial = clock();
     field.processTurn(turns);

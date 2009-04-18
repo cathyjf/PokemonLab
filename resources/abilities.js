@@ -35,7 +35,11 @@ function makeStatusImmuneAbility(name, immune) {
         if (status.id == immune)
             return null;
         return status;
-    }
+    };
+    ability.tier = 0;   // TODO: tiers
+    ability.tick = function() {
+        // TODO: remove status from the subject
+    };
 }
 
 Ability.prototype = new StatusEffect();
@@ -57,4 +61,6 @@ makeStatusImmuneAbility("Vital Spirit", "SleepEffect");
 
 new Ability("Early Bird"); // no implementation needed
 
+ability = new Ability("Stall");
+ability.inherentPriority = function() { return -2; };
 

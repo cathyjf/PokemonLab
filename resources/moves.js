@@ -23,6 +23,34 @@
  */
 
 /**
+ * Make a move into a counter move.
+ */
+function makeCounterMove(move, cls, ratio) {
+    move.beginTurn = function(field, user) {
+        var listener = new DamageListener();
+        listener.predicate = function(move) {
+                return (cls == undefined) || (move.moveClass == cls);
+        };
+        user.applyStatus(user, listener);
+    };
+    move.use = function(field, user) {
+        var effect = user.getStatus("DamageListener");
+        if (effect != null) {
+            var party = effect.party;
+            if ((party == -1) || (party == user.party)) {
+                // The user was not hit by a physical enemy move, so we fail.
+                field.print(Text.battle_messages(0));
+                return;
+            }
+            var enemy = field.getActivePokemon(party, effect.position);
+            if (enemy != null) {
+                enemy.hp -= effect.damage * ratio;
+            }
+        }
+    };
+}
+
+/**
  * Make a move object into a StatusMove with an array of elements of the form
  * [effect, chance, user].
  */

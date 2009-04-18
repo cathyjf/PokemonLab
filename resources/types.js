@@ -22,6 +22,12 @@
  * online at http://gnu.org.
  */
 
+var MoveClass = {
+    PHYSICAL : 0,
+    SPECIAL : 1,
+    OTHER : 2
+};
+
 var Type = {
     NORMAL : 0,
     FIRE : 1,

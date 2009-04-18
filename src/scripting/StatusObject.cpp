@@ -147,6 +147,14 @@ bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
     return v.getBool();
 }
 
+void StatusObject::informDamaged(ScriptContext *scx,
+        Pokemon *user, MoveObject *move, int damage) {
+    if (!scx->hasProperty(this, "informDamaged"))
+        return;
+    ScriptValue argv[] = { user, move, damage };
+    scx->callFunctionByName(this, "informDamaged", 3, argv);
+}
+
 void StatusObject::informTargeted(ScriptContext *cx,
         Pokemon *user, MoveObject *move) {
     if (!cx->hasProperty(this, "informTargeted"))
