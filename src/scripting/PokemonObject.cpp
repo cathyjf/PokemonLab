@@ -36,6 +36,7 @@
 #include "../mechanics/PokemonType.h"
 
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -183,7 +184,7 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
             jsdouble d;
             JS_ValueToNumber(cx, *vp, &d);
-            p->setHp(scx, (int)d);
+            p->setHp(scx, ceil((int)d));
         } break;
     }
     return JS_TRUE;
