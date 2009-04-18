@@ -87,10 +87,13 @@ struct BattleFieldImpl {
     void cleanUp() {
         if (object) {
             context->removeRoot(object);
+            object = NULL;
         }
         if (context) {
             machine->releaseContext(context);
+            context = NULL;
         }
+        machine = NULL;
     }
 
     ~BattleFieldImpl() {
@@ -181,7 +184,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
     } else if (mc == T_LAST_ENEMY) {
         targets.push_back(user->getMemoryPokemon());
     } else if (mc == T_OTHERS) {
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i].get();
             for (int j = 0; j < party.getSize(); ++j) {
                 Pokemon::PTR p = party[j].pokemon;
@@ -192,7 +195,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         }
         sortBySpeed(targets);
     } else if (mc == T_ALL) {
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i].get();
             for (int j = 0; j < party.getSize(); ++j) {
                 Pokemon::PTR p = party[j].pokemon;
