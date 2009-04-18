@@ -158,7 +158,7 @@ void MoveObject::use(ScriptContext *scx, BattleField *field,
         // just do a basic move use
         int damage = field->getMechanics()->calculateDamage(*field,
                 *this, *user, *target, targets);
-        target->setHp(scx, target->getHp() - damage);
+        target->setHp(target->getHp() - damage);
     }
 }
 

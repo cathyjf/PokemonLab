@@ -106,7 +106,7 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
     if (move.getFlag(cx, F_HIGH_CRITICAL)) {
         term += 1;
     }
-    term += user.getCriticalModifier(cx);
+    term += user.getCriticalModifier();
     if (term > 4) {
         term = 4;
     }

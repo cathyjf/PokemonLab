@@ -7319,11 +7319,27 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var usable = false;
+var count = user.moveCount;
+if (count != 1) {
+    usable = true;
+    for (var i = 0; i < count; ++i) {
+        if (user.getMove(i) != this) {
+            if (!user.isMoveUsed(i)) {
+                usable = false;
+                break;
+            }
+        }
+    }
+}
+if (usable) {
+    target.hp -= field.calculate(this, user, target, targets);
+} else {
+    field.print(Text.battle_messages(0));
+}
 ]]>
 </use>
 </move>

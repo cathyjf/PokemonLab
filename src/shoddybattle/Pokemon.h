@@ -89,36 +89,35 @@ public:
     void setTurn(PokemonTurn *turn) { m_turn = turn; }
     PokemonTurn *getTurn() { return m_turn; }
 
-    int getInherentPriority(ScriptContext *) const;
-    int getCriticalModifier(ScriptContext *) const;
+    int getInherentPriority() const;
+    int getCriticalModifier() const;
 
-    bool executeMove(ScriptContext *, MoveObject *,
+    bool executeMove(MoveObject *,
             Pokemon *target, bool inform = true);
-    bool useMove(ScriptContext *, MoveObject *, Pokemon *, const int);
-    bool vetoExecution(ScriptContext *, Pokemon *, Pokemon *, MoveObject *);
+    bool useMove(MoveObject *, Pokemon *, const int);
+    bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);
 
-    void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
-    void informDamaged(ScriptContext *, Pokemon *, MoveObject *, int);
+    void informTargeted(Pokemon *, MoveObject *);
+    void informDamaged(Pokemon *, MoveObject *, int);
     const MoveTemplate *getMemory() const;
     Pokemon *getMemoryPokemon() const;
     void removeMemory(Pokemon *);
     
     const STATUSES &getEffects() const { return m_effects; }
-    StatusObject *applyStatus(ScriptContext *, Pokemon *, StatusObject *);
-    void removeStatus(ScriptContext *, StatusObject *);
-    StatusObject *getStatus(ScriptContext *, const std::string &);
-    void getModifiers(ScriptContext *,
-            Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIERS &);
-    void getStatModifiers(ScriptContext *,
-            STAT, Pokemon *, PRIORITY_MAP &);
-    void removeStatuses(ScriptContext *);
+    StatusObject *applyStatus(Pokemon *, StatusObject *);
+    void removeStatus(StatusObject *);
+    StatusObject *getStatus(const std::string &);
+    void getModifiers(Pokemon *, Pokemon *,
+            MoveObject *, const bool, MODIFIERS &);
+    void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);
+    void removeStatuses();
     bool hasAbility(const std::string &);
-    bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
+    bool transformStatus(Pokemon *, StatusObject **);
 
-    int transformHealthChange(ScriptContext *, int, bool) const;
+    int transformHealthChange(int, bool) const;
     
     int getHp() const { return m_hp; }
-    void setHp(ScriptContext *, const int hp, const bool indirect = false);
+    void setHp(const int hp, const bool indirect = false);
 
     std::string getSpeciesName() const;
     std::string getName() const { return m_nickname; }
@@ -144,12 +143,13 @@ public:
         return m_moves[i];
     }
 
+    bool isMoveUsed(const int i) const { return m_moveUsed[i]; }
     int getPp(const int i) const { return m_pp[i]; }
-    void deductPp(const int i) { --m_pp[i]; }
+    void deductPp(const int i);
     void deductPp(MoveObject *);
 
-    void setMove(const int, const std::string &);
-    void setMove(const int, MoveObject *);
+    void setMove(const int, const std::string &, const int);
+    void setMove(const int, MoveObject *, const int);
     void setAbility(StatusObject *);
     void setAbility(const std::string &);
 
@@ -159,6 +159,8 @@ public:
     int getPosition() const { return m_position; }
 
     bool isFainted() const { return m_fainted; }
+
+    void switchOut();
     
     ~Pokemon();
 
@@ -188,6 +190,7 @@ private:
     std::vector<const MoveTemplate *> m_moveProto;
     std::vector<MoveObject *> m_moves;
     std::vector<int> m_pp;
+    std::vector<bool> m_moveUsed;
     std::string m_nickname;
     std::string m_itemName;
     std::string m_abilityName;
@@ -199,6 +202,7 @@ private:
     StatusObject *m_ability;
 
     ScriptMachine *m_machine;
+    ScriptContext *m_cx;
     BattleField *m_field;
     int m_party, m_position;
 

@@ -72,7 +72,9 @@ Pokemon::Pokemon(const PokemonSpecies *species,
         }
     }
     m_pp.resize(m_moveProto.size());
+    m_moveUsed.resize(m_moveProto.size(), false);
     m_machine = NULL;
+    m_cx = NULL;
     m_field = NULL;
     m_object = NULL;
     m_fainted = false;
@@ -115,28 +117,61 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
  * Determine whether the execution of a move should be vetoed, according to
  * the effects on this pokemon.
  */
-bool Pokemon::vetoExecution(ScriptContext *cx,
-        Pokemon *user, Pokemon *target, MoveObject *move) {
+bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->vetoExecution(cx, m_field, user, target, move))
+        if ((*i)->vetoExecution(m_cx, m_field, user, target, move))
             return true;
     }
     return false;
 }
 
 /**
- * Get a status effect by ID.
+ * Switch this pokemon out of the field.
  */
-StatusObject *Pokemon::getStatus(ScriptContext *cx, const string &id) {
-    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if ((*i)->isRemovable(cx))
+void Pokemon::switchOut() {
+    // Remove effects that do not survive switches.
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->getId(cx) == id)
+        if ((*i)->switchOut(m_cx)) {
+            removeStatus(*i);
+        }
+    }
+    // Restore original ability.
+    setAbility(m_abilityName);
+    // Clear this pokemon's memory.
+    m_memory.clear();
+    m_moveUsed.clear();
+    m_moveUsed.resize(m_moves.size(), false);
+    // Adjust the memories other active pokemon.
+    shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
+    for (int i = 0; i < 2; ++i) {
+        PokemonParty &party = *active[i];
+        const int size = party.getSize();
+        for (int j = 0; j < size; ++j) {
+            Pokemon::PTR p = party[j].pokemon;
+            if (p) {
+                p->removeMemory(this);
+            }
+        }
+    }
+}
+
+/**
+ * Get a status effect by ID.
+ */
+StatusObject *Pokemon::getStatus(const string &id) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if ((*i)->isRemovable(m_cx))
+            continue;
+
+        if ((*i)->getId(m_cx) == id)
             return *i;
     }
     return NULL;
@@ -145,14 +180,14 @@ StatusObject *Pokemon::getStatus(ScriptContext *cx, const string &id) {
 /**
  * Execute an arbitrary move on a particular target.
  */
-bool Pokemon::useMove(ScriptContext *cx, MoveObject *move,
+bool Pokemon::useMove(MoveObject *move,
         Pokemon *target, const int targets) {
     if (m_field->vetoExecution(this, target, move)) {
         // vetoed for this target
         return false;
     }
-    if (move->attemptHit(cx, m_field, this, target)) {
-        move->use(cx, m_field, this, target, targets);
+    if (move->attemptHit(m_cx, m_field, this, target)) {
+        move->use(m_cx, m_field, this, target, targets);
     } else {
         vector<string> args;
         args.push_back(getName());
@@ -166,7 +201,7 @@ bool Pokemon::useMove(ScriptContext *cx, MoveObject *move,
 /**
  * Execute an arbitrary move on a set of targets.
  */
-bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
+bool Pokemon::executeMove(MoveObject *move,
         Pokemon *target, bool inform) {
 
     // TODO: research if this should be inside an inform check
@@ -175,17 +210,17 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
         return false;
     }
     
-    cout << getName() << " used " << move->getName(cx) << "!" << endl;
+    cout << getName() << " used " << move->getName(m_cx) << "!" << endl;
 
-    if (move->getFlag(cx, F_UNIMPLEMENTED)) {
+    if (move->getFlag(m_cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;
         return false;
     }
 
-    TARGET tc = move->getTargetClass(cx);
+    TARGET tc = move->getTargetClass(m_cx);
 
     if ((tc == T_USER) || (tc == T_ALLY) || (tc == T_ALLIES)) {
-        move->use(cx, m_field, this, NULL, 0);
+        move->use(m_cx, m_field, this, NULL, 0);
         return true;
     }
     
@@ -194,7 +229,7 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     m_field->getTargetList(tc, targets, this, target);
 
     if (tc == T_LAST_ENEMY) {
-        move->use(cx, m_field, this, targets[0], 0);
+        move->use(m_cx, m_field, this, targets[0], 0);
         return true;
     }
 
@@ -207,7 +242,7 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     if (inform) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            (*i)->informTargeted(cx, this, move);
+            (*i)->informTargeted(this, move);
         }
     }
 
@@ -217,14 +252,14 @@ bool Pokemon::executeMove(ScriptContext *cx, MoveObject *move,
     if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            useMove(cx, move, *i, targetCount);
+            useMove(move, *i, targetCount);
             if ((*i)->isFainted()) {
                 --targetCount;
             }
         }
     } else {
         // no target as such
-        move->use(cx, m_field, this, NULL, 0);
+        move->use(m_cx, m_field, this, NULL, 0);
     }
 
     m_field->popExecution();
@@ -244,9 +279,11 @@ void Pokemon::removeMemory(Pokemon *pokemon) {
 /**
  * Set one of this pokemon's moves to a different move.
  */
-void Pokemon::setMove(const int i, MoveObject *move) {
+void Pokemon::setMove(const int i, MoveObject *move, const int pp) {
     if (m_moves.size() <= i) {
         m_moves.resize(i + 1, NULL);
+        m_pp.resize(i + 1, 0);
+        m_moveUsed.resize(i + 1, false);
     }
     MoveObject *p = m_moves[i];
     if (p) {
@@ -254,6 +291,7 @@ void Pokemon::setMove(const int i, MoveObject *move) {
         cx->removeRoot(p);
     }
     m_moves[i] = move;
+    m_pp[i] = pp;
 }
 
 /**
@@ -261,25 +299,25 @@ void Pokemon::setMove(const int i, MoveObject *move) {
  * function will probably only be used for testing, as actual logic is more
  * likely to be use the MoveObject * version above.
  */
-void Pokemon::setMove(const int i, const string &name) {
+void Pokemon::setMove(const int i, const string &name, const int pp) {
     ScriptContext *cx = m_field->getContext();
     MoveDatabase *moves = m_machine->getMoveDatabase();
     const MoveTemplate *tpl = moves->getMove(name);
     assert(tpl);
     MoveObject *move = cx->newMoveObject(tpl);
-    setMove(i, move);
+    setMove(i, move, pp);
 }
 
 /**
  * Remove defunct statuses from this pokemon.
  */
-void Pokemon::removeStatuses(ScriptContext *cx) {
+void Pokemon::removeStatuses() {
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isRemovable(cx))
+        if (!(*i)->isRemovable(m_cx))
             continue;
 
         // this is a list so it is safe to remove an arbitrary element
-        cx->removeRoot(*i);
+        m_cx->removeRoot(*i);
         m_effects.erase(i);
     }
 }
@@ -298,32 +336,31 @@ bool Pokemon::hasAbility(const string &name) {
  * Apply a StatusEffect to this pokemon. Makes a copy of the parameter before
  * applying it to the pokemon.
  */
-StatusObject *Pokemon::applyStatus(ScriptContext *cx,
-        Pokemon *inducer, StatusObject *effect) {
+StatusObject *Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     if (!effect)
         return NULL;
 
     // todo: locks
 
-    if (effect->isSingleton(cx)) {
-        StatusObject *singleton = getStatus(cx, effect->getId(cx));
+    if (effect->isSingleton(m_cx)) {
+        StatusObject *singleton = getStatus(effect->getId(m_cx));
         if (singleton)
             return singleton;
     }
 
-    StatusObject *applied = effect->cloneAndRoot(cx);
+    StatusObject *applied = effect->cloneAndRoot(m_cx);
     if (inducer != NULL) {
-        applied->setInducer(cx, inducer);
+        applied->setInducer(m_cx, inducer);
     }
-    applied->setSubject(cx, this);
+    applied->setSubject(m_cx, this);
 
     m_field->transformStatus(this, &applied);
     if (applied == NULL) {
         return NULL;
     }
 
-    if (!applied->applyEffect(cx)) {
-        cx->removeRoot(applied);
+    if (!applied->applyEffect(m_cx)) {
+        m_cx->removeRoot(applied);
         return NULL;
     }
 
@@ -334,14 +371,13 @@ StatusObject *Pokemon::applyStatus(ScriptContext *cx,
 /**
  * Transform a StatusEffect.
  */
-bool Pokemon::transformStatus(ScriptContext *cx,
-        Pokemon *subject, StatusObject **status) {
+bool Pokemon::transformStatus(Pokemon *subject, StatusObject **status) {
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->transformStatus(cx, subject, status)) {
+        if ((*i)->transformStatus(m_cx, subject, status)) {
             if (*status == NULL) {
                 return true;
             }
@@ -353,22 +389,22 @@ bool Pokemon::transformStatus(ScriptContext *cx,
 /**
  * Remove a StatusEffect from this pokemon.
  */
-void Pokemon::removeStatus(ScriptContext *scx, StatusObject *status) {
-    status->unapplyEffect(scx);
-    status->dispose(scx);
+void Pokemon::removeStatus(StatusObject *status) {
+    status->unapplyEffect(m_cx);
+    status->dispose(m_cx);
 }
 
 /**
  * Get critical hit chance (additive) modifiers.
  */
-int Pokemon::getCriticalModifier(ScriptContext *cx) const {
+int Pokemon::getCriticalModifier() const {
     int ret = 0;
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        ret += (*i)->getCriticalModifier(cx);
+        ret += (*i)->getCriticalModifier(m_cx);
     }
     return ret;
 }
@@ -376,14 +412,13 @@ int Pokemon::getCriticalModifier(ScriptContext *cx) const {
 /**
  * Transform a health change.
  */
-int Pokemon::transformHealthChange(ScriptContext *cx, int hp,
-        bool indirect) const {
+int Pokemon::transformHealthChange(int hp, bool indirect) const {
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        (*i)->transformHealthChange(cx, hp, indirect, &hp);
+        (*i)->transformHealthChange(m_cx, hp, indirect, &hp);
     }
     return hp;
 }
@@ -392,14 +427,14 @@ int Pokemon::transformHealthChange(ScriptContext *cx, int hp,
  * Check if this Pokemon has "inherent priority". This is used for certain
  * items and abilities.
  */
-int Pokemon::getInherentPriority(ScriptContext *cx) const {
+int Pokemon::getInherentPriority() const {
     int ret = 0;
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        int v = (*i)->getInherentPriority(cx);
+        int v = (*i)->getInherentPriority(m_cx);
         if (abs(v) > abs(ret)) {
             ret = v;
         }
@@ -410,14 +445,14 @@ int Pokemon::getInherentPriority(ScriptContext *cx) const {
 /**
  * Check for stat modifiers on all status effects.
  */
-void Pokemon::getStatModifiers(ScriptContext *cx,
-        STAT stat, Pokemon *subject, PRIORITY_MAP &mods) {
+void Pokemon::getStatModifiers(STAT stat,
+        Pokemon *subject, PRIORITY_MAP &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->getStatModifier(cx, m_field, stat, subject, mod)) {
+        if ((*i)->getStatModifier(m_cx, m_field, stat, subject, mod)) {
             // position unused
             mods[mod.priority] = mod.value;
         }
@@ -427,15 +462,15 @@ void Pokemon::getStatModifiers(ScriptContext *cx,
 /**
  * Check for modifiers on all status effects.
  */
-void Pokemon::getModifiers(ScriptContext *cx,
-        Pokemon *user, Pokemon *target,
+void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
         MoveObject *obj, const bool critical, MODIFIERS &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->getModifier(cx, m_field, user, target, obj, critical, mod)) {
+        if ((*i)->getModifier(m_cx, m_field,
+                user, target, obj, critical, mod)) {
             mods[mod.position][mod.priority] = mod.value;
         }
     }
@@ -445,17 +480,17 @@ void Pokemon::getModifiers(ScriptContext *cx,
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
-void Pokemon::setHp(ScriptContext *cx, const int hp, const bool indirect) {
+void Pokemon::setHp(const int hp, const bool indirect) {
     // TODO: implement this function properly
     if (m_fainted) {
         return;
     }
-    const int delta = transformHealthChange(cx, m_hp - hp, indirect);
+    const int delta = transformHealthChange(m_hp - hp, indirect);
     m_hp -= delta;
     m_field->informHealthChange(this, delta);
     const BattleField::EXECUTION *move = m_field->topExecution();
     if (move) {
-        informDamaged(cx, move->user, move->move, delta);
+        informDamaged(move->user, move->move, delta);
     }
     if (m_hp <= 0) {
         m_field->informFainted(this);
@@ -484,29 +519,27 @@ const MoveTemplate *Pokemon::getMemory() const {
 /**
  * Inform that this pokemon was damaged by a move.
  */
-void Pokemon::informDamaged(ScriptContext *cx,
-        Pokemon *user, MoveObject *move, int damage) {
+void Pokemon::informDamaged(Pokemon *user, MoveObject *move, int damage) {
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        (*i)->informDamaged(cx, user, move, damage);
+        (*i)->informDamaged(m_cx, user, move, damage);
     }
 }
 
 /**
  * Inform that this pokemon was targeted by a move.
  */
-void Pokemon::informTargeted(ScriptContext *cx,
-        Pokemon *user, MoveObject *move) {
+void Pokemon::informTargeted(Pokemon *user, MoveObject *move) {
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(cx))
+        if (!(*i)->isActive(m_cx))
             continue;
 
-        (*i)->informTargeted(cx, user, move);
+        (*i)->informTargeted(m_cx, user, move);
     }
 
-    if (move->getFlag(cx, F_MEMORABLE)) {
+    if (move->getFlag(m_cx, F_MEMORABLE)) {
         list<MEMORY>::iterator i = m_memory.begin();
         for (; i != m_memory.end(); ++i) {
             if (i->user == user) {
@@ -525,9 +558,9 @@ void Pokemon::informTargeted(ScriptContext *cx,
 void Pokemon::setAbility(StatusObject *obj) {
     ScriptContext *cx = m_field->getContext();
     if (m_ability != NULL) {
-        removeStatus(cx, m_ability);
+        removeStatus(m_ability);
     }
-    m_ability = applyStatus(cx, NULL, obj);
+    m_ability = applyStatus(NULL, obj);
 }
 
 /**
@@ -559,6 +592,14 @@ void Pokemon::deductPp(MoveObject *move) {
     }
 }
 
+/**
+ * Deduct PP from a move slot.
+ */
+void Pokemon::deductPp(const int i) {
+    --m_pp[i];
+    m_moveUsed[i] = true;
+}
+
 void Pokemon::initialise(BattleField *field, const int party, const int idx) {
     m_field = field;
     m_party = party;
@@ -576,31 +617,28 @@ void Pokemon::initialise(BattleField *field, const int party, const int idx) {
 
     // Get script machine.
     m_machine = field->getScriptMachine();
-    ScriptContext *cx = m_machine->acquireContext();
+    m_cx = field->getContext();
 
     // Create pokemon object.
-    m_object = cx->newPokemonObject(this);
+    m_object = m_cx->newPokemonObject(this);
 
     // Create move objects.
     vector<const MoveTemplate *>::const_iterator i = m_moveProto.begin();
     int j = 0;
     for (; i != m_moveProto.end(); ++i) {
-        MoveObject *obj = cx->newMoveObject(*i);
+        MoveObject *obj = m_cx->newMoveObject(*i);
         m_moves.push_back(obj);
-        m_pp[j] = obj->getPp(cx) * (5 + m_ppUps[j]) / 5;
+        m_pp[j] = obj->getPp(m_cx) * (5 + m_ppUps[j]) / 5;
         ++j;
     }
 
     // Create ability object.
-    StatusObject ability = cx->getAbility(m_abilityName);
+    StatusObject ability = m_cx->getAbility(m_abilityName);
     if (!ability.isNull()) {
-        m_ability = applyStatus(cx, NULL, &ability);
+        m_ability = applyStatus(NULL, &ability);
     } else {
         cout << "No such ability: " << m_abilityName << endl;
     }
-
-
-    m_machine->releaseContext(cx);
 }
 
 }

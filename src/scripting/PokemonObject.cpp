@@ -60,7 +60,8 @@ enum POKEMON_TINYID {
     PTI_MEMORY,
     PTI_FIELD,
     PTI_PARTY,
-    PTI_POSITION
+    PTI_POSITION,
+    PTI_MOVE_COUNT
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -73,12 +74,11 @@ JSBool applyStatus(JSContext *cx,
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     if (JSVAL_IS_OBJECT(argv[1])) {
         StatusObject status(JSVAL_TO_OBJECT(argv[1]));
-        ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
         Pokemon *inducer = NULL;
         if (JSVAL_IS_OBJECT(argv[0])) {
             inducer = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
         }
-        StatusObject *objret = p->applyStatus(scx, inducer, &status);
+        StatusObject *objret = p->applyStatus(inducer, &status);
         if (objret) {
             *ret = OBJECT_TO_JSVAL(objret->getObject());
         }
@@ -90,11 +90,10 @@ JSBool removeStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     *ret = JSVAL_NULL;
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     jsval v = argv[0];
     assert(JSVAL_IS_OBJECT(v));
     StatusObject status(JSVAL_TO_OBJECT(v));
-    p->removeStatus(scx, &status);
+    p->removeStatus(&status);
     return JS_TRUE;
 }
 
@@ -121,6 +120,39 @@ JSBool isImmune(JSContext *cx,
     return true;
 }
 
+JSBool isMoveUsed(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int slot = JSVAL_TO_INT(v);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    *ret = BOOLEAN_TO_JSVAL(p->isMoveUsed(slot));
+
+    return JS_TRUE;
+}
+
+JSBool getMove(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int slot = JSVAL_TO_INT(v);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    MoveObject *sobj = p->getMove(slot);
+    if (sobj) {
+        *ret = OBJECT_TO_JSVAL(sobj->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+
+    return JS_TRUE;
+}
+
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -130,8 +162,7 @@ JSBool getStatus(JSContext *cx,
     char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
 
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-    StatusObject *sobj = p->getStatus(scx, str);
+    StatusObject *sobj = p->getStatus(str);
     if (sobj) {
         *ret = OBJECT_TO_JSVAL(sobj->getObject());
     } else {
@@ -171,8 +202,7 @@ JSBool execute(JSContext *cx,
         target = (Pokemon *)JS_GetPrivate(cx, objp);
     }
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-    p->executeMove(scx, &move, target, inform);
+    p->executeMove(&move, target, inform);
     return JS_TRUE;
 }
 
@@ -181,10 +211,9 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
         case PTI_HP: {
-            ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
             jsdouble d;
             JS_ValueToNumber(cx, *vp, &d);
-            p->setHp(scx, ceil(d));
+            p->setHp(ceil(d));
         } break;
     }
     return JS_TRUE;
@@ -279,6 +308,10 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_POSITION: {
             *vp = INT_TO_JSVAL(p->getPosition());
         } break;
+
+        case PTI_MOVE_COUNT: {
+            *vp = INT_TO_JSVAL(p->getMoveCount());
+        } break;
     }
     return JS_TRUE;
 }
@@ -300,6 +333,7 @@ JSPropertySpec pokemonProperties[] = {
     { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "party", PTI_PARTY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { "position", PTI_POSITION, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "moveCount", PTI_MOVE_COUNT, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
@@ -310,6 +344,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS("isImmune", isImmune, 1, 0, 0),
     JS_FS("getStatus", getStatus, 1, 0, 0),
+    JS_FS("getMove", getMove, 1, 0, 0),
+    JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
     JS_FS_END
 };
 

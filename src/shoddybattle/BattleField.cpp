@@ -49,6 +49,12 @@ struct BattleFieldImpl {
     bool descendingSpeed;
     std::stack<BattleField::EXECUTION> executing;
 
+    BattleFieldImpl():
+            object(NULL),
+            mech(NULL),
+            machine(NULL),
+            context(NULL) { }
+
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     void getActivePokemon(vector<Pokemon::PTR> &);
     bool speedComparator(Pokemon *p1, Pokemon *p2) {
@@ -69,6 +75,26 @@ struct BattleFieldImpl {
         } else {
             party = 0;
         }
+    }
+
+    void initialise(BattleField *field,
+        const BattleMechanics *mech,
+        GENERATION generation,
+        ScriptMachine *machine,
+        Pokemon::ARRAY teams[TEAM_COUNT],
+        const int activeParty);
+
+    void cleanUp() {
+        if (object) {
+            context->removeRoot(object);
+        }
+        if (context) {
+            machine->releaseContext(context);
+        }
+    }
+
+    ~BattleFieldImpl() {
+        cleanUp();
     }
 };
 
@@ -273,7 +299,7 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         entity.party = p->getParty();
         entity.position = p->getPosition();
         entity.speed = p->getStat(S_SPEED);
-        entity.inherentPriority = p->getInherentPriority(context);
+        entity.inherentPriority = p->getInherentPriority();
         entities.push_back(entity);
     }
 
@@ -296,8 +322,6 @@ BattleField::BattleField() {
 }
 
 BattleField::~BattleField() {
-    m_impl->context->removeRoot(m_impl->object);
-    m_impl->machine->releaseContext(m_impl->context);
     delete m_impl;
 }
 
@@ -344,7 +368,7 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p && p->vetoExecution(m_impl->context, user, target, move)) {
+            if (p && p->vetoExecution(user, target, move)) {
                 return true;
             }
         }
@@ -411,7 +435,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 }
             }
 
-            if (p->executeMove(m_impl->context, move, target)) {
+            if (p->executeMove(move, target)) {
                 p->deductPp(turn->id);
             }
         } else {
@@ -429,7 +453,7 @@ void BattleField::transformStatus(Pokemon *subject, StatusObject **status) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p) {
-                p->transformStatus(m_impl->context, subject, status);
+                p->transformStatus(subject, status);
                 if (status == NULL) {
                     return;
                 }
@@ -449,8 +473,7 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p) {
-                p->getModifiers(m_impl->context,
-                        &user, &target, &obj, critical, mods);
+                p->getModifiers(&user, &target, &obj, critical, mods);
             }
         }
     }
@@ -469,21 +492,36 @@ void BattleField::initialise(const BattleMechanics *mech,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
         const int activeParty) {
+    try {
+        m_impl->initialise(this, mech, generation, machine, teams, activeParty);
+    } catch (BattleFieldException &e) {
+        m_impl->cleanUp();
+        throw e;
+    }
+}
+
+void BattleFieldImpl::initialise(BattleField *field,
+        const BattleMechanics *mech,
+        GENERATION generation,
+        ScriptMachine *machine,
+        Pokemon::ARRAY teams[TEAM_COUNT],
+        const int activeParty) {
     if (mech == NULL) {
         throw BattleFieldException();
     }
     if (machine == NULL) {
         throw BattleFieldException();
     }
-    m_impl->mech = mech;
-    m_impl->generation = generation;
-    m_impl->machine = machine;
-    m_impl->partySize = activeParty;
-    m_impl->descendingSpeed = true;
+    this->machine = machine;
+    this->context = machine->acquireContext();
+    this->object = context->newFieldObject(field);
+    this->mech = mech;
+    this->generation = generation;
+    this->partySize = activeParty;
+    this->descendingSpeed = true;
     for (int i = 0; i < TEAM_COUNT; ++i) {
-        m_impl->teams[i] = teams[i];
-        m_impl->active[i] =
-                shared_ptr<PokemonParty>(new PokemonParty(activeParty));
+        this->teams[i] = teams[i];
+        active[i] = shared_ptr<PokemonParty>(new PokemonParty(activeParty));
 
         // Set first n pokemon to be the active pokemon.
         int bound = activeParty;
@@ -492,23 +530,21 @@ void BattleField::initialise(const BattleMechanics *mech,
             bound = size;
         }
         for (int j = 0; j < bound; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            slot.pokemon = m_impl->teams[i][j];
+            PokemonSlot &slot = (*active[i])[j];
+            slot.pokemon = this->teams[i][j];
         }
 
         // Do some basic initialisation on each pokemon.
-        Pokemon::ARRAY &team = m_impl->teams[i];
+        Pokemon::ARRAY &team = this->teams[i];
         const int length = team.size();
         for (int j = 0; j < length; ++j) {
             Pokemon::PTR p = team[j];
             if (!p) {
                 throw BattleFieldException();
             }
-            p->initialise(this, i, j);
+            p->initialise(field, i, j);
         }
     }
-    m_impl->context = m_impl->machine->acquireContext();
-    m_impl->object = m_impl->context->newFieldObject(this);
 }
 
 }

@@ -398,9 +398,11 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Quick Attack");
-    //field.getActivePokemon(1, 0)->setAbility("Stall");
-    field.getActivePokemon(1, 0)->setMove(0, "Metal Burst");
+    field.getActivePokemon(0, 1)->setMove(0, "Quick Attack", 5);
+    //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
+    field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
+    field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Counter", 5);
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
