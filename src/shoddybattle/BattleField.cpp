@@ -56,7 +56,6 @@ struct BattleFieldImpl {
             context(NULL) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
-    void getActivePokemon(vector<Pokemon::PTR> &);
     bool speedComparator(Pokemon *p1, Pokemon *p2) {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
@@ -82,6 +81,7 @@ struct BattleFieldImpl {
         GENERATION generation,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
+        const std::string trainer[TEAM_COUNT],
         const int activeParty);
 
     void cleanUp() {
@@ -215,10 +215,10 @@ shared_ptr<PokemonParty> *BattleField::getActivePokemon() {
 /**
  * Place the active pokemon into a single vector, indepedent of party.
  */
-void BattleFieldImpl::getActivePokemon(vector<Pokemon::PTR> &v) {
+void BattleField::getActivePokemon(vector<Pokemon::PTR> &v) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
-        PokemonParty &party = *active[i];
-        for (int j = 0; j < partySize; ++j) {
+        PokemonParty &party = *m_impl->active[i];
+        for (int j = 0; j < m_impl->partySize; ++j) {
             Pokemon::PTR p = party[j].pokemon;
             if (p) { // could be an empty slot
                 v.push_back(p);
@@ -337,6 +337,20 @@ const BattleMechanics *BattleField::getMechanics() const {
 }
 
 /**
+ * Switch an active pokemon.
+ */
+void BattleField::switchPokemon(Pokemon *p, const int idx) {
+    p->switchOut();
+    const int party = p->getParty();
+    const int slot = p->getSlot();
+    Pokemon::PTR replacement = m_impl->teams[party][idx];
+    (*m_impl->active[party])[slot].pokemon = replacement;
+    informWithdraw(p);
+    informSendOut(replacement.get());
+    replacement->switchIn(slot);
+}
+
+/**
  * Print a message to the BattleField.
  */
 void BattleField::print(const TextMessage &msg) {
@@ -351,6 +365,23 @@ void BattleField::print(const TextMessage &msg) {
     cout << message << endl;
 }
 
+void BattleField::informSendOut(Pokemon *p) {
+    const int party = p->getParty();
+    const string trainer = m_impl->active[party]->getName();
+    cout << trainer << " sent out " << p->getName() << "!" << endl;
+}
+
+void BattleField::informWithdraw(Pokemon *p) {
+    const int party = p->getParty();
+    const string trainer = m_impl->active[party]->getName();
+    cout << trainer << " withdrew " << p->getName() << "!" << endl;
+}
+
+void BattleField::informUseMove(Pokemon *p, MoveObject *move) {
+    cout << p->getName() << " used "
+            << move->getName(m_impl->context) << "!" << endl;
+}
+
 void BattleField::informHealthChange(Pokemon *p, const int delta) {
     const int numerator = 48.0 * (double)delta / (double)p->getStat(S_HP) + 0.5;
     cout << p->getName() << " lost " << numerator << "/48 of its health!"
@@ -359,6 +390,22 @@ void BattleField::informHealthChange(Pokemon *p, const int delta) {
 
 void BattleField::informFainted(Pokemon *p) {
     cout << p->getName() << " fainted!" << endl;
+}
+
+/**
+ * Determine whether to veto the selection of a move.
+ */
+bool BattleField::vetoSelection(Pokemon *user, MoveObject *move) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && p->vetoSelection(user, move)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /**
@@ -380,11 +427,28 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
 }
 
 /**
+ * Begin the battle.
+ */
+void BattleField::beginBattle() {
+    // todo: maybe sort these by speed? not sure on these mechanics
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p) {
+                informSendOut(p.get());
+                p->switchIn(j);
+            }
+        }
+    }
+}
+
+/**
  * Process a turn.
  */
 void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     vector<Pokemon::PTR> pokemon;
-    m_impl->getActivePokemon(pokemon);
+    getActivePokemon(pokemon);
     const int count = pokemon.size();
     if (count != turns.size())
         throw BattleFieldException();
@@ -442,7 +506,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 p->deductPp(turn->id);
             }
         } else {
-            // handle switch
+            switchPokemon(p.get(), turn->id);
         }
     }
 }
@@ -494,9 +558,11 @@ void BattleField::initialise(const BattleMechanics *mech,
         GENERATION generation,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
+        const std::string trainer[TEAM_COUNT],
         const int activeParty) {
     try {
-        m_impl->initialise(this, mech, generation, machine, teams, activeParty);
+        m_impl->initialise(this, mech, generation,
+                machine, teams, trainer, activeParty);
     } catch (BattleFieldException &e) {
         m_impl->cleanUp();
         throw e;
@@ -508,6 +574,7 @@ void BattleFieldImpl::initialise(BattleField *field,
         GENERATION generation,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
+        const std::string trainer[TEAM_COUNT],
         const int activeParty) {
     if (mech == NULL) {
         throw BattleFieldException();
@@ -524,7 +591,8 @@ void BattleFieldImpl::initialise(BattleField *field,
     this->descendingSpeed = true;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         this->teams[i] = teams[i];
-        active[i] = shared_ptr<PokemonParty>(new PokemonParty(activeParty));
+        active[i] = shared_ptr<PokemonParty>(
+                new PokemonParty(activeParty, trainer[i]));
 
         // Set first n pokemon to be the active pokemon.
         int bound = activeParty;

@@ -219,7 +219,7 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     return JS_TRUE;
 }
 
-JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
@@ -306,7 +306,8 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         } break;
 
         case PTI_POSITION: {
-            *vp = INT_TO_JSVAL(p->getPosition());
+            // todo: maybe change the name of this
+            *vp = INT_TO_JSVAL(p->getSlot());
         } break;
 
         case PTI_MOVE_COUNT: {
@@ -318,22 +319,22 @@ JSBool PokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
 
 JSPropertySpec pokemonProperties[] = {
     { "addStatus", 0, JSPROP_PERMANENT, NULL, NULL },
-    { "species", PTI_SPECIES, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "name", PTI_NAME, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "base", PTI_BASE, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "iv", PTI_IV, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "ev", PTI_EV, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "stat", PTI_STAT, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "level", PTI_LEVEL, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "nature", PTI_NATURE, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, PokemonSet },
-    { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "party", PTI_PARTY, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "position", PTI_POSITION, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
-    { "moveCount", PTI_MOVE_COUNT, JSPROP_PERMANENT | JSPROP_SHARED, PokemonGet, NULL },
+    { "species", PTI_SPECIES, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "name", PTI_NAME, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "base", PTI_BASE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "iv", PTI_IV, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "ev", PTI_EV, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "stat", PTI_STAT, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "level", PTI_LEVEL, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "nature", PTI_NATURE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, PokemonSet },
+    { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "party", PTI_PARTY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "position", PTI_POSITION, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "moveCount", PTI_MOVE_COUNT, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

@@ -38,6 +38,10 @@ using namespace boost;
 namespace shoddybattle {
 
 namespace {
+    
+enum FIELD_TINYID {
+    FTI_GENERATION
+};
 
 /**
  *      field.random(lower, upper)
@@ -197,8 +201,20 @@ JSBool calculate(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    int tid = JSVAL_TO_INT(id);
+    switch (tid) {
+        case FTI_GENERATION: {
+            *vp = INT_TO_JSVAL(p->getGeneration());
+        } break;
+    }
+    return JS_TRUE;
+}
+
 JSPropertySpec fieldProperties[] = {
     { "damage", 0, JSPROP_PERMANENT, NULL, NULL },
+    { "generation", FTI_GENERATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

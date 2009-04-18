@@ -96,6 +96,7 @@ public:
             Pokemon *target, bool inform = true);
     bool useMove(MoveObject *, Pokemon *, const int);
     bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);
+    bool vetoSelection(Pokemon *, MoveObject *);
 
     void informTargeted(Pokemon *, MoveObject *);
     void informDamaged(Pokemon *, MoveObject *, int);
@@ -157,10 +158,16 @@ public:
 
     int getParty() const { return m_party; }
     int getPosition() const { return m_position; }
+    int getSlot() const { return m_slot; }
 
     bool isFainted() const { return m_fainted; }
 
+    void switchIn(const int slot);
     void switchOut();
+    void determineLegalActions();
+    // todo: getForcedMove
+    bool isMoveLegal(const int i) const { return m_legalMove[i]; }
+    bool isSwitchLegal() const { return m_legalSwitch; }
     
     ~Pokemon();
 
@@ -191,6 +198,8 @@ private:
     std::vector<MoveObject *> m_moves;
     std::vector<int> m_pp;
     std::vector<bool> m_moveUsed;
+    std::vector<bool> m_legalMove;
+    bool m_legalSwitch;
     std::string m_nickname;
     std::string m_itemName;
     std::string m_abilityName;
@@ -204,7 +213,7 @@ private:
     ScriptMachine *m_machine;
     ScriptContext *m_cx;
     BattleField *m_field;
-    int m_party, m_position;
+    int m_party, m_position, m_slot;
 
     STATUSES m_effects;
 

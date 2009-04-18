@@ -138,6 +138,15 @@ bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
     return true;
 }
 
+bool StatusObject::vetoSelection(ScriptContext *scx,
+        Pokemon *user, MoveObject *move) {
+    if (!scx->hasProperty(this, "vetoSelection"))
+        return false;
+    ScriptValue argv[] = { user, move };
+    ScriptValue v = scx->callFunctionByName(this, "vetoSelection", 2, argv);
+    return v.getBool();
+}
+
 bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
         Pokemon *user, Pokemon *target, MoveObject *move) {
     if (!scx->hasProperty(this, "vetoExecution"))

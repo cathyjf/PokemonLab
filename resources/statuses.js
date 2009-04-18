@@ -103,14 +103,14 @@ SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
     // Only handle the "overall veto", not target specific.
     if (target != null)
         return false;
-    --this.turns;
-    if (user.hasAbility("Early Bird")) { // this is really a part of Sleep
-        --this.turns;
-    }
     if (this.turns <= 0) {
         user.removeStatus(this);
         field.print(Text.status_effects_sleep(2, user.name));
         return false;
+    }
+    --this.turns;
+    if (user.hasAbility("Early Bird")) { // this is really a part of Sleep
+        --this.turns;
     }
 
     // Sleep Talk and Snore are not vetoed by Sleep.

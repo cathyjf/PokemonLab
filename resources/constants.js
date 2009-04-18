@@ -1,5 +1,5 @@
 /*
- * File:   types.js
+ * File:   constants.js
  * Author: Catherine
  *
  * Created on April 14, 2009, 2:41 AM
@@ -21,6 +21,12 @@
  * along with this program; if not, visit the Free Software Foundation, Inc.
  * online at http://gnu.org.
  */
+
+var Generation = {
+    DP : 0,
+    PLATINUM : 1,
+    PLATINUM_FAKE : 2
+};
 
 var MoveClass = {
     PHYSICAL : 0,

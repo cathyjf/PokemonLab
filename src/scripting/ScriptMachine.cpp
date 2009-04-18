@@ -461,6 +461,10 @@ void ScriptContext::maybeGc() {
 void ScriptContext::runFile(const string file) {
     // Read in the whole file.
     ifstream is(file.c_str());
+    if (!is.is_open()) {
+        cout << "Cannot find script " << file << endl;
+        return;
+    }
     is.seekg(0, ios::end);
     const int length = is.tellg();
     is.seekg(0, ios::beg);

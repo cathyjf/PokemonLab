@@ -103,7 +103,8 @@ struct PokemonSlot {
 
 struct PokemonParty {
 public:
-    PokemonParty(const int size): m_size(size) {
+    PokemonParty(const int size, const std::string &name):
+            m_size(size), m_name(name) {
         m_party = boost::shared_array<PokemonSlot>(new PokemonSlot[size]);
     }
     PokemonSlot &operator[](const int i) {
@@ -112,11 +113,15 @@ public:
     const STATUSES &getEffects() const {
         return m_effects;
     }
+    std::string getName() const {
+        return m_name;
+    }
     int getSize() const {
         return m_size;
     }
 private:
     const int m_size;
+    const std::string m_name;
     boost::shared_array<PokemonSlot> m_party;
     STATUSES m_effects;     // party-specific status effects
 };
@@ -145,7 +150,13 @@ public:
             const GENERATION,
             ScriptMachine *machine,
             Pokemon::ARRAY teams[TEAM_COUNT],
+            const std::string trainer[TEAM_COUNT],
             const int activeParty);
+
+    /**
+     * Begin the battle.
+     */
+    void beginBattle();
 
     /**
      * Process a turn.
@@ -171,6 +182,7 @@ public:
     /**
      * Get the active pokemon.
      */
+    void getActivePokemon(std::vector<Pokemon::PTR> &);
     boost::shared_ptr<PokemonParty> *getActivePokemon();
     Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
         return (*getActivePokemon()[i])[j].pokemon;
@@ -191,6 +203,11 @@ public:
      * Determine whether the execution of a move should be vetoed.
      */
     bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);
+
+    /**
+     * Determine whether the selection of a move should be vetoed.
+     */
+    bool vetoSelection(Pokemon *, MoveObject *);
     
     /**
      * Obtain the BattleMechanics in use on this BattleField.
@@ -198,12 +215,20 @@ public:
     const BattleMechanics *getMechanics() const;
 
     /**
+     * Switch which pokemon is active.
+     */
+    void switchPokemon(Pokemon *, const int);
+    
+    /**
      * Print a message to the BattleField.
      */
     virtual void print(const TextMessage &msg);
 
-    virtual void informHealthChange(Pokemon *, const int);
 
+    virtual void informUseMove(Pokemon *, MoveObject *);
+    virtual void informWithdraw(Pokemon *);
+    virtual void informSendOut(Pokemon *);
+    virtual void informHealthChange(Pokemon *, const int);
     virtual void informFainted(Pokemon *);
 
     typedef Pokemon::RECENT_MOVE<MoveObject> EXECUTION;

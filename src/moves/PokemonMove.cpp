@@ -367,6 +367,8 @@ MoveDatabase::~MoveDatabase() {
 
 } // namespace shoddybattle
 
+#if 0
+
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/Team.h"
@@ -381,7 +383,7 @@ int main() {
     ScriptContext *cx = machine.acquireContext();
     cx->runFile("resources/main.js");
     cx->runFile("resources/moves.js");
-    cx->runFile("resources/types.js");
+    cx->runFile("resources/constants.js");
     cx->runFile("resources/StatusEffect.js");
     cx->runFile("resources/statuses.js");
     cx->runFile("resources/abilities.js");
@@ -394,9 +396,11 @@ int main() {
     loadTeam("/home/Catherine/randomteam", *species, team[0]);
     loadTeam("/home/Catherine/toxicorb", *species, team[1]);
 
+    const string trainer[] = { "Catherine", "bearzly" };
+
     BattleField field;
     JewelMechanics mechanics;
-    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, 2);
+    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
     field.getActivePokemon(0, 1)->setMove(0, "Quick Attack", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
@@ -404,10 +408,12 @@ int main() {
     field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
     field.getActivePokemon(1, 1)->setMove(0, "Counter", 5);
 
+    field.beginBattle();
+
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
+    turns.push_back(PokemonTurn(TT_SWITCH, 4));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
 
     time_t initial = clock();
@@ -417,25 +423,7 @@ int main() {
     cout << delta << " seconds to process the turn." << endl;
 
     field.getContext()->gc();
-
-    /**const PokemonSpecies *pSpecies = species.getSpecies("Smeargle");
-    vector<string> move;
-    move.push_back("Crush Claw");
-    vector<int> ppUp;
-    ppUp.push_back(3);
-    int iv[] = { 21, 30, 15, 31, 25, 31 };
-    int ev[] = { 200, 120, 100, 0, 0, 0 };
-    Pokemon pokemon(pSpecies, "Smeargle", PokemonNature::getNature(4),
-            "", "", iv, ev, 100, G_MALE, true, move, ppUp);
-    pokemon.initialise(&field, 0, 0);
-
-    MoveObject *pMove = pokemon.getMove(0);
-    if (pMove) {
-        pMove->use(cx, &field, &pokemon, &pokemon);
-        cx->gc();
-        int d = mechanics.calculateDamage(field, *pMove, pokemon, pokemon, 1);
-        cout << d << endl;
-        cx->gc();
-    }*/
 }
+
+#endif
 

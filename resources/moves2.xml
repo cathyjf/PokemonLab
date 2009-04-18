@@ -1782,7 +1782,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
-<accuracy>0.70</accuracy>
+<accuracy>0.60</accuracy>
 <pp>20</pp>
 <target>Enemy</target>
 <flags>
@@ -1791,6 +1791,7 @@ makeStatusMove(this, [[SleepEffect]]);
 	<memorable/>
 </flags>
 <init>
+// TODO: generation-specific accuracy
 makeStatusMove(this, [[SleepEffect]]);
 </init>
 </move>

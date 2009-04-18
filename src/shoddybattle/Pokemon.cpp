@@ -80,6 +80,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_fainted = false;
     m_item = NULL;
     m_ability = NULL;
+    m_legalSwitch = true;
 }
 
 Pokemon::~Pokemon() {
@@ -114,6 +115,38 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
 }
 
 /**
+ * Determine the legal actions a pokemon can take this turn.
+ */
+void Pokemon::determineLegalActions() {
+    // todo #1: can this pokemon switch legally?
+    // todo #2: getForcedMove
+
+    const int count = m_moves.size();
+    m_legalMove.resize(count, false);
+    for (int i = 0; i < count; ++i) {
+        MoveObject *move = m_moves[i];
+        if (move) {
+            m_legalMove[i] = !m_field->vetoSelection(this, move);
+        }
+    }
+}
+
+/**
+ * Determine whether the selection of a move should be vetoed.
+ */
+bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
+            continue;
+
+        if ((*i)->vetoSelection(m_cx, user, move))
+            return true;
+    }
+    return false;
+}
+
+/**
  * Determine whether the execution of a move should be vetoed, according to
  * the effects on this pokemon.
  */
@@ -127,6 +160,24 @@ bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
             return true;
     }
     return false;
+}
+
+/**
+ * Send this pokemon out onto the field.
+ */
+void Pokemon::switchIn(const int slot) {
+    m_slot = slot;
+
+    // todo: apply field + party effects?
+
+    // inform status effects of switching in
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
+            continue;
+
+        (*i)->switchIn(m_cx);
+    }
 }
 
 /**
@@ -151,7 +202,7 @@ void Pokemon::switchOut() {
     m_moveUsed.resize(m_moves.size(), false);
     // Adjust the memories other active pokemon.
     shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *active[i];
         const int size = party.getSize();
         for (int j = 0; j < size; ++j) {
@@ -328,8 +379,7 @@ void Pokemon::removeStatuses() {
 bool Pokemon::hasAbility(const string &name) {
     if (m_ability == NULL)
         return false;
-    ScriptContext *cx = m_field->getContext();
-    return (m_ability->getId(cx) == name);
+    return (m_ability->getId(m_cx) == name);
 }
 
 /**

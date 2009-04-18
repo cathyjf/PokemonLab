@@ -5,6 +5,7 @@
                    displayName="Resource Files"
                    projectFiles="true">
       <itemPath>/home/Catherine/ShoddyBattle2/resources/abilities.js</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/constants.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/FieldEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/main.js</itemPath>
@@ -13,7 +14,6 @@
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/types.js</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -62,6 +62,7 @@
         <itemPath>src/shoddybattle/Pokemon.h</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/SimpleBattle.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h</itemPath>
       </logicalFolder>
@@ -113,6 +114,9 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/constants.js">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
         <itemTool>3</itemTool>
       </item>
@@ -126,9 +130,6 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/types.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
@@ -195,6 +196,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/SimpleBattle.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp">
@@ -285,6 +289,9 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
         <itemTool>3</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/constants.js">
+        <itemTool>3</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
         <itemTool>3</itemTool>
       </item>
@@ -298,9 +305,6 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/types.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
@@ -367,6 +371,9 @@
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/PokemonSpecies.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/SimpleBattle.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.cpp">
