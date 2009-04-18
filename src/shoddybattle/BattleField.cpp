@@ -604,7 +604,8 @@ void BattleFieldImpl::initialise(BattleField *field,
             PokemonSlot &slot = (*active[i])[j];
             slot.pokemon = this->teams[i][j];
         }
-
+    }
+    for (int i = 0; i < TEAM_COUNT; ++i) {
         // Do some basic initialisation on each pokemon.
         Pokemon::ARRAY &team = this->teams[i];
         const int length = team.size();
