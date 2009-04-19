@@ -81,6 +81,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_item = NULL;
     m_ability = NULL;
     m_legalSwitch = true;
+    m_slot = -1;
 }
 
 Pokemon::~Pokemon() {
@@ -118,8 +119,7 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
  * Determine the legal actions a pokemon can take this turn.
  */
 void Pokemon::determineLegalActions() {
-    // todo #1: can this pokemon switch legally?
-    // todo #2: getForcedMove
+    // todo: can this pokemon switch legally?
 
     const int count = m_moves.size();
     m_legalMove.resize(count, false);
@@ -196,6 +196,8 @@ void Pokemon::switchOut() {
     }
     // Restore original ability.
     setAbility(m_abilityName);
+    // Indicate that the pokemon is no longer active.
+    m_slot = -1;
     // Clear this pokemon's memory.
     m_memory.clear();
     m_moveUsed.clear();
@@ -247,6 +249,13 @@ bool Pokemon::useMove(MoveObject *move,
         m_field->print(msg);
     }
     return true;
+}
+
+/**
+ * Force a pokemon to carry out a particular turn next round.
+ */
+void Pokemon::setForcedTurn(const PokemonTurn &turn) {
+    m_forcedTurn = shared_ptr<PokemonTurn>(new PokemonTurn(turn));
 }
 
 /**

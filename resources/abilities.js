@@ -64,3 +64,9 @@ new Ability("Early Bird"); // no implementation needed
 ability = new Ability("Stall");
 ability.inherentPriority = function() { return -2; };
 
+// this is just a test
+ability = new Ability("Own Tempo");
+//ability.vetoSelection = function(user, move) {
+//    return (move.name == "Mirror Move");
+//};
+

@@ -34,7 +34,7 @@ using namespace std;
 namespace shoddybattle {
 
 /** Trim a string. **/
-string trim(string &s, const string &space = " ") {
+string trim(string &s, const string &space) {
     string r = s.erase(s.find_last_not_of(space) + 1);
     return r.erase(0, r.find_first_not_of(space));
 }

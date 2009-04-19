@@ -455,7 +455,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 
     vector<const PokemonTurn *> ordered;
     for (int i = 0; i < count; ++i) {
-        ordered.push_back(&turns[i]);
+        Pokemon::PTR p = pokemon[i];
+        const PokemonTurn *turn = &turns[i];
+        p->setTurn(turn);
+        ordered.push_back(turn);
     }
     
     m_impl->sortInTurnOrder(pokemon, ordered);
@@ -502,7 +505,9 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 }
             }
 
-            if (p->executeMove(move, target)) {
+            const bool choice = (p->getForcedTurn() == NULL);
+            if (p->executeMove(move, target) && choice) {
+                // only deduct pp if the move was chosen freely
                 p->deductPp(turn->id);
             }
         } else {
@@ -544,6 +549,13 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
             }
         }
     }
+}
+
+/**
+ * Get one of the pokemon teams.
+ */
+const Pokemon::ARRAY &BattleField::getTeam(const int i) const {
+    return m_impl->teams[i];
 }
 
 /**

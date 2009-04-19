@@ -112,6 +112,8 @@ public:
 
 }
 
+#if 0
+
 using namespace shoddybattle;
 
 int main() {
@@ -150,3 +152,4 @@ int main() {
     field.processTurn(turns);
 }
 
+#endif

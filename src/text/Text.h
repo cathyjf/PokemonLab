@@ -46,6 +46,8 @@ typedef std::map<int, INDEX_MAP> TEXT_MAP;
 
 typedef boost::function<int (std::string)> LOOKUP_FUNCTION;
 
+std::string trim(std::string &s, const std::string &space = " ");
+
 /**
  * All loading of text is done through this class. Generally speaking, there
  * should not be any string literals floating around the source code.

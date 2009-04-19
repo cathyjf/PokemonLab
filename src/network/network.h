@@ -25,6 +25,7 @@
 #ifndef _NETWORK_H_
 #define _NETWORK_H_
 
+#include <boost/shared_ptr.hpp>
 #include <vector>
 #include <string>
 
@@ -37,6 +38,20 @@ namespace shoddybattle { namespace network {
 const int HEADER_SIZE = sizeof(char) + sizeof(int32_t);
 
 class ServerImpl;
+class OutMessage;
+
+class Client {
+public:
+    typedef boost::shared_ptr<Client> PTR;
+
+    virtual void sendMessage(const OutMessage &msg) = 0;
+    virtual std::string getName() const = 0;
+    virtual std::string getIp() const = 0;
+
+protected:
+    Client() { }
+    virtual ~Client() { }
+};
 
 class Server {
 public:
@@ -58,7 +73,8 @@ class OutMessage {
 public:
     enum TYPE {
         WELCOME_MESSAGE = 0,
-        PASSWORD_CHALLENGE = 1
+        PASSWORD_CHALLENGE = 1,
+        REGISTRY_RESPONSE = 2
     };
 
     // variable size message

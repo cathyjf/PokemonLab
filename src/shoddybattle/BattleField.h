@@ -189,6 +189,11 @@ public:
     }
 
     /**
+     * Get a pokemon team.
+     */
+    const Pokemon::ARRAY &getTeam(const int i) const;
+
+    /**
      * Get a random single target from a particular target.
      */
     Pokemon *getRandomTarget(const int party) const;

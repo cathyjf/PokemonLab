@@ -29,6 +29,7 @@
  * message body.
  */
 
+#include <boost/regex.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -41,6 +42,7 @@
 #include <set>
 #include "network.h"
 #include "../database/DatabaseRegistry.h"
+#include "../text/Text.h"
 
 using namespace std;
 using namespace boost;
@@ -108,6 +110,7 @@ public:
     enum TYPE {
         REQUEST_CHALLENGE = 0,
         CHALLENGE_RESPONSE = 1,
+        REGISTER_ACCOUNT = 2,
     };
 
     InMessage() {
@@ -183,7 +186,7 @@ private:
 
 class WelcomeMessage : public OutMessage {
 public:
-    WelcomeMessage(const int version, const string name, const string message):
+    WelcomeMessage(const int version, const string name, const string &message):
             OutMessage(WELCOME_MESSAGE) {
         *this << version;
         *this << name;
@@ -199,6 +202,29 @@ public:
         for (int i = 0; i < 16; ++i) {
             *this << challenge[i];
         }
+    }
+};
+
+/**
+ * byte : type
+ * string : details
+ */
+class RegistryResponse : public OutMessage {
+public:
+    enum TYPE {
+        NAME_UNAVAILABLE = 0,
+        REGISTER_SUCCESS = 1,
+        ILLEGAL_NAME = 2,
+        TOO_LONG_NAME = 3,
+        NONEXISTENT_NAME = 4,
+        INVALID_RESPONSE = 5,
+        USER_BANNED = 6
+    };
+    RegistryResponse(const TYPE type, const string &details = string()):
+            OutMessage(REGISTRY_RESPONSE) {
+        *this << ((unsigned char)type);
+        *this << details;
+        finalise();
     }
 };
 
@@ -238,17 +264,6 @@ database::DatabaseRegistry *Server::getRegistry() {
 Server::~Server() {
     delete m_impl;
 }
-
-class Client {
-public:
-    virtual void sendMessage(const OutMessage &msg) = 0;
-    virtual std::string getName() const = 0;
-    virtual std::string getIp() const = 0;
-
-protected:
-    Client() { }
-    virtual ~Client() { }
-};
 
 class ClientImpl : public Client, public enable_shared_from_this<ClientImpl> {
 public:
@@ -341,7 +356,7 @@ private:
             ChallengeMessage msg(data);
             sendMessage(msg);
         } else {
-            // TODO: issue an error message
+            sendMessage(RegistryResponse(RegistryResponse::NONEXISTENT_NAME));
         }
     }
 
@@ -361,9 +376,44 @@ private:
         database::DatabaseRegistry *registry = m_server->getRegistry();
         const bool match = registry->isResponseValid(m_name, m_challenge, data);
         m_challenge = 0;
-        cout << match << endl;
 
-        // TODO: inform whether it was a match
+        if (!match) {
+            sendMessage(RegistryResponse(RegistryResponse::INVALID_RESPONSE));
+            return;
+        }
+
+        // todo: log in
+    }
+
+    /**
+     * string : user name
+     * string : password (plaintext)
+     */
+    void handleRegisterAccount(InMessage &msg) {
+        string user, password;
+        msg >> user >> password;
+
+        user = trim(user);
+        // todo: collapse whitespace everywhere within the name
+
+        if (user.length() > 18) {
+            sendMessage(RegistryResponse(RegistryResponse::TOO_LONG_NAME));
+            return;
+        }
+
+        boost::regex e("[A-Za-z0-9_ \\-\\.]+");
+        if (!regex_match(user, e)) {
+            sendMessage(RegistryResponse(RegistryResponse::ILLEGAL_NAME));
+            return;
+        }
+
+        database::DatabaseRegistry *registry = m_server->getRegistry();
+        if (!registry->registerUser(user, password, m_ip)) {
+            sendMessage(RegistryResponse(RegistryResponse::NAME_UNAVAILABLE));
+            return;
+        }
+
+        sendMessage(RegistryResponse(RegistryResponse::REGISTER_SUCCESS));
     }
 
     string m_name;
@@ -384,7 +434,8 @@ private:
 
 const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleRequestChallenge,
-    &ClientImpl::handleChallengeResponse
+    &ClientImpl::handleChallengeResponse,
+    &ClientImpl::handleRegisterAccount,
 };
 
 /**
@@ -432,6 +483,7 @@ void ServerImpl::run() {
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
     // TODO: other removal logic
+    cout << "Client from " << client->getIp() << " disconnected." << endl;
 
     lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
@@ -473,7 +525,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 0
+#if 1
 
 #include "../database/DatabaseRegistry.h"
 
@@ -486,10 +538,6 @@ int main() {
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");
     registry->startThread();
-    //registry.registerUser("Catherine", "test", "127.0.0.1");
-    //unsigned char challenge[16];
-    //int ch = registry.getAuthChallenge("Catherine", challenge);
-    //cout << registry.isResponseValid("Catherine", ch, challenge) << endl;
 
     server.run();
 }

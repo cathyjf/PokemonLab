@@ -86,8 +86,8 @@ public:
 
     void initialise(BattleField *field, const int i, const int j);
 
-    void setTurn(PokemonTurn *turn) { m_turn = turn; }
-    PokemonTurn *getTurn() { return m_turn; }
+    void setTurn(const PokemonTurn *turn) { m_turn = turn; }
+    const PokemonTurn *getTurn() const { return m_turn; }
 
     int getInherentPriority() const;
     int getCriticalModifier() const;
@@ -159,13 +159,22 @@ public:
     int getParty() const { return m_party; }
     int getPosition() const { return m_position; }
     int getSlot() const { return m_slot; }
+    bool isActive() const { return m_slot != -1; }
 
     bool isFainted() const { return m_fainted; }
 
     void switchIn(const int slot);
     void switchOut();
     void determineLegalActions();
-    // todo: getForcedMove
+    void clearForcedTurn() {
+        m_forcedTurn.reset();
+    }
+    void setForcedTurn(const PokemonTurn &turn);
+    PokemonTurn *getForcedTurn() const {
+        if (!m_forcedTurn)
+            return NULL;
+        return m_forcedTurn.get();
+    }
     bool isMoveLegal(const int i) const { return m_legalMove[i]; }
     bool isSwitchLegal() const { return m_legalSwitch; }
     
@@ -217,7 +226,8 @@ private:
 
     STATUSES m_effects;
 
-    PokemonTurn *m_turn;
+    const PokemonTurn *m_turn;
+    boost::shared_ptr<PokemonTurn> m_forcedTurn;
 
     PokemonObject *m_object; // Pokemon object.
 
