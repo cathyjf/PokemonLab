@@ -85,16 +85,19 @@ public:
                             cout << "Target which enemy?" << endl;
                             int pt = 1 - p->getParty();
                             PokemonParty &party = *getActivePokemon()[pt];
-                            for (int k = 0; k < party.getSize(); ++k) {
+                            const int size = party.getSize();
+                            for (int k = 0; k < size; ++k) {
                                 cout << "    " << num[k] << " - "
                                         << party[k].pokemon->getName()
                                         << endl;
                             }
                             cin >> option;
                             if (option < 1) option = 1;
-                            const int size = party.getSize();
                             if (option > size) option = size;
                             target = option - 1;
+                            if (pt == 1) {
+                                target += size;
+                            }
                         }
                         turns.push_back(PokemonTurn(TT_MOVE, move, target));
                         break;
