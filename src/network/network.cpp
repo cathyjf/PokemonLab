@@ -255,6 +255,7 @@ public:
     void sendChannelList(ClientImplPtr client);
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
+    bool authenticateClient(ClientImplPtr client);
     
 private:
     void acceptClient();
@@ -334,6 +335,9 @@ public:
     }
     bool isAuthenticated() const {
         return m_authenticated;
+    }
+    void setAuthenticated(bool auth) {
+        m_authenticated = auth;
     }
     void disconnect();
 private:
@@ -434,16 +438,12 @@ private:
         
         sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
 
-        // TODO: begin server-wide critical section here ---
-        if (m_server->getClient(m_name)) {
+        if (!m_server->authenticateClient(shared_from_this())) {
             // user is already online
             sendMessage(RegistryResponse(
                     RegistryResponse::USER_ALREADY_ON));
             return;
         }
-
-        m_authenticated = true;
-        // ending here ---
 
         m_id = auth.second;
         m_server->sendChannelList(shared_from_this());
@@ -948,6 +948,18 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
 ServerImpl::ServerImpl(tcp::endpoint &endpoint):
         m_acceptor(m_service, endpoint) {
     acceptClient();
+}
+
+bool ServerImpl::authenticateClient(ClientImplPtr client) {
+    lock_guard<shared_mutex> lock(m_clientMutex);
+    const string &name = client->getName();
+    CLIENT_LIST::iterator i = m_clients.begin();
+    for (; i != m_clients.end(); ++i) {
+        if ((*i)->isAuthenticated() && ((*i)->getName() == name))
+            return false;
+    }
+    client->setAuthenticated(true);
+    return true;
 }
 
 ClientImplPtr ServerImpl::getClient(const string &name) {
