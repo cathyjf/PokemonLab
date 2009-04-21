@@ -332,6 +332,9 @@ public:
     int getId() const {
         return m_id;
     }
+    bool isAuthenticated() const {
+        return m_authenticated;
+    }
     void disconnect();
 private:
 
@@ -431,7 +434,17 @@ private:
         
         sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
 
+        // TODO: begin server-wide critical section here ---
+        if (m_server->getClient(m_name)) {
+            // user is already online
+            sendMessage(RegistryResponse(
+                    RegistryResponse::USER_ALREADY_ON));
+            return;
+        }
+
         m_authenticated = true;
+        // ending here ---
+
         m_id = auth.second;
         m_server->sendChannelList(shared_from_this());
         // todo: send list of battles...
@@ -941,7 +954,7 @@ ClientImplPtr ServerImpl::getClient(const string &name) {
     shared_lock<shared_mutex> lock(m_clientMutex);
     CLIENT_LIST::iterator i = m_clients.begin();
     for (; i != m_clients.end(); ++i) {
-        if ((*i)->getName() == name)
+        if ((*i)->isAuthenticated() && ((*i)->getName() == name))
             return *i;
     }
     return ClientImplPtr();
