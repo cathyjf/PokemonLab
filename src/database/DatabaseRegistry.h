@@ -1,4 +1,4 @@
- /* 
+/* 
  * File:   DatabaseRegistry.h
  * Author: Catherine
  *
@@ -26,6 +26,8 @@
 #define _DATABASE_REGISTRY_H_
 
 #include <string>
+#include <map>
+#include <boost/tuple/tuple.hpp>
 
 namespace shoddybattle { namespace database {
 
@@ -33,6 +35,10 @@ class DatabaseRegistryImpl;
 
 class DatabaseRegistry {
 public:
+    typedef std::pair<bool, int> AUTH_PAIR;
+    typedef boost::tuple<std::string, std::string, int> INFO_ELEMENT;
+    typedef std::map<int, INFO_ELEMENT> CHANNEL_INFO;
+
     DatabaseRegistry();
     ~DatabaseRegistry();
 
@@ -57,9 +63,14 @@ public:
     int getAuthChallenge(const std::string name, unsigned char *challenge);
 
     /**
+     * Get the information about channels.
+     */
+    void getChannelInfo(CHANNEL_INFO &);
+
+    /**
      * Determine whether the response to the challenge is valid.
      */
-    bool isResponseValid(const std::string name,
+    AUTH_PAIR isResponseValid(const std::string name,
             const int challenge,
             const unsigned char *response);
 
@@ -74,6 +85,11 @@ public:
     bool registerUser(const std::string name,
             const std::string password,
             const std::string ip);
+
+    /**
+     * Get a user's flags on a channel.
+     */
+    int getUserFlags(const int channel, const int idx);
     
 private:
     DatabaseRegistryImpl *m_impl;

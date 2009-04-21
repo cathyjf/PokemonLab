@@ -29,6 +29,7 @@
 #include <mysql++.h>
 #include <ssqls.h>
 #include <string>
+#include <sstream>
 #include "sha2.h"
 #include "rijndael.h"
 #include "DatabaseRegistry.h"
@@ -180,20 +181,49 @@ bool DatabaseRegistry::userExists(const string name) {
     return (count != 0);
 }
 
-bool DatabaseRegistry::isResponseValid(const string name,
+void DatabaseRegistry::getChannelInfo(DatabaseRegistry::CHANNEL_INFO &info) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select * from channels");
+    query.parse();
+    StoreQueryResult res = query.store();
+    const int count = res.num_rows();
+    for (int i = 0; i < count; ++i) {
+        string name, topic;
+        Row row = res[i];
+        const int id = row[0];
+        row[1].to_string(name);
+        row[2].to_string(topic);
+        const int flags = row[3];
+        info[id] = INFO_ELEMENT(name, topic, flags);
+    }
+}
+
+int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select flags from channel");
+    query << channel << " where user = " << idx;
+    query.parse();
+    StoreQueryResult result = query.store();
+    if (result.empty())
+        return 0;
+    return result[0][0];
+}
+
+DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
         const int challenge,
         const unsigned char *response) {
     ScopedConnection conn(m_impl->pool);
     Query query =
-            conn->query("select password from users where name = %0q");
+            conn->query("select id, password from users where name = %0q");
     query.parse();
     StoreQueryResult result = query.store(name);
     if (result.empty())
-        return false;
+        return DatabaseRegistry::AUTH_PAIR(false, -1);
 
     const int responseInt = challenge + 1;
     string password;
-    result[0][0].to_string(password);
+    const int id = result[0][0];
+    result[0][1].to_string(password);
     const string key = fromHex(password);
 
     unsigned char data[16];
@@ -212,7 +242,7 @@ bool DatabaseRegistry::isResponseValid(const string name,
     rijndael_encrypt(&ctx, middle, correct);
 
     const bool match = (memcmp(response, correct, 16) == 0);
-    return match;
+    return DatabaseRegistry::AUTH_PAIR(match, id);
 }
 
 int DatabaseRegistry::getAuthChallenge(const string name,

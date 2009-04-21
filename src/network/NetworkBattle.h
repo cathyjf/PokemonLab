@@ -22,13 +22,14 @@
  * online at http://gnu.org.
  */
 
+#include <boost/shared_ptr.hpp>
 #include "../shoddybattle/BattleField.h"
 
 namespace shoddybattle {
 
 class NetworkBattle : public BattleField {
 public:
-    
+    typedef boost::shared_ptr<NetworkBattle> PTR;
 };
 
 }

@@ -74,7 +74,13 @@ public:
     enum TYPE {
         WELCOME_MESSAGE = 0,
         PASSWORD_CHALLENGE = 1,
-        REGISTRY_RESPONSE = 2
+        REGISTRY_RESPONSE = 2,
+        SERVER_INFO = 3,
+        CHANNEL_INFO = 4,
+        CHANNEL_JOIN_PART = 5,
+        CHANNEL_STATUS = 6,
+        CHANNEL_LIST = 7,
+        CHANNEL_MESSAGE = 8,
     };
 
     // variable size message
