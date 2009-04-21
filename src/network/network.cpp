@@ -227,7 +227,8 @@ public:
         NONEXISTENT_NAME = 4,
         INVALID_RESPONSE = 5,
         USER_BANNED = 6,
-        SUCCESSFUL_LOGIN = 7
+        SUCCESSFUL_LOGIN = 7,
+        USER_ALREADY_ON = 8
     };
     RegistryResponse(const TYPE type, const string &details = string()):
             OutMessage(REGISTRY_RESPONSE) {
@@ -253,6 +254,7 @@ public:
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     ChannelPtr getChannel(const string &);
+    ClientImplPtr getClient(const string &);
     
 private:
     void acceptClient();
@@ -388,6 +390,14 @@ private:
         m_challenge = m_server->getRegistry()->getAuthChallenge(user, data);
         if (m_challenge != 0) {
             // user exists
+
+            if (m_server->getClient(user)) {
+                // user is already online
+                sendMessage(RegistryResponse(
+                        RegistryResponse::USER_ALREADY_ON));
+                return;
+            }
+
             m_name = user;
             ChallengeMessage msg(data);
             sendMessage(msg);
@@ -925,6 +935,16 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
 ServerImpl::ServerImpl(tcp::endpoint &endpoint):
         m_acceptor(m_service, endpoint) {
     acceptClient();
+}
+
+ClientImplPtr ServerImpl::getClient(const string &name) {
+    shared_lock<shared_mutex> lock(m_clientMutex);
+    CLIENT_LIST::iterator i = m_clients.begin();
+    for (; i != m_clients.end(); ++i) {
+        if ((*i)->getName() == name)
+            return *i;
+    }
+    return ClientImplPtr();
 }
 
 ChannelPtr ServerImpl::getChannel(const string &name) {
