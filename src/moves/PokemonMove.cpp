@@ -367,7 +367,7 @@ MoveDatabase::~MoveDatabase() {
 
 } // namespace shoddybattle
 
-#if 0
+#if 1
 
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/Pokemon.h"

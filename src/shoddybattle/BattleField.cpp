@@ -340,9 +340,9 @@ const BattleMechanics *BattleField::getMechanics() const {
  * Switch an active pokemon.
  */
 void BattleField::switchPokemon(Pokemon *p, const int idx) {
-    p->switchOut();
     const int party = p->getParty();
     const int slot = p->getSlot();
+    p->switchOut(); // note: clears slot
     Pokemon::PTR replacement = m_impl->teams[party][idx];
     (*m_impl->active[party])[slot].pokemon = replacement;
     informWithdraw(p);
@@ -452,11 +452,17 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     const int count = pokemon.size();
     if (count != turns.size())
         throw BattleFieldException();
-
+    
     vector<const PokemonTurn *> ordered;
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = &turns[i];
+
+        PokemonTurn *forced = p->getForcedTurn();
+        if (forced) {
+            turn = forced;
+        }
+        
         p->setTurn(turn);
         ordered.push_back(turn);
     }
@@ -466,6 +472,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     // begin the turn
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
+        p->clearRecentDamage();
         const PokemonTurn *turn = ordered[i];
 
         if (turn->type == TT_MOVE) {
@@ -506,6 +513,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
             }
 
             const bool choice = (p->getForcedTurn() == NULL);
+            p->clearForcedTurn();
             if (p->executeMove(move, target) && choice) {
                 // only deduct pp if the move was chosen freely
                 p->deductPp(turn->id);

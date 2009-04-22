@@ -53,7 +53,6 @@ string MoveObject::getName(ScriptContext *scx) const {
     return ret;
 }
 
-
 bool MoveObject::getFlag(ScriptContext *scx, const MOVE_FLAG flag) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
@@ -160,6 +159,12 @@ void MoveObject::use(ScriptContext *scx, BattleField *field,
                 *this, *user, *target, targets);
         target->setHp(target->getHp() - damage);
     }
+}
+
+const MoveTemplate *MoveObject::getTemplate(ScriptContext *scx) const {
+    if (m_template)
+        return m_template;
+    return scx->getMachine()->getMoveDatabase()->getMove(getName(scx));
 }
 
 MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {

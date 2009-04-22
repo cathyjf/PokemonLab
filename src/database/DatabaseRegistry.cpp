@@ -198,6 +198,21 @@ void DatabaseRegistry::getChannelInfo(DatabaseRegistry::CHANNEL_INFO &info) {
     }
 }
 
+void DatabaseRegistry::setUserFlags(const int channel, const int idx,
+        const int flags) {
+    ScopedConnection conn(m_impl->pool);
+    {
+        Query query = conn->query("delete from channel");
+        query << channel << " where user = " << idx;
+        query.execute();
+    }
+    {
+        Query query = conn->query("insert into channel");
+        query << channel << " values (" << idx << "," << flags << ")";
+        query.execute();
+    }
+}
+
 int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query("select flags from channel");

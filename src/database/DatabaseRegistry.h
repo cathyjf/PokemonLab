@@ -90,6 +90,11 @@ public:
      * Get a user's flags on a channel.
      */
     int getUserFlags(const int channel, const int idx);
+
+    /**
+     * Set a user's flags on a channel.
+     */
+    void setUserFlags(const int channel, const int idx, const int flags);
     
 private:
     DatabaseRegistryImpl *m_impl;

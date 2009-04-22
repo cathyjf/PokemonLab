@@ -76,32 +76,6 @@ StatusEffect.prototype = {
     name : "A Status Effect",       // English name of the effect
     passable : true,                // Can be Baton Passed?
     tier : -1,                      // End of turn tier for this effect.
-    
-    /**
-     * Array of Array(id, method, func). "id" is the "id" of a StatusEffect, or another special
-     * reserved keyword. "method" is the name of a typical status effect method. When the Pokemon
-     * class is about to call into any status effect method, it first looks in "overrides" on every
-     * status effect on every pokemon. If an appropriate Function object is found, it calls that
-     * function instead, with an additional final parameter for the object whose "overrides" Array
-     * produced a Function object.
-     *
-     * Returns an Array(overrode, ret) where overrode is whether we wanted to override the method.
-     * If overrode is false, the call falls through and the original method is called as well.
-     *
-     * Example: Hypothetical partial implementation of Poison Heal
-     *
-     * PoisonHeal.prototype.overrides = new Array(
-     *     new Array("PoisonEffect", "tick", function(overrider) {
-     *             if (this.subject != overrider.subject)
-     *                 return new Array(false, 0); // call the usual tick() instead
-     *
-     *             this.subject.hp += this.subject.stat[HP] / 8;
-     *             return new Array(true, 0);
-     *         });
-     * );
-     *
-     */
-    overrides : null,
 
     /**
      * Methods with a default implementation.
@@ -286,17 +260,6 @@ StatusEffect.prototype = {
 	transformHealthChange : null,
 
 	speedComparator : null,
-
-    /**
-     * Inform that the subject was attacked by a particular move, and that it
-     * did a particular amount of damage. Return value is unused.
-     *
-     *      function(user, move, damage) {
-     *
-     *      }
-     *
-     */
-	informDamaged : null,
 
 	informLostItem : null,
 

@@ -86,6 +86,33 @@ JSBool applyStatus(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool popRecentDamage(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    if (p->hasRecentDamage()) {
+        ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+        Pokemon::RECENT_DAMAGE entry = p->popRecentDamage();
+
+        JSObject *user = (JSObject *)entry.user->getObject()->getObject();
+        MoveObject *pMove = scx->newMoveObject(entry.move);
+        JSObject *move = (JSObject *)pMove->getObject();
+        const int damage = entry.damage;
+
+        jsval arr[3];
+        arr[0] = OBJECT_TO_JSVAL(user);
+        arr[1] = OBJECT_TO_JSVAL(move);
+        arr[2] = INT_TO_JSVAL(damage);
+
+        JSObject *objArr = JS_NewArrayObject(cx, 3, arr);
+        *ret = OBJECT_TO_JSVAL(objArr);
+        scx->removeRoot(pMove);
+
+    } else {
+        *ret = JSVAL_NULL;
+    }
+    return JS_TRUE;
+}
+
 JSBool removeStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     *ret = JSVAL_NULL;
@@ -347,6 +374,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getStatus", getStatus, 1, 0, 0),
     JS_FS("getMove", getMove, 1, 0, 0),
     JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
+    JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),
     JS_FS_END
 };
 

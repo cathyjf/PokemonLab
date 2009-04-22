@@ -94,6 +94,7 @@ struct PokemonTurn {
             target(ta) {
 
     }
+    PokemonTurn(): type(TT_MOVE), id(-1), target(-1) { } // forced turn
 };
 
 struct PokemonSlot {

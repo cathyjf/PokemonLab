@@ -26,31 +26,26 @@
  * Make a move into a counter move.
  */
 function makeCounterMove(move, cls, ratio) {
-    move.beginTurn = function(field, user) {
-        var listener = new DamageListener();
-        listener.predicate = function(move) {
-                return (cls == undefined) || (move.moveClass == cls);
-        };
-        user.applyStatus(user, listener);
-    };
     move.use = function(field, user) {
-        var effect = user.getStatus("DamageListener");
-        if (effect != null) {
-            var party = effect.party;
-            if ((party == -1) || (party == user.party)) {
-                // The user was not hit by an enemy move, so we fail.
-                field.print(Text.battle_messages(0));
+        var recent = null;
+        while ((recent = user.popRecentDamage()) != null) {
+            var move = recent[1];
+            if ((cls == undefined) || (move.moveClass == cls)) {
+                var target = recent[0];
+                if (target.party == user.party) {
+                    break;
+                }
+                if (target.isImmune(move)) {
+                    field.print(Text.battle_messages(1, target.name));
+                } else {
+                    target.hp -= recent[2] * ratio;
+                }
                 return;
             }
-            var enemy = field.getActivePokemon(party, effect.position);
-            if (enemy != null) {
-                if (enemy.isImmune(move)) {
-                    field.print(Text.battle_messages(1, enemy.name));
-                } else {
-                    enemy.hp -= effect.damage * ratio;
-                }
-            }
         }
+
+        // if we get here, the move failed
+        field.print(Text.battle_messages(0));
     };
 }
 

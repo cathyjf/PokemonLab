@@ -177,6 +177,24 @@ public:
     }
     bool isMoveLegal(const int i) const { return m_legalMove[i]; }
     bool isSwitchLegal() const { return m_legalSwitch; }
+
+    struct RECENT_DAMAGE {
+        Pokemon *user;
+        const MoveTemplate *move;
+        int damage;
+    };
+
+    void clearRecentDamage() {
+        while (!m_recent.empty()) m_recent.pop();
+    }
+    bool hasRecentDamage() const {
+        return !m_recent.empty();
+    }
+    RECENT_DAMAGE popRecentDamage() {
+        RECENT_DAMAGE ret = m_recent.top();
+        m_recent.pop();
+        return ret;
+    }
     
     ~Pokemon();
 
@@ -215,6 +233,8 @@ private:
 
     typedef RECENT_MOVE<const MoveTemplate> MEMORY;
     std::list<MEMORY> m_memory;
+
+    std::stack<RECENT_DAMAGE> m_recent;
 
     StatusObject *m_item;
     StatusObject *m_ability;

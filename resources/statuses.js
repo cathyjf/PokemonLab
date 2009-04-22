@@ -23,36 +23,6 @@
  */
 
 /**
- * Damage listener.
- *
- * Remembers the last attack to hit the subject from an enemy pokemon.
- * Vanishes at end of turn.
- */
-function DamageListener() { }
-DamageListener.prototype = new StatusEffect("DamageListener");
-DamageListener.prototype.applyEffect = function() {
-    this.party = -1;
-    this.position = -1;
-    this.move = null;
-    this.damage = 0;
-};
-DamageListener.prototype.predicate = function() {
-    return true;
-};
-DamageListener.prototype.informDamaged = function(user, move, damage) {
-    // Pain Split does not count for the purpose of DamageListener.
-    if (this.predicate(move) && (move.name != "Pain Split")) {
-        this.party = user.party;
-        this.position = user.position;
-        this.move = move;
-        this.damage = damage;
-    }
-};
-DamageListener.prototype.tick = function() {
-    this.subject.removeStatus(this);
-};
-
-/**
  * Paralysis
  *
  */

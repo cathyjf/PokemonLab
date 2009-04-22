@@ -140,7 +140,7 @@ public:
     MoveObject(void *p, const MoveTemplate *temp = NULL):
             ScriptObject(p), m_template(temp) { }
 
-    const MoveTemplate *getTemplate() const { return m_template; }
+    const MoveTemplate *getTemplate(ScriptContext *) const;
 
     std::string getName(ScriptContext *) const;
     MOVE_CLASS getMoveClass(ScriptContext *) const;
@@ -221,7 +221,6 @@ public:
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
     bool transformHealthChange(ScriptContext *, int, bool, int *);
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
-    void informDamaged(ScriptContext *, Pokemon *, MoveObject *, int);
     // TODO: transformMultiplier
 
 };

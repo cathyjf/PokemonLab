@@ -598,21 +598,12 @@ public:
         OP,         // +o
         HALF_OP,    // +h
         VOICE,      // +v
+        BAN,        // +b
         IDLE,       // inactive
         BUSY        // ("ignoring challenges")
     };
-    static const int FLAG_COUNT = 7;
+    static const int FLAG_COUNT = 8;
     typedef bitset<FLAG_COUNT> FLAGS;
-
-    enum AUTO_FLAGS {
-        SOP,
-        AOP,
-        HOP,
-        VOP,
-        AKICK
-    };
-    static const int AUTO_FLAG_COUNT = 5;
-    typedef bitset<AUTO_FLAG_COUNT> AUTO_FLAGS;
 
     enum CHANNEL_FLAGS {
         MODERATED   // +m
@@ -620,8 +611,7 @@ public:
     static const int CHANNEL_FLAG_COUNT = 1;
     typedef bitset<CHANNEL_FLAG_COUNT> CHANNEL_FLAGS;
 
-    typedef pair<FLAGS, AUTO_FLAGS> FLAG_PAIR;
-    typedef map<ClientImplPtr, FLAG_PAIR> CLIENT_MAP;
+    typedef map<ClientImplPtr, FLAGS> CLIENT_MAP;
 
     Channel(ServerImpl *server,
             const int id,
@@ -639,7 +629,7 @@ public:
         if (i == m_clients.end()) {
             return FLAGS();
         }
-        return i->second.first;
+        return i->second;
     }
 
     void setStatusFlags(ClientImplPtr client, FLAGS flags) {
@@ -649,7 +639,9 @@ public:
             if (i == m_clients.end()) {
                 return;
             }
-            i->second.first = flags;
+            i->second = flags;
+            m_server->getRegistry()->setUserFlags(m_id, client->getId(),
+                    flags.to_ulong());
         }
         broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
     }
@@ -690,34 +682,20 @@ public:
             return false;
         }
         // look up the client's auto flags on this channel
-        AUTO_FLAGS flags = m_server->getRegistry()->getUserFlags(m_id,
+        FLAGS flags = m_server->getRegistry()->getUserFlags(m_id,
                 client->getId());
-        if (flags[AKICK]) {
+        if (flags[BAN]) {
             // user is banned from this channel
             return false;
-        }
-        FLAGS user = 0;
-        if (flags[SOP]) {
-            user[OWNER] = true;
-        }
-        if (flags[AOP]) {
-            user[OP] = true;
-        }
-        if (flags[HOP]) {
-            user[HALF_OP] = true;
-        }
-        if (flags[VOP]) {
-            user[VOICE] = true;
         }
         // tell the client all about the channel
         client->sendMessage(ChannelInfo(shared_from_this()));
         // add the client to the channel
-        m_clients.insert(CLIENT_MAP::value_type(client,
-                FLAG_PAIR(user, flags)));
+        m_clients.insert(CLIENT_MAP::value_type(client, flags));
         // inform the channel
         lock.unlock();
         broadcast(ChannelJoinPart(shared_from_this(), client, true));
-        broadcast(ChannelStatus(shared_from_this(), client, user.to_ulong()));
+        broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
         return true;
     }
 
@@ -758,7 +736,7 @@ private:
             CLIENT_MAP::iterator i = clients.begin();
             for (; i != clients.end(); ++i) {
                 *this << i->first->getName();
-                *this << (int)i->second.first.to_ulong();
+                *this << (int)i->second.to_ulong();
             }
             
             finalise();
@@ -850,7 +828,7 @@ void ClientImpl::handleModeMessage(InMessage &msg) {
         return;
     }
     Channel::FLAGS auth = p->getStatusFlags(shared_from_this());
-    Channel::FLAGS flags = target.second.first;
+    Channel::FLAGS flags = target.second;
     switch (mode) {
         case Channel::Mode::Q: {
             if (auth[Channel::OWNER]) {
@@ -887,7 +865,7 @@ void ClientImpl::handleModeMessage(InMessage &msg) {
         // TODO: the other modes
     }
 
-    if (flags != target.second.first) {
+    if (flags != target.second) {
         p->setStatusFlags(target.first, flags);
     }
 }
@@ -1055,7 +1033,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 1
+#if 0
 
 #include "../database/DatabaseRegistry.h"
 

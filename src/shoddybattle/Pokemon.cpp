@@ -579,12 +579,8 @@ const MoveTemplate *Pokemon::getMemory() const {
  * Inform that this pokemon was damaged by a move.
  */
 void Pokemon::informDamaged(Pokemon *user, MoveObject *move, int damage) {
-    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(m_cx))
-            continue;
-
-        (*i)->informDamaged(m_cx, user, move, damage);
-    }
+    RECENT_DAMAGE entry = { user, move->getTemplate(m_cx), damage };
+    m_recent.push(entry);
 }
 
 /**
@@ -606,7 +602,7 @@ void Pokemon::informTargeted(Pokemon *user, MoveObject *move) {
                 break;
             }
         }
-        const MEMORY entry = { user, move->getTemplate() };
+        const MEMORY entry = { user, move->getTemplate(m_cx) };
         m_memory.push_back(entry);
     }
 }
