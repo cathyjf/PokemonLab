@@ -72,10 +72,10 @@ public:
     typedef std::vector<PTR> ARRAY;
     
     Pokemon(const PokemonSpecies *species,
-            const std::string nickname,
+            const std::string &nickname,
             const PokemonNature *nature,
-            const std::string ability,
-            const std::string item,
+            const std::string &ability,
+            const std::string &item,
             const int *iv,
             const int *ev,
             const int level,

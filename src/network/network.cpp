@@ -35,7 +35,6 @@
 #include <boost/shared_array.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
-#include <boost-1_38/boost/thread/locks.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <vector>
@@ -70,7 +69,7 @@ void OutMessage::finalise() {
             htonl(m_data.size() - HEADER_SIZE);
 }
 
-const std::vector<unsigned char> &OutMessage::operator()() const {
+const vector<unsigned char> &OutMessage::operator()() const {
     return m_data;
 }
 
@@ -90,10 +89,10 @@ OutMessage &OutMessage::operator<<(const unsigned char byte) {
  * Write a string in a format similar to the UTF-8 format used by the
  * Java DataInputStream.
  *
- * The first two bytes are an network byte order unsigned short specifying
+ * The first two bytes are a network byte order unsigned short specifying
  * the number of additional bytes to be written.
  */
-OutMessage &OutMessage::operator<<(const std::string &str) {
+OutMessage &OutMessage::operator<<(const string &str) {
     const int pos = m_data.size();
     const int length = str.length();
     m_data.resize(pos + length + sizeof(uint16_t), 0);
@@ -435,8 +434,6 @@ private:
             sendMessage(RegistryResponse(RegistryResponse::INVALID_RESPONSE));
             return;
         }
-        
-        sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
 
         if (!m_server->authenticateClient(shared_from_this())) {
             // user is already online
@@ -444,6 +441,8 @@ private:
                     RegistryResponse::USER_ALREADY_ON));
             return;
         }
+
+        sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
 
         m_id = auth.second;
         m_server->sendChannelList(shared_from_this());
@@ -1033,7 +1032,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 0
+#if 1
 
 #include "../database/DatabaseRegistry.h"
 

@@ -27,9 +27,17 @@
 
 namespace shoddybattle {
 
+class NetworkBattleImpl;
+
 class NetworkBattle : public BattleField {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
+    
+    NetworkBattle();
+    void handleTurn(const int party, const PokemonTurn &turn);
+
+private:
+    boost::shared_ptr<NetworkBattleImpl> m_impl;
 };
 
 }

@@ -41,17 +41,17 @@ using namespace boost;
 namespace shoddybattle {
 
 Pokemon::Pokemon(const PokemonSpecies *species,
-        const std::string nickname,
+        const string &nickname,
         const PokemonNature *nature,
-        const std::string ability,
-        const std::string item,
+        const string &ability,
+        const string &item,
         const int *iv,
         const int *ev,
         const int level,
         const int gender,
         const bool shiny,
-        const std::vector<std::string> &moves,
-        const std::vector<int> &ppUps) {
+        const vector<string> &moves,
+        const vector<int> &ppUps) {
     memcpy(m_iv, iv, sizeof(int) * STAT_COUNT);
     memcpy(m_ev, ev, sizeof(int) * STAT_COUNT);
     m_species = species;

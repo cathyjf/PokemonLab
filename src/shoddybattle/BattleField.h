@@ -155,6 +155,11 @@ public:
             const int activeParty);
 
     /**
+     * Get the party size.
+     */
+    int getPartySize() const;
+
+    /**
      * Begin the battle.
      */
     void beginBattle();
@@ -216,6 +221,11 @@ public:
     bool vetoSelection(Pokemon *, MoveObject *);
     
     /**
+     * Determine whether a particular turn is legal for a given pokemon.
+     */
+    bool isTurnLegal(Pokemon *, const PokemonTurn *) const;
+    
+    /**
      * Obtain the BattleMechanics in use on this BattleField.
      */
     const BattleMechanics *getMechanics() const;
@@ -224,13 +234,23 @@ public:
      * Switch which pokemon is active.
      */
     void switchPokemon(Pokemon *, const int);
+
+    /**
+     * Check whether one party has won the battle.
+     */
+    bool determineVictory();
+
+    /**
+     * Process end of turn effects.
+     */
+    void tickEffects();
     
     /**
      * Print a message to the BattleField.
      */
     virtual void print(const TextMessage &msg);
 
-
+    virtual void informVictory(const int);
     virtual void informUseMove(Pokemon *, MoveObject *);
     virtual void informWithdraw(Pokemon *);
     virtual void informSendOut(Pokemon *);

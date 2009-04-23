@@ -101,6 +101,10 @@ struct BattleFieldImpl {
     }
 };
 
+int BattleField::getPartySize() const {
+    return m_impl->partySize;
+}
+
 const BattleField::EXECUTION *BattleField::topExecution() const {
     if (m_impl->executing.empty()) {
         return NULL;
@@ -130,6 +134,13 @@ ScriptObject *BattleField::getObject() {
 void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
     sort(pokemon.begin(), pokemon.end(),
             boost::bind(&BattleFieldImpl::speedComparator, m_impl, _1, _2));
+}
+
+/**
+ * Determine whether a particular turn is legal.
+ */
+bool BattleField::isTurnLegal(Pokemon *pokemon, const PokemonTurn *turn) const {
+    
 }
 
 /**
@@ -443,6 +454,138 @@ void BattleField::beginBattle() {
     }
 }
 
+namespace {
+
+struct EffectEntity {
+    Pokemon::PTR subject;
+    StatusObject *effect;
+    int speed;
+    int tier;
+    int subtier;
+};
+
+bool effectComparator(const bool descendingSpeed,
+        const EffectEntity &e1, const EffectEntity &e2) {
+    if (e1.tier != e2.tier) {
+        return (e1.tier < e2.tier);
+    }
+    if (e1.speed != e2.speed) {
+        const bool cmp = e1.speed > e2.speed;
+        return descendingSpeed ? cmp : !cmp;
+    }
+    return e1.subtier < e1.subtier;
+}
+
+} // anonymous namespace
+
+/**
+ * Process end of turn effects.
+ */
+void BattleField::tickEffects() {
+    ScriptContext *cx = m_impl->context;
+
+    vector<EffectEntity> effects;
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        PokemonParty &party = *m_impl->active[i];
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            Pokemon::PTR p = party[j].pokemon;
+            if (p && !p->isFainted()) {
+                const STATUSES &statuses = p->getEffects();
+                STATUSES::const_iterator k = statuses.begin();
+                for (; k != statuses.end(); ++k) {
+                    if ((*k)->isActive(cx)) {
+                        const int speed = p->getStat(S_SPEED);
+                        const int tier = (*k)->getTier(cx);
+                        // todo: subtier
+                        EffectEntity entity = { p, *k, speed, tier, 0 };
+                        effects.push_back(entity);
+                    }
+                }
+            }
+        }
+    }
+
+    sort(effects.begin(), effects.end(), boost::bind(effectComparator,
+            m_impl->descendingSpeed, _1, _2));
+
+    int tier = -1;
+    for (vector<EffectEntity>::iterator i = effects.begin();
+            i != effects.end(); ++i) {
+
+        if (tier != i->tier) {
+            if ((tier != -1) && determineVictory()) {
+                return;
+            }
+            tier = i->tier;
+        }
+
+        Pokemon::PTR subject = i->subject;
+        StatusObject *effect = i->effect;
+        // todo: use subject? - maybe not.
+        effect->tick(cx);
+
+        if (i->tier == 6) {
+            if (determineVictory()) {
+                return;
+            }
+        }
+    }
+
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        PokemonParty &party = *m_impl->active[i];
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            Pokemon::PTR p = party[j].pokemon;
+            if (p && !p->isFainted()) {
+                p->removeStatuses();
+            }
+        }
+    }
+
+    determineVictory();
+}
+
+/**
+ * Determine whether the match has ended.
+ */
+bool BattleField::determineVictory() {
+    vector<bool> fainted(TEAM_COUNT, true);
+    int total = 0;
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        Pokemon::ARRAY &arr = m_impl->teams[i];
+        const int size = arr.size();
+        for (int j = 0; j < size; ++j) {
+            if (!arr[j]->isFainted()) {
+                fainted[i] = false;
+                ++total;
+                break;
+            }
+        }
+    }
+
+    if (total == 0) {
+        return false;
+    }
+
+    if (total == TEAM_COUNT) {
+        informVictory(-1); // draw
+    } else {
+        informVictory(fainted[0] ? 1 : 0);
+    }
+    return true;
+}
+
+/**
+ * Inform that one team won the battle.
+ */
+void BattleField::informVictory(const int party) {
+    if (party != -1) {
+        PokemonParty &obj = *m_impl->active[party];
+        cout << obj.getName() << " wins!" << endl;
+    } else {
+        cout << "It's a draw!" << endl;
+    }
+}
+
 /**
  * Process a turn.
  */
@@ -501,7 +644,8 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         if (turn->type == TT_MOVE) {
             MoveObject *move = p->getMove(turn->id);
             Pokemon *target = NULL;
-            if (move->getTargetClass(m_impl->context) == T_SINGLE) {
+            TARGET tc = move->getTargetClass(m_impl->context);
+            if ((tc == T_SINGLE) || (tc == T_ALLY)) {
                 int idx = turn->target;
                 assert(idx != -1);
                 int party = 0;
@@ -522,6 +666,13 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
             switchPokemon(p.get(), turn->id);
         }
     }
+
+    if (determineVictory()) {
+        return;
+    }
+
+    // Execute end of turn effects.
+    tickEffects();
 }
 
 /**
@@ -552,7 +703,7 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p) {
+            if (p && !p->isFainted()) {
                 p->getModifiers(&user, &target, &obj, critical, mods);
             }
         }
