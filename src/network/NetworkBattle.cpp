@@ -69,6 +69,7 @@ public:
     ~ThreadedQueue() {
         boost::unique_lock<boost::mutex> lock(m_mutex);
         if (!m_terminated) {
+            lock.unlock();
             terminate();
         }
     }
