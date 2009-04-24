@@ -28,6 +28,7 @@
 #include <vector>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 using namespace std;
 using namespace shoddybattle::network;
@@ -42,6 +43,7 @@ public:
     ThreadedQueue(DELEGATE delegate):
             m_delegate(delegate),
             m_empty(true),
+            m_terminated(false),
             m_thread(boost::bind(&ThreadedQueue::process, this)) { }
 
     void post(T elem) {
@@ -55,12 +57,20 @@ public:
         m_condition.notify_one();
     }
 
-    ~ThreadedQueue() {
+    void terminate() {
         boost::unique_lock<boost::mutex> lock(m_mutex);
         while (!m_empty) {
             m_condition.wait(lock);
         }
         m_thread.interrupt();
+        m_terminated = true;
+    }
+
+    ~ThreadedQueue() {
+        boost::unique_lock<boost::mutex> lock(m_mutex);
+        if (!m_terminated) {
+            terminate();
+        }
     }
 
 private:
@@ -77,6 +87,7 @@ private:
         }
     }
 
+    bool m_terminated;
     bool m_empty;
     DELEGATE m_delegate;
     T m_item;
@@ -100,8 +111,15 @@ struct NetworkBattleImpl {
     bool replacement;
 
     NetworkBattleImpl():
-            queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
+            queue(boost::bind(&NetworkBattleImpl::executeTurn,
+                    this, _1)),
             replacement(false) { }
+
+    ~NetworkBattleImpl() {
+        // we need to make sure the queue gets deconstructed first, since
+        // its thread can reference this object
+        queue.terminate();
+    }
     
     void executeTurn(TURN_PTR &ptr) {
         if (replacement) {
