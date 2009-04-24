@@ -589,14 +589,14 @@ int BattleField::getAliveCount(const int party) const {
  */
 bool BattleField::determineVictory() {
     vector<bool> fainted(TEAM_COUNT, true);
-    int total = 0;
+    int total = TEAM_COUNT;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         Pokemon::ARRAY &arr = m_impl->teams[i];
         const int size = arr.size();
         for (int j = 0; j < size; ++j) {
             if (!arr[j]->isFainted()) {
                 fainted[i] = false;
-                ++total;
+                --total;
                 break;
             }
         }
