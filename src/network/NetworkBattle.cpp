@@ -196,7 +196,9 @@ struct NetworkBattleImpl {
             requests[party].push_back(slot);
         }
         for (int i = 0; i < TEAM_COUNT; ++i) {
-            requestAction(i);
+            if (!requests[i].empty()) {
+                requestAction(i);
+            }
         }
         return true;
     }
