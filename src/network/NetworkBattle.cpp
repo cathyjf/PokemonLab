@@ -59,19 +59,17 @@ public:
 
     void terminate() {
         boost::unique_lock<boost::mutex> lock(m_mutex);
-        while (!m_empty) {
-            m_condition.wait(lock);
+        if (!m_terminated) {
+            while (!m_empty) {
+                m_condition.wait(lock);
+            }
+            m_thread.interrupt();
+            m_terminated = true;
         }
-        m_thread.interrupt();
-        m_terminated = true;
     }
 
     ~ThreadedQueue() {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        if (!m_terminated) {
-            lock.unlock();
-            terminate();
-        }
+        terminate();
     }
 
 private:
