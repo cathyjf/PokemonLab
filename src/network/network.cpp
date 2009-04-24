@@ -752,12 +752,11 @@ private:
         // todo: verify legality of team
 
         Client::PTR clients[] = { shared_from_this(), client };
-        NetworkBattle::PTR field(new NetworkBattle());
-        field->initialise(m_server->getMachine(),
+        NetworkBattle::PTR field(new NetworkBattle(m_server->getMachine(),
                 clients,
                 challenge->teams,
                 challenge->generation,
-                challenge->partySize);
+                challenge->partySize));
 
         lock2.unlock();
         m_challenges.erase(opponent);

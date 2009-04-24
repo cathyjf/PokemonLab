@@ -32,14 +32,11 @@ namespace network { class Client; }
     
 class NetworkBattleImpl;
 
-class NetworkBattle : public BattleField,
-        public boost::enable_shared_from_this<NetworkBattle> {
+class NetworkBattle : public BattleField {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
-
-    NetworkBattle() { }
     
-    void initialise(ScriptMachine *machine,
+    NetworkBattle(ScriptMachine *machine,
             boost::shared_ptr<network::Client> *clients,
             Pokemon::ARRAY *teams,
             const GENERATION generation,

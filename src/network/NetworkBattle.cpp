@@ -56,6 +56,10 @@ public:
     }
 
     ~ThreadedQueue() {
+        boost::unique_lock<boost::mutex> lock(m_mutex);
+        while (!m_empty) {
+            m_condition.wait(lock);
+        }
         m_thread.interrupt();
     }
 
@@ -87,7 +91,7 @@ typedef boost::shared_ptr<vector<PokemonTurn> > TURN_PTR;
 
 struct NetworkBattleImpl {
     JewelMechanics mech;
-    NetworkBattle::PTR field;
+    NetworkBattle *field;
     vector<Client::PTR> clients;
     vector<PARTY_TURN> turns;
     vector<PARTY_REQUEST> requests;
@@ -235,13 +239,13 @@ struct NetworkBattleImpl {
     }
 };
 
-void NetworkBattle::initialise(ScriptMachine *machine,
+NetworkBattle::NetworkBattle(ScriptMachine *machine,
         Client::PTR *clients,
         Pokemon::ARRAY *teams,
         const GENERATION generation,
         const int partySize) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(new NetworkBattleImpl());
-    m_impl->field = shared_from_this();
+    m_impl->field = this;
     m_impl->turns.resize(TEAM_COUNT);
     m_impl->requests.resize(TEAM_COUNT);
     string trainer[TEAM_COUNT];
