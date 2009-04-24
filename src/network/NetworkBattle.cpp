@@ -87,7 +87,7 @@ typedef boost::shared_ptr<vector<PokemonTurn> > TURN_PTR;
 
 struct NetworkBattleImpl {
     JewelMechanics mech;
-    NetworkBattle *field;
+    NetworkBattle::PTR field;
     vector<Client::PTR> clients;
     vector<PARTY_TURN> turns;
     vector<PARTY_REQUEST> requests;
@@ -235,13 +235,13 @@ struct NetworkBattleImpl {
     }
 };
 
-NetworkBattle::NetworkBattle(ScriptMachine *machine,
+void NetworkBattle::initialise(ScriptMachine *machine,
         Client::PTR *clients,
         Pokemon::ARRAY *teams,
         const GENERATION generation,
         const int partySize) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(new NetworkBattleImpl());
-    m_impl->field = this;
+    m_impl->field = shared_from_this();
     m_impl->turns.resize(TEAM_COUNT);
     m_impl->requests.resize(TEAM_COUNT);
     string trainer[TEAM_COUNT];
@@ -250,7 +250,8 @@ NetworkBattle::NetworkBattle(ScriptMachine *machine,
         trainer[i] = client->getName();
         m_impl->clients.push_back(client);
     }
-    initialise(&m_impl->mech, generation, machine, teams, trainer, partySize);
+    BattleField::initialise(&m_impl->mech,
+            generation, machine, teams, trainer, partySize);
 }
 
 void NetworkBattle::beginBattle() {

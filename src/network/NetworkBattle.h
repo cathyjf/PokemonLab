@@ -22,6 +22,7 @@
  * online at http://gnu.org.
  */
 
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
 #include "../shoddybattle/BattleField.h"
 
@@ -31,11 +32,14 @@ namespace network { class Client; }
     
 class NetworkBattleImpl;
 
-class NetworkBattle : public BattleField {
+class NetworkBattle : public BattleField,
+        public boost::enable_shared_from_this<NetworkBattle> {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
+
+    NetworkBattle() { }
     
-    NetworkBattle(ScriptMachine *machine,
+    void initialise(ScriptMachine *machine,
             boost::shared_ptr<network::Client> *clients,
             Pokemon::ARRAY *teams,
             const GENERATION generation,

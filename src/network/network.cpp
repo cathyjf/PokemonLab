@@ -752,11 +752,12 @@ private:
         // todo: verify legality of team
 
         Client::PTR clients[] = { shared_from_this(), client };
-        NetworkBattle::PTR field(new NetworkBattle(m_server->getMachine(),
+        NetworkBattle::PTR field(new NetworkBattle());
+        field->initialise(m_server->getMachine(),
                 clients,
                 challenge->teams,
                 challenge->generation,
-                challenge->partySize));
+                challenge->partySize);
 
         lock2.unlock();
         m_challenges.erase(opponent);
@@ -765,6 +766,11 @@ private:
         // todo: apply clauses here
 
         field->beginBattle();
+
+        field->handleTurn(0, PokemonTurn(TT_MOVE, 0, 1));
+        field->handleTurn(0, PokemonTurn(TT_MOVE, 0, 1));
+        field->handleTurn(1, PokemonTurn(TT_MOVE, 1, 1));
+        field->handleTurn(1, PokemonTurn(TT_MOVE, 1, 1));
     }
 
     string m_name;
@@ -1248,6 +1254,7 @@ void ServerImpl::initialiseChannels() {
 
 /** Start the server. */
 void ServerImpl::run() {
+    m_registry.startThread();
     m_service.run();
 }
 
@@ -1301,7 +1308,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 #if 1
 
-#include "../database/DatabaseRegistry.h"
+#include <boost/thread.hpp>
 
 int main() {
     using namespace shoddybattle;
@@ -1323,7 +1330,13 @@ int main() {
     registry->startThread();
     server.initialiseChannels();
 
-    server.run();
+    vector<shared_ptr<thread> > threads;
+    for (int i = 0; i < 20; ++i) {
+        threads.push_back(shared_ptr<thread>(
+                new thread(boost::bind(&network::Server::run, &server))));
+    }
+
+    server.run(); // block
 }
 
 #endif
