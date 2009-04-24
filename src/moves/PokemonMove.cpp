@@ -58,6 +58,7 @@ public:
     }
     
     string name;
+    int id;
     unsigned int power;
     MOVE_CLASS moveClass;
     TARGET targetClass;
@@ -163,6 +164,13 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
     DOMNode *p = attributes->getNamedItem(tempStr);
     if (p) {
         pMove->name = getStringNodeValue(p);
+    }
+
+    // id
+    XMLString::transcode("id", tempStr, 19);
+    p = attributes->getNamedItem(tempStr);
+    if (p) {
+        pMove->id = getIntNodeValue(p);
     }
 
     // type
@@ -333,6 +341,7 @@ void MoveDatabase::loadMoves(const string file) {
 
         MoveTemplate *pMove = new MoveTemplate(move);
         m_data.insert(MOVE_DATABASE::value_type(move->name, pMove));
+        m_intData.insert(INT_MOVE_DATABASE::value_type(move->id, move->name));
     }
     cout << implemented << " / " << length << " moves implemented." << endl;
 

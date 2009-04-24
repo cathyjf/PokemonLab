@@ -43,8 +43,14 @@
 #include <bitset>
 #include <map>
 #include "network.h"
+#include "NetworkBattle.h"
 #include "../database/DatabaseRegistry.h"
 #include "../text/Text.h"
+#include "../shoddybattle/Pokemon.h"
+#include "../moves/PokemonMove.h"
+#include "../shoddybattle/PokemonSpecies.h"
+#include "../mechanics/PokemonNature.h"
+#include "../scripting/ScriptMachine.h"
 
 using namespace std;
 using namespace boost;
@@ -118,7 +124,11 @@ public:
         REGISTER_ACCOUNT = 2,
         JOIN_CHANNEL = 3,
         CHANNEL_MESSAGE = 4,
-        CHANNEL_MODE = 5
+        CHANNEL_MODE = 5,
+        OUTGOING_CHALLENGE = 6,
+        RESOLVE_CHALLENGE = 7,
+        CHALLENGE_TEAM = 8,
+        WITHDRAW_CHALLENGE = 9,
     };
 
     InMessage() {
@@ -242,6 +252,119 @@ public:
     ChannelJoinPart(ChannelPtr, ClientImplPtr, bool);
 };
 
+/**
+ * Format of one pokemon:
+ *
+ * int32  : species id
+ * string : nickname
+ * byte   : whether the pokemon is shiny
+ * byte   : gender
+ * int32  : level
+ * string : item
+ * string : ability
+ * int32  : nature
+ * int32  : move count
+ * for each move:
+ *      int32 : move id
+ *      int32 : pp ups
+ * for each stat i in [0, 5]:
+ *      int32 : iv
+ *      int32 : ev
+ */
+Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
+        MoveDatabase *moveData,
+        InMessage &msg) {
+    int speciesId;
+    string nickname;
+    unsigned char shiny;
+    unsigned char gender;
+    int level;
+    string item;
+    string ability;
+    int nature;
+    int moveCount;
+    vector<string> moves;
+    vector<int> ppUp;
+    int ivs[STAT_COUNT];
+    int evs[STAT_COUNT];
+    
+    msg >> speciesId >> nickname >> shiny >> gender >> level
+            >> item >> ability >> nature >> moveCount;
+
+    nickname = trim(nickname);
+
+    moves.resize(moveCount);
+    ppUp.resize(moveCount);
+    for (int i = 0; i < moveCount; ++i) {
+        int id, pp;
+        msg >> id >> pp;
+        moves[i] = moveData->getMove(id);
+        ppUp[i] = pp;
+    }
+
+    for (int i = 0; i < STAT_COUNT; ++i) {
+        msg >> ivs[i] >> evs[i];
+    }
+
+    const PokemonSpecies *species = speciesData->getSpecies(speciesId);
+
+    return Pokemon::PTR(new Pokemon(species,
+            nickname,
+            PokemonNature::getNature(nature),
+            ability,
+            item,
+            ivs,
+            evs,
+            level,
+            gender,
+            shiny,
+            moves,
+            ppUp));
+}
+
+void readTeam(SpeciesDatabase *speciesData,
+        MoveDatabase *moveData,
+        InMessage &msg,
+        Pokemon::ARRAY &team) {
+    int size;
+    msg >> size;
+    for (int i = 0; i < size; ++i) {
+        team.push_back(readPokemon(speciesData, moveData, msg));
+    }
+}
+
+struct Challenge {
+    mutex mx;
+    Pokemon::ARRAY teams[TEAM_COUNT];
+    GENERATION generation;
+    int partySize;
+    // todo: clauses and other options
+
+};
+
+typedef shared_ptr<Challenge> ChallengePtr;
+
+class IncomingChallenge : public OutMessage {
+public:
+    IncomingChallenge(const string &user, const Challenge &data):
+            OutMessage(INCOMING_CHALLENGE) {
+        *this << user;
+        *this << (unsigned char)data.generation;
+        *this << data.partySize;
+        finalise();
+    }
+};
+
+class FinaliseChallenge : public OutMessage {
+public:
+    FinaliseChallenge(const string &user, const bool accept):
+            OutMessage(FINALISE_CHALLENGE) {
+        *this << user;
+        *this << (unsigned char)accept;
+        finalise();
+    }
+};
+
 class ServerImpl {
 public:
     ServerImpl(tcp::endpoint &endpoint);
@@ -250,6 +373,7 @@ public:
     void broadcast(OutMessage &msg);
     void initialiseChannels();
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
+    ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     ChannelPtr getChannel(const string &);
@@ -274,6 +398,7 @@ private:
     io_service m_service;
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
+    ScriptMachine m_machine;
 };
 
 Server::Server(const int port) {
@@ -287,6 +412,14 @@ void Server::run() {
 
 database::DatabaseRegistry *Server::getRegistry() {
     return m_impl->getRegistry();
+}
+
+ScriptMachine *Server::getMachine() {
+    return m_impl->getMachine();
+}
+
+void Server::initialiseChannels() {
+    m_impl->initialiseChannels();
 }
 
 Server::~Server() {
@@ -346,6 +479,27 @@ private:
     void partChannel(ChannelPtr channel);
 
     ChannelPtr getChannel(const int id);
+
+    ChallengePtr getChallenge(const string &name) {
+        lock_guard<mutex> lock(m_challengeMutex);
+
+        map<string, ChallengePtr>::iterator i = m_challenges.find(name);
+        if (i == m_challenges.end())
+            return ChallengePtr();
+        return i->second;
+    }
+
+    void rejectChallenge(const string &name) {
+        lock_guard<mutex> lock(m_challengeMutex);
+
+        map<string, ChallengePtr>::iterator i = m_challenges.find(name);
+        if (i == m_challenges.end())
+            return;
+
+        m_challenges.erase(i);
+
+        sendMessage(FinaliseChallenge(name, false));
+    }
 
     /**
      * Handle reading in the header of a message.
@@ -506,10 +660,120 @@ private:
      */
     void handleModeMessage(InMessage &msg);
 
+    /**
+     * string : opponent
+     * ... [ TODO: other data ] ...
+     */
+    void handleOutgoingChallenge(InMessage &msg) {
+        ChallengePtr challenge(new Challenge());
+        string opponent;
+        unsigned char generation;
+        int partySize;
+        msg >> opponent >> generation >> partySize;
+        // todo: read in other challenge details
+
+        challenge->generation = (GENERATION)generation;
+        challenge->partySize = partySize;
+
+        lock_guard<mutex> lock(m_challengeMutex);
+
+        if (m_challenges.count(opponent) != 0)
+            return;
+
+        ClientImplPtr client = m_server->getClient(opponent);
+        if (!client) {
+            return;
+        }
+        
+        m_challenges[opponent] = challenge;
+        client->sendMessage(IncomingChallenge(m_name, *challenge));
+    }
+
+    void handleResolveChallenge(InMessage &msg) {
+        string opponent;
+        unsigned char accept;
+        msg >> opponent >> accept;
+
+        ClientImplPtr client = m_server->getClient(opponent);
+        if (!client) {
+            return;
+        }
+
+        if (!accept) {
+            client->rejectChallenge(m_name);
+            return;
+        }
+
+        ChallengePtr challenge = client->getChallenge(m_name);
+        if (!challenge) {
+            return;
+        }
+
+        Pokemon::ARRAY team;
+        ScriptMachine *machine = m_server->getMachine();
+        readTeam(machine->getSpeciesDatabase(),
+                machine->getMoveDatabase(),
+                msg,
+                team);
+        // todo: verify legality of team
+        unique_lock<mutex> lock(challenge->mx);
+        challenge->teams[1] = team;
+        lock.unlock();
+
+        client->sendMessage(FinaliseChallenge(m_name, true));
+    }
+
+    void handleChallengeTeam(InMessage &msg) {
+        unique_lock<mutex> lock(m_challengeMutex);
+
+        string opponent;
+        msg >> opponent;
+
+        if (m_challenges.count(opponent) == 0)
+            return;
+
+        ClientImplPtr client = m_server->getClient(opponent);
+        if (!client) {
+            return;
+        }
+
+        ChallengePtr challenge = m_challenges[opponent];
+
+        unique_lock<mutex> lock2(challenge->mx);
+        if (challenge->teams[1].empty()) {
+            return;
+        }
+
+        ScriptMachine *machine = m_server->getMachine();
+        readTeam(machine->getSpeciesDatabase(),
+                machine->getMoveDatabase(),
+                msg,
+                challenge->teams[0]);
+        // todo: verify legality of team
+
+        Client::PTR clients[] = { shared_from_this(), client };
+        NetworkBattle::PTR field(new NetworkBattle(m_server->getMachine(),
+                clients,
+                challenge->teams,
+                challenge->generation,
+                challenge->partySize));
+
+        lock2.unlock();
+        m_challenges.erase(opponent);
+        lock.unlock();
+
+        // todo: apply clauses here
+
+        field->beginBattle();
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
     int m_challenge; // for challenge-response authentication
+
+    map<string, ChallengePtr> m_challenges;
+    mutex m_challengeMutex;
 
     InMessage m_msg;
     deque<OutMessage> m_queue;
@@ -532,6 +796,9 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleJoinChannel,
     &ClientImpl::handleChannelMessage,
     &ClientImpl::handleModeMessage,
+    &ClientImpl::handleOutgoingChallenge,
+    &ClientImpl::handleResolveChallenge,
+    &ClientImpl::handleChallengeTeam,
 };
 
 /**
@@ -1039,8 +1306,17 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 int main() {
     using namespace shoddybattle;
 
-    tcp::endpoint endpoint(tcp::v4(), 8446);
-    network::ServerImpl server(endpoint);
+    network::Server server(8446);
+
+    ScriptMachine *machine = server.getMachine();
+    ScriptContext *cx = machine->acquireContext();
+    cx->runFile("resources/main.js");
+    cx->runFile("resources/moves.js");
+    cx->runFile("resources/constants.js");
+    cx->runFile("resources/StatusEffect.js");
+    cx->runFile("resources/statuses.js");
+    cx->runFile("resources/abilities.js");
+    machine->releaseContext(cx);
 
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");

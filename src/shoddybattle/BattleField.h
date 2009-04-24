@@ -33,7 +33,6 @@
 namespace shoddybattle {
 
 const int TEAM_COUNT = 2;
-const int MAX_TEAM_SIZE = 6;
 
 enum GENERATION {
     GEN_DP,             // Diamond and Pearl
@@ -160,14 +159,24 @@ public:
     int getPartySize() const;
 
     /**
+     * Get the host.
+     */
+    int getHost() const;
+
+    /**
      * Begin the battle.
      */
-    void beginBattle();
+    virtual void beginBattle();
 
     /**
      * Process a turn.
      */
     void processTurn(const std::vector<PokemonTurn> &turn);
+
+    /**
+     * Process a set of replacements.
+     */
+    void processReplacements(const std::vector<PokemonTurn> &turn);
 
     /**
      * Get the modifiers in play for a particular hit.
@@ -186,6 +195,11 @@ public:
     void sortBySpeed(std::vector<Pokemon *> &pokemon);
 
     /**
+     * Get a list of pokemon that can be switched to.
+     */
+    void getLegalSwitches(Pokemon *, std::vector<int> &);
+
+    /**
      * Get the active pokemon.
      */
     void getActivePokemon(std::vector<Pokemon::PTR> &);
@@ -193,6 +207,16 @@ public:
     Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
         return (*getActivePokemon()[i])[j].pokemon;
     }
+
+    /**
+     * Get the fainted pokemon.
+     */
+    void getFaintedPokemon(std::vector<Pokemon::PTR> &);
+
+    /**
+     * Get the number of living pokemon on a team.
+     */
+    int getAliveCount(const int party) const;
 
     /**
      * Get a pokemon team.

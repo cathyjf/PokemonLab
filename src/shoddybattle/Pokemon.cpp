@@ -56,6 +56,11 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     memcpy(m_ev, ev, sizeof(int) * STAT_COUNT);
     m_species = species;
     m_nickname = nickname;
+    if (m_nickname.empty()) {
+        m_nickname = m_species->getSpeciesName();
+    } else if (m_nickname.length() > 19) {
+        m_nickname = m_nickname.substr(0, 19);
+    }
     m_nature = nature;
     m_types = species->getTypes();
     m_level = level;

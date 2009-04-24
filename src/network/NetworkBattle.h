@@ -27,14 +27,26 @@
 
 namespace shoddybattle {
 
+namespace network { class Client; }
+    
 class NetworkBattleImpl;
 
 class NetworkBattle : public BattleField {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
     
-    NetworkBattle();
+    NetworkBattle(ScriptMachine *machine,
+            boost::shared_ptr<network::Client> *clients,
+            Pokemon::ARRAY *teams,
+            const GENERATION generation,
+            const int partySize);
+
+    void beginBattle();
+
     void handleTurn(const int party, const PokemonTurn &turn);
+    void handleCancelTurn(const int party);
+
+    int32_t getId() const { return (int32_t)this; }
 
 private:
     boost::shared_ptr<NetworkBattleImpl> m_impl;

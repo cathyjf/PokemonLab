@@ -45,15 +45,17 @@ struct BattleFieldImpl {
     Pokemon::ARRAY teams[TEAM_COUNT];
     int partySize;
     shared_ptr<PokemonParty> active[TEAM_COUNT];
-    STATUSES m_effects;      // field effects
+    STATUSES effects;      // field effects
     bool descendingSpeed;
     std::stack<BattleField::EXECUTION> executing;
+    int host;
 
     BattleFieldImpl():
             object(NULL),
             mech(NULL),
             machine(NULL),
-            context(NULL) { }
+            context(NULL),
+            host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
     bool speedComparator(Pokemon *p1, Pokemon *p2) {
@@ -140,7 +142,23 @@ void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
  * Determine whether a particular turn is legal.
  */
 bool BattleField::isTurnLegal(Pokemon *pokemon, const PokemonTurn *turn) const {
-    
+    // todo
+    return true;
+}
+
+/**
+ * Get a list of legal switches.
+ */
+void BattleField::getLegalSwitches(Pokemon *pokemon, vector<int> &switches) {
+    const int party = pokemon->getParty();
+    Pokemon::ARRAY &arr = m_impl->teams[party];
+    const int size = arr.size();
+    for (int i = 0; i < size; ++i) {
+        Pokemon::PTR p = arr[i];
+        if (p && (p.get() != pokemon) && !p->isFainted()) {
+            switches.push_back(i);
+        }
+    }
 }
 
 /**
@@ -238,68 +256,70 @@ void BattleField::getActivePokemon(vector<Pokemon::PTR> &v) {
     }
 }
 
+namespace {
+
 /**
  * Used for sorting pokemon into turn order.
  */
-struct TurnOrder {
-    struct Entity {
-        Pokemon::PTR pokemon;
-        const PokemonTurn *turn;
-        bool move;
-        int party, position;
-        int priority;
-        int speed;
-        int inherentPriority;
-    };
-    const BattleMechanics *mechanics;
-    bool descendingSpeed;
-    bool operator()(const Entity &p1, const Entity &p2) {
-        // first: is one pokemon switching?
-        if (!p1.move && p2.move) {
-            return true;    // p1 goes first
-        } else if (p2.move && !p2.move) {
-            return false;   // p2 goes first
-        } else if (!p1.move && !p2.move) {
-            if (p1.party == p2.party) {
-                return (p1.position < p2.position);
-            }
-            // default to coinflip
-            return mechanics->getCoinFlip();
-        }
-
-        // second: move priority
-        if (p1.priority != p2.priority) {
-            return (p1.priority > p2.priority);
-        }
-
-        // third: inherent priority (certain items, abilities, etc.)
-        if (p1.inherentPriority != p2.inherentPriority) {
-            return (p1.inherentPriority > p2.inherentPriority);
-        }
-        
-        // fourth: speed
-        if (p1.speed > p2.speed) {
-            return descendingSpeed;
-        } else if (p1.speed < p2.speed) {
-            return !descendingSpeed;
-        }
-
-        // finally: coin flip
-        return mechanics->getCoinFlip();
-    }
+struct TurnOrderEntity {
+    Pokemon::PTR pokemon;
+    const PokemonTurn *turn;
+    bool move;
+    int party, position;
+    int priority;
+    int speed;
+    int inherentPriority;
 };
+
+bool turnOrderComparator(BattleFieldImpl *impl,
+        const TurnOrderEntity &p1, const TurnOrderEntity &p2) {
+    // first: is one pokemon switching?
+    if (!p1.move && p2.move) {
+        return true;    // p1 goes first
+    } else if (p2.move && !p2.move) {
+        return false;   // p2 goes first
+    } else if (!p1.move && !p2.move) {
+        if (p1.party == p2.party) {
+            return (p1.position < p2.position);
+        }
+        // host goes first
+        return (p1.party == impl->host);
+    }
+
+    // second: move priority
+    if (p1.priority != p2.priority) {
+        return (p1.priority > p2.priority);
+    }
+
+    // third: inherent priority (certain items, abilities, etc.)
+    if (p1.inherentPriority != p2.inherentPriority) {
+        return (p1.inherentPriority > p2.inherentPriority);
+    }
+
+    // fourth: speed
+    if (p1.speed > p2.speed) {
+        return impl->descendingSpeed;
+    } else if (p1.speed < p2.speed) {
+        return !impl->descendingSpeed;
+    }
+
+    // finally: coin flip
+    return impl->mech->getCoinFlip();
+}
+
+} // anonymous namespace
 
 /**
  * Sort a list of pokemon in turn order.
  */
 void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         vector<const PokemonTurn *> &turns) {
-    vector<TurnOrder::Entity> entities;
+    vector<TurnOrderEntity> entities;
 
     const int count = pokemon.size();
     assert(count == turns.size());
     for (int i = 0; i < count; ++i) {
-        TurnOrder::Entity entity;
+        TurnOrderEntity entity;
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = turns[i];
         entity.pokemon = p;
@@ -318,14 +338,12 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
     }
 
     // sort the entities
-    TurnOrder order;
-    order.descendingSpeed = descendingSpeed;
-    order.mechanics = mech;
-    sort(entities.begin(), entities.end(), order);
+    sort(entities.begin(), entities.end(),
+            boost::bind(turnOrderComparator, this, _1, _2));
 
     // reorder the parameter vectors
     for (int i = 0; i < count; ++i) {
-        TurnOrder::Entity &entity = entities[i];
+        TurnOrderEntity &entity = entities[i];
         pokemon[i] = entity.pokemon;
         turns[i] = entity.turn;
     }
@@ -353,10 +371,15 @@ const BattleMechanics *BattleField::getMechanics() const {
 void BattleField::switchPokemon(Pokemon *p, const int idx) {
     const int party = p->getParty();
     const int slot = p->getSlot();
-    p->switchOut(); // note: clears slot
+    const bool fainted = p->isFainted();
+    if (!fainted) {
+        p->switchOut(); // note: clears slot
+    }
     Pokemon::PTR replacement = m_impl->teams[party][idx];
     (*m_impl->active[party])[slot].pokemon = replacement;
-    informWithdraw(p);
+    if (!fainted) {
+        informWithdraw(p);
+    }
     informSendOut(replacement.get());
     replacement->switchIn(slot);
 }
@@ -379,7 +402,9 @@ void BattleField::print(const TextMessage &msg) {
 void BattleField::informSendOut(Pokemon *p) {
     const int party = p->getParty();
     const string trainer = m_impl->active[party]->getName();
-    cout << trainer << " sent out " << p->getName() << "!" << endl;
+    cout << trainer << " sent out " << p->getName()
+            << " (lvl " << p->getLevel() << " " << p->getSpeciesName() << ")"
+            << "!" << endl;
 }
 
 void BattleField::informWithdraw(Pokemon *p) {
@@ -545,6 +570,21 @@ void BattleField::tickEffects() {
 }
 
 /**
+ * Count the number of living pokemon on a team.
+ */
+int BattleField::getAliveCount(const int party) const {
+    Pokemon::ARRAY &arr = m_impl->teams[party];
+    const int size = arr.size();
+    int alive = 0;
+    for (int i = 0; i < size; ++i) {
+        if (!arr[i]->isFainted()) {
+            ++alive;
+        }
+    }
+    return alive;
+}
+
+/**
  * Determine whether the match has ended.
  */
 bool BattleField::determineVictory() {
@@ -583,6 +623,51 @@ void BattleField::informVictory(const int party) {
         cout << obj.getName() << " wins!" << endl;
     } else {
         cout << "It's a draw!" << endl;
+    }
+}
+
+/**
+ * Get the fainted pokemon.
+ */
+void BattleField::getFaintedPokemon(std::vector<Pokemon::PTR> &pokemon) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        PokemonParty &party = *m_impl->active[i];
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            Pokemon::PTR p = party[j].pokemon;
+            if (p && p->isFainted() && (getAliveCount(p->getParty()) > 1)) {
+                pokemon.push_back(p);
+            }
+        }
+    }
+}
+
+/**
+ * Process a set of replacements.
+ */
+void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
+    vector<Pokemon::PTR> pokemon;
+    getFaintedPokemon(pokemon);
+
+    const int count = pokemon.size();
+    if (count != turns.size())
+        throw BattleFieldException();
+
+    vector<const PokemonTurn *> ordered;
+    for (int i = 0; i < count; ++i) {
+        const PokemonTurn *turn = &turns[i];
+        if (turn->type != TT_SWITCH) {
+            throw BattleFieldException();
+        }
+        ordered.push_back(turn);
+    }
+
+    m_impl->sortInTurnOrder(pokemon, ordered);
+
+    for (int i = 0; i < count; ++i) {
+        Pokemon::PTR p = pokemon[i];
+        const PokemonTurn *turn = ordered[i];
+
+        switchPokemon(p.get(), turn->id);
     }
 }
 
@@ -718,6 +803,13 @@ const Pokemon::ARRAY &BattleField::getTeam(const int i) const {
 }
 
 /**
+ * Get the host of the battle.
+ */
+int BattleField::getHost() const {
+    return m_impl->host;
+}
+
+/**
  * Get the ScriptContext associated with this BattleField. This is to be called
  * only from within the logic of a battle turn.
  */
@@ -757,6 +849,7 @@ void BattleFieldImpl::initialise(BattleField *field,
     this->context = machine->acquireContext();
     this->object = context->newFieldObject(field);
     this->mech = mech;
+    this->host = mech->getCoinFlip() ? 0 : 1;
     this->generation = generation;
     this->partySize = activeParty;
     this->descendingSpeed = true;

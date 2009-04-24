@@ -29,6 +29,10 @@
 #include <vector>
 #include <string>
 
+namespace shoddybattle {
+    class ScriptMachine;
+} // namespace shoddybattle
+
 namespace shoddybattle { namespace database {
     class DatabaseRegistry;
 }} // namespace shoddybattle::database
@@ -59,6 +63,8 @@ public:
     ~Server();
     void run();
     database::DatabaseRegistry *getRegistry();
+    ScriptMachine *getMachine();
+    void initialiseChannels();
 
 private:
     ServerImpl *m_impl;
@@ -81,6 +87,13 @@ public:
         CHANNEL_STATUS = 6,
         CHANNEL_LIST = 7,
         CHANNEL_MESSAGE = 8,
+        INCOMING_CHALLENGE = 9,
+        FINALISE_CHALLENGE = 10,
+        CHALLENGE_WITHDRAWN = 11,
+        BATTLE_BEGIN = 12,
+        BATTLE_STATE = 13,
+        BATTLE_HEALTH_CHANGE = 14,
+        REQUEST_ACTION = 15,
     };
 
     // variable size message

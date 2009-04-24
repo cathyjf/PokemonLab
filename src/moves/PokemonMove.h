@@ -90,6 +90,7 @@ private:
 };
 
 typedef std::map<std::string, MoveTemplate *> MOVE_DATABASE;
+typedef std::map<int, std::string> INT_MOVE_DATABASE;
 
 class MoveDatabase {
 public:
@@ -99,6 +100,13 @@ public:
      * Load moves from an xml file. Can be called more than once.
      */
     void loadMoves(const std::string file);
+
+    /**
+     * Get a move by ID.
+     */
+    std::string getMove(const int id) const {
+        return m_intData[id];
+    }
 
     /**
      * Get a move by name.
@@ -111,6 +119,7 @@ public:
 
 private:
     mutable MOVE_DATABASE m_data;
+    mutable INT_MOVE_DATABASE m_intData;
     ScriptMachine &m_machine;
     MoveDatabase(const MoveDatabase &);
     MoveDatabase &operator=(const MoveDatabase &);
