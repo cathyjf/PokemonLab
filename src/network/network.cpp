@@ -68,6 +68,7 @@ typedef shared_ptr<Channel> ChannelPtr;
 
 typedef set<ClientImplPtr> CLIENT_LIST;
 typedef set<ChannelPtr> CHANNEL_LIST;
+typedef set<NetworkBattle::PTR> BATTLE_LIST;
 
 void OutMessage::finalise() {
     // insert the size into the data
@@ -77,6 +78,14 @@ void OutMessage::finalise() {
 
 const vector<unsigned char> &OutMessage::operator()() const {
     return m_data;
+}
+
+OutMessage &OutMessage::operator<<(const int16_t i) {
+    const int pos = m_data.size();
+    m_data.resize(pos + sizeof(int16_t), 0);
+    unsigned char *p = &m_data[pos];
+    *reinterpret_cast<int32_t *>(p) = htons(i);
+    return *this;
 }
 
 OutMessage &OutMessage::operator<<(const int32_t i) {
@@ -129,6 +138,7 @@ public:
         RESOLVE_CHALLENGE = 7,
         CHALLENGE_TEAM = 8,
         WITHDRAW_CHALLENGE = 9,
+        BATTLE_ACTION = 10,
     };
 
     InMessage() {
@@ -379,6 +389,15 @@ public:
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
+
+    void addBattle(NetworkBattle::PTR p) {
+        lock_guard<shared_mutex> lock(m_battleMutex);
+        m_battles.insert(p);
+    }
+    void removeBattle(NetworkBattle::PTR p) {
+        lock_guard<shared_mutex> lock(m_battleMutex);
+        m_battles.erase(p);
+    }
     
 private:
     void acceptClient();
@@ -395,6 +414,8 @@ private:
     ChannelPtr m_mainChannel;
     CLIENT_LIST m_clients;
     shared_mutex m_clientMutex;
+    BATTLE_LIST m_battles;
+    shared_mutex m_battleMutex;
     io_service m_service;
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
@@ -487,6 +508,16 @@ private:
         if (i == m_challenges.end())
             return ChallengePtr();
         return i->second;
+    }
+
+    // to be called from within a critical section on m_battleMutex
+    NetworkBattle::PTR getBattle(const int id) {
+        BATTLE_LIST::iterator i = m_battles.begin();
+        for (; i != m_battles.end(); ++i) {
+            if ((*i)->getId() == id)
+                return *i;
+        }
+        return NetworkBattle::PTR();
     }
 
     void rejectChallenge(const string &name) {
@@ -766,10 +797,41 @@ private:
 
         field->beginBattle();
 
-        field->handleTurn(0, PokemonTurn(TT_MOVE, 0, 1));
-        field->handleTurn(0, PokemonTurn(TT_MOVE, 0, 1));
-        field->handleTurn(1, PokemonTurn(TT_MOVE, 1, 1));
-        field->handleTurn(1, PokemonTurn(TT_MOVE, 1, 1));
+        m_server->addBattle(field);
+        {
+            lock_guard<mutex> lock3(m_battleMutex);
+            m_battles.insert(field);
+        }
+        {
+            lock_guard<mutex> lock3(client.get()->m_battleMutex);
+            client.get()->m_battles.insert(field);
+        }
+    }
+
+    void handleWithdrawChallenge(InMessage &msg) {
+        // todo
+    }
+
+    /**
+     * int32 : field id
+     * byte : turn type
+     * byte : index
+     * byte : target
+     */
+    void handleBattleAction(InMessage &msg) {
+        int field;
+        unsigned char tt, idx, target;
+        msg >> field >> tt >> idx >> target;
+        PokemonTurn turn((TURN_TYPE)tt, idx, target);
+
+        lock_guard<mutex> lock(m_battleMutex);
+        NetworkBattle::PTR p = getBattle(field);
+        if (p) {
+            const int party = p->getParty(shared_from_this());
+            if (party != -1) {
+                p->handleTurn(party, turn);
+            }
+        }
     }
 
     string m_name;
@@ -779,6 +841,9 @@ private:
 
     map<string, ChallengePtr> m_challenges;
     mutex m_challengeMutex;
+
+    BATTLE_LIST m_battles;
+    mutex m_battleMutex;
 
     InMessage m_msg;
     deque<OutMessage> m_queue;
@@ -804,6 +869,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleOutgoingChallenge,
     &ClientImpl::handleResolveChallenge,
     &ClientImpl::handleChallengeTeam,
+    &ClientImpl::handleWithdrawChallenge,
+    &ClientImpl::handleBattleAction
 };
 
 /**

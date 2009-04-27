@@ -35,6 +35,7 @@ function makeCounterMove(move, cls, ratio) {
                 if (target.party == user.party) {
                     break;
                 }
+                // todo: is fainted?
                 if (target.isImmune(move)) {
                     field.print(Text.battle_messages(1, target.name));
                 } else {

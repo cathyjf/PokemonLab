@@ -116,6 +116,10 @@ string Pokemon::getSpeciesName() const {
     return m_species->getSpeciesName();
 }
 
+int Pokemon::getSpeciesId() const {
+    return m_species->getSpeciesId();
+}
+
 unsigned int Pokemon::getBaseStat(const STAT i) const {
     return m_species->getBaseStat(i);
 }
@@ -274,8 +278,8 @@ bool Pokemon::executeMove(MoveObject *move,
         // vetoed
         return false;
     }
-    
-    cout << getName() << " used " << move->getName(m_cx) << "!" << endl;
+
+    m_field->informUseMove(this, move);
 
     if (move->getFlag(m_cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;

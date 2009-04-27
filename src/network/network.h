@@ -91,9 +91,9 @@ public:
         FINALISE_CHALLENGE = 10,
         CHALLENGE_WITHDRAWN = 11,
         BATTLE_BEGIN = 12,
-        BATTLE_STATE = 13,
-        BATTLE_HEALTH_CHANGE = 14,
-        REQUEST_ACTION = 15,
+        REQUEST_ACTION = 13,
+        BATTLE_POKEMON = 14,
+        BATTLE_HEALTH_CHANGE = 15,
     };
 
     // variable size message
@@ -113,9 +113,10 @@ public:
     
     const std::vector<unsigned char> &operator()() const;
 
-    OutMessage &operator<<(const int32_t i);
-    OutMessage &operator<<(const unsigned char byte);
-    OutMessage &operator<<(const std::string &str);
+    OutMessage &operator<<(const int16_t);
+    OutMessage &operator<<(const int32_t);
+    OutMessage &operator<<(const unsigned char);
+    OutMessage &operator<<(const std::string &);
 
     virtual ~OutMessage() { }
 private:

@@ -143,14 +143,72 @@ struct NetworkBattleImpl {
     }
 
     /**
+     * BATTLE_BEGIN
+     *
+     * int32 : field id
+     * string : opponent
+     * byte : party
+     */
+    void sendBattleBegin(const int party) {
+        const int32_t id = field->getId();
+        const string opponent = clients[1 - party]->getName();
+
+        OutMessage msg(OutMessage::BATTLE_BEGIN);
+        msg << id << opponent << ((unsigned char)party);
+        msg.finalise();
+        clients[party]->sendMessage(msg);
+    }
+
+    /**
+     * BATTLE_POKEMON
+     *
+     * int32 : field id
+     * for 0...1:
+     *     for 0...n-1:
+     *         int16 : species id
+     *         if id != -1:
+     *             byte : gender
+     *             byte : whether the pokemon is shiny
+     */
+    void updateBattlePokemon() {
+        OutMessage msg(OutMessage::BATTLE_POKEMON);
+        msg << (int32_t)field->getId();
+
+        const int size = field->getPartySize();
+        boost::shared_ptr<PokemonParty> *active = field->getActivePokemon();
+        for (int i = 0; i < TEAM_COUNT; ++i) {
+            PokemonParty &party = *active[i];
+            for (int j = 0; j < size; ++j) {
+                Pokemon::PTR p = party[j].pokemon;
+                if (p && !p->isFainted()) {
+                    int16_t species = (int16_t)p->getSpeciesId();
+                    msg << species;
+                    msg << (unsigned char)p->getGender();
+                    msg << (unsigned char)p->isShiny();
+                } else {
+                    msg << ((int16_t)-1);
+                }
+            }
+        }
+        msg.finalise();
+
+        boost::lock_guard<boost::mutex> lock(mutex);
+        vector<Client::PTR>::iterator i = clients.begin();
+        for (; i != clients.end(); ++i) {
+            (*i)->sendMessage(msg);
+        }
+    }
+
+    /**
      * REQUEST_ACTION
      *
      * int32 : field id
-     * int32 : position of relevant pokemon
+     * byte  : slot of relevant pokemon
+     * byte  : position of relevant pokemon
      * byte  : whether this is a replacement
-     * int32 : number of legal pokemon to switch to
-     * for each legal pokemon to switch to:
-     *      byte : the id of the possible switch target
+     * int32 : number of pokemon
+     * for each pokemon:
+     *      byte : whether it is legal to switch to this pokemon
      * if not replacement:
      *      byte : whether switching is legal
      *      byte : whether there is a forced move
@@ -165,10 +223,11 @@ struct NetworkBattleImpl {
         
         OutMessage msg(OutMessage::REQUEST_ACTION);
         msg << field->getId();
-        msg << p->getPosition();
+        msg << (unsigned char)(p->getSlot());
+        msg << (unsigned char)(p->getPosition());
         msg << (unsigned char)replacement;
 
-        vector<int> switches;
+        vector<bool> switches;
         field->getLegalSwitches(p.get(), switches);
         const int switchSize = switches.size();
 
@@ -205,6 +264,8 @@ struct NetworkBattleImpl {
         if (pokemon.empty()) {
             return false;
         }
+        // todo: check if there are actually enough pokemon to replace all
+        // of the fainted pokemon
         replacement = true;
         for (Pokemon::ARRAY::const_iterator i = pokemon.begin();
                 i != pokemon.end(); ++i) {
@@ -278,9 +339,26 @@ NetworkBattle::NetworkBattle(ScriptMachine *machine,
 }
 
 void NetworkBattle::beginBattle() {
+    boost::unique_lock<boost::mutex> lock(m_impl->mutex);
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        m_impl->sendBattleBegin(i);
+    }
+    lock.unlock();
     BattleField::beginBattle();
-    // todo: send some information on the initial state of the battle
     m_impl->requestMoves();
+}
+
+int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
+    boost::lock_guard<boost::mutex> lock(m_impl->mutex);
+    int count = m_impl->clients.size();
+    if (count > 2) {
+        count = 2;
+    }
+    for (int i =  0; i < count; ++i) {
+        if (m_impl->clients[i] == client)
+            return i;
+    }
+    return -1;
 }
 
 void NetworkBattle::handleCancelTurn(const int party) {
@@ -311,6 +389,36 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     } else {
         m_impl->maybeExecuteTurn();
     }
+}
+
+void NetworkBattle::print(const TextMessage &msg) {
+    BattleField::print(msg);
+}
+
+void NetworkBattle::informVictory(const int party) {
+    BattleField::informVictory(party);
+}
+
+void NetworkBattle::informUseMove(Pokemon *pokemon, MoveObject *move) {
+    BattleField::informUseMove(pokemon, move);
+}
+
+void NetworkBattle::informWithdraw(Pokemon *pokemon) {
+    BattleField::informWithdraw(pokemon);
+}
+
+void NetworkBattle::informSendOut(Pokemon *pokemon) {
+    BattleField::informSendOut(pokemon);
+    m_impl->updateBattlePokemon();
+}
+
+void NetworkBattle::informHealthChange(Pokemon *pokemon, const int delta) {
+    BattleField::informHealthChange(pokemon, delta);
+}
+
+void NetworkBattle::informFainted(Pokemon *pokemon) {
+    BattleField::informFainted(pokemon);
+    m_impl->updateBattlePokemon();
 }
 
 }

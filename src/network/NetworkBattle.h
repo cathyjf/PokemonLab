@@ -42,10 +42,20 @@ public:
             const GENERATION generation,
             const int partySize);
 
+    int getParty(boost::shared_ptr<network::Client> client) const;
+
     void beginBattle();
 
     void handleTurn(const int party, const PokemonTurn &turn);
     void handleCancelTurn(const int party);
+
+    void print(const TextMessage &msg);
+    void informVictory(const int);
+    void informUseMove(Pokemon *, MoveObject *);
+    void informWithdraw(Pokemon *);
+    void informSendOut(Pokemon *);
+    void informHealthChange(Pokemon *, const int);
+    void informFainted(Pokemon *);
 
     int32_t getId() const { return (int32_t)this; }
 

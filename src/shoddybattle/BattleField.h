@@ -197,7 +197,7 @@ public:
     /**
      * Get a list of pokemon that can be switched to.
      */
-    void getLegalSwitches(Pokemon *, std::vector<int> &);
+    void getLegalSwitches(Pokemon *, std::vector<bool> &);
 
     /**
      * Get the active pokemon.

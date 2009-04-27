@@ -121,6 +121,7 @@ public:
     void setHp(const int hp, const bool indirect = false);
 
     std::string getSpeciesName() const;
+    int getSpeciesId() const;
     std::string getName() const { return m_nickname; }
 
     unsigned int getBaseStat(const STAT i) const;

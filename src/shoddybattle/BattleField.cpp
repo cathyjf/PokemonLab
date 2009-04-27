@@ -149,15 +149,14 @@ bool BattleField::isTurnLegal(Pokemon *pokemon, const PokemonTurn *turn) const {
 /**
  * Get a list of legal switches.
  */
-void BattleField::getLegalSwitches(Pokemon *pokemon, vector<int> &switches) {
+void BattleField::getLegalSwitches(Pokemon *pokemon, vector<bool> &switches) {
     const int party = pokemon->getParty();
     Pokemon::ARRAY &arr = m_impl->teams[party];
     const int size = arr.size();
     for (int i = 0; i < size; ++i) {
         Pokemon::PTR p = arr[i];
-        if (p && (p.get() != pokemon) && !p->isFainted()) {
-            switches.push_back(i);
-        }
+        const bool value = (p && (p->getSlot() == -1) && !p->isFainted());
+        switches.push_back(value);
     }
 }
 
