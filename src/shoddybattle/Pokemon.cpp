@@ -550,7 +550,7 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
 void Pokemon::faint() {
     m_field->informFainted(this);
     m_fainted = true;
-    switchOut();
+    //switchOut();
 }
 
 /**
