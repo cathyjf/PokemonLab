@@ -545,6 +545,15 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
 }
 
 /**
+ * Cause this pokemon to faint.
+ */
+void Pokemon::faint() {
+    m_field->informFainted(this);
+    m_fainted = true;
+    switchOut();
+}
+
+/**
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
@@ -561,8 +570,7 @@ void Pokemon::setHp(const int hp, const bool indirect) {
         informDamaged(move->user, move->move, delta);
     }
     if (m_hp <= 0) {
-        m_field->informFainted(this);
-        m_fainted = true;
+        faint();
     }
 }
 

@@ -162,6 +162,7 @@ public:
     int getSlot() const { return m_slot; }
     bool isActive() const { return m_slot != -1; }
 
+    void faint();
     bool isFainted() const { return m_fainted; }
 
     void switchIn(const int slot);
