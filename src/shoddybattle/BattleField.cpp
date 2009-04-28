@@ -275,7 +275,7 @@ bool turnOrderComparator(BattleFieldImpl *impl,
     // first: is one pokemon switching?
     if (!p1.move && p2.move) {
         return true;    // p1 goes first
-    } else if (p2.move && !p2.move) {
+    } else if (!p2.move && p1.move) {
         return false;   // p2 goes first
     } else if (!p1.move && !p2.move) {
         if (p1.party == p2.party) {
