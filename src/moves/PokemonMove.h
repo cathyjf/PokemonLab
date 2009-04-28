@@ -67,6 +67,7 @@ class MoveTemplateImpl;
 class MoveTemplate {
 public:
     std::string getName() const;
+    int getId() const;
     MOVE_CLASS getMoveClass() const;
     TARGET getTargetClass() const;
     unsigned int getPp() const;

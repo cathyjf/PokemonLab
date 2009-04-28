@@ -55,6 +55,7 @@ public:
     void informWithdraw(Pokemon *);
     void informSendOut(Pokemon *);
     void informHealthChange(Pokemon *, const int);
+    void informSetPp(Pokemon *, const int, const int);
     void informFainted(Pokemon *);
 
     int32_t getId() const { return (int32_t)this; }

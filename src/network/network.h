@@ -90,10 +90,18 @@ public:
         INCOMING_CHALLENGE = 9,
         FINALISE_CHALLENGE = 10,
         CHALLENGE_WITHDRAWN = 11,
+        /** Battery of messages related to battles */
         BATTLE_BEGIN = 12,
         REQUEST_ACTION = 13,
         BATTLE_POKEMON = 14,
-        BATTLE_HEALTH_CHANGE = 15,
+        BATTLE_PRINT = 15,
+        BATTLE_VICTORY = 16,
+        BATTLE_USE_MOVE = 17,
+        BATTLE_WITHDRAW = 18,
+        BATTLE_SEND_OUT = 19,
+        BATTLE_HEALTH_CHANGE = 20,
+        BATTLE_SET_PP = 21,
+        BATTLE_FAINTED = 22,
     };
 
     // variable size message

@@ -660,8 +660,9 @@ void Pokemon::deductPp(MoveObject *move) {
  * Deduct PP from a move slot.
  */
 void Pokemon::deductPp(const int i) {
-    --m_pp[i];
+    const int pp = --m_pp[i];
     m_moveUsed[i] = true;
+    m_field->informSetPp(this, i, pp);
 }
 
 void Pokemon::initialise(BattleField *field, const int party, const int idx) {

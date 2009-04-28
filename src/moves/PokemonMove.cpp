@@ -86,6 +86,9 @@ string getTextFromElement(DOMElement *element, bool text = false);
 string MoveTemplate::getName() const {
     return m_pImpl->name;
 }
+int MoveTemplate::getId() const {
+    return m_pImpl->id;
+}
 MOVE_CLASS MoveTemplate::getMoveClass() const {
     return m_pImpl->moveClass;
 }

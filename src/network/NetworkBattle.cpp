@@ -22,13 +22,14 @@
  * online at http://gnu.org.
  */
 
-#include "NetworkBattle.h"
-#include "network.h"
-#include "../mechanics/JewelMechanics.h"
 #include <vector>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include "NetworkBattle.h"
+#include "network.h"
+#include "../mechanics/JewelMechanics.h"
+#include "../scripting/ScriptMachine.h"
 
 using namespace std;
 using namespace shoddybattle::network;
@@ -108,11 +109,13 @@ struct NetworkBattleImpl {
     ThreadedQueue<TURN_PTR> queue;
     boost::mutex mutex;
     bool replacement;
+    bool victory;
 
     NetworkBattleImpl():
             queue(boost::bind(&NetworkBattleImpl::executeTurn,
                     this, _1)),
-            replacement(false) { }
+            replacement(false),
+            victory(false) { }
 
     ~NetworkBattleImpl() {
         // we need to make sure the queue gets deconstructed first, since
@@ -126,7 +129,7 @@ struct NetworkBattleImpl {
         } else {
             field->processTurn(*ptr);
         }
-        if (!requestReplacements()) {
+        if (!victory && !requestReplacements()) {
             requestMoves();
         }
     }
@@ -142,12 +145,26 @@ struct NetworkBattleImpl {
         requestAction(party);
     }
 
+    void broadcast(OutMessage &msg) {
+        boost::lock_guard<boost::mutex> lock(mutex);
+        vector<Client::PTR>::iterator i = clients.begin();
+        for (; i != clients.end(); ++i) {
+            (*i)->sendMessage(msg);
+        }
+    }
+
+    Client::PTR getClient(const int idx) const {
+        if (clients.size() <= idx)
+            return Client::PTR();
+        return clients[idx];
+    }
+
     /**
      * BATTLE_BEGIN
      *
-     * int32 : field id
+     * int32  : field id
      * string : opponent
-     * byte : party
+     * byte   : party
      */
     void sendBattleBegin(const int party) {
         const int32_t id = field->getId();
@@ -192,11 +209,7 @@ struct NetworkBattleImpl {
         }
         msg.finalise();
 
-        boost::lock_guard<boost::mutex> lock(mutex);
-        vector<Client::PTR>::iterator i = clients.begin();
-        for (; i != clients.end(); ++i) {
-            (*i)->sendMessage(msg);
-        }
+        broadcast(msg);
     }
 
     /**
@@ -252,8 +265,10 @@ struct NetworkBattleImpl {
         }
         msg.finalise();
 
-        Client::PTR client = clients[party];
-        client->sendMessage(msg);
+        Client::PTR client = getClient(party);
+        if (client) {
+            client->sendMessage(msg);
+        }
     }
 
     bool requestReplacements() {
@@ -264,14 +279,22 @@ struct NetworkBattleImpl {
         if (pokemon.empty()) {
             return false;
         }
-        // todo: check if there are actually enough pokemon to replace all
-        // of the fainted pokemon
-        replacement = true;
+        int alive[TEAM_COUNT];
+        for (int i = 0; i < TEAM_COUNT; ++i) {
+            alive[i] = field->getAliveCount(i);
+        }
+        replacement = false;
         for (Pokemon::ARRAY::const_iterator i = pokemon.begin();
                 i != pokemon.end(); ++i) {
             const int party = (*i)->getParty();
-            const int slot = (*i)->getSlot();
-            requests[party].push_back(slot);
+            if (alive[party] > 1) {
+                const int slot = (*i)->getSlot();
+                requests[party].push_back(slot);
+                replacement = true;
+            }
+        }
+        if (!replacement) {
+            return false;
         }
         for (int i = 0; i < TEAM_COUNT; ++i) {
             if (!requests[i].empty()) {
@@ -391,33 +414,177 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     }
 }
 
-void NetworkBattle::print(const TextMessage &msg) {
-    BattleField::print(msg);
+/**
+ * BATTLE_PRINT
+ *
+ * int32 : field id
+ * byte  : category
+ * int16 : message id
+ * byte  : number of arguments
+ * for each argument:
+ *     string : value of the argument
+ */
+void NetworkBattle::print(const TextMessage &text) {
+    OutMessage msg(OutMessage::BATTLE_PRINT);
+    msg << getId();
+    msg << (unsigned char)text.getCategory();
+    msg << (int16_t)text.getMessage();
+    const vector<string> &args = text.getArgs();
+    const int count = args.size();
+    msg << (unsigned char)count;
+    for (int i = 0; i < count; ++i) {
+        msg << args[i];
+    }
+    msg.finalise();
+
+    m_impl->broadcast(msg);
 }
 
+/**
+ * BATTLE_VICTORY
+ *
+ * int32 : field id
+ * int16 : party id (or -1 for a draw)
+ */
 void NetworkBattle::informVictory(const int party) {
-    BattleField::informVictory(party);
+    m_impl->victory = true;
+
+    OutMessage msg(OutMessage::BATTLE_VICTORY);
+    msg << getId();
+    msg << (int16_t)party;
+    msg.finalise();
+
+    m_impl->broadcast(msg);
 }
 
+/**
+ * BATTLE_USE_MOVE
+ *
+ * int32 : field id
+ * byte : party
+ * byte : slot
+ * string : user [nick]name
+ * int16 : move id
+ */
 void NetworkBattle::informUseMove(Pokemon *pokemon, MoveObject *move) {
-    BattleField::informUseMove(pokemon, move);
+    OutMessage msg(OutMessage::BATTLE_USE_MOVE);
+    msg << getId();
+    msg << (unsigned char)pokemon->getParty();
+    msg << (unsigned char)pokemon->getSlot();
+    msg << pokemon->getName();
+    msg << (int16_t)move->getTemplate(getContext())->getId();
+    msg.finalise();
+
+    m_impl->broadcast(msg);
 }
 
+/**
+ * BATTLE_WITHDRAW
+ *
+ * int32 : field id
+ * byte : party
+ * byte : slot
+ * string : pokemon [nick]name
+ */
 void NetworkBattle::informWithdraw(Pokemon *pokemon) {
-    BattleField::informWithdraw(pokemon);
+    OutMessage msg(OutMessage::BATTLE_WITHDRAW);
+    msg << getId();
+    msg << (unsigned char)pokemon->getParty();
+    msg << (unsigned char)pokemon->getSlot();
+    msg << pokemon->getName();
+    msg.finalise();
+
+    m_impl->broadcast(msg);
 }
 
+/**
+ * BATTLE_SEND_OUT
+ *
+ * int32 : field id
+ * byte : party
+ * byte : slot
+ * string : pokemon [nick]name
+ */
 void NetworkBattle::informSendOut(Pokemon *pokemon) {
-    BattleField::informSendOut(pokemon);
+    OutMessage msg(OutMessage::BATTLE_SEND_OUT);
+    msg << getId();
+    msg << (unsigned char)pokemon->getParty();
+    msg << (unsigned char)pokemon->getSlot();
+    msg << pokemon->getName();
+    msg.finalise();
+
+    m_impl->broadcast(msg);
     m_impl->updateBattlePokemon();
 }
 
-void NetworkBattle::informHealthChange(Pokemon *pokemon, const int delta) {
-    BattleField::informHealthChange(pokemon, delta);
+/**
+ * BATTLE_HEALTH_CHANGE
+ *
+ * int32  : field id
+ * byte   : party
+ * byte   : slot
+ * string : pokemon [nick]name
+ * int16  : delta health in [0, 48]
+ * int16  : new total health [0, 48]
+ */
+void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
+    const int hp = pokemon->getStat(S_HP);
+    const int delta = 48.0 * (double)raw / (double)hp + 0.5;
+    const int total = 48.0 * (double)pokemon->getHp() / (double)hp + 0.5;
+
+    OutMessage msg(OutMessage::BATTLE_HEALTH_CHANGE);
+    msg << getId();
+    msg << (unsigned char)pokemon->getParty();
+    msg << (unsigned char)pokemon->getSlot();
+    msg << pokemon->getName();
+    msg << (int16_t)delta;
+    msg << (int16_t)total;
+    msg.finalise();
+
+    m_impl->broadcast(msg);
 }
 
+/**
+ * BATTLE_SET_PP
+ *
+ * int32 : field id
+ * byte  : pokemon index
+ * byte  : move index
+ * byte  : new pp value
+ */
+void NetworkBattle::informSetPp(Pokemon *pokemon,
+        const int move, const int pp) {
+    OutMessage msg(OutMessage::BATTLE_SET_PP);
+    msg << getId();
+    msg << (unsigned char)pokemon->getPosition();
+    msg << (unsigned char)move;
+    msg << (unsigned char)pp;
+    msg.finalise();
+
+    boost::lock_guard<boost::mutex> lock(m_impl->mutex);
+    Client::PTR client = m_impl->getClient(pokemon->getParty());
+    if (client) {
+        client->sendMessage(msg);
+    }
+}
+
+/**
+ * BATTLE_FAINTED
+ *
+ * int32 : field id
+ * byte : party
+ * byte : slot
+ * string : pokemon [nick]name
+ */
 void NetworkBattle::informFainted(Pokemon *pokemon) {
-    BattleField::informFainted(pokemon);
+    OutMessage msg(OutMessage::BATTLE_FAINTED);
+    msg << getId();
+    msg << (unsigned char)pokemon->getParty();
+    msg << (unsigned char)pokemon->getSlot();
+    msg << pokemon->getName();
+    msg.finalise();
+
+    m_impl->broadcast(msg);
     m_impl->updateBattlePokemon();
 }
 

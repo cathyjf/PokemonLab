@@ -719,6 +719,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = ordered[i];
+        const int id = turn->id;
 
         if (p->isFainted()) {
             // Can't execute anything if we've fainted.
@@ -726,7 +727,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         }
         
         if (turn->type == TT_MOVE) {
-            MoveObject *move = p->getMove(turn->id);
+            MoveObject *move = p->getMove(id);
             Pokemon *target = NULL;
             TARGET tc = move->getTargetClass(m_impl->context);
             if ((tc == T_SINGLE) || (tc == T_ALLY)) {
@@ -744,10 +745,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
             p->clearForcedTurn();
             if (p->executeMove(move, target) && choice) {
                 // only deduct pp if the move was chosen freely
-                p->deductPp(turn->id);
+                p->deductPp(id);
             }
         } else {
-            switchPokemon(p.get(), turn->id);
+            switchPokemon(p.get(), id);
         }
     }
 
