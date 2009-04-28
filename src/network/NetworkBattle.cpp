@@ -291,6 +291,7 @@ struct NetworkBattleImpl {
                 const int slot = (*i)->getSlot();
                 requests[party].push_back(slot);
                 replacement = true;
+                --alive[party];
             }
         }
         if (!replacement) {
