@@ -84,7 +84,7 @@ OutMessage &OutMessage::operator<<(const int16_t i) {
     const int pos = m_data.size();
     m_data.resize(pos + sizeof(int16_t), 0);
     unsigned char *p = &m_data[pos];
-    *reinterpret_cast<int32_t *>(p) = htons(i);
+    *reinterpret_cast<int16_t *>(p) = htons(i);
     return *this;
 }
 
