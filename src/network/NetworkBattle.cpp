@@ -98,7 +98,7 @@ private:
 
 typedef vector<PokemonTurn> PARTY_TURN;
 typedef vector<int> PARTY_REQUEST;
-typedef boost::shared_ptr<vector<PokemonTurn> > TURN_PTR;
+typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 
 struct NetworkBattleImpl {
     JewelMechanics mech;
@@ -231,7 +231,9 @@ struct NetworkBattleImpl {
      *              byte : whether the move is legal
      */
     void requestAction(const int party) {
-        const int slot = requests[party][turns[party].size()];
+        PARTY_TURN &turn = turns[party];
+        const int size = turn.size();
+        const int slot = requests[party][size];
         Pokemon::PTR p = field->getActivePokemon(party, slot);
         
         OutMessage msg(OutMessage::REQUEST_ACTION);
@@ -242,8 +244,15 @@ struct NetworkBattleImpl {
 
         vector<bool> switches;
         field->getLegalSwitches(p.get(), switches);
-        const int switchSize = switches.size();
 
+        for (int i = 0; i < size; ++i) {
+            PokemonTurn &t = turn[i];
+            if (t.type == TT_SWITCH) {
+                switches[t.id] = false;
+            }
+        }
+
+        const int switchSize = switches.size();
         msg << switchSize;
         for (int i = 0; i < switchSize; ++i) {
             msg << ((unsigned char)switches[i]);
@@ -331,7 +340,7 @@ struct NetworkBattleImpl {
             }
         }
 
-        TURN_PTR turn(new vector<PokemonTurn>());
+        TURN_PTR turn(new PARTY_TURN());
         for (int i = 0; i < count; ++i) {
             PARTY_TURN &v = turns[i];
             turn->insert(turn->end(), v.begin(), v.end());
@@ -406,6 +415,16 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
         // todo: inform illegal move?
         m_impl->requestAction(party);
         return;
+    }
+    if (turn.type == TT_SWITCH) {
+        for (int i = 0; i < present; ++i) {
+            PokemonTurn &t = pturn[i];
+            if ((t.type == TT_SWITCH) && (t.id == turn.id)) {
+                // inform illegal move
+                m_impl->requestAction(party);
+                return;
+            }
+        }
     }
     pturn.push_back(turn);
     if (pturn.size() < max) {
