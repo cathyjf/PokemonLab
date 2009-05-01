@@ -247,11 +247,10 @@
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 ]]>
 </use>
 </move>
@@ -501,13 +500,12 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Headbutt" id="28">
@@ -716,13 +714,12 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Poison Sting" id="39">
@@ -794,13 +791,12 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bite" id="43">
@@ -834,13 +830,12 @@
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Roar" id="45">
@@ -949,13 +944,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ember" id="51">
@@ -1123,13 +1117,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Aurora Beam" id="61">
@@ -1142,13 +1135,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hyper Beam" id="62">
@@ -1393,11 +1385,10 @@ makeCounterMove(this, undefined, 1.5);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 ]]>
 </use>
 </move>
@@ -1526,13 +1517,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dragon Rage" id="81">
@@ -1769,13 +1759,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hypnosis" id="94">
@@ -1805,11 +1794,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 ]]>
 </use>
 </move>
@@ -1823,11 +1811,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 ]]>
 </use>
 </move>
@@ -1935,13 +1922,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Double Team" id="103">
@@ -1953,11 +1939,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 ]]>
 </use>
 </move>
@@ -1989,11 +1974,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 ]]>
 </use>
 </move>
@@ -2027,13 +2011,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Confuse Ray" id="108">
@@ -2065,11 +2048,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 ]]>
 </use>
 </move>
@@ -2101,11 +2083,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 ]]>
 </use>
 </move>
@@ -2488,13 +2469,12 @@ user.execute(move);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Amnesia" id="132">
@@ -2506,11 +2486,10 @@ user.execute(move);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 ]]>
 </use>
 </move>
@@ -2526,13 +2505,12 @@ user.execute(move);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Softboiled" id="134">
@@ -2737,13 +2715,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dizzy Punch" id="145">
@@ -2794,13 +2771,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Psywave" id="148">
@@ -2849,11 +2825,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 ]]>
 </use>
 </move>
@@ -3001,11 +2976,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 ]]>
 </use>
 </move>
@@ -3357,13 +3331,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Reversal" id="178">
@@ -3470,13 +3443,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Faint Attack" id="184">
@@ -3567,13 +3539,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Octazooka" id="189">
@@ -3586,13 +3557,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Spikes" id="190">
@@ -3694,13 +3664,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Detect" id="196">
@@ -3846,13 +3815,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rollout" id="204">
@@ -4340,13 +4308,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Iron Tail" id="230">
@@ -4360,13 +4327,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Metal Claw" id="231">
@@ -4566,13 +4532,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.2]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Psych Up" id="243">
@@ -4638,13 +4603,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Future Sight" id="247">
@@ -4675,13 +4639,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Whirlpool" id="249">
@@ -5529,11 +5492,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 ]]>
 </use>
 </move>
@@ -5548,13 +5510,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mist Ball" id="295">
@@ -5567,13 +5528,12 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Featherdance" id="296">
@@ -5587,13 +5547,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Teeter Dance" id="297">
@@ -5755,33 +5714,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-function TestEffect() { }
-TestEffect.prototype = new StatusEffect();
-TestEffect.prototype.id = "TestEffect";
-TestEffect.prototype.tick = function() {
-	print(this.subject.name + " was hurt by the test!");
-	this.subject.hp -= 10;
-};
-TestEffect.prototype.applyEffect = function() {
-	print("Applying TestEffect to " + this.subject.name);
-	return true;
-};
-TestEffect.prototype.modifier = function(field, user, target, move, critical) {
-	if (user.name == "Smeargle") {
-		return [1, 0.5, 5];
-	}
-	return null;
-}
-
-var status = new TestEffect();
-status = target.applyStatus(user, status);
-print(status.inducer.name);
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Blast Burn" id="306">
@@ -5914,13 +5852,12 @@ print(status.inducer.name);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Air Cutter" id="313">
@@ -5987,13 +5924,12 @@ print(status.inducer.name);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Silver Wind" id="317">
@@ -6027,13 +5963,12 @@ print(status.inducer.name);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Grasswhistle" id="319">
@@ -6235,13 +6170,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bullet Seed" id="330">
@@ -6314,11 +6248,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 ]]>
 </use>
 </move>
@@ -6352,11 +6285,10 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 ]]>
 </use>
 </move>
@@ -6446,13 +6378,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Poison Tail" id="341">
@@ -7527,11 +7458,10 @@ if (usable) {
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 ]]>
 </use>
 </move>
@@ -7685,13 +7615,12 @@ if (usable) {
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dragon Pulse" id="405">
@@ -7801,13 +7730,12 @@ if (usable) {
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Energy Ball" id="411">
@@ -7820,13 +7748,12 @@ if (usable) {
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Brave Bird" id="412">
@@ -7861,13 +7788,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Switcheroo" id="414">
@@ -7919,11 +7845,10 @@ if (usable) {
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 ]]>
 </use>
 </move>
@@ -8093,13 +8018,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Psycho Cut" id="426">
@@ -8149,13 +8073,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flash Cannon" id="429">
@@ -8169,13 +8092,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rock Climb" id="430">

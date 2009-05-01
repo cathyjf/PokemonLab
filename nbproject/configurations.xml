@@ -34,6 +34,7 @@
         <itemPath>src/mechanics/PokemonNature.h</itemPath>
         <itemPath>src/mechanics/PokemonType.cpp</itemPath>
         <itemPath>src/mechanics/PokemonType.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/mechanics/stat.cpp</itemPath>
         <itemPath>src/mechanics/stat.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="moves" projectFiles="true">
@@ -150,6 +151,9 @@
         <itemTool>0</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/mechanics/stat.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">
@@ -331,6 +335,9 @@
         <itemTool>0</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/sha2.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/mechanics/stat.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.cpp">

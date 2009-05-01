@@ -141,7 +141,9 @@ void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
 /**
  * Determine whether a particular turn is legal.
  */
-bool BattleField::isTurnLegal(Pokemon *pokemon, const PokemonTurn *turn) const {
+bool BattleField::isTurnLegal(Pokemon *pokemon,
+        const PokemonTurn *turn,
+        const bool replacement) const {
     // todo
     return true;
 }
@@ -418,7 +420,7 @@ void BattleField::informUseMove(Pokemon *p, MoveObject *move) {
 }
 
 void BattleField::informHealthChange(Pokemon *p, const int delta) {
-    const int numerator = 48.0 * (double)delta / (double)p->getStat(S_HP) + 0.5;
+    const int numerator = 48.0 * (double)delta / (double)p->getRawStat(S_HP) + 0.5;
     cout << p->getName() << " lost " << numerator << "/48 of its health!"
             << endl;
 }
@@ -790,6 +792,23 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
             Pokemon::PTR p = slot.pokemon;
             if (p && !p->isFainted()) {
                 p->getModifiers(&user, &target, &obj, critical, mods);
+            }
+        }
+    }
+}
+
+/**
+ * Get the stat modifiers in play for a particular hit. Checks all of the
+ * active pokemon for "modifier" properties.
+ */
+void BattleField::getStatModifiers(STAT stat,
+        Pokemon &subject, PRIORITY_MAP &mods) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted()) {
+                p->getStatModifiers(stat, &subject, mods);
             }
         }
     }

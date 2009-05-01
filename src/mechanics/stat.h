@@ -73,6 +73,8 @@ inline bool isEnemyTarget(const TARGET t) {
     // T_LAST_ENEMY intentionally omitted
 }
 
+double getStatMultiplier(const STAT i, const int level);
+
 class StatException {
     
 };

@@ -221,7 +221,7 @@ public:
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
     bool transformHealthChange(ScriptContext *, int, bool, int *);
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
-    // TODO: transformMultiplier
+    bool transformStatLevel(ScriptContext *, Pokemon *, Pokemon *, STAT, int *);
 
 };
 

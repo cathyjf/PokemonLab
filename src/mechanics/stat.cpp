@@ -1,8 +1,8 @@
 /*
- * File:   constants.js
+ * File:   stat.cpp
  * Author: Catherine
  *
- * Created on April 14, 2009, 2:41 AM
+ * Created on April 30, 2009, 11:58 PM
  *
  * This file is a part of Shoddy Battle.
  * Copyright (C) 2009  Catherine Fitzpatrick and Benjamin Gwin
@@ -22,48 +22,26 @@
  * online at http://gnu.org.
  */
 
-var Generation = {
-    DP : 0,
-    PLATINUM : 1,
-    PLATINUM_FAKE : 2
-};
+#include "stat.h"
 
-var Stat = {
-    HP : 0,
-    ATTACK : 1,
-    DEFENCE : 2,
-    SPEED : 3,
-    SPATTACK : 4,
-    SPDEFENCE : 5,
-    ACCURACY : 6,
-    EVASION : 7,
-    NONE : -1
-};
+namespace shoddybattle {
 
-var MoveClass = {
-    PHYSICAL : 0,
-    SPECIAL : 1,
-    OTHER : 2
-};
+namespace {
 
-var Type = {
-    NORMAL : 0,
-    FIRE : 1,
-    WATER : 2,
-    ELECTRIC : 3,
-    GRASS : 4,
-    ICE : 5,
-    FIGHTING : 6,
-    POISON : 7,
-    GROUND : 8,
-    FLYING : 9,
-    PSYCHIC : 10,
-    BUG : 11,
-    ROCK : 12,
-    GHOST : 13,
-    DRAGON : 14,
-    DARK : 15,
-    STEEL : 16,
-    TYPELESS : 17
-};
+double STAT_MULTIPLIER[] = { 4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0,
+        2.0/3.0, 0.5, 0.4, 1.0/3.0, 2.0/7.0, 0.25 };
+
+double EVASION_MULTIPLIER[] = { 3.0, 8.0/3.0, 7.0/3.0, 2.0, 5.0/3.0, 4.0/3.0,
+        1.0, 0.75, 0.6, 0.5, 3.0/7.0, 3.0/8.0, 1.0/3.0 };
+
+} // anonymous namespace
+
+double getStatMultiplier(const STAT i, const int level) {
+    if ((i != S_EVASION) && (i != S_ACCURACY)) {
+        return STAT_MULTIPLIER[6 - level];
+    }
+    return EVASION_MULTIPLIER[6 - level];
+}
+
+}
 

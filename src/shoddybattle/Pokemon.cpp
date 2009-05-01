@@ -268,6 +268,36 @@ void Pokemon::setForcedTurn(const PokemonTurn &turn) {
 }
 
 /**
+ * Transform a stat level according to this pokemon.
+ */
+bool Pokemon::getTransformedStatLevel(Pokemon *user, Pokemon *target,
+        STAT stat, int *level) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if ((*i)->isRemovable(m_cx))
+            continue;
+
+        if ((*i)->transformStatLevel(m_cx, user, target, stat, level))
+            return true;
+    }
+    return false;
+}
+
+/**
+ * Get the effective value of a stat.
+ */
+unsigned int Pokemon::getStat(const STAT stat) {
+    PRIORITY_MAP mods;
+    m_field->getStatModifiers(stat, *this, mods);
+    mods[0] = getStatMultiplier(stat, m_statLevel[stat]);
+    int value = getRawStat(stat);
+    const int count = mods.size();
+    for (int i = 0; i <= count; ++i) {
+        value *= mods[i];
+    }
+    return value;
+}
+
+/**
  * Execute an arbitrary move on a set of targets.
  */
 bool Pokemon::executeMove(MoveObject *move,

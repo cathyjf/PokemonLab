@@ -185,6 +185,11 @@ public:
             const bool, MODIFIERS &);
 
     /**
+     * Get the modifiers in play for a particular stat.
+     */
+    void getStatModifiers(STAT, Pokemon &, PRIORITY_MAP &);
+
+    /**
      * Transform a status effect.
      */
     void transformStatus(Pokemon *, StatusObject **);
@@ -247,7 +252,7 @@ public:
     /**
      * Determine whether a particular turn is legal for a given pokemon.
      */
-    bool isTurnLegal(Pokemon *, const PokemonTurn *) const;
+    bool isTurnLegal(Pokemon *, const PokemonTurn *, const bool) const;
     
     /**
      * Obtain the BattleMechanics in use on this BattleField.

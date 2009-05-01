@@ -411,7 +411,7 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     }
     const int slot = req[present];
     Pokemon *pokemon = getActivePokemon(party, slot).get();
-    if (!isTurnLegal(pokemon, &turn)) {
+    if (!isTurnLegal(pokemon, &turn, m_impl->replacement)) {
         // todo: inform illegal move?
         m_impl->requestAction(party);
         return;

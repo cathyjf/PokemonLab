@@ -102,6 +102,14 @@
 8: It's not very effective...
 9: A critical hit!
 
+[status-effects-stat-level]
+0: $1's $2 was raised!
+1: $1's $2 was sharply raised!
+2: $1's $2 was lowered!
+3: $1's $2 was harshly lowered!
+4: $1's $2 won't go lower!
+5: $1's $2 won't go higher!
+
 [status-effects-burn]
 0: Burn
 1: $1 was burned!

@@ -161,6 +161,34 @@ JSBool isMoveUsed(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool getStatLevel(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    double d;
+    JS_ValueToNumber(cx, v, &d);
+    const STAT stat = (STAT)(int)d;
+
+    assert(stat <= S_EVASION);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    *ret = INT_TO_JSVAL(p->getStatLevel(stat));
+    return JS_TRUE;
+}
+
+JSBool setStatLevel(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    double d;
+    JS_ValueToNumber(cx, argv[0], &d);
+    const STAT stat = (STAT)(int)d;
+
+    JS_ValueToNumber(cx, argv[1], &d);
+    const int level = (int)d;
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->setStatLevel(stat, level);
+    return JS_TRUE;
+}
+
 JSBool getMove(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -294,7 +322,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_STAT: {
             jsval arr[STAT_COUNT];
             for (int i = 0; i < STAT_COUNT; ++i) {
-                arr[i] = INT_TO_JSVAL(p->getStat((STAT)i));
+                arr[i] = INT_TO_JSVAL(p->getRawStat((STAT)i));
             }
             JSObject *objArr = JS_NewArrayObject(cx, STAT_COUNT, arr);
             *vp = OBJECT_TO_JSVAL(objArr);
@@ -375,6 +403,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getMove", getMove, 1, 0, 0),
     JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
     JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),
+    JS_FS("getStatLevel", getStatLevel, 1, 0, 0),
+    JS_FS("setStatLevel", setStatLevel, 2, 0, 0),
     JS_FS_END
 };
 

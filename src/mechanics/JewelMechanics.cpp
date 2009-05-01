@@ -116,13 +116,16 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
     return generator();
 }
 
-void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
-    PRIORITY_MAP &elements = mods[position];
+inline void multiplyBy(int &value, PRIORITY_MAP &elements) {
     PRIORITY_MAP::const_iterator i = elements.begin();
     for (; i != elements.end(); ++i) {
         double val = i->second;
-        damage *= val;
+        value *= val;
     }
+}
+
+inline void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
+    multiplyBy(damage, mods[position]);
 }
 
 int JewelMechanics::getRandomInt(const int lower, const int upper) const {
@@ -155,8 +158,33 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
         mods[1][2] = 0.75;
     }
 
-    int attack = user.getStat(stat0);
-    int defence = target.getStat(stat1);
+    PRIORITY_MAP statMod;
+
+    int attack = user.getRawStat(stat0);
+    field.getStatModifiers(stat0, user, statMod);
+    int level = user.getStatLevel(stat0);
+    if (!user.getTransformedStatLevel(&user, &target, stat0, &level)) {
+        target.getTransformedStatLevel(&user, &target, stat0, &level);
+    }
+    if (critical && (level < 0)) {
+        level = 0;
+    }
+    statMod[0] = getStatMultiplier(stat0, level);
+    multiplyBy(attack, statMod);
+
+    statMod.clear();
+    int defence = target.getRawStat(stat1);
+    field.getStatModifiers(stat1, target, statMod);
+    level = target.getStatLevel(stat1);
+    if (!user.getTransformedStatLevel(&user, &target, stat1, &level)) {
+        target.getTransformedStatLevel(&user, &target, stat1, &level);
+    }
+    if (critical && (level > 0)) {
+        level = 0;
+    }
+    statMod[0] = getStatMultiplier(stat1, level);
+    multiplyBy(defence, statMod);
+
     int power = move.getPower(cx);
 
     mods[0][0] = power; // base power

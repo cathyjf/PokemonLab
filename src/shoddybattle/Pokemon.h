@@ -111,6 +111,7 @@ public:
     void getModifiers(Pokemon *, Pokemon *,
             MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);
+    bool getTransformedStatLevel(Pokemon *, Pokemon *, STAT, int *);
     void removeStatuses();
     bool hasAbility(const std::string &);
     bool transformStatus(Pokemon *, StatusObject **);
@@ -127,7 +128,17 @@ public:
     unsigned int getBaseStat(const STAT i) const;
     unsigned int getIv(const STAT i) const { return m_iv[i]; }
     unsigned int getEv(const STAT i) const { return m_ev[i]; }
-    unsigned int getStat(const STAT i) const { return m_stat[i]; }
+    unsigned int getStat(const STAT i);
+    unsigned int getRawStat(const STAT i) const { return m_stat[i]; }
+    int getStatLevel(const STAT i) const { return m_statLevel[i]; }
+    void setStatLevel(const STAT i, int level) {
+        if (level < -6) {
+            level = -6;
+        } else if (level > 6) {
+            level = 6;
+        }
+        m_statLevel[i] = level;
+    }
 
     unsigned int getLevel() const { return m_level; }
     const PokemonNature *getNature() const { return m_nature; }

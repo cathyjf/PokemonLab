@@ -259,6 +259,16 @@ StatusEffect.prototype = {
 	 */
 	transformHealthChange : null,
 
+    /**
+     * Transform the level of a stat modifier. Returns an array containing
+     * the new stat level and whether to stop transforming stat levels.
+     *
+     *      function(user, target, stat, level) {
+     *          return [level, false];
+     *      }
+     */
+    transformStatLevel : null,
+
 	speedComparator : null,
 
 	informLostItem : null,

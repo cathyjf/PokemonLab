@@ -47,6 +47,56 @@ ParalysisEffect.prototype.vetoExecution = function(field, user, target, move) {
 // TODO: speed drop
 
 
+/**
+ * StatChange
+ *
+ * Changes a stat level on one pokemon.
+ */
+function StatChangeEffect(stat, delta) {
+    this.applyEffect = function() {
+        this.stat = stat;
+        var present = this.subject.getStatLevel(stat);
+        var result = present + delta;
+        if (result < -6) {
+            result = -6;
+        } else if (result > 6) {
+            result = 6;
+        }
+        this.delta = result - present;
+
+        var message = 0;
+        if (this.delta <= -2) {
+            message = 3;
+        } else if (this.delta == -1) {
+            message = 2;
+        } else if (this.delta == 1) {
+            message = 0;
+        } else if (this.delta >= 2) {
+            message = 1;
+        } else if (delta < 0) {
+            message = 4;
+        } else {
+            message = 5;
+        }
+
+        this.subject.field.print(Text.status_effects_stat_level(message,
+                this.subject.name, Text.stats_long(stat)));
+
+        if (this.delta == 0)
+            return false;
+
+        this.subject.setStatLevel(stat, result);
+        return true;
+    }
+}
+StatChangeEffect.prototype = new StatusEffect("StatChangeEffect");
+StatChangeEffect.prototype.singleton = false;
+StatChangeEffect.prototype.name = "StatChangeEffect";
+StatChangeEffect.prototype.unapplyEffect = function() {
+    var present = this.subject.getStatLevel(this.stat);
+    this.subject.setStatLevel(this.stat, present + this.delta);
+}
+
 
 /**
  * Sleep

@@ -126,6 +126,29 @@ bool StatusObject::transformStatus(ScriptContext *scx,
     return true;
 }
 
+bool StatusObject::transformStatLevel(ScriptContext *scx, Pokemon *user,
+        Pokemon *target, STAT stat, int *level) {
+    if (!scx->hasProperty(this, "transformStatLevel"))
+        return false;
+
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    ScriptValue argv[] = { user, target, (int)stat, *level };
+    ScriptValue v = scx->callFunctionByName(this,
+            "transformStatLevel", 4, argv);
+    
+    bool ret = false;
+
+    ScriptArray arr(v.getObject().getObject(), scx);
+    if (!arr.isNull()) {
+        *level = arr[0].getInt();
+        ret = arr[1].getBool();
+    }
+    
+    JS_EndRequest(cx);
+    return ret;
+}
+
 bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
         bool indirect, int *pHp) {
     if (!scx->hasProperty(this, "transformHealthChange"))
