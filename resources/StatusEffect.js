@@ -101,6 +101,11 @@ StatusEffect.prototype = {
 	// Unapply the effect.
 	unapplyEffect : function() { },
 
+    // Inform that this status effect could not be applied.
+    informFailure : function(subject) {
+        subject.field.print(Text.battle_messages(0));
+    },
+
     // Called once each round if tier != -1.
     tick : function() { },
 

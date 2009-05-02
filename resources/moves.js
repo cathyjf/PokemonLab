@@ -94,7 +94,8 @@ function makeStatusMove(move, effects, immunities) {
                 var obj = (typeof(e) == "function") ? new e() : e;
                 if (affected.applyStatus(user, obj) == null) {
                     if (this.power == 0) {
-                        // todo: show a message
+                        // inform failure
+                        obj.informFailure(affected);
                     }
                 }
             }

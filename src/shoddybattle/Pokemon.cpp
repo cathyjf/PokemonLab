@@ -204,6 +204,7 @@ void Pokemon::switchOut() {
             removeStatus(*i);
         }
     }
+    removeStatuses();
     // Restore original ability.
     setAbility(m_abilityName);
     // Indicate that the pokemon is no longer active.
@@ -455,7 +456,7 @@ StatusObject *Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     if (effect->isSingleton(m_cx)) {
         StatusObject *singleton = getStatus(effect->getId(m_cx));
         if (singleton)
-            return singleton;
+            return NULL;
     }
 
     StatusObject *applied = effect->cloneAndRoot(m_cx);

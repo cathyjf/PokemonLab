@@ -92,6 +92,7 @@ function StatChangeEffect(stat, delta) {
 StatChangeEffect.prototype = new StatusEffect("StatChangeEffect");
 StatChangeEffect.prototype.singleton = false;
 StatChangeEffect.prototype.name = "StatChangeEffect";
+StatChangeEffect.prototype.informFailure = function() { };
 StatChangeEffect.prototype.unapplyEffect = function() {
     var present = this.subject.getStatLevel(this.stat);
     this.subject.setStatLevel(this.stat, present + this.delta);
