@@ -418,13 +418,17 @@ void Pokemon::setMove(const int i, const string &name, const int pp) {
  * Remove defunct statuses from this pokemon.
  */
 void Pokemon::removeStatuses() {
-    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if (!(*i)->isRemovable(m_cx))
-            continue;
+    for (bool removed = true; removed; removed = false) {
+        for (STATUSES::iterator i = m_effects.begin();
+                i != m_effects.end(); ++i) {
+            if (!(*i)->isRemovable(m_cx))
+                continue;
 
-        // this is a list so it is safe to remove an arbitrary element
-        m_cx->removeRoot(*i);
-        m_effects.erase(i);
+            m_cx->removeRoot(*i);
+            m_effects.erase(i);
+            removed = true;
+            break;
+        }
     }
 }
 
