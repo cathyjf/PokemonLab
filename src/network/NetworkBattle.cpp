@@ -548,7 +548,7 @@ void NetworkBattle::informSendOut(Pokemon *pokemon) {
  * int16  : new total health [0, 48]
  */
 void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
-    const int hp = pokemon->getStat(S_HP);
+    const int hp = pokemon->getRawStat(S_HP);
     const int delta = 48.0 * (double)raw / (double)hp + 0.5;
     const int total = 48.0 * (double)pokemon->getHp() / (double)hp + 0.5;
 

@@ -54,6 +54,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
         const vector<int> &ppUps) {
     memcpy(m_iv, iv, sizeof(int) * STAT_COUNT);
     memcpy(m_ev, ev, sizeof(int) * STAT_COUNT);
+    memset(m_statLevel, 0, sizeof(int) * TOTAL_STAT_COUNT);
     m_species = species;
     m_nickname = nickname;
     if (m_nickname.empty()) {
