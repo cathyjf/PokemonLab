@@ -355,7 +355,7 @@ bool Pokemon::executeMove(MoveObject *move,
     if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            Pokemon::PTR p = *i;
+            Pokemon *p = *i;
             if (p) {
                 useMove(move, p, targetCount);
                 if (p->isFainted()) {
