@@ -342,7 +342,7 @@ bool Pokemon::executeMove(MoveObject *move,
     if (inform) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            Pokemon::PTR p = *i;
+            Pokemon *p = *i;
             if (p) {
                 p->informTargeted(this, move);
             }
