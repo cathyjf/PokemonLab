@@ -342,7 +342,10 @@ bool Pokemon::executeMove(MoveObject *move,
     if (inform) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            (*i)->informTargeted(this, move);
+            Pokemon::PTR p = *i;
+            if (p) {
+                p->informTargeted(this, move);
+            }
         }
     }
 
@@ -352,9 +355,12 @@ bool Pokemon::executeMove(MoveObject *move,
     if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();
                 i != targets.end(); ++i) {
-            useMove(move, *i, targetCount);
-            if ((*i)->isFainted()) {
-                --targetCount;
+            Pokemon::PTR p = *i;
+            if (p) {
+                useMove(move, p, targetCount);
+                if (p->isFainted()) {
+                    --targetCount;
+                }
             }
         }
     } else {
