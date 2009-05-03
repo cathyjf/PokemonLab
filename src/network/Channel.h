@@ -76,7 +76,7 @@ public:
     static const int FLAG_COUNT = 8;
     typedef std::bitset<FLAG_COUNT> FLAGS;
 
-    enum CHANNEL_FLAGS {
+    enum {
         MODERATED,   // +m
         INVITE_ONLY  // +i
     };
