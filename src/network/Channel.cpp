@@ -49,6 +49,9 @@ public:
         // channel id
         *this << channel->getId();
 
+        // channel type
+        *this << (unsigned char)channel->getChannelType();
+
         // channel name, topic, and flags
         *this << channel->m_impl->name;
         *this << channel->m_impl->topic;

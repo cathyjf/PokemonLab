@@ -40,6 +40,14 @@ namespace shoddybattle { namespace network {
 class Channel : public boost::enable_shared_from_this<Channel> {
 public:
 
+    class Type {
+    public:
+        enum TYPE {
+            ORDINARY = 0,
+            BATTLE = 1
+        };
+    };
+
     class Mode {
     public:
         enum MODE {
@@ -69,9 +77,10 @@ public:
     typedef std::bitset<FLAG_COUNT> FLAGS;
 
     enum CHANNEL_FLAGS {
-        MODERATED   // +m
+        MODERATED,   // +m
+        INVITE_ONLY  // +i
     };
-    static const int CHANNEL_FLAG_COUNT = 1;
+    static const int CHANNEL_FLAG_COUNT = 2;
     typedef std::bitset<CHANNEL_FLAG_COUNT> CHANNEL_FLAGS;
 
     typedef std::map<ClientPtr, FLAGS> CLIENT_MAP;
@@ -82,6 +91,10 @@ public:
             CHANNEL_FLAGS,
             int = -1);
 
+    virtual Type::TYPE getChannelType() const {
+        return Type::ORDINARY;
+    }
+
     FLAGS getStatusFlags(ClientPtr client);
 
     void setStatusFlags(ClientPtr client, FLAGS flags);
@@ -91,12 +104,6 @@ public:
     std::string getName();
 
     std::string getTopic();
-
-    int32_t getId() const;
-
-    bool join(ClientPtr client);
-
-    void part(ClientPtr client);
 
     void sendMessage(const std::string &message, ClientPtr client);
 
@@ -109,6 +116,14 @@ public:
     virtual FLAGS handleJoin(ClientPtr client);
 
     virtual void handlePart(ClientPtr client);
+
+    virtual int32_t getId() const;
+
+    virtual bool join(ClientPtr client);
+
+    virtual void part(ClientPtr client);
+
+    virtual ~Channel() { }
 
 private:
     class ChannelInfo;

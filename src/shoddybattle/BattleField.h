@@ -25,6 +25,7 @@
 #ifndef _BATTLE_FIELD_H_
 #define _BATTLE_FIELD_H_
 
+#include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <vector>
 #include "Pokemon.h"
@@ -135,7 +136,7 @@ private:
 class BattleField : public ObjectWrapper {
 public:
     BattleField();
-    virtual ~BattleField();
+    virtual ~BattleField() { }
 
     /**
      * Initialise the BattleField using the provided BattleMechanics and
@@ -300,8 +301,14 @@ public:
 
     GENERATION getGeneration() const;
 
+    /**
+     * Frees all of the objects held by this BattleField. Do not use any
+     * methods of the BattleField after calling this!
+     */
+    virtual void terminate();
+
 private:
-    BattleFieldImpl *m_impl;
+    boost::shared_ptr<BattleFieldImpl> m_impl;
     BattleField(const BattleField &);
     BattleField &operator=(const BattleField &);
 };

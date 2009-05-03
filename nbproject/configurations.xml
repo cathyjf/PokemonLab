@@ -42,10 +42,13 @@
         <itemPath>/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f6" displayName="network" projectFiles="true">
+        <itemPath>/home/Catherine/ShoddyBattle2/src/network/Channel.cpp</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/network/Channel.h</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/network.h</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.cpp</itemPath>
         <itemPath>/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.h</itemPath>
+        <itemPath>/home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="scripting" projectFiles="true">
         <itemPath>/home/Catherine/ShoddyBattle2/src/scripting/FieldObject.cpp</itemPath>
@@ -162,10 +165,19 @@
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
         <itemTool>1</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/Channel.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/Channel.h">
+        <itemTool>1</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">
@@ -346,10 +358,19 @@
       <item path="/home/Catherine/ShoddyBattle2/src/moves/PokemonMove.h">
         <itemTool>1</itemTool>
       </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/Channel.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/Channel.h">
+        <itemTool>1</itemTool>
+      </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.cpp">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.h">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h">
         <itemTool>1</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/network/network.cpp">

@@ -373,6 +373,7 @@ public:
 class ServerImpl {
 public:
     ServerImpl(Server *, tcp::endpoint &);
+    Server *getServer() const { return m_server; }
     void run();
     void removeClient(ClientImplPtr client);
     void broadcast(OutMessage &msg);
@@ -384,15 +385,8 @@ public:
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
-
-    void addBattle(NetworkBattle::PTR p) {
-        lock_guard<shared_mutex> lock(m_battleMutex);
-        m_battles.insert(p);
-    }
-    void removeBattle(NetworkBattle::PTR p) {
-        lock_guard<shared_mutex> lock(m_battleMutex);
-        m_battles.erase(p);
-    }
+    void addChannel(ChannelPtr);
+    void removeChannel(ChannelPtr);
     
 private:
     void acceptClient();
@@ -409,8 +403,6 @@ private:
     ChannelPtr m_mainChannel;
     CLIENT_LIST m_clients;
     shared_mutex m_clientMutex;
-    BATTLE_LIST m_battles;
-    shared_mutex m_battleMutex;
     io_service m_service;
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
@@ -437,6 +429,10 @@ ScriptMachine *Server::getMachine() {
 
 void Server::initialiseChannels() {
     m_impl->initialiseChannels();
+}
+
+ChannelPtr Server::getMainChannel() const {
+    return m_impl->getMainChannel();
 }
 
 Server::~Server() {
@@ -488,12 +484,21 @@ public:
     void setAuthenticated(bool auth) {
         m_authenticated = auth;
     }
+    void terminateBattle(boost::shared_ptr<NetworkBattle> p, ClientPtr client) {
+        // dynamic downcast...
+        ClientImpl *impl = dynamic_cast<ClientImpl *>(client.get());
+        if (impl) {
+            lock_guard<mutex> lock(m_battleMutex);
+            lock_guard<mutex> lock2(impl->m_battleMutex);
+            m_battles.erase(p);
+            impl->m_battles.erase(p);
+        }
+    }
     void disconnect();
-private:
-
     void joinChannel(ChannelPtr channel);
-
     void partChannel(ChannelPtr channel);
+    
+private:
 
     ChannelPtr getChannel(const int id);
 
@@ -779,7 +784,7 @@ private:
         // todo: verify legality of team
 
         ClientPtr clients[] = { shared_from_this(), client };
-        NetworkBattle::PTR field(new NetworkBattle(m_server->getMachine(),
+        NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 challenge->teams,
                 challenge->generation,
@@ -793,7 +798,6 @@ private:
 
         field->beginBattle();
 
-        m_server->addBattle(field);
         {
             lock_guard<mutex> lock3(m_battleMutex);
             m_battles.insert(field);
@@ -1005,19 +1009,34 @@ void ClientImpl::handleChannelMessage(InMessage &msg) {
 }
 
 void ClientImpl::disconnect() {
-    {
-        lock_guard<shared_mutex> lock(m_channelMutex);
-        CHANNEL_LIST::iterator i = m_channels.begin();
-        for (; i != m_channels.end(); ++i) {
-            (*i)->part(shared_from_this());
-        }
-        m_channels.clear();
+    lock_guard<shared_mutex> lock(m_channelMutex);
+    CHANNEL_LIST::iterator i = m_channels.begin();
+    for (; i != m_channels.end(); ++i) {
+        (*i)->part(shared_from_this());
     }
-    // todo: forfeit all battles
+    m_channels.clear();
 }
 
 void ServerImpl::sendChannelList(ClientImplPtr client) {
     client->sendMessage(ChannelList(this));
+}
+
+void ServerImpl::addChannel(ChannelPtr p) {
+    lock_guard<shared_mutex> lock(m_channelMutex);
+    m_channels.insert(p);
+}
+
+void Server::addChannel(ChannelPtr p) {
+    m_impl->addChannel(p);
+}
+
+void ServerImpl::removeChannel(ChannelPtr p) {
+    lock_guard<shared_mutex> lock(m_channelMutex);
+    m_channels.erase(p);
+}
+
+void Server::removeChannel(ChannelPtr p) {
+    m_impl->removeChannel(p);
 }
 
 ServerImpl::ChannelList::ChannelList(ServerImpl *server):
@@ -1028,6 +1047,7 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
     for (; i != server->m_channels.end(); ++i) {
         ChannelPtr p = *i;
         *this << p->getName();
+        *this << (unsigned char)p->getChannelType();
         *this << p->getTopic();
         *this << p->getPopulation();
     }
@@ -1151,7 +1171,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 0
+#if 1
 
 #include <boost/thread.hpp>
 

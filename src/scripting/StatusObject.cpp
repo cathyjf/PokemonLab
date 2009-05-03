@@ -328,6 +328,7 @@ int StatusObject::getState(ScriptContext *scx) const {
 }
 
 string StatusObject::getName(ScriptContext *scx) const {
+    // todo: actually returns an array now!
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
     JS_BeginRequest(cx);

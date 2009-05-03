@@ -41,8 +41,13 @@ namespace shoddybattle { namespace network {
 
 const int HEADER_SIZE = sizeof(char) + sizeof(int32_t);
 
+class Client;
 class ServerImpl;
 class OutMessage;
+class Channel;
+class NetworkBattle;
+
+typedef boost::shared_ptr<Client> ClientPtr;
 
 class Client {
 public:
@@ -50,13 +55,15 @@ public:
     virtual std::string getName() const = 0;
     virtual std::string getIp() const = 0;
     virtual int getId() const = 0;
+    virtual void terminateBattle(boost::shared_ptr<NetworkBattle>,
+            ClientPtr) = 0;
+    virtual void joinChannel(boost::shared_ptr<Channel>) = 0;
+    virtual void partChannel(boost::shared_ptr<Channel>) = 0;
 
 protected:
     Client() { }
     virtual ~Client() { }
 };
-
-typedef boost::shared_ptr<Client> ClientPtr;
 
 class Server {
 public:
@@ -66,6 +73,9 @@ public:
     database::DatabaseRegistry *getRegistry();
     ScriptMachine *getMachine();
     void initialiseChannels();
+    boost::shared_ptr<Channel> getMainChannel() const;
+    void addChannel(boost::shared_ptr<Channel>);
+    void removeChannel(boost::shared_ptr<Channel>);
 
 private:
     ServerImpl *m_impl;

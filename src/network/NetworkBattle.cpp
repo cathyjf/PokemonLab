@@ -27,73 +27,81 @@
 #include <boost/function.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "NetworkBattle.h"
+#include "ThreadedQueue.h"
 #include "network.h"
+#include "Channel.h"
 #include "../mechanics/JewelMechanics.h"
 #include "../scripting/ScriptMachine.h"
 
 using namespace std;
-using namespace shoddybattle::network;
 
-namespace shoddybattle {
+namespace shoddybattle { namespace network {
 
-template <class T>
-class ThreadedQueue {
+class NetworkBattleImpl;
+class BattleChannel;
+
+typedef boost::shared_ptr<BattleChannel> BattleChannelPtr;
+
+/**
+ * In Shoddy Battle 2, every battle is also a channel. The participants in
+ * the battle are initially granted +ao. Anybody with +o or higher on the main
+ * chat is granted +q in every battle.
+ *
+ * The initial participants of a battle join the battle directly, but all
+ * spectators join the channel rather than the underlying battle. When the
+ * NetworkBattle broadcasts a message, it is sent to everybody in the channel.
+ * Indeed, most features related to battles are actually associated to the
+ * channel.
+ *
+ * The name of the channel contains the participants in the battle; the topic
+ * encodes the ladder, if any, on which the battle is taking place and
+ * possibly other metadata.
+ *
+ * When the channel becomes completely empty, or if a set amount of time
+ * passes without another message being posted, the channel -- and hence the
+ * associated NetworkBattle -- is destroyed.
+ */
+class BattleChannel : public Channel {
 public:
-    typedef boost::function<void (T &)> DELEGATE;
 
-    ThreadedQueue(DELEGATE delegate):
-            m_delegate(delegate),
-            m_empty(true),
-            m_terminated(false),
-            m_thread(boost::bind(&ThreadedQueue::process, this)) { }
-
-    void post(T elem) {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        while (!m_empty) {
-            m_condition.wait(lock);
-        }
-        m_item = elem;
-        m_empty = false;
-        lock.unlock();
-        m_condition.notify_one();
+    static BattleChannelPtr createChannel(Server *server,
+            NetworkBattleImpl *field) {
+        BattleChannelPtr p(new BattleChannel(server, field,
+                string(), string(),
+                CHANNEL_FLAGS()));
+        server->addChannel(p);
+        return p;
     }
 
-    void terminate() {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        if (!m_terminated) {
-            while (!m_empty) {
-                m_condition.wait(lock);
-            }
-            m_thread.interrupt();
-            m_terminated = true;
-        }
+    Type::TYPE getChannelType() const {
+        return Type::BATTLE;
     }
 
-    ~ThreadedQueue() {
-        terminate();
+    void commitStatusFlags(ClientPtr client, FLAGS flags) {
+        // does nothing in a BattleChannel
+    }
+
+    FLAGS handleJoin(ClientPtr client);
+
+    void handlePart(ClientPtr client);
+
+    void informBattleTerminated() {
+        m_field = NULL;
     }
 
 private:
+    BattleChannel(Server *server,
+            NetworkBattleImpl *field,
+            const string &name,
+            const string &topic,
+            CHANNEL_FLAGS flags):
+                Channel(server, name, topic, flags),
+                m_server(server),
+                m_field(field) { }
 
-    void process() {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        while (true) {
-            while (m_empty) {
-                m_condition.wait(lock);
-            }
-            m_delegate(m_item);
-            m_empty = true;
-            m_condition.notify_one();
-        }
-    }
-
-    bool m_terminated;
-    bool m_empty;
-    DELEGATE m_delegate;
-    T m_item;
+    Server *m_server;
+    NetworkBattleImpl *m_field;
     boost::mutex m_mutex;
-    boost::condition_variable m_condition;
-    boost::thread m_thread;
 };
 
 typedef vector<PokemonTurn> PARTY_TURN;
@@ -103,6 +111,7 @@ typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 struct NetworkBattleImpl {
     JewelMechanics mech;
     NetworkBattle *field;
+    BattleChannelPtr channel;
     vector<ClientPtr> clients;
     vector<PARTY_TURN> turns;
     vector<PARTY_REQUEST> requests;
@@ -111,11 +120,14 @@ struct NetworkBattleImpl {
     bool replacement;
     bool victory;
 
-    NetworkBattleImpl():
+    NetworkBattleImpl(Server *server, NetworkBattle *p):
             queue(boost::bind(&NetworkBattleImpl::executeTurn,
                     this, _1)),
             replacement(false),
-            victory(false) { }
+            victory(false),
+            field(p),
+            channel(BattleChannelPtr(
+                BattleChannel::createChannel(server, this))) { }
 
     ~NetworkBattleImpl() {
         // we need to make sure the queue gets deconstructed first, since
@@ -146,11 +158,7 @@ struct NetworkBattleImpl {
     }
 
     void broadcast(OutMessage &msg) {
-        boost::lock_guard<boost::mutex> lock(mutex);
-        vector<ClientPtr>::iterator i = clients.begin();
-        for (; i != clients.end(); ++i) {
-            (*i)->sendMessage(msg);
-        }
+        channel->broadcast(msg);
     }
 
     ClientPtr getClient(const int idx) const {
@@ -352,13 +360,57 @@ struct NetworkBattleImpl {
     }
 };
 
-NetworkBattle::NetworkBattle(ScriptMachine *machine,
+Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
+    FLAGS ret;
+    ChannelPtr p = m_server->getMainChannel();
+    if (p) {
+        FLAGS flags = p->getStatusFlags(client);
+        if (flags[OP] || flags[OWNER]) {
+            // user is a main chat op, so he gets +q
+            ret[OWNER] = true;
+        }
+    }
+    if (m_field && (m_field->field->getParty(client) != -1)) {
+        // user is a participant in the battle, so he gets +ao
+        ret[OP] = true;
+        ret[PROTECTED] = true;
+    }
+    // todo: bans
+    return ret;
+}
+
+void BattleChannel::handlePart(ClientPtr client) {
+    boost::lock_guard<boost::mutex> lock(m_mutex);
+    
+    int party = -1;
+    if (!m_field || ((party = m_field->field->getParty(client)) == -1))
+        return;
+
+    // user was a participant in the battle, so we need to end the battle
+    m_field->field->informVictory(1 - party);
+}
+
+void NetworkBattle::terminate() {
+    // note: once this variable 'p' goes out of scope, this object will die,
+    // so it needs to be here to allow this method to work.
+    NetworkBattle::PTR p = shared_from_this();
+
+    boost::lock_guard<boost::mutex> lock(m_impl->mutex);
+
+    // There will always be two clients in the vector at this point.
+    m_impl->clients[0]->terminateBattle(p, m_impl->clients[1]);
+    
+    BattleField::terminate();
+    m_impl->channel->informBattleTerminated();
+}
+
+NetworkBattle::NetworkBattle(Server *server,
         ClientPtr *clients,
         Pokemon::ARRAY *teams,
         const GENERATION generation,
         const int partySize) {
-    m_impl = boost::shared_ptr<NetworkBattleImpl>(new NetworkBattleImpl());
-    m_impl->field = this;
+    m_impl = boost::shared_ptr<NetworkBattleImpl>(
+            new NetworkBattleImpl(server, this));
     m_impl->turns.resize(TEAM_COUNT);
     m_impl->requests.resize(TEAM_COUNT);
     string trainer[TEAM_COUNT];
@@ -366,9 +418,14 @@ NetworkBattle::NetworkBattle(ScriptMachine *machine,
         ClientPtr client = clients[i];
         trainer[i] = client->getName();
         m_impl->clients.push_back(client);
+        client->joinChannel(m_impl->channel);
     }
-    BattleField::initialise(&m_impl->mech,
-            generation, machine, teams, trainer, partySize);
+    initialise(&m_impl->mech,
+            generation, server->getMachine(), teams, trainer, partySize);
+}
+
+int32_t NetworkBattle::getId() const {
+    return m_impl->channel->getId();
 }
 
 void NetworkBattle::beginBattle() {
@@ -401,7 +458,7 @@ void NetworkBattle::handleCancelTurn(const int party) {
 
 void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     boost::lock_guard<boost::mutex> lock(m_impl->mutex);
-    
+
     PARTY_REQUEST &req = m_impl->requests[party];
     PARTY_TURN &pturn = m_impl->turns[party];
     const int max = req.size();
@@ -475,6 +532,11 @@ void NetworkBattle::informVictory(const int party) {
     msg.finalise();
 
     m_impl->broadcast(msg);
+
+    // todo: adjust ratings etc.
+
+    // terminate this battle
+    terminate();
 }
 
 /**
@@ -608,5 +670,5 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
     m_impl->updateBattlePokemon();
 }
 
-}
+}} // namespace shoddybattle::network
 

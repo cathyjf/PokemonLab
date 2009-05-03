@@ -103,6 +103,10 @@ struct BattleFieldImpl {
     }
 };
 
+void BattleField::terminate() {
+    m_impl.reset();
+}
+
 int BattleField::getPartySize() const {
     return m_impl->partySize;
 }
@@ -350,13 +354,8 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
     }
 }
 
-BattleField::BattleField() {
-    m_impl = new BattleFieldImpl();
-}
-
-BattleField::~BattleField() {
-    delete m_impl;
-}
+BattleField::BattleField():
+        m_impl(shared_ptr<BattleFieldImpl>(new BattleFieldImpl())) { }
 
 ScriptMachine *BattleField::getScriptMachine() {
     return m_impl->machine;

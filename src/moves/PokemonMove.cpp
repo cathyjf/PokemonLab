@@ -414,7 +414,7 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Mirror Shot", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Hypnosis", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
     field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
@@ -429,6 +429,11 @@ int main() {
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
 
     time_t initial = clock();
+    field.processTurn(turns);
+    field.processTurn(turns);
+    field.processTurn(turns);
+    field.processTurn(turns);
+    field.processTurn(turns);
     field.processTurn(turns);
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;

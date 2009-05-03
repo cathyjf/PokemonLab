@@ -26,17 +26,19 @@
 #include <boost/shared_ptr.hpp>
 #include "../shoddybattle/BattleField.h"
 
-namespace shoddybattle {
+namespace shoddybattle { namespace network {
 
-namespace network { class Client; }
-    
+class Server;
+class Client;
+
 class NetworkBattleImpl;
 
-class NetworkBattle : public BattleField {
+class NetworkBattle : public BattleField,
+        public boost::enable_shared_from_this<NetworkBattle> {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
     
-    NetworkBattle(ScriptMachine *machine,
+    NetworkBattle(Server *server,
             boost::shared_ptr<network::Client> *clients,
             Pokemon::ARRAY *teams,
             const GENERATION generation,
@@ -45,6 +47,7 @@ public:
     int getParty(boost::shared_ptr<network::Client> client) const;
 
     void beginBattle();
+    void terminate();
 
     void handleTurn(const int party, const PokemonTurn &turn);
     void handleCancelTurn(const int party);
@@ -58,11 +61,11 @@ public:
     void informSetPp(Pokemon *, const int, const int);
     void informFainted(Pokemon *);
 
-    int32_t getId() const { return (int32_t)this; }
+    int32_t getId() const;
 
 private:
     boost::shared_ptr<NetworkBattleImpl> m_impl;
 };
 
-}
+}} // namespace shoddybattle::network
 
