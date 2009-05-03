@@ -43,6 +43,7 @@
 #include <bitset>
 #include <map>
 #include "network.h"
+#include "Channel.h"
 #include "NetworkBattle.h"
 #include "../database/DatabaseRegistry.h"
 #include "../text/Text.h"
@@ -64,7 +65,6 @@ class ServerImpl;
 class Channel;
 typedef shared_ptr<ClientImpl> ClientImplPtr;
 typedef shared_ptr<ServerImpl> ServerImplPtr;
-typedef shared_ptr<Channel> ChannelPtr;
 
 typedef set<ClientImplPtr> CLIENT_LIST;
 typedef set<ChannelPtr> CHANNEL_LIST;
@@ -257,11 +257,6 @@ public:
     }
 };
 
-class ChannelJoinPart : public OutMessage {
-public:
-    ChannelJoinPart(ChannelPtr, ClientImplPtr, bool);
-};
-
 /**
  * Format of one pokemon:
  *
@@ -377,7 +372,7 @@ public:
 
 class ServerImpl {
 public:
-    ServerImpl(tcp::endpoint &endpoint);
+    ServerImpl(Server *, tcp::endpoint &);
     void run();
     void removeClient(ClientImplPtr client);
     void broadcast(OutMessage &msg);
@@ -420,11 +415,12 @@ private:
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
     ScriptMachine m_machine;
+    Server *m_server;
 };
 
 Server::Server(const int port) {
     tcp::endpoint endpoint(tcp::v4(), 8446);
-    m_impl = new ServerImpl(endpoint);
+    m_impl = new ServerImpl(this, endpoint);
 }
 
 void Server::run() {
@@ -782,7 +778,7 @@ private:
                 challenge->teams[0]);
         // todo: verify legality of team
 
-        Client::PTR clients[] = { shared_from_this(), client };
+        ClientPtr clients[] = { shared_from_this(), client };
         NetworkBattle::PTR field(new NetworkBattle(m_server->getMachine(),
                 clients,
                 challenge->teams,
@@ -907,220 +903,6 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
             shared_from_this(), placeholders::error));
 }
 
-/**
- * A "channel" encapsulates the notion of chatting in a particular place,
- * rather like an IRC channel. The list of battles, however, is global to
- * the server, not channel-specific.
- */
-class Channel : public enable_shared_from_this<Channel> {
-public:
-
-    class Mode {
-    public:
-        enum MODE {
-            Q,
-            A,
-            O,
-            H,
-            V,
-            B,
-            M,
-            I,
-            IDLE
-        };
-    };
-
-    enum STATUS_FLAGS {
-        OWNER,      // +q
-        PROTECTED,  // +a
-        OP,         // +o
-        HALF_OP,    // +h
-        VOICE,      // +v
-        BAN,        // +b
-        IDLE,       // inactive
-        BUSY        // ("ignoring challenges")
-    };
-    static const int FLAG_COUNT = 8;
-    typedef bitset<FLAG_COUNT> FLAGS;
-
-    enum CHANNEL_FLAGS {
-        MODERATED   // +m
-    };
-    static const int CHANNEL_FLAG_COUNT = 1;
-    typedef bitset<CHANNEL_FLAG_COUNT> CHANNEL_FLAGS;
-
-    typedef map<ClientImplPtr, FLAGS> CLIENT_MAP;
-
-    Channel(ServerImpl *server,
-            const int id,
-            database::DatabaseRegistry::INFO_ELEMENT &element) {
-        m_server = server;
-        m_id = id;
-        m_name = element.get<0>();
-        m_topic = element.get<1>();
-        m_flags = element.get<2>();
-    }
-
-    FLAGS getStatusFlags(ClientImplPtr client) {
-        shared_lock<shared_mutex> lock(m_mutex);
-        CLIENT_MAP::iterator i = m_clients.find(client);
-        if (i == m_clients.end()) {
-            return FLAGS();
-        }
-        return i->second;
-    }
-
-    void setStatusFlags(ClientImplPtr client, FLAGS flags) {
-        {
-            shared_lock<shared_mutex> lock(m_mutex);
-            CLIENT_MAP::iterator i = m_clients.find(client);
-            if (i == m_clients.end()) {
-                return;
-            }
-            i->second = flags;
-            m_server->getRegistry()->setUserFlags(m_id, client->getId(),
-                    flags.to_ulong());
-        }
-        broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
-    }
-
-    CLIENT_MAP::value_type getClient(const string &name) {
-        shared_lock<shared_mutex> lock(m_mutex);
-        CLIENT_MAP::iterator i = m_clients.begin();
-        for (; i != m_clients.end(); ++i) {
-            // todo: maybe make this lowercase?
-            if (name == (*i).first->getName()) {
-                return *i;
-            }
-        }
-        return CLIENT_MAP::value_type();
-    }
-
-    string getName() {
-        shared_lock<shared_mutex> lock(m_mutex);
-        return m_name;
-    }
-
-    string getTopic() {
-        shared_lock<shared_mutex> lock(m_mutex);
-        return m_topic;
-    }
-
-    int32_t getId() const {
-        // assume that pointers are 32-bit
-        // todo: use something less hacky than this for ids
-        return (int32_t)this;
-    }
-
-    bool join(ClientImplPtr client) {
-        shared_lock<shared_mutex> lock(m_mutex, boost::defer_lock_t());
-        lock.lock();
-        if (m_clients.find(client) != m_clients.end()) {
-            // already in channel
-            return false;
-        }
-        // look up the client's auto flags on this channel
-        FLAGS flags = m_server->getRegistry()->getUserFlags(m_id,
-                client->getId());
-        if (flags[BAN]) {
-            // user is banned from this channel
-            return false;
-        }
-        // tell the client all about the channel
-        client->sendMessage(ChannelInfo(shared_from_this()));
-        // add the client to the channel
-        m_clients.insert(CLIENT_MAP::value_type(client, flags));
-        // inform the channel
-        lock.unlock();
-        broadcast(ChannelJoinPart(shared_from_this(), client, true));
-        broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
-        return true;
-    }
-
-    void part(ClientImplPtr client) {
-        shared_lock<shared_mutex> lock(m_mutex, boost::defer_lock_t());
-        lock.lock();
-        if (m_clients.find(client) == m_clients.end())
-            return;
-        m_clients.erase(client);
-        lock.unlock();
-        broadcast(ChannelJoinPart(shared_from_this(), client, false));
-    }
-
-    void sendMessage(const string &message, ClientImplPtr client) {
-        broadcast(ChannelMessage(shared_from_this(), client, message));
-    }
-
-    int getPopulation() {
-        shared_lock<shared_mutex> lock(m_mutex);
-        return m_clients.size();
-    }
-
-private:
-    class ChannelInfo : public OutMessage {
-    public:
-        ChannelInfo(ChannelPtr channel): OutMessage(CHANNEL_INFO) {
-            // channel id
-            *this << channel->getId();
-            
-            // channel name, topic, and flags
-            *this << channel->m_name;
-            *this << channel->m_topic;
-            *this << (int)channel->m_flags.to_ulong();
-
-            // list of clients
-            CLIENT_MAP &clients = channel->m_clients;
-            *this << (int)clients.size();
-            CLIENT_MAP::iterator i = clients.begin();
-            for (; i != clients.end(); ++i) {
-                *this << i->first->getName();
-                *this << (int)i->second.to_ulong();
-            }
-            
-            finalise();
-        }
-    };
-
-    class ChannelStatus : public OutMessage {
-    public:
-        ChannelStatus(ChannelPtr channel, ClientImplPtr client, int flags):
-                OutMessage(CHANNEL_STATUS) {
-            *this << channel->getId();
-            *this << client->getName();
-            *this << flags;
-            finalise();
-        }
-    };
-
-    class ChannelMessage : public OutMessage {
-    public:
-        ChannelMessage(ChannelPtr channel, ClientImplPtr client,
-                    const string &msg):
-                OutMessage(CHANNEL_MESSAGE) {
-            *this << channel->getId();
-            *this << client->getName();
-            *this << msg;
-            finalise();
-        }
-    };
-
-    void broadcast(const OutMessage &msg) {
-        shared_lock<shared_mutex> lock(m_mutex);
-        CLIENT_MAP::const_iterator i = m_clients.begin();
-        for (; i != m_clients.end(); ++i) {
-            i->first->sendMessage(msg);
-        }
-    }
-
-    ServerImpl *m_server;
-    int m_id;   // channel id
-    CLIENT_MAP m_clients;
-    string m_name;  // name of this channel (e.g. #main)
-    string m_topic; // channel topic
-    CHANNEL_FLAGS m_flags;
-    shared_mutex m_mutex;
-};
-
 void ClientImpl::joinChannel(ChannelPtr channel) {
     if (channel->join(shared_from_this())) {
         lock_guard<shared_mutex> lock(m_channelMutex);
@@ -1222,15 +1004,6 @@ void ClientImpl::handleChannelMessage(InMessage &msg) {
     }
 }
 
-ChannelJoinPart::ChannelJoinPart(ChannelPtr channel,
-        ClientImplPtr client, bool join):
-        OutMessage(CHANNEL_JOIN_PART) {
-    *this << channel->getId();
-    *this << client->getName();
-    *this << ((unsigned char)join);
-    finalise();
-}
-
 void ClientImpl::disconnect() {
     {
         lock_guard<shared_mutex> lock(m_channelMutex);
@@ -1261,7 +1034,8 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
     finalise();
 }
 
-ServerImpl::ServerImpl(tcp::endpoint &endpoint):
+ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
+        m_server(server),
         m_acceptor(m_service, endpoint) {
     acceptClient();
 }
@@ -1308,7 +1082,12 @@ void ServerImpl::initialiseChannels() {
     m_registry.getChannelInfo(info);
     DatabaseRegistry::CHANNEL_INFO::iterator i = info.begin();
     for (; i != info.end(); ++i) {
-        ChannelPtr p = ChannelPtr(new Channel(this, i->first, i->second));
+        database::DatabaseRegistry::INFO_ELEMENT &element = i->second;
+        const string name = element.get<0>();
+        const string topic = element.get<1>();
+        const Channel::CHANNEL_FLAGS flags = element.get<2>();
+        ChannelPtr p = ChannelPtr(new Channel(m_server,
+                name, topic, flags, i->first));
         if (p->getName() == "main") {
             m_mainChannel = p;
         }
@@ -1372,7 +1151,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 1
+#if 0
 
 #include <boost/thread.hpp>
 

@@ -103,7 +103,7 @@ typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 struct NetworkBattleImpl {
     JewelMechanics mech;
     NetworkBattle *field;
-    vector<Client::PTR> clients;
+    vector<ClientPtr> clients;
     vector<PARTY_TURN> turns;
     vector<PARTY_REQUEST> requests;
     ThreadedQueue<TURN_PTR> queue;
@@ -147,15 +147,15 @@ struct NetworkBattleImpl {
 
     void broadcast(OutMessage &msg) {
         boost::lock_guard<boost::mutex> lock(mutex);
-        vector<Client::PTR>::iterator i = clients.begin();
+        vector<ClientPtr>::iterator i = clients.begin();
         for (; i != clients.end(); ++i) {
             (*i)->sendMessage(msg);
         }
     }
 
-    Client::PTR getClient(const int idx) const {
+    ClientPtr getClient(const int idx) const {
         if (clients.size() <= idx)
-            return Client::PTR();
+            return ClientPtr();
         return clients[idx];
     }
 
@@ -274,7 +274,7 @@ struct NetworkBattleImpl {
         }
         msg.finalise();
 
-        Client::PTR client = getClient(party);
+        ClientPtr client = getClient(party);
         if (client) {
             client->sendMessage(msg);
         }
@@ -353,7 +353,7 @@ struct NetworkBattleImpl {
 };
 
 NetworkBattle::NetworkBattle(ScriptMachine *machine,
-        Client::PTR *clients,
+        ClientPtr *clients,
         Pokemon::ARRAY *teams,
         const GENERATION generation,
         const int partySize) {
@@ -363,7 +363,7 @@ NetworkBattle::NetworkBattle(ScriptMachine *machine,
     m_impl->requests.resize(TEAM_COUNT);
     string trainer[TEAM_COUNT];
     for (int i = 0; i < TEAM_COUNT; ++i) {
-        Client::PTR client = clients[i];
+        ClientPtr client = clients[i];
         trainer[i] = client->getName();
         m_impl->clients.push_back(client);
     }
@@ -582,7 +582,7 @@ void NetworkBattle::informSetPp(Pokemon *pokemon,
     msg.finalise();
 
     boost::lock_guard<boost::mutex> lock(m_impl->mutex);
-    Client::PTR client = m_impl->getClient(pokemon->getParty());
+    ClientPtr client = m_impl->getClient(pokemon->getParty());
     if (client) {
         client->sendMessage(msg);
     }

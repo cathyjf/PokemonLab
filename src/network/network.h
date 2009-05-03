@@ -46,16 +46,17 @@ class OutMessage;
 
 class Client {
 public:
-    typedef boost::shared_ptr<Client> PTR;
-
     virtual void sendMessage(const OutMessage &msg) = 0;
     virtual std::string getName() const = 0;
     virtual std::string getIp() const = 0;
+    virtual int getId() const = 0;
 
 protected:
     Client() { }
     virtual ~Client() { }
 };
+
+typedef boost::shared_ptr<Client> ClientPtr;
 
 class Server {
 public:
