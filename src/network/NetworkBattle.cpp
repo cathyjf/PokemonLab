@@ -582,9 +582,10 @@ void NetworkBattle::informWithdraw(Pokemon *pokemon) {
 /**
  * BATTLE_SEND_OUT
  *
- * int32 : field id
- * byte : party
- * byte : slot
+ * int32  : field id
+ * byte   : party
+ * byte   : slot
+ * byte   : index
  * string : pokemon [nick]name
  */
 void NetworkBattle::informSendOut(Pokemon *pokemon) {
@@ -592,6 +593,7 @@ void NetworkBattle::informSendOut(Pokemon *pokemon) {
     msg << getId();
     msg << (unsigned char)pokemon->getParty();
     msg << (unsigned char)pokemon->getSlot();
+    msg << (unsigned char)pokemon->getPosition();
     msg << pokemon->getName();
     msg.finalise();
 
