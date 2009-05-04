@@ -171,12 +171,13 @@ public:
     int getParty() const { return m_party; }
     int getPosition() const { return m_position; }
     int getSlot() const { return m_slot; }
+    void setSlot(const int slot) { m_slot = slot; }
     bool isActive() const { return m_slot != -1; }
 
     void faint();
     bool isFainted() const { return m_fainted; }
 
-    void switchIn(const int slot);
+    void switchIn();
     void switchOut();
     void determineLegalActions();
     void clearForcedTurn() {

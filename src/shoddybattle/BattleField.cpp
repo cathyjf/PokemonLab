@@ -380,8 +380,9 @@ void BattleField::switchPokemon(Pokemon *p, const int idx) {
     if (!fainted) {
         informWithdraw(p);
     }
+    replacement->setSlot(slot);
     informSendOut(replacement.get());
-    replacement->switchIn(slot);
+    replacement->switchIn();
 }
 
 /**
@@ -472,8 +473,9 @@ void BattleField::beginBattle() {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p) {
+                p->setSlot(j);
                 informSendOut(p.get());
-                p->switchIn(j);
+                p->switchIn();
             }
         }
     }

@@ -175,9 +175,7 @@ bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
 /**
  * Send this pokemon out onto the field.
  */
-void Pokemon::switchIn(const int slot) {
-    m_slot = slot;
-
+void Pokemon::switchIn() {
     // todo: apply field + party effects?
 
     // inform status effects of switching in
