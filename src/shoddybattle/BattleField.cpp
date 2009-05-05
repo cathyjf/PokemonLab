@@ -58,7 +58,7 @@ struct BattleFieldImpl {
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
-    bool speedComparator(map<Pokemon *, bool> random,
+    bool speedComparator(map<Pokemon *, bool> &random,
             Pokemon *p1, Pokemon *p2) {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
