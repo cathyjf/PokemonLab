@@ -14,6 +14,9 @@ loadText("languages/english.lang", function(name) {
         for (var i = 1; i < arguments.length; ++i) {
             tokens[i + 1] = arguments[i];
         }
+        tokens.toString = function() {
+            return "${" + this[0] + "," + this[1] + "}";
+        };
         return tokens;
     };
     return idx;

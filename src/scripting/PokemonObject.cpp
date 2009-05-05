@@ -37,6 +37,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <sstream>
 
 using namespace std;
 
@@ -274,6 +275,20 @@ JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     return JS_TRUE;
 }
 
+JSBool toString(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+
+    stringstream ss;
+    ss << "$p{" << p->getParty() << "," << p->getPosition() << "}";
+    const string str = ss.str();
+    char *pstr = JS_strdup(cx, str.c_str());
+    JSString *ostr = JS_NewString(cx, pstr, str.length());
+    *ret = STRING_TO_JSVAL(ostr);
+
+    return JS_TRUE;
+}
+
 JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
@@ -405,6 +420,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),
     JS_FS("getStatLevel", getStatLevel, 1, 0, 0),
     JS_FS("setStatLevel", setStatLevel, 2, 0, 0),
+    JS_FS("toString", toString, 0, 0, 0),
     JS_FS_END
 };
 

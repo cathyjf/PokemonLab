@@ -37,7 +37,7 @@ function makeCounterMove(move, cls, ratio) {
                 }
                 // todo: is fainted?
                 if (target.isImmune(move)) {
-                    field.print(Text.battle_messages(1, target.name));
+                    field.print(Text.battle_messages(1, target));
                 } else {
                     target.hp -= recent[2] * ratio;
                 }
@@ -67,7 +67,7 @@ function makeStatusMove(move, effects, immunities) {
             target.hp -= damage;
         } else if (immunities) {
             if (target.isImmune(this)) {
-                field.print(Text.battle_messages(1, target.name));
+                field.print(Text.battle_messages(1, target));
                 return;
             }
         }

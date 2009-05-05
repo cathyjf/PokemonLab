@@ -31,7 +31,7 @@ ParalysisEffect.prototype = new StatusEffect("ParalysisEffect");
 ParalysisEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
 ParalysisEffect.prototype.name = Text.status_effects_paralysis(0);
 ParalysisEffect.prototype.applyEffect = function() {
-    field.print(Text.status_effects_paralysis(1, this.subject.name));
+    field.print(Text.status_effects_paralysis(1, this.subject));
     return true;
 };
 ParalysisEffect.prototype.vetoExecution = function(field, user, target, move) {
@@ -80,7 +80,7 @@ function StatChangeEffect(stat, delta) {
         }
 
         this.subject.field.print(Text.status_effects_stat_level(message,
-                this.subject.name, Text.stats_long(stat)));
+                this.subject, Text.stats_long(stat)));
 
         if (this.delta == 0)
             return false;
@@ -115,7 +115,7 @@ SleepEffect.prototype.switchOut = function() { return false; };
 SleepEffect.prototype.applyEffect = function() {
     var field = this.subject.field;
     this.turns = field.random(1, 4); // random duration
-    field.print(Text.status_effects_sleep(1, this.subject.name));
+    field.print(Text.status_effects_sleep(1, this.subject));
     return true;
 };
 SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
@@ -126,7 +126,7 @@ SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
         return false;
     if (this.turns <= 0) {
         user.removeStatus(this);
-        field.print(Text.status_effects_sleep(2, user.name));
+        field.print(Text.status_effects_sleep(2, user));
         return false;
     }
     --this.turns;
@@ -139,7 +139,7 @@ SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
     if ((name == "Sleep Talk") || (name == "Snore"))
         return false;
 
-    field.print(Text.status_effects_sleep(3, user.name))
+    field.print(Text.status_effects_sleep(3, user))
     return true;
 };
 
