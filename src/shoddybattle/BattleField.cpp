@@ -58,7 +58,8 @@ struct BattleFieldImpl {
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
-    bool speedComparator(Pokemon *p1, Pokemon *p2) {
+    bool speedComparator(map<Pokemon *, bool> random,
+            Pokemon *p1, Pokemon *p2) {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
         if (s1 != s2) {
@@ -66,7 +67,7 @@ struct BattleFieldImpl {
                 return (s1 > s2);
             return (s2 > s1);
         }
-        return mech->getCoinFlip();
+        return (random[p1] == random[p2]);
     }
 
     inline void decodeIndex(int &idx, int &party) {
@@ -137,9 +138,16 @@ ScriptObject *BattleField::getObject() {
 /**
  * Sort a set of pokemon by speed.
  */
-void BattleField::sortBySpeed(std::vector<Pokemon *> &pokemon) {
+void BattleField::sortBySpeed(vector<Pokemon *> &pokemon) {
+    map<Pokemon *, bool> random;
+    vector<Pokemon *>::iterator i = pokemon.begin();
+    for (; i != pokemon.end(); ++i) {
+        random[*i] = m_impl->mech->getCoinFlip();
+    }
+
     sort(pokemon.begin(), pokemon.end(),
-            boost::bind(&BattleFieldImpl::speedComparator, m_impl, _1, _2));
+            boost::bind(&BattleFieldImpl::speedComparator,
+                m_impl, random, _1, _2));
 }
 
 /**
@@ -274,6 +282,7 @@ struct TurnOrderEntity {
     int priority;
     int speed;
     int inherentPriority;
+    bool random;
 };
 
 bool turnOrderComparator(BattleFieldImpl *impl,
@@ -309,7 +318,7 @@ bool turnOrderComparator(BattleFieldImpl *impl,
     }
 
     // finally: coin flip
-    return impl->mech->getCoinFlip();
+    return (p1.random == p2.random);
 }
 
 } // anonymous namespace
@@ -339,6 +348,7 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         entity.position = p->getPosition();
         entity.speed = p->getStat(S_SPEED);
         entity.inherentPriority = p->getInherentPriority();
+        entity.random = mech->getCoinFlip();
         entities.push_back(entity);
     }
 
