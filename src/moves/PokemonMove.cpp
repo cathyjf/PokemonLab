@@ -392,14 +392,7 @@ using namespace shoddybattle;
 
 int main() {
     ScriptMachine machine;
-    ScriptContext *cx = machine.acquireContext();
-    cx->runFile("resources/main.js");
-    cx->runFile("resources/moves.js");
-    cx->runFile("resources/constants.js");
-    cx->runFile("resources/StatusEffect.js");
-    cx->runFile("resources/statuses.js");
-    cx->runFile("resources/abilities.js");
-    machine.releaseContext(cx);
+    ScopedContext(machine)->runFile("resources/main.js");
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
     MoveDatabase *moves = machine.getMoveDatabase();
@@ -414,7 +407,7 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Hypnosis", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Growl", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
     field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
@@ -425,7 +418,7 @@ int main() {
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
-    turns.push_back(PokemonTurn(TT_SWITCH, 4));
+    turns.push_back(PokemonTurn(TT_MOVE, 3, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
 
     time_t initial = clock();

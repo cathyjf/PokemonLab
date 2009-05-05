@@ -25,3 +25,11 @@ loadText("languages/english.lang", function(name) {
 includeSpecies("resources/species.xml");
 includeMoves("resources/moves2.xml");
 populateMoveLists();
+
+include("resources/moves.js");
+include("resources/constants.js");
+include("resources/StatusEffect.js");
+include("resources/statuses.js");
+include("resources/abilities.js");
+
+

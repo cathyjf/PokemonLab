@@ -892,7 +892,7 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
         try {
             // Call the handler for this type of message.
             (this->*m_handlers[type])(m_msg);
-        } catch (InMessage::InvalidMessage) {
+        } catch (InMessage::InvalidMessage &) {
             // The client sent an invalid message.
             // Disconnect him immediately.
             m_server->removeClient(shared_from_this());
@@ -1181,14 +1181,7 @@ int main() {
     network::Server server(8446);
 
     ScriptMachine *machine = server.getMachine();
-    ScriptContext *cx = machine->acquireContext();
-    cx->runFile("resources/main.js");
-    cx->runFile("resources/moves.js");
-    cx->runFile("resources/constants.js");
-    cx->runFile("resources/StatusEffect.js");
-    cx->runFile("resources/statuses.js");
-    cx->runFile("resources/abilities.js");
-    machine->releaseContext(cx);
+    ScopedContext(*machine)->runFile("resources/main.js");
 
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");

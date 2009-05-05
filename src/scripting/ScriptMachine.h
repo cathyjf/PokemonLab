@@ -327,6 +327,23 @@ private:
     ScriptMachine &operator=(const ScriptMachine &);
 };
 
+/** RAII-style context **/
+class ScopedContext {
+public:
+    ScopedContext(ScriptMachine &machine): m_machine(machine) {
+        m_cx = m_machine.acquireContext();
+    }
+    ScriptContext *operator->() {
+        return m_cx;
+    }
+    ~ScopedContext() {
+        m_machine.releaseContext(m_cx);
+    }
+private:
+    ScriptContext *m_cx;
+    ScriptMachine &m_machine;
+};
+
 }
 
 #endif

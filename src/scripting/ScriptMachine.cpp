@@ -97,7 +97,7 @@ MoveDatabase *ScriptMachine::getMoveDatabase() const {
     return &m_impl->state->moves;
 }
 
-JSBool includeMoves(JSContext *cx,
+static JSBool includeMoves(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
@@ -111,7 +111,17 @@ JSBool includeMoves(JSContext *cx,
     return JS_TRUE;
 }
 
-JSBool includeSpecies(JSContext *cx,
+static JSBool include(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+    jsval val = argv[0];
+    JSString *str = JS_ValueToString(cx, val);
+    char *pstr = JS_GetStringBytes(str);
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    scx->runFile(pstr);
+    return JS_TRUE;
+}
+
+static JSBool includeSpecies(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
@@ -170,7 +180,7 @@ string ScriptMachine::getText(int i, int j, int argc, const char **argv) {
     return m_impl->state->text.getText(i, j, argc, argv);
 }
 
-JSBool loadText(JSContext *cx,
+static JSBool loadText(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
@@ -194,14 +204,14 @@ JSBool loadText(JSContext *cx,
     return JS_TRUE;
 }
 
-JSBool populateMoveLists(JSContext *cx,
+static JSBool populateMoveLists(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     scx->getMachine()->populateMoveLists();
     return JS_TRUE;
 }
 
-JSBool printFunction(JSContext *cx,
+static JSBool printFunction(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *) {
     jsval v = argv[0];
     JSString *jsstr;
@@ -524,6 +534,7 @@ static JSFunctionSpec globalFunctions[] = {
     JS_FS("includeMoves", includeMoves, 1, 0, 0),
     JS_FS("includeSpecies", includeSpecies, 1, 0, 0),
     JS_FS("populateMoveLists", populateMoveLists, 0, 0, 0),
+    JS_FS("include", include, 1, 0, 0),
     JS_FS_END
 };
 
