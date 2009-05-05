@@ -265,7 +265,7 @@ void BattleField::getActivePokemon(vector<Pokemon::PTR> &v) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
             Pokemon::PTR p = party[j].pokemon;
-            if (p) { // could be an empty slot
+            if (p && !p->isFainted()) { // could be an empty slot
                 v.push_back(p);
             }
         }
