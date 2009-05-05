@@ -113,6 +113,7 @@ public:
         BATTLE_HEALTH_CHANGE = 20,
         BATTLE_SET_PP = 21,
         BATTLE_FAINTED = 22,
+        BATTLE_BEGIN_TURN = 23,
     };
 
     // variable size message

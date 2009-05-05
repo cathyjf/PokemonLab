@@ -119,6 +119,7 @@ struct NetworkBattleImpl {
     boost::mutex mutex;
     bool replacement;
     bool victory;
+    int turnCount;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p):
             queue(boost::bind(&NetworkBattleImpl::executeTurn,
@@ -126,6 +127,7 @@ struct NetworkBattleImpl {
             replacement(false),
             victory(false),
             field(p),
+            turnCount(0),
             channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))) { }
 
@@ -133,6 +135,12 @@ struct NetworkBattleImpl {
         // we need to make sure the queue gets deconstructed first, since
         // its thread can reference this object
         queue.terminate();
+    }
+
+    void beginTurn() {
+        ++turnCount;
+        informBeginTurn();
+        requestMoves();
     }
     
     void executeTurn(TURN_PTR &ptr) {
@@ -142,8 +150,17 @@ struct NetworkBattleImpl {
             field->processTurn(*ptr);
         }
         if (!victory && !requestReplacements()) {
-            requestMoves();
+            beginTurn();
         }
+    }
+    
+    void informBeginTurn() {
+        OutMessage msg(OutMessage::BATTLE_BEGIN_TURN);
+        msg << field->getId();
+        msg << (int16_t)turnCount;
+        msg.finalise();
+
+        broadcast(msg);
     }
 
     void cancelAction(const int party) {
@@ -383,11 +400,12 @@ void BattleChannel::handlePart(ClientPtr client) {
     boost::lock_guard<boost::mutex> lock(m_mutex);
     
     int party = -1;
-    if (!m_field || ((party = m_field->field->getParty(client)) == -1))
-        return;
+    if (m_field && ((party = m_field->field->getParty(client)) != -1)) {
+        // user was a participant in the battle, so we need to end the battle
+        m_field->field->informVictory(1 - party);
+    }
 
-    // user was a participant in the battle, so we need to end the battle
-    m_field->field->informVictory(1 - party);
+    // todo: destroy the channel if this is the last user
 }
 
 void NetworkBattle::terminate() {
@@ -435,7 +453,7 @@ void NetworkBattle::beginBattle() {
     }
     lock.unlock();
     BattleField::beginBattle();
-    m_impl->requestMoves();
+    m_impl->beginTurn();
 }
 
 int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
