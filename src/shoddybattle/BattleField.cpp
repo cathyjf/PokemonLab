@@ -457,7 +457,7 @@ bool BattleField::vetoSelection(Pokemon *user, MoveObject *move) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p && p->vetoSelection(user, move)) {
+            if (p && !p->isFainted() && p->vetoSelection(user, move)) {
                 return true;
             }
         }
@@ -475,7 +475,7 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p && p->vetoExecution(user, target, move)) {
+            if (p && !p->isFainted() && p->vetoExecution(user, target, move)) {
                 return true;
             }
         }
@@ -790,7 +790,7 @@ void BattleField::transformStatus(Pokemon *subject, StatusObject **status) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p) {
+            if (p && !p->isFainted()) {
                 p->transformStatus(subject, status);
                 if (status == NULL) {
                     return;
