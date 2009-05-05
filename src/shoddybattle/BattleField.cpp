@@ -773,10 +773,9 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         } else {
             switchPokemon(p.get(), id);
         }
-    }
-
-    if (determineVictory()) {
-        return;
+        if (determineVictory()) {
+            return;
+        }
     }
 
     // Execute end of turn effects.
