@@ -50,6 +50,8 @@ struct BattleFieldImpl {
     std::stack<BattleField::EXECUTION> executing;
     int host;
 
+    typedef map<pair<Pokemon *, Pokemon *>, bool> RANDOM_MAP;
+
     BattleFieldImpl():
             object(NULL),
             mech(NULL),
@@ -58,7 +60,7 @@ struct BattleFieldImpl {
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
-    bool speedComparator(map<Pokemon *, bool> &random,
+    bool speedComparator(RANDOM_MAP &random,
             Pokemon *p1, Pokemon *p2) {
         const int s1 = p1->getStat(S_SPEED);
         const int s2 = p2->getStat(S_SPEED);
@@ -67,7 +69,14 @@ struct BattleFieldImpl {
                 return (s1 > s2);
             return (s2 > s1);
         }
-        return (random[p1] == random[p2]);
+        pair<Pokemon *, Pokemon *> elem(p1, p2);
+        RANDOM_MAP::iterator i = random.find(elem);
+        if (i != random.end()) {
+            return i->second;
+        }
+        const bool b = mech->getCoinFlip();
+        random.insert(RANDOM_MAP::value_type(elem, b));
+        return b;
     }
 
     inline void decodeIndex(int &idx, int &party) {
@@ -139,15 +148,9 @@ ScriptObject *BattleField::getObject() {
  * Sort a set of pokemon by speed.
  */
 void BattleField::sortBySpeed(vector<Pokemon *> &pokemon) {
-    map<Pokemon *, bool> random;
-    vector<Pokemon *>::iterator i = pokemon.begin();
-    for (; i != pokemon.end(); ++i) {
-        random[*i] = m_impl->mech->getCoinFlip();
-    }
-
     sort(pokemon.begin(), pokemon.end(),
             boost::bind(&BattleFieldImpl::speedComparator,
-                m_impl, random, _1, _2));
+                m_impl, BattleFieldImpl::RANDOM_MAP(), _1, _2));
 }
 
 /**
@@ -282,10 +285,10 @@ struct TurnOrderEntity {
     int priority;
     int speed;
     int inherentPriority;
-    bool random;
 };
 
 bool turnOrderComparator(BattleFieldImpl *impl,
+        BattleFieldImpl::RANDOM_MAP &random,
         const TurnOrderEntity &p1, const TurnOrderEntity &p2) {
     // first: is one pokemon switching?
     if (!p1.move && p2.move) {
@@ -318,7 +321,14 @@ bool turnOrderComparator(BattleFieldImpl *impl,
     }
 
     // finally: coin flip
-    return (p1.random == p2.random);
+    pair<Pokemon *, Pokemon *> elem(p1.pokemon.get(), p2.pokemon.get());
+    BattleFieldImpl::RANDOM_MAP::iterator i = random.find(elem);
+    if (i != random.end()) {
+        return i->second;
+    }
+    const bool b = impl->mech->getCoinFlip();
+    random.insert(BattleFieldImpl::RANDOM_MAP::value_type(elem, b));
+    return b;
 }
 
 } // anonymous namespace
@@ -348,13 +358,13 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         entity.position = p->getPosition();
         entity.speed = p->getStat(S_SPEED);
         entity.inherentPriority = p->getInherentPriority();
-        entity.random = mech->getCoinFlip();
         entities.push_back(entity);
     }
 
     // sort the entities
     sort(entities.begin(), entities.end(),
-            boost::bind(turnOrderComparator, this, _1, _2));
+            boost::bind(turnOrderComparator, this,
+                BattleFieldImpl::RANDOM_MAP(), _1, _2));
 
     // reorder the parameter vectors
     for (int i = 0; i < count; ++i) {
