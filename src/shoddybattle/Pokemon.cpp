@@ -290,9 +290,10 @@ unsigned int Pokemon::getStat(const STAT stat) {
     m_field->getStatModifiers(stat, *this, mods);
     mods[0] = getStatMultiplier(stat, m_statLevel[stat]);
     int value = getRawStat(stat);
-    const int count = mods.size();
-    for (int i = 0; i <= count; ++i) {
-        value *= mods[i];
+    PRIORITY_MAP::const_iterator i = mods.begin();
+    for (; i != mods.end(); ++i) {
+        double val = i->second;
+        value *= val;
     }
     return value;
 }
