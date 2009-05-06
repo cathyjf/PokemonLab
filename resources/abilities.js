@@ -48,7 +48,7 @@ var ability = new Ability("Levitate");
 ability.vetoExecution = function(field, user, target, move) {
     if (target != this.subject)
         return false;
-    if (move.type != Type.FLYING)
+    if (move.type != Type.GROUND)
         return false;
 
     // TODO: use field.print and english.lang
@@ -64,9 +64,13 @@ new Ability("Early Bird"); // no implementation needed
 ability = new Ability("Stall");
 ability.inherentPriority = function() { return -2; };
 
-// this is just a test
-ability = new Ability("Own Tempo");
-//ability.vetoSelection = function(user, move) {
-//    return (move.name == "Mirror Move");
-//};
+ability = new Ability("Poison Heal");
+ability.informPoisonDamage = function() {
+    // TODO: get message from english.lang
+    print("temp: poison heal activation");
+
+    var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
+    this.subject.hp += damage;
+    return true;
+};
 
