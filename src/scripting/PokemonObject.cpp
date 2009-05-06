@@ -228,6 +228,30 @@ JSBool getStatus(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool sendMessage(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+
+    const int c = argc - 1;
+    ScriptValue val[c];
+    for (int i = 0; i < c; ++i) {
+        val[i] = ScriptValue::fromValue((void *)argv[i + 1]);
+    }
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    ScriptValue vret = p->sendMessage(str, c, val);
+    if (vret.failed()) {
+        *ret = JSVAL_NULL;
+    } else {
+        *ret = (jsval)vret.getValue();
+    }
+    return JS_TRUE;
+}
+
 JSBool hasAbility(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -421,6 +445,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getStatLevel", getStatLevel, 1, 0, 0),
     JS_FS("setStatLevel", setStatLevel, 2, 0, 0),
     JS_FS("toString", toString, 0, 0, 0),
+    JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS_END
 };
 

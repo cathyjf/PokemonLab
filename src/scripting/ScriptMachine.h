@@ -114,6 +114,12 @@ public:
     }
     void setFailure() { m_fail = true; }
     bool failed() const { return m_fail; }
+
+    static ScriptValue fromValue(void *val) {
+        ScriptValue v;
+        v.m_val = val;
+        return v;
+    }
 private:
     void *m_val;
     bool m_fail;

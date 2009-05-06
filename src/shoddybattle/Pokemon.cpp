@@ -142,6 +142,29 @@ void Pokemon::determineLegalActions() {
 }
 
 /**
+ * Send an arbitrary message to this pokemon.
+ */
+ScriptValue Pokemon::sendMessage(const string &name,
+        int argc, ScriptValue *argv) {
+    ScriptValue ret;
+    bool failed = true;
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
+            continue;
+
+        if (m_cx->hasProperty(*i, name)) {
+            ret = m_cx->callFunctionByName(*i, name, argc, argv);
+            failed = false;
+        }
+    }
+    if (failed) {
+        ret.setFailure();
+    }
+    return ret;
+}
+
+/**
  * Determine whether the selection of a move should be vetoed.
  */
 bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {

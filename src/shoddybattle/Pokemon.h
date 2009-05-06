@@ -49,6 +49,7 @@ class StatusObject;
 
 class ScriptMachine;
 class ScriptContext;
+class ScriptValue;
 
 class Target;
 
@@ -85,6 +86,8 @@ public:
             const std::vector<int> &ppUps);
 
     void initialise(BattleField *field, const int i, const int j);
+
+    ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 
     void setTurn(const PokemonTurn *turn) { m_turn = turn; }
     const PokemonTurn *getTurn() const { return m_turn; }
