@@ -101,6 +101,13 @@
 7: It's super effective!
 8: It's not very effective...
 9: A critical hit!
+10: $1 used $2!
+11: $1 withdrew $2!
+12: $1 sent out $2!
+13: $1 lost $2 of its health!
+14: $1 regained $2 of its health!
+15: $1 fainted!
+16: Begin turn #$1
 
 [status-effects-stat-level]
 0: $1's $2 was raised!
@@ -262,3 +269,185 @@
 55: $1 absorbed nutrients with its roots!
 56: $1's $2 restored health //aqua ring
 67: $1 must recharge!
+
+[abilities]
+1: Adaptibility
+2: Aftermath
+3: Air Lock
+4: Anger Point
+5: Anticipation
+6: Arena Trap
+7: Bad Dreams
+8: Battle Armor
+9: Blaze
+10: Chlorophyll
+11: Clear Body
+12: Cloud Nine
+13: Color Change
+14: Compoundeyes
+15: Cute Charm
+16: Damp
+17: Download
+18: Drizzle
+19: Drought
+20: Dry Skin
+21: Early Bird
+22: Effect Spore
+23: Filter
+24: Flame Body
+25: Flash Fire
+26: Flower Gift
+27: Forecast
+28: Forewarn
+29: Frisk
+30: Gluttony
+31: Guts
+32: Heatproof
+33: Honey Gather
+34: Huge Power
+35: Hustle
+36: Hydration
+37: Hyper Cutter
+38: Ice Body
+39: Illuminate
+40: Immunity
+41: Inner Focus
+42: Insomnia
+43: Intimidate
+44: Iron Fist
+45: Keen Eye
+46: Klutz
+47: Leaf Guard
+48: Levitate
+49: Lightningrod
+50: Limber
+51: Liquid Ooze
+52: Magic Guard
+53: Magma Armor
+54: Magnet Pull
+55: Marvel Scale
+56: Minus
+57: Mold Breaker
+58: Motor Drive
+59: Multitype
+60: Natural Cure
+61: No Guard
+62: Normalize
+63: Oblivious
+64: Overgrow
+65: Own Tempo
+66: Pickup
+67: Plus
+68: Poison Heal
+69: Poison Point
+70: Pressure
+71: Pure Power
+72: Quick Feet
+73: Rain Dish
+74: Reckless
+75: Rivalry
+76: Rock Head
+77: Rough Skin
+78: Run Away
+79: Sand Stream
+80: Sand Veil
+81: Scrappy
+82: Serene Grace
+83: Shadow Tag
+84: Shed Skin
+85: Shell Armor
+86: Shield Dust
+87: Simple
+88: Skill Link
+89: Slow Start
+90: Sniper
+91: Snow Cloak
+92: Snow Warning
+93: Solar Power
+94: Solid Rock
+95: Soundproof
+96: Speed Boost
+97: Stall
+98: Static
+99: Steadfast
+100: Stench
+101: Sticky Hold
+102: Storm Drain
+103: Sturdy
+104: Suction Cups
+105: Super Luck
+106: Swarm
+107: Swift Swim
+108: Synchronize
+109: Tangled Feet
+110: Technician
+111: Thick Fat
+112: Tinted Lens
+113: Torrent
+114: Trace
+115: Truant
+116: Unaware
+117: Unburden
+118: Vital Spirit
+119: Volt Absorb
+120: Water Absorb
+121: Water Veil
+122: White Smoke
+123: Wonder Guard
+
+[ability-messages]
+0: $1 was hurt by $2's Aftermath!
+1: $1's Anger Point raised its attack!
+2: $1's Anticipation made it shudder!
+3: $1 is tormented by the foe $2's Bad Dreams!
+4: TODO: Clear Body/hyper cutter/white smoke
+5: $1's Cute Charm infatuated $2!
+6: $1's Damp prevents explosions!
+7: $1's Download raised its stats!
+8: $1's Drizzle caused a storm!
+9: $1's Drought intensified the sun's rays!
+10: $1 soaked up rain!
+11: $1 was hurt by the sunlight! //dry skin and solar power
+12: $1's $2 absorbed damage!
+13: $1's Effect Spore $2 $3!
+14: $1's Flame Body burned $2!
+15: $1's Flash Fire raised its fire power!
+16: TODO: Flower Gift
+17: $1 foresaw $2!
+18: $1 found $2's $3!
+19: $1's status was cured!
+20: $1 absorbed the hail!
+21: $1's Immunity prevents poisoning!
+22: $1's $2 kept it awake!
+23: $1's Intimidate cut $2's attack
+24: TODO: Leaf Guard
+25: $1 makes ground moves miss with Levitate!
+26: $1's $2 drew the attack! //lightningrod and storm drain
+27: TODO: Limber
+28: $1 has Mold Breaker!
+29: $1's Motor Drive increased its speed!
+30: $1's Oblivious prevents attraction! 
+31: TODO: Own Tempo
+32: $1's Poison Heal restored health!
+33: $1's Poison Point poisoned $2!
+34: $1 is exerting its Pressure!
+35: TODO: Quick feet
+36: $1's Rain Dish restored its health a little!
+37: $1 was hurt by $2's Rough Skin!
+38: $1's Sand Stream whipped up a sandstorm!
+39: $1 shed its skin!
+40: $1 can't get going due to its Slow Start!
+41: $1's Snow Warning whipped up a hailstorm!
+42: $1's $2 blocks $3 //soundproof and cacophony
+43: $1's Speed Boost raised its speed!
+44: $1's Static paralysed $2!
+45: TODO: Steadfast
+46: $1 held on with its Sticky Hold
+47: $1 held Sturdy!
+48: $1's Synchronize $2 $3!
+49: $1's Tangled Feet raised its evasion!
+50: $1 traced $2's $3!
+51: $1 is loafing around!
+52: $1 lost its burden!
+53: $1's Water Veil prevents burns!
+54: $1 avoided damage with Wonder Guard!
