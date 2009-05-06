@@ -190,6 +190,20 @@ JSBool setStatLevel(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool getStat(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int stat = JSVAL_TO_INT(v);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    *ret = INT_TO_JSVAL(p->getStat(STAT(stat)));
+
+    return JS_TRUE;
+}
+
 JSBool getMove(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -446,6 +460,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("setStatLevel", setStatLevel, 2, 0, 0),
     JS_FS("toString", toString, 0, 0, 0),
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
+    JS_FS("getStat", getStat, 1, 0, 0),
     JS_FS_END
 };
 

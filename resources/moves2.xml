@@ -732,13 +732,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Twineedle" id="40">
@@ -2289,13 +2288,12 @@ user.execute(move);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.4]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sludge" id="123">
@@ -2308,13 +2306,12 @@ user.execute(move);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bone Club" id="124">
@@ -3520,13 +3517,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mud-Slap" id="188">
@@ -7478,13 +7474,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dark Pulse" id="398">
@@ -8313,13 +8308,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Iron Head" id="441">

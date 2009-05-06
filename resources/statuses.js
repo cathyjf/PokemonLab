@@ -23,6 +23,29 @@
  */
 
 /**
+ * Poison
+ */
+function PoisonEffect() { }
+PoisonEffect.prototype = new StatusEffect("PoisonEffect");
+PoisonEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
+PoisonEffect.prototype.name = Text.status_effects_poison(0);
+PoisonEffect.prototype.switchOut = function() { return false; };
+PoisonEffect.prototype.applyEffect = function() {
+    this.subject.field.print(Text.status_effects_poison(1, this.subject));
+    return true;
+};
+PoisonEffect.prototype.tick = function() {
+    if (this.subject.sendMessage("informPoisonDamage"))
+        return;
+
+    var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
+    if (damage < 1) damage = 1;
+    this.subject.field.print(Text.status_effects_poison(3, this.subject));
+    this.subject.hp -= damage;
+};
+
+
+/**
  * Paralysis
  *
  */
@@ -30,7 +53,9 @@ function ParalysisEffect() { }
 ParalysisEffect.prototype = new StatusEffect("ParalysisEffect");
 ParalysisEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
 ParalysisEffect.prototype.name = Text.status_effects_paralysis(0);
+ParalysisEffect.prototype.switchOut = function() { return false; };
 ParalysisEffect.prototype.applyEffect = function() {
+    var field = this.subject.field;
     field.print(Text.status_effects_paralysis(1, this.subject));
     return true;
 };

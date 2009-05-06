@@ -309,6 +309,8 @@ bool Pokemon::getTransformedStatLevel(Pokemon *user, Pokemon *target,
  * Get the effective value of a stat.
  */
 unsigned int Pokemon::getStat(const STAT stat) {
+    if (stat == S_HP)
+        return m_stat[stat];
     PRIORITY_MAP mods;
     m_field->getStatModifiers(stat, *this, mods);
     mods[0] = getStatMultiplier(stat, m_statLevel[stat]);
