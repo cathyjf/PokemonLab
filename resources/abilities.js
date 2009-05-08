@@ -22,55 +22,127 @@
  * online at http://gnu.org.
  */
 
+/**
+ * Ability function
+ *
+ * Constructs a new ability and makes it a property of the Ability function.
+ */
 function Ability(name) {
     this.name = this.id = name;
     Ability[name] = this;
 }
 
-function makeStatusImmuneAbility(name, immune) {
-    var ability = new Ability(name);
-    ability.transformStatus = function(subject, status) {
-        if (subject != this.subject)
-            return status;
-        if (status.id == immune)
-            return null;
-        return status;
-    };
-    ability.tier = 0;   // TODO: tiers
-    ability.tick = function() {
-        // TODO: remove status from the subject
-    };
-}
-
 Ability.prototype = new StatusEffect();
 
-var ability = new Ability("Levitate");
-ability.vetoExecution = function(field, user, target, move) {
-    if (target != this.subject)
-        return false;
-    if (move.type != Type.GROUND)
-        return false;
+/**
+ * Allows for a nicer syntax for making an ability.
+ */
+function makeAbility(obj) {
+    var ability = new Ability(obj.name);
+    for (var p in obj) {
+        ability[p] = obj[p];
+    }
+}
 
-    // TODO: use field.print and english.lang
-    print(target.name + " evaded the attack!");
-    return true;
-};
+function makeStatusImmuneAbility(ability, immune) {
+    makeAbility({
+        name : ability,
+        transformStatus : function(subject, status) {
+            if (subject != this.subject)
+                return status;
+            if (status.id == immune)
+                return null;
+            return status;
+        },
+        tier : 0, // TODO
+        tick : function() {
+            // TODO: remove status from the subject
+        }
+    });
+}
 
+/*******************
+ * Levitate
+ *******************/
+makeAbility({
+    name : "Levitate",
+    vetoExecution : function(field, user, target, move) {
+        if (target != this.subject)
+            return false;
+        if (move.type != Type.GROUND)
+            return false;
+
+        field.print(Text.ability_messages(25, target));
+        return true;
+    }
+});
+
+/*******************
+ * Insomnia
+ *******************/
 makeStatusImmuneAbility("Insomnia", "SleepEffect");
+
+/*******************
+ * Vital Spirit
+ *******************/
 makeStatusImmuneAbility("Vital Spirit", "SleepEffect");
 
-new Ability("Early Bird"); // no implementation needed
+/*******************
+ * Early Bird
+ *******************/
+makeAbility({
+    name : "Early Bird"
+});
 
-ability = new Ability("Stall");
-ability.inherentPriority = function() { return -2; };
+/*******************
+ * Stall
+ *******************/
+makeAbility({
+    name : "Stall",
+    inherentPriority : function() {
+        return -2;
+    }
+});
 
-ability = new Ability("Poison Heal");
-ability.informPoisonDamage = function() {
-    // TODO: get message from english.lang
-    print("temp: poison heal activation");
+/*******************
+ * Poison Heal
+ *******************/
+makeAbility({
+    name : "Poison Heal",
+    informPoisonDamage : function() {
+        var max = this.subject.getStat(Stat.HP);
+        if (max == this.subject.hp) {
+            // no need to heal
+            return true;
+        }
+        this.subject.field.print(Text.ability_messages(32, this.subject));
+        var damage = Math.floor(max / 8);
+        this.subject.hp += damage;
+        return true;
+    }
+});
 
-    var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
-    this.subject.hp += damage;
-    return true;
-};
+/*******************
+ * Quick Feet
+ *******************/
+makeAbility({
+    name : "Quick Feet",
+    informParalysisMod : function() {
+        // nullify the paralysis speed mod
+        return true;
+    },
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+
+        // TODO: When this Pokémon is burned, frozen, paralyzed, poisoned,
+        // or sleeping, its Speed increases by 50%
+        return null; // (temporary)
+    }
+});
+
+
+
 

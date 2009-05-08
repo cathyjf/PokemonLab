@@ -624,15 +624,19 @@ void Pokemon::faint() {
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
-void Pokemon::setHp(const int hp, const bool indirect) {
+void Pokemon::setHp(const int hp) {
     // TODO: implement this function properly
     if (m_fainted) {
         return;
     }
+    const BattleField::EXECUTION *move = m_field->topExecution();
+    const bool indirect = !move || (move->user == this);
     const int delta = transformHealthChange(m_hp - hp, indirect);
+    if (delta == 0) {
+        return;
+    }
     m_hp -= delta;
     m_field->informHealthChange(this, delta);
-    const BattleField::EXECUTION *move = m_field->topExecution();
     if (move) {
         informDamaged(move->user, move->move, delta);
     }

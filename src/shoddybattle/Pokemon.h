@@ -122,7 +122,7 @@ public:
     int transformHealthChange(int, bool) const;
     
     int getHp() const { return m_hp; }
-    void setHp(const int hp, const bool indirect = false);
+    void setHp(const int hp);
 
     std::string getSpeciesName() const;
     int getSpeciesId() const;

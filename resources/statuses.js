@@ -24,11 +24,15 @@
 
 /**
  * Poison
+ *
+ * TODO: tier
  */
 function PoisonEffect() { }
 PoisonEffect.prototype = new StatusEffect("PoisonEffect");
 PoisonEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
 PoisonEffect.prototype.name = Text.status_effects_poison(0);
+PoisonEffect.prototype.tier = 6;
+PoisonEffect.prototype.subtier = 4;
 PoisonEffect.prototype.switchOut = function() { return false; };
 PoisonEffect.prototype.applyEffect = function() {
     this.subject.field.print(Text.status_effects_poison(1, this.subject));
@@ -69,7 +73,16 @@ ParalysisEffect.prototype.vetoExecution = function(field, user, target, move) {
     field.print(Text.status_effects_paralysis(2));
     return true;
 };
-// TODO: speed drop
+ParalysisEffect.prototype.statModifier = function(field, stat, subject) {
+    if (subject != this.subject)
+        return null;
+    if (stat != Stat.SPEED)
+        return null;
+    if (this.subject.sendMessage("informParalysisMod"))
+        return null;
+    // reduces speed to 25%, priority of 3
+    return [0.25, 3];
+};
 
 
 /**

@@ -76,6 +76,7 @@ StatusEffect.prototype = {
     name : "A Status Effect",       // English name of the effect
     passable : true,                // Can be Baton Passed?
     tier : -1,                      // End of turn tier for this effect.
+    subtier : - 1,
 
     /**
      * Methods with a default implementation.

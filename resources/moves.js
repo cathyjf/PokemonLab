@@ -35,8 +35,7 @@ function makeCounterMove(move, cls, ratio) {
                 if (target.party == user.party) {
                     break;
                 }
-                // todo: is fainted?
-                if (target.isImmune(move)) {
+                if (target.fainted || target.isImmune(move)) {
                     field.print(Text.battle_messages(1, target));
                 } else {
                     target.hp -= recent[2] * ratio;
@@ -90,6 +89,9 @@ function makeStatusMove(move, effects, immunities) {
             }
             if (field.random(chance)) {
                 var affected = effect[2] ? user : target;
+                if (affected.fainted) {
+                    continue;
+                }
                 var e = effect[0];
                 var obj = (typeof(e) == "function") ? new e() : e;
                 if (affected.applyStatus(user, obj) == null) {

@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.o \
 	${OBJECTDIR}/src/text/Text.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/network.o \
+	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/Channel.o \
 	${OBJECTDIR}/src/mechanics/PokemonType.o \
 	${OBJECTDIR}/src/mechanics/JewelMechanics.o \
 	${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.o \
@@ -132,6 +133,11 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o: /
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.o /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.cpp
 
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h.gch: /home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/network/ThreadedQueue.h
+
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/NetworkBattle.o: /home/Catherine/ShoddyBattle2/src/network/NetworkBattle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
 	${RM} $@.d
@@ -181,6 +187,11 @@ ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h.gch: /hom
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/shoddybattle/Team.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/Channel.o: /home/Catherine/ShoddyBattle2/src/network/Channel.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/Channel.o /home/Catherine/ShoddyBattle2/src/network/Channel.cpp
 
 ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h.gch: /home/Catherine/ShoddyBattle2/src/shoddybattle/BattleField.h 
 	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/shoddybattle
@@ -276,6 +287,11 @@ ${OBJECTDIR}/src/mechanics/PokemonType.h.gch: src/mechanics/PokemonType.h
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/mechanics/PokemonType.h
+
+${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network/Channel.h.gch: /home/Catherine/ShoddyBattle2/src/network/Channel.h 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/Catherine/ShoddyBattle2/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ /home/Catherine/ShoddyBattle2/src/network/Channel.h
 
 # Subprojects
 .build-subprojects:
