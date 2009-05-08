@@ -388,13 +388,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Stomp" id="22">
@@ -7550,13 +7544,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Air Slash" id="402">
@@ -7591,13 +7579,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Bug Buzz" id="404">
@@ -7629,13 +7611,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Dragon Rush" id="406">
@@ -7670,13 +7646,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Drain Punch" id="408">
@@ -8246,13 +8216,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Rock Wrecker" id="438">
