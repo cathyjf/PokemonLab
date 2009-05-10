@@ -100,7 +100,7 @@ makeAbility({
 makeAbility({
     name : "Stall",
     inherentPriority : function() {
-        return -2;
+        return -1;
     }
 });
 
