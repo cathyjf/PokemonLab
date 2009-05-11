@@ -159,13 +159,12 @@
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Scratch" id="9">
@@ -604,13 +603,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Wrap" id="34">
@@ -1452,13 +1450,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sleep Powder" id="78">
@@ -1568,13 +1565,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunderbolt" id="84">
@@ -1587,13 +1583,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunder Wave" id="85">
@@ -1607,13 +1602,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect]], true);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunder" id="86">
@@ -2263,13 +2257,12 @@ user.execute(move);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Smog" id="122">
@@ -2554,13 +2547,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dream Eater" id="137">
@@ -3582,13 +3574,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Foresight" id="192">
@@ -3904,13 +3895,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fury Cutter" id="209">
@@ -4201,13 +4191,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Baton Pass" id="225">
@@ -7410,13 +7399,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Aura Sphere" id="395">
@@ -8155,13 +8143,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Lava Plume" id="435">
