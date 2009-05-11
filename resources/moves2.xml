@@ -6316,11 +6316,11 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 ]]>
 </use>
 </move>
@@ -6474,11 +6474,11 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
+user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 ]]>
 </use>
 </move>
