@@ -1,5 +1,6 @@
-<move name="Absorb" id="0">
+<shoddybattle>
 
+<move name="Absorb" id="0">
 <type>Grass</type>
 <class>Special</class>
 <power>20</power>
@@ -19,7 +20,6 @@
 </move>
 
 <move name="Acid" id="1">
-
 <type>Poison</type>
 <class>Special</class>
 <power>40</power>
@@ -38,7 +38,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Acid Armor" id="2">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -56,7 +55,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Acupressure" id="3">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -75,7 +73,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Aerial Ace" id="4">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>60</power>
@@ -97,7 +94,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Aeroblast" id="5">
-
 <type>Flying</type>
 <class>Special</class>
 <power>100</power>
@@ -113,7 +109,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Agility" id="6">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -131,7 +126,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 </move>
 
 <move name="Air Cutter" id="7">
-
 <type>Flying</type>
 <class>Special</class>
 <power>55</power>
@@ -147,7 +141,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 </move>
 
 <move name="Air Slash" id="8">
-
 <type>Flying</type>
 <class>Special</class>
 <power>75</power>
@@ -168,7 +161,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 </move>
 
 <move name="Amnesia" id="9">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -186,7 +178,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Ancientpower" id="10">
-
 <type>Rock</type>
 <class>Special</class>
 <power>60</power>
@@ -206,7 +197,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aqua Jet" id="11">
-
 <type>Water</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -223,7 +213,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aqua Ring" id="12">
-
 <type>Water</type>
 <class>Other</class>
 <power>0</power>
@@ -241,7 +230,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aqua Tail" id="13">
-
 <type>Water</type>
 <class>Physical</class>
 <power>90</power>
@@ -263,7 +251,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Arm Thrust" id="14">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>15</power>
@@ -285,7 +272,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aromatherapy" id="15">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -304,7 +290,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Assist" id="16">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -322,7 +307,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Assurance" id="17">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>50</power>
@@ -344,7 +328,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Astonish" id="18">
-
 <type>Ghost</type>
 <class>Physical</class>
 <power>30</power>
@@ -365,7 +348,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Attack Order" id="19">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>90</power>
@@ -381,7 +363,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Attract" id="20">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -402,7 +383,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aura Sphere" id="21">
-
 <type>Fighting</type>
 <class>Special</class>
 <power>90</power>
@@ -423,7 +403,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </move>
 
 <move name="Aurora Beam" id="22">
-
 <type>Ice</type>
 <class>Special</class>
 <power>65</power>
@@ -442,7 +421,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 </move>
 
 <move name="Avalanche" id="23">
-
 <type>Ice</type>
 <class>Physical</class>
 <priority>-4</priority>
@@ -465,7 +443,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 </move>
 
 <move name="Barrage" id="24">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -486,7 +463,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 </move>
 
 <move name="Barrier" id="25">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -504,7 +480,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Baton Pass" id="26">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -522,7 +497,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Beat Up" id="27">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>10</power>
@@ -543,7 +517,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Belly Drum" id="28">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -562,7 +535,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Bide" id="29">
-
 <type>Normal</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -584,7 +556,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Bind" id="30">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -606,7 +577,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Bite" id="31">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>60</power>
@@ -627,7 +597,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Blast Burn" id="32">
-
 <type>Fire</type>
 <class>Special</class>
 <power>150</power>
@@ -648,7 +617,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Blaze Kick" id="33">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>85</power>
@@ -669,7 +637,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Blizzard" id="34">
-
 <type>Ice</type>
 <class>Special</class>
 <power>120</power>
@@ -689,7 +656,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Block" id="35">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -710,7 +676,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Body Slam" id="36">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>85</power>
@@ -730,7 +695,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Bone Club" id="37">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>65</power>
@@ -750,7 +714,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Bone Rush" id="38">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>25</power>
@@ -771,7 +734,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Bonemerang" id="39">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>50</power>
@@ -792,7 +754,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Bounce" id="40">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>85</power>
@@ -814,7 +775,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Brave Bird" id="41">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>120</power>
@@ -836,7 +796,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Brick Break" id="42">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>75</power>
@@ -858,7 +817,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Brine" id="43">
-
 <type>Water</type>
 <class>Special</class>
 <power>65</power>
@@ -879,7 +837,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Bubble" id="44">
-
 <type>Water</type>
 <class>Special</class>
 <power>20</power>
@@ -898,7 +855,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Bubblebeam" id="45">
-
 <type>Water</type>
 <class>Special</class>
 <power>65</power>
@@ -917,7 +873,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Bug Bite" id="46">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>60</power>
@@ -939,7 +894,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Bug Buzz" id="47">
-
 <type>Bug</type>
 <class>Special</class>
 <power>90</power>
@@ -958,7 +912,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Bulk Up" id="48">
-
 <type>Fighting</type>
 <class>Other</class>
 <power>0</power>
@@ -977,7 +930,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Bullet Punch" id="49">
-
 <type>Steel</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -994,7 +946,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Bullet Seed" id="50">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>10</power>
@@ -1015,7 +966,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Calm Mind" id="51">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -1034,7 +984,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 </move>
 
 <move name="Camouflage" id="52">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1053,7 +1002,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 </move>
 
 <move name="Captivate" id="53">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1074,7 +1022,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 </move>
 
 <move name="Charge" id="54">
-
 <type>Electric</type>
 <class>Other</class>
 <power>0</power>
@@ -1093,7 +1040,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 </move>
 
 <move name="Charge Beam" id="55">
-
 <type>Electric</type>
 <class>Special</class>
 <power>50</power>
@@ -1114,7 +1060,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 </move>
 
 <move name="Charm" id="56">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1134,7 +1079,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Chatter" id="57">
-
 <type>Flying</type>
 <class>Special</class>
 <power>60</power>
@@ -1153,7 +1097,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Clamp" id="58">
-
 <type>Water</type>
 <class>Physical</class>
 <power>35</power>
@@ -1175,7 +1118,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Close Combat" id="59">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>120</power>
@@ -1197,7 +1139,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Comet Punch" id="60">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>18</power>
@@ -1219,7 +1160,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Confuse Ray" id="61">
-
 <type>Ghost</type>
 <class>Other</class>
 <power>0</power>
@@ -1240,7 +1180,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Confusion" id="62">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>50</power>
@@ -1260,7 +1199,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Constrict" id="63">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>10</power>
@@ -1280,7 +1218,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Conversion" id="64">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1298,7 +1235,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Conversion 2" id="65">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1316,7 +1252,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Copycat" id="66">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1334,7 +1269,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Cosmic Power" id="67">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -1353,7 +1287,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Cotton Spore" id="68">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -1373,7 +1306,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 </move>
 
 <move name="Counter" id="69">
-
 <type>Fighting</type>
 <class>Physical</class>
 <priority>-5</priority>
@@ -1390,7 +1322,6 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 </move>
 
 <move name="Covet" id="70">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>40</power>
@@ -1411,7 +1342,6 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 </move>
 
 <move name="Crabhammer" id="71">
-
 <type>Water</type>
 <class>Physical</class>
 <power>90</power>
@@ -1428,7 +1358,6 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 </move>
 
 <move name="Cross Chop" id="72">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>100</power>
@@ -1445,7 +1374,6 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 </move>
 
 <move name="Cross Poison" id="73">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>70</power>
@@ -1468,7 +1396,6 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 </move>
 
 <move name="Crunch" id="74">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>80</power>
@@ -1488,7 +1415,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Crush Claw" id="75">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>75</power>
@@ -1508,7 +1434,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Crush Grip" id="76">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -1530,7 +1455,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Curse" id="77">
-
 <type>Typeless</type>
 <class>Other</class>
 <power>0</power>
@@ -1548,7 +1472,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Cut" id="78">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>50</power>
@@ -1564,7 +1487,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Dark Pulse" id="79">
-
 <type>Dark</type>
 <class>Special</class>
 <power>80</power>
@@ -1585,7 +1507,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Dark Void" id="80">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -1603,7 +1524,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Defend Order" id="81">
-
 <type>Bug</type>
 <class>Other</class>
 <power>0</power>
@@ -1622,7 +1542,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Defense Curl" id="82">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1641,7 +1560,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Defog" id="83">
-
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -1661,7 +1579,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Destiny Bond" id="84">
-
 <type>Ghost</type>
 <class>Other</class>
 <power>0</power>
@@ -1679,7 +1596,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Detect" id="85">
-
 <type>Fighting</type>
 <class>Other</class>
 <priority>3</priority>
@@ -1698,7 +1614,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Dig" id="86">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>80</power>
@@ -1720,7 +1635,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Disable" id="87">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1740,7 +1654,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Discharge" id="88">
-
 <type>Electric</type>
 <class>Special</class>
 <power>80</power>
@@ -1760,7 +1673,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Dive" id="89">
-
 <type>Water</type>
 <class>Physical</class>
 <power>80</power>
@@ -1782,7 +1694,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Dizzy Punch" id="90">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>70</power>
@@ -1803,7 +1714,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Doom Desire" id="91">
-
 <type>Steel</type>
 <class>Special</class>
 <power>120</power>
@@ -1821,7 +1731,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Double Hit" id="92">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>35</power>
@@ -1843,7 +1752,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Double Kick" id="93">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>30</power>
@@ -1865,7 +1773,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Double Team" id="94">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -1883,7 +1790,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Double-edge" id="95">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>120</power>
@@ -1905,7 +1811,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Doubleslap" id="96">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -1927,7 +1832,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Draco Meteor" id="97">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>140</power>
@@ -1948,7 +1852,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragon Claw" id="98">
-
 <type>Dragon</type>
 <class>Physical</class>
 <power>80</power>
@@ -1964,7 +1867,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragon Dance" id="99">
-
 <type>Dragon</type>
 <class>Other</class>
 <power>0</power>
@@ -1983,7 +1885,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragon Pulse" id="100">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>90</power>
@@ -1998,7 +1899,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragon Rage" id="101">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>1</power>
@@ -2019,7 +1919,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragon Rush" id="102">
-
 <type>Dragon</type>
 <class>Physical</class>
 <power>100</power>
@@ -2041,7 +1940,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </move>
 
 <move name="Dragonbreath" id="103">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>60</power>
@@ -2061,7 +1959,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Drain Punch" id="104">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>60</power>
@@ -2083,7 +1980,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Dream Eater" id="105">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>100</power>
@@ -2103,7 +1999,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Drill Peck" id="106">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>80</power>
@@ -2119,7 +2014,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Dynamicpunch" id="107">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>100</power>
@@ -2140,7 +2034,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Earth Power" id="108">
-
 <type>Ground</type>
 <class>Special</class>
 <power>90</power>
@@ -2160,7 +2053,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Earthquake" id="109">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>100</power>
@@ -2175,7 +2067,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Egg Bomb" id="110">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>100</power>
@@ -2190,7 +2081,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Embargo" id="111">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -2210,7 +2100,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Ember" id="112">
-
 <type>Fire</type>
 <class>Special</class>
 <power>40</power>
@@ -2230,7 +2119,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Encore" id="113">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -2250,7 +2138,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Endeavor" id="114">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -2272,7 +2159,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Endure" id="115">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>3</priority>
@@ -2291,7 +2177,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Energy Ball" id="116">
-
 <type>Grass</type>
 <class>Special</class>
 <power>80</power>
@@ -2310,7 +2195,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Eruption" id="117">
-
 <type>Fire</type>
 <class>Special</class>
 <power>150</power>
@@ -2331,7 +2215,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Explosion" id="118">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>250</power>
@@ -2352,7 +2235,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Extrasensory" id="119">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>80</power>
@@ -2372,7 +2254,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Extremespeed" id="120">
-
 <type>Normal</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -2389,7 +2270,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Facade" id="121">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>70</power>
@@ -2410,7 +2290,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Faint Attack" id="122">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>60</power>
@@ -2432,7 +2311,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Fake Out" id="123">
-
 <type>Normal</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -2454,7 +2332,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Fake Tears" id="124">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -2474,7 +2351,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="False Swipe" id="125">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>40</power>
@@ -2496,7 +2372,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Featherdance" id="126">
-
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -2516,7 +2391,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Feint" id="127">
-
 <type>Normal</type>
 <class>Physical</class>
 <priority>2</priority>
@@ -2535,7 +2409,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Fire Blast" id="128">
-
 <type>Fire</type>
 <class>Special</class>
 <power>120</power>
@@ -2555,7 +2428,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Fire Fang" id="129">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>65</power>
@@ -2577,7 +2449,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Fire Punch" id="130">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>75</power>
@@ -2598,7 +2469,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Fire Spin" id="131">
-
 <type>Fire</type>
 <class>Special</class>
 <power>15</power>
@@ -2619,7 +2489,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Fissure" id="132">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>1</power>
@@ -2639,7 +2508,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Flail" id="133">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -2661,7 +2529,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Flame Wheel" id="134">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>60</power>
@@ -2682,7 +2549,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Flamethrower" id="135">
-
 <type>Fire</type>
 <class>Special</class>
 <power>95</power>
@@ -2702,7 +2568,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Flare Blitz" id="136">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>120</power>
@@ -2723,7 +2588,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 </move>
 
 <move name="Flash" id="137">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -2743,7 +2607,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Flash Cannon" id="138">
-
 <type>Steel</type>
 <class>Special</class>
 <power>80</power>
@@ -2763,7 +2626,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Flatter" id="139">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -2784,7 +2646,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Fling" id="140">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>1</power>
@@ -2804,7 +2665,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Fly" id="141">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>90</power>
@@ -2826,7 +2686,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Focus Blast" id="142">
-
 <type>Fighting</type>
 <class>Special</class>
 <power>120</power>
@@ -2845,7 +2704,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Focus Energy" id="143">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -2864,7 +2722,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Focus Punch" id="144">
-
 <type>Fighting</type>
 <class>Physical</class>
 <priority>-3</priority>
@@ -2885,7 +2742,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Follow Me" id="145">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>3</priority>
@@ -2904,7 +2760,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Force Palm" id="146">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>60</power>
@@ -2925,7 +2780,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Foresight" id="147">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -2945,7 +2799,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Frenzy Plant" id="148">
-
 <type>Grass</type>
 <class>Special</class>
 <power>150</power>
@@ -2966,7 +2819,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Frustration" id="149">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -2982,7 +2834,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Fury Attack" id="150">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -3004,7 +2855,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Fury Cutter" id="151">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>10</power>
@@ -3026,7 +2876,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Fury Swipes" id="152">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>18</power>
@@ -3048,7 +2897,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Future Sight" id="153">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>80</power>
@@ -3066,7 +2914,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Gastro Acid" id="154">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -3087,7 +2934,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Giga Drain" id="155">
-
 <type>Grass</type>
 <class>Special</class>
 <power>60</power>
@@ -3107,7 +2953,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Giga Impact" id="156">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>150</power>
@@ -3129,7 +2974,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Glare" id="157">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3149,7 +2993,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Grass Knot" id="158">
-
 <type>Grass</type>
 <class>Special</class>
 <power>1</power>
@@ -3171,7 +3014,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Grasswhistle" id="159">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -3189,7 +3031,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Gravity" id="160">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3207,7 +3048,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Growl" id="161">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3227,7 +3067,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1)]]);
 </move>
 
 <move name="Growth" id="162">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3245,7 +3084,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 </move>
 
 <move name="Grudge" id="163">
-
 <type>Ghost</type>
 <class>Other</class>
 <power>0</power>
@@ -3263,7 +3101,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 </move>
 
 <move name="Guard Swap" id="164">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3283,7 +3120,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 </move>
 
 <move name="Guillotine" id="165">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -3304,7 +3140,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 </move>
 
 <move name="Gunk Shot" id="166">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>120</power>
@@ -3324,7 +3159,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Gust" id="167">
-
 <type>Flying</type>
 <class>Special</class>
 <power>40</power>
@@ -3339,7 +3173,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Gyro Ball" id="168">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>1</power>
@@ -3361,7 +3194,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Hail" id="169">
-
 <type>Ice</type>
 <class>Other</class>
 <power>0</power>
@@ -3380,7 +3212,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Hammer Arm" id="170">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>100</power>
@@ -3402,7 +3233,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Harden" id="171">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3420,7 +3250,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Haze" id="172">
-
 <type>Ice</type>
 <class>Other</class>
 <power>0</power>
@@ -3438,7 +3267,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Head Smash" id="173">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>150</power>
@@ -3460,7 +3288,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Headbutt" id="174">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>70</power>
@@ -3481,7 +3308,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Heal Bell" id="175">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3500,7 +3326,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Heal Block" id="176">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3520,7 +3345,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Heal Order" id="177">
-
 <type>Bug</type>
 <class>Other</class>
 <power>0</power>
@@ -3539,7 +3363,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Healing Wish" id="178">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3557,7 +3380,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Heart Swap" id="179">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3577,7 +3399,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Heat Wave" id="180">
-
 <type>Fire</type>
 <class>Special</class>
 <power>100</power>
@@ -3597,7 +3418,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Helping Hand" id="181">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>5</priority>
@@ -3616,7 +3436,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Hi Jump Kick" id="182">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>100</power>
@@ -3638,7 +3457,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Hidden Power" id="183">
-
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -3659,7 +3477,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Horn Attack" id="184">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>65</power>
@@ -3675,7 +3492,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Horn Drill" id="185">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -3696,7 +3512,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Howl" id="186">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -3714,7 +3529,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hydro Cannon" id="187">
-
 <type>Water</type>
 <class>Special</class>
 <power>150</power>
@@ -3735,7 +3549,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hydro Pump" id="188">
-
 <type>Water</type>
 <class>Special</class>
 <power>120</power>
@@ -3750,7 +3563,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hyper Beam" id="189">
-
 <type>Normal</type>
 <class>Special</class>
 <power>150</power>
@@ -3771,7 +3583,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hyper Fang" id="190">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>80</power>
@@ -3792,7 +3603,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hyper Voice" id="191">
-
 <type>Normal</type>
 <class>Special</class>
 <power>90</power>
@@ -3806,7 +3616,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Hypnosis" id="192">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3825,7 +3634,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Ice Ball" id="193">
-
 <type>Ice</type>
 <class>Physical</class>
 <power>30</power>
@@ -3847,7 +3655,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Ice Beam" id="194">
-
 <type>Ice</type>
 <class>Special</class>
 <power>95</power>
@@ -3867,7 +3674,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Ice Fang" id="195">
-
 <type>Ice</type>
 <class>Physical</class>
 <power>65</power>
@@ -3889,7 +3695,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Ice Punch" id="196">
-
 <type>Ice</type>
 <class>Physical</class>
 <power>75</power>
@@ -3910,7 +3715,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Ice Shard" id="197">
-
 <type>Ice</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -3926,7 +3730,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Icicle Spear" id="198">
-
 <type>Ice</type>
 <class>Physical</class>
 <power>10</power>
@@ -3947,7 +3750,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Icy Wind" id="199">
-
 <type>Ice</type>
 <class>Special</class>
 <power>55</power>
@@ -3966,7 +3768,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Imprison" id="200">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -3984,7 +3785,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Ingrain" id="201">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -4003,7 +3803,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Iron Defense" id="202">
-
 <type>Steel</type>
 <class>Other</class>
 <power>0</power>
@@ -4021,7 +3820,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Iron Head" id="203">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>80</power>
@@ -4043,7 +3841,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 </move>
 
 <move name="Iron Tail" id="204">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>100</power>
@@ -4063,7 +3860,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 </move>
 
 <move name="Judgment" id="205">
-
 <type>Normal</type>
 <class>Special</class>
 <power>100</power>
@@ -4084,7 +3880,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 </move>
 
 <move name="Jump Kick" id="206">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>85</power>
@@ -4106,7 +3901,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 </move>
 
 <move name="Karate Chop" id="207">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>50</power>
@@ -4123,7 +3917,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 </move>
 
 <move name="Kinesis" id="208">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -4143,7 +3936,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Knock Off" id="209">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>20</power>
@@ -4164,7 +3956,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Last Resort" id="210">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>130</power>
@@ -4202,7 +3993,6 @@ if (usable) {
 </move>
 
 <move name="Lava Plume" id="211">
-
 <type>Fire</type>
 <class>Special</class>
 <power>80</power>
@@ -4223,7 +4013,6 @@ if (usable) {
 </move>
 
 <move name="Leaf Blade" id="212">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>90</power>
@@ -4246,7 +4035,6 @@ if (usable) {
 </move>
 
 <move name="Leaf Storm" id="213">
-
 <type>Grass</type>
 <class>Special</class>
 <power>140</power>
@@ -4267,7 +4055,6 @@ if (usable) {
 </move>
 
 <move name="Leech Life" id="214">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>20</power>
@@ -4288,7 +4075,6 @@ if (usable) {
 </move>
 
 <move name="Leech Seed" id="215">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -4309,7 +4095,6 @@ if (usable) {
 </move>
 
 <move name="Leer" id="216">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4329,7 +4114,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Lick" id="217">
-
 <type>Ghost</type>
 <class>Physical</class>
 <power>20</power>
@@ -4349,7 +4133,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Light Screen" id="218">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -4368,7 +4151,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Lock-on" id="219">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4388,7 +4170,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Lovely Kiss" id="220">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4406,7 +4187,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Low Kick" id="221">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>1</power>
@@ -4428,7 +4208,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Lucky Chant" id="222">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4446,7 +4225,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Lunar Dance" id="223">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -4464,7 +4242,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Luster Purge" id="224">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>70</power>
@@ -4483,7 +4260,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Mach Punch" id="225">
-
 <type>Fighting</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -4500,7 +4276,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magic Coat" id="226">
-
 <type>Psychic</type>
 <class>Other</class>
 <priority>4</priority>
@@ -4519,7 +4294,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magical Leaf" id="227">
-
 <type>Grass</type>
 <class>Special</class>
 <power>60</power>
@@ -4540,7 +4314,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magma Storm" id="228">
-
 <type>Fire</type>
 <class>Special</class>
 <power>120</power>
@@ -4561,7 +4334,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magnet Bomb" id="229">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>60</power>
@@ -4582,7 +4354,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magnet Rise" id="230">
-
 <type>Electric</type>
 <class>Other</class>
 <power>0</power>
@@ -4600,7 +4371,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Magnitude" id="231">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>1</power>
@@ -4621,7 +4391,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Me First" id="232">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4640,7 +4409,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Mean Look" id="233">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4661,7 +4429,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Meditate" id="234">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -4679,7 +4446,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Mega Drain" id="235">
-
 <type>Grass</type>
 <class>Special</class>
 <power>40</power>
@@ -4699,7 +4465,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Mega Kick" id="236">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>120</power>
@@ -4715,7 +4480,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Mega Punch" id="237">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>80</power>
@@ -4731,7 +4495,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Megahorn" id="238">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>120</power>
@@ -4747,7 +4510,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Memento" id="239">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -4767,7 +4529,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Metal Burst" id="240">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>1</power>
@@ -4783,7 +4544,6 @@ makeCounterMove(this, undefined, 1.5);
 </move>
 
 <move name="Metal Claw" id="241">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>50</power>
@@ -4804,7 +4564,6 @@ makeCounterMove(this, undefined, 1.5);
 </move>
 
 <move name="Metal Sound" id="242">
-
 <type>Steel</type>
 <class>Other</class>
 <power>0</power>
@@ -4824,7 +4583,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Meteor Mash" id="243">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>100</power>
@@ -4846,7 +4604,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Metronome" id="244">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4864,7 +4621,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Milk Drink" id="245">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4883,7 +4639,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Mimic" id="246">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4902,7 +4657,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Mind Reader" id="247">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4922,7 +4676,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Minimize" id="248">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -4941,7 +4694,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Miracle Eye" id="249">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -4961,7 +4713,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 </move>
 
 <move name="Mirror Coat" id="250">
-
 <type>Psychic</type>
 <class>Special</class>
 <priority>-5</priority>
@@ -4970,7 +4721,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 <pp>20</pp>
 <target>Lastenemy</target>
 <flags>
-	
+
 </flags>
 <init>
 makeCounterMove(this, MoveClass.SPECIAL, 2);
@@ -4978,7 +4729,6 @@ makeCounterMove(this, MoveClass.SPECIAL, 2);
 </move>
 
 <move name="Mirror Move" id="251">
-
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -4986,7 +4736,7 @@ makeCounterMove(this, MoveClass.SPECIAL, 2);
 <pp>20</pp>
 <target>Lastenemy</target>
 <flags>
-	
+
 </flags>
 <use>
 <![CDATA[
@@ -5004,7 +4754,6 @@ user.execute(move);
 </move>
 
 <move name="Mirror Shot" id="252">
-
 <type>Steel</type>
 <class>Special</class>
 <power>65</power>
@@ -5024,7 +4773,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 </move>
 
 <move name="Mist" id="253">
-
 <type>Ice</type>
 <class>Other</class>
 <power>0</power>
@@ -5043,7 +4791,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 </move>
 
 <move name="Mist Ball" id="254">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>70</power>
@@ -5062,7 +4809,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 </move>
 
 <move name="Moonlight" id="255">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5081,7 +4827,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 </move>
 
 <move name="Morning Sun" id="256">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5100,7 +4845,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 </move>
 
 <move name="Mud Bomb" id="257">
-
 <type>Ground</type>
 <class>Special</class>
 <power>65</power>
@@ -5120,7 +4864,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 </move>
 
 <move name="Mud Shot" id="258">
-
 <type>Ground</type>
 <class>Special</class>
 <power>55</power>
@@ -5140,7 +4883,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Mud Sport" id="259">
-
 <type>Ground</type>
 <class>Other</class>
 <power>0</power>
@@ -5158,7 +4900,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Mud-Slap" id="260">
-
 <type>Ground</type>
 <class>Special</class>
 <power>20</power>
@@ -5177,7 +4918,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.1]]);
 </move>
 
 <move name="Muddy Water" id="261">
-
 <type>Water</type>
 <class>Special</class>
 <power>95</power>
@@ -5197,7 +4937,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 </move>
 
 <move name="Nasty Plot" id="262">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -5215,7 +4954,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Natural Gift" id="263">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -5235,7 +4973,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Nature Power" id="264">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5253,7 +4990,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Needle Arm" id="265">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>60</power>
@@ -5274,7 +5010,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Night Shade" id="266">
-
 <type>Ghost</type>
 <class>Special</class>
 <power>1</power>
@@ -5295,7 +5030,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Night Slash" id="267">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>70</power>
@@ -5312,7 +5046,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Nightmare" id="268">
-
 <type>Ghost</type>
 <class>Other</class>
 <power>0</power>
@@ -5332,7 +5065,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Octazooka" id="269">
-
 <type>Water</type>
 <class>Special</class>
 <power>65</power>
@@ -5351,7 +5083,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Odor Sleuth" id="270">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5371,7 +5102,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Ominous Wind" id="271">
-
 <type>Ghost</type>
 <class>Special</class>
 <power>60</power>
@@ -5392,7 +5122,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Outrage" id="272">
-
 <type>Dragon</type>
 <class>Physical</class>
 <power>120</power>
@@ -5414,7 +5143,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Overheat" id="273">
-
 <type>Fire</type>
 <class>Special</class>
 <power>140</power>
@@ -5435,7 +5163,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Pain Split" id="274">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5455,7 +5182,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Pay Day" id="275">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>40</power>
@@ -5476,7 +5202,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Payback" id="276">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>50</power>
@@ -5498,7 +5223,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Peck" id="277">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>35</power>
@@ -5514,7 +5238,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Perish Song" id="278">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5532,7 +5255,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Petal Dance" id="279">
-
 <type>Grass</type>
 <class>Special</class>
 <power>90</power>
@@ -5554,7 +5276,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Pin Missile" id="280">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>14</power>
@@ -5575,7 +5296,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Pluck" id="281">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>60</power>
@@ -5597,7 +5317,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Poison Fang" id="282">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>50</power>
@@ -5618,7 +5337,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Poison Gas" id="283">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -5639,7 +5357,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 </move>
 
 <move name="Poison Jab" id="284">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>80</power>
@@ -5660,7 +5377,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Poison Sting" id="285">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>15</power>
@@ -5679,7 +5395,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Poison Tail" id="286">
-
 <type>Poison</type>
 <class>Physical</class>
 <power>50</power>
@@ -5702,7 +5417,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Poisonpowder" id="287">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -5723,7 +5437,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Pound" id="288">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>40</power>
@@ -5739,7 +5452,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Powder Snow" id="289">
-
 <type>Ice</type>
 <class>Special</class>
 <power>40</power>
@@ -5759,7 +5471,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Power Gem" id="290">
-
 <type>Rock</type>
 <class>Special</class>
 <power>70</power>
@@ -5774,7 +5485,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Power Swap" id="291">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -5794,7 +5504,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Power Trick" id="292">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -5812,7 +5521,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Power Whip" id="293">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>120</power>
@@ -5828,7 +5536,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Present" id="294">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -5848,7 +5555,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Protect" id="295">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>3</priority>
@@ -5867,7 +5573,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Psybeam" id="296">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>65</power>
@@ -5887,7 +5592,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Psych Up" id="297">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -5906,7 +5610,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Psychic" id="298">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>90</power>
@@ -5925,7 +5628,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Psycho Boost" id="299">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>140</power>
@@ -5946,7 +5648,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Psycho Cut" id="300">
-
 <type>Psychic</type>
 <class>Physical</class>
 <power>70</power>
@@ -5962,7 +5663,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Psycho Shift" id="301">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -5982,7 +5682,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Psywave" id="302">
-
 <type>Psychic</type>
 <class>Special</class>
 <power>1</power>
@@ -6003,7 +5702,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Punishment" id="303">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>60</power>
@@ -6025,7 +5723,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Pursuit" id="304">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>40</power>
@@ -6046,7 +5743,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Quick Attack" id="305">
-
 <type>Normal</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -6063,7 +5759,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rage" id="306">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>20</power>
@@ -6085,7 +5780,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rain Dance" id="307">
-
 <type>Water</type>
 <class>Other</class>
 <power>0</power>
@@ -6103,7 +5797,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rapid Spin" id="308">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>20</power>
@@ -6125,7 +5818,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Razor Leaf" id="309">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>55</power>
@@ -6141,7 +5833,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Razor Wind" id="310">
-
 <type>Normal</type>
 <class>Special</class>
 <power>80</power>
@@ -6162,7 +5853,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Recover" id="311">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6181,7 +5871,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Recycle" id="312">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6199,7 +5888,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Reflect" id="313">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -6218,7 +5906,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Refresh" id="314">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6237,7 +5924,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rest" id="315">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -6256,7 +5942,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Return" id="316">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -6272,7 +5957,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Revenge" id="317">
-
 <type>Fighting</type>
 <class>Physical</class>
 <priority>-4</priority>
@@ -6295,7 +5979,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Reversal" id="318">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>1</power>
@@ -6317,7 +6000,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Roar" id="319">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>-6</priority>
@@ -6338,7 +6020,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Roar Of Time" id="320">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>150</power>
@@ -6359,7 +6040,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rock Blast" id="321">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>25</power>
@@ -6380,7 +6060,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rock Climb" id="322">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>90</power>
@@ -6402,7 +6081,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </move>
 
 <move name="Rock Polish" id="323">
-
 <type>Rock</type>
 <class>Other</class>
 <power>0</power>
@@ -6420,7 +6098,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 </move>
 
 <move name="Rock Slide" id="324">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>75</power>
@@ -6440,7 +6117,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 </move>
 
 <move name="Rock Smash" id="325">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>40</power>
@@ -6460,7 +6136,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Rock Throw" id="326">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>50</power>
@@ -6475,7 +6150,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 </move>
 
 <move name="Rock Tomb" id="327">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>50</power>
@@ -6494,7 +6168,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Rock Wrecker" id="328">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>150</power>
@@ -6515,7 +6188,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Role Play" id="329">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -6533,7 +6205,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Rolling Kick" id="330">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>60</power>
@@ -6549,7 +6220,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Rollout" id="331">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>30</power>
@@ -6571,7 +6241,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Roost" id="332">
-
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -6590,7 +6259,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Sacred Fire" id="333">
-
 <type>Fire</type>
 <class>Physical</class>
 <power>100</power>
@@ -6610,7 +6278,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Safeguard" id="334">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6629,7 +6296,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Sand Tomb" id="335">
-
 <type>Ground</type>
 <class>Physical</class>
 <power>15</power>
@@ -6650,7 +6316,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </move>
 
 <move name="Sand-Attack" id="336">
-
 <type>Ground</type>
 <class>Other</class>
 <power>0</power>
@@ -6670,7 +6335,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Sandstorm" id="337">
-
 <type>Rock</type>
 <class>Other</class>
 <power>0</power>
@@ -6688,7 +6352,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Scary Face" id="338">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6708,7 +6371,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 </move>
 
 <move name="Scratch" id="339">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>40</power>
@@ -6724,7 +6386,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 </move>
 
 <move name="Screech" id="340">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6744,7 +6405,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Secret Power" id="341">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>70</power>
@@ -6764,7 +6424,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Seed Bomb" id="342">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>80</power>
@@ -6779,7 +6438,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Seed Flare" id="343">
-
 <type>Grass</type>
 <class>Special</class>
 <power>120</power>
@@ -6800,7 +6458,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Seismic Toss" id="344">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>1</power>
@@ -6822,7 +6479,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Selfdestruct" id="345">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>200</power>
@@ -6843,7 +6499,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 </move>
 
 <move name="Shadow Ball" id="346">
-
 <type>Ghost</type>
 <class>Special</class>
 <power>80</power>
@@ -6862,7 +6517,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Shadow Claw" id="347">
-
 <type>Ghost</type>
 <class>Physical</class>
 <power>70</power>
@@ -6879,7 +6533,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Shadow Force" id="348">
-
 <type>Ghost</type>
 <class>Physical</class>
 <power>120</power>
@@ -6900,7 +6553,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Shadow Punch" id="349">
-
 <type>Ghost</type>
 <class>Physical</class>
 <power>60</power>
@@ -6922,7 +6574,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Shadow Sneak" id="350">
-
 <type>Ghost</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -6945,7 +6596,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 </move>
 
 <move name="Sharpen" id="351">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6963,7 +6613,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Sheer Cold" id="352">
-
 <type>Ice</type>
 <class>Special</class>
 <power>1</power>
@@ -6983,7 +6632,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Shock Wave" id="353">
-
 <type>Electric</type>
 <class>Special</class>
 <power>60</power>
@@ -7004,7 +6652,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Signal Beam" id="354">
-
 <type>Bug</type>
 <class>Special</class>
 <power>75</power>
@@ -7025,7 +6672,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Silver Wind" id="355">
-
 <type>Bug</type>
 <class>Special</class>
 <power>60</power>
@@ -7046,7 +6692,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 </move>
 
 <move name="Sing" id="356">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7064,7 +6709,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sketch" id="357">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7082,7 +6726,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Skill Swap" id="358">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -7102,7 +6745,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Skull Bash" id="359">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>100</power>
@@ -7124,7 +6766,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sky Attack" id="360">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>140</power>
@@ -7145,7 +6786,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sky Uppercut" id="361">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>85</power>
@@ -7161,7 +6801,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Slack Off" id="362">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7180,7 +6819,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Slam" id="363">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>80</power>
@@ -7196,7 +6834,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Slash" id="364">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>70</power>
@@ -7213,7 +6850,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sleep Powder" id="365">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -7231,7 +6867,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sleep Talk" id="366">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7249,7 +6884,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Sludge" id="367">
-
 <type>Poison</type>
 <class>Special</class>
 <power>65</power>
@@ -7268,7 +6902,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Sludge Bomb" id="368">
-
 <type>Poison</type>
 <class>Special</class>
 <power>90</power>
@@ -7287,7 +6920,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Smellingsalt" id="369">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>60</power>
@@ -7308,7 +6940,6 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </move>
 
 <move name="Smog" id="370">
-
 <type>Poison</type>
 <class>Special</class>
 <power>20</power>
@@ -7327,7 +6958,6 @@ makeStatusMove(this, [[PoisonEffect, 0.4]]);
 </move>
 
 <move name="Smokescreen" id="371">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7347,7 +6977,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Snatch" id="372">
-
 <type>Dark</type>
 <class>Other</class>
 <priority>4</priority>
@@ -7366,7 +6995,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Snore" id="373">
-
 <type>Normal</type>
 <class>Special</class>
 <power>40</power>
@@ -7387,7 +7015,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Softboiled" id="374">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7406,7 +7033,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Solarbeam" id="375">
-
 <type>Grass</type>
 <class>Special</class>
 <power>120</power>
@@ -7427,7 +7053,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Sonicboom" id="376">
-
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -7448,7 +7073,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Spacial Rend" id="377">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>100</power>
@@ -7464,7 +7088,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 </move>
 
 <move name="Spark" id="378">
-
 <type>Electric</type>
 <class>Physical</class>
 <power>65</power>
@@ -7484,7 +7107,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spider Web" id="379">
-
 <type>Bug</type>
 <class>Other</class>
 <power>0</power>
@@ -7505,7 +7127,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spike Cannon" id="380">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>20</power>
@@ -7526,7 +7147,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spikes" id="381">
-
 <type>Ground</type>
 <class>Other</class>
 <power>0</power>
@@ -7544,7 +7164,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spit Up" id="382">
-
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -7564,7 +7183,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spite" id="383">
-
 <type>Ghost</type>
 <class>Other</class>
 <power>0</power>
@@ -7584,7 +7202,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Splash" id="384">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7602,7 +7219,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 </move>
 
 <move name="Spore" id="385">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -7620,7 +7236,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Stealth Rock" id="386">
-
 <type>Rock</type>
 <class>Other</class>
 <power>0</power>
@@ -7638,7 +7253,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Steel Wing" id="387">
-
 <type>Steel</type>
 <class>Physical</class>
 <power>70</power>
@@ -7660,7 +7274,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Stockpile" id="388">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7679,7 +7292,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Stomp" id="389">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>65</power>
@@ -7700,7 +7312,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Stone Edge" id="390">
-
 <type>Rock</type>
 <class>Physical</class>
 <power>100</power>
@@ -7716,7 +7327,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="Strength" id="391">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>80</power>
@@ -7732,7 +7342,6 @@ makeStatusMove(this, [[SleepEffect]]);
 </move>
 
 <move name="String Shot" id="392">
-
 <type>Bug</type>
 <class>Other</class>
 <power>0</power>
@@ -7752,7 +7361,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 </move>
 
 <move name="Struggle" id="393">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>50</power>
@@ -7773,7 +7381,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 </move>
 
 <move name="Stun Spore" id="394">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -7793,7 +7400,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Submission" id="395">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>80</power>
@@ -7815,7 +7421,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Substitute" id="396">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7834,7 +7439,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Sucker Punch" id="397">
-
 <type>Dark</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -7857,7 +7461,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Sunny Day" id="398">
-
 <type>Fire</type>
 <class>Other</class>
 <power>0</power>
@@ -7875,7 +7478,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Super Fang" id="399">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>1</power>
@@ -7896,7 +7498,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Superpower" id="400">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>120</power>
@@ -7917,7 +7518,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Supersonic" id="401">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7938,7 +7538,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Surf" id="402">
-
 <type>Water</type>
 <class>Special</class>
 <power>95</power>
@@ -7953,7 +7552,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Swagger" id="403">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7974,7 +7572,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Swallow" id="404">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -7993,7 +7590,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Sweet Kiss" id="405">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8014,7 +7610,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Sweet Scent" id="406">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8034,7 +7629,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 </move>
 
 <move name="Swift" id="407">
-
 <type>Normal</type>
 <class>Special</class>
 <power>60</power>
@@ -8055,7 +7649,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 </move>
 
 <move name="Switcheroo" id="408">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -8075,7 +7668,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 </move>
 
 <move name="Swords Dance" id="409">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8093,7 +7685,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 </move>
 
 <move name="Synthesis" id="410">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -8112,7 +7703,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 </move>
 
 <move name="Tackle" id="411">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>35</power>
@@ -8128,7 +7718,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 </move>
 
 <move name="Tail Glow" id="412">
-
 <type>Bug</type>
 <class>Other</class>
 <power>0</power>
@@ -8146,7 +7735,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 </move>
 
 <move name="Tail Whip" id="413">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8166,7 +7754,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Tailwind" id="414">
-
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -8185,7 +7772,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Take Down" id="415">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>90</power>
@@ -8207,7 +7793,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Taunt" id="416">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -8227,7 +7812,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Teeter Dance" id="417">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8247,7 +7831,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Teleport" id="418">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -8265,7 +7848,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Thief" id="419">
-
 <type>Dark</type>
 <class>Physical</class>
 <power>40</power>
@@ -8286,7 +7868,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Thrash" id="420">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>90</power>
@@ -8308,7 +7889,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Thunder" id="421">
-
 <type>Electric</type>
 <class>Special</class>
 <power>120</power>
@@ -8328,7 +7908,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Thunder Fang" id="422">
-
 <type>Electric</type>
 <class>Physical</class>
 <power>65</power>
@@ -8350,7 +7929,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 </move>
 
 <move name="Thunder Wave" id="423">
-
 <type>Electric</type>
 <class>Other</class>
 <power>0</power>
@@ -8370,7 +7948,6 @@ makeStatusMove(this, [[ParalysisEffect]], true);
 </move>
 
 <move name="Thunderbolt" id="424">
-
 <type>Electric</type>
 <class>Special</class>
 <power>95</power>
@@ -8389,7 +7966,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Thunderpunch" id="425">
-
 <type>Electric</type>
 <class>Physical</class>
 <power>75</power>
@@ -8409,7 +7985,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Thundershock" id="426">
-
 <type>Electric</type>
 <class>Special</class>
 <power>40</power>
@@ -8428,7 +8003,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Tickle" id="427">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8449,7 +8023,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Torment" id="428">
-
 <type>Dark</type>
 <class>Other</class>
 <power>0</power>
@@ -8469,7 +8042,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Toxic" id="429">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -8490,7 +8062,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Toxic Spikes" id="430">
-
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -8508,7 +8079,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Transform" id="431">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8526,7 +8096,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Tri Attack" id="432">
-
 <type>Normal</type>
 <class>Special</class>
 <power>80</power>
@@ -8546,7 +8115,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Trick" id="433">
-
 <type>Psychic</type>
 <class>Other</class>
 <power>0</power>
@@ -8566,7 +8134,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Trick Room" id="434">
-
 <type>Psychic</type>
 <class>Other</class>
 <priority>-7</priority>
@@ -8586,7 +8153,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Triple Kick" id="435">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>10</power>
@@ -8608,7 +8174,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Trump Card" id="436">
-
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -8630,7 +8195,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Twineedle" id="437">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>25</power>
@@ -8650,7 +8214,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Twister" id="438">
-
 <type>Dragon</type>
 <class>Special</class>
 <power>40</power>
@@ -8671,7 +8234,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="U-turn" id="439">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>70</power>
@@ -8693,7 +8255,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Uproar" id="440">
-
 <type>Normal</type>
 <class>Special</class>
 <power>50</power>
@@ -8714,7 +8275,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Vacuum Wave" id="441">
-
 <type>Fighting</type>
 <class>Special</class>
 <priority>1</priority>
@@ -8730,7 +8290,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Vicegrip" id="442">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>55</power>
@@ -8746,7 +8305,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Vine Whip" id="443">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>35</power>
@@ -8762,7 +8320,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Vital Throw" id="444">
-
 <type>Fighting</type>
 <class>Physical</class>
 <priority>-1</priority>
@@ -8785,7 +8342,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Volt Tackle" id="445">
-
 <type>Electric</type>
 <class>Physical</class>
 <power>120</power>
@@ -8807,7 +8363,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Wake-up Slap" id="446">
-
 <type>Fighting</type>
 <class>Physical</class>
 <power>60</power>
@@ -8829,7 +8384,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Water Gun" id="447">
-
 <type>Water</type>
 <class>Special</class>
 <power>40</power>
@@ -8844,7 +8398,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Water Pulse" id="448">
-
 <type>Water</type>
 <class>Special</class>
 <power>60</power>
@@ -8865,7 +8418,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Water Sport" id="449">
-
 <type>Water</type>
 <class>Other</class>
 <power>0</power>
@@ -8883,7 +8435,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Water Spout" id="450">
-
 <type>Water</type>
 <class>Special</class>
 <power>150</power>
@@ -8903,7 +8454,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Waterfall" id="451">
-
 <type>Water</type>
 <class>Physical</class>
 <power>80</power>
@@ -8925,7 +8475,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Weather Ball" id="452">
-
 <type>Normal</type>
 <class>Special</class>
 <power>50</power>
@@ -8946,7 +8495,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Whirlpool" id="453">
-
 <type>Water</type>
 <class>Special</class>
 <power>15</power>
@@ -8967,7 +8515,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Whirlwind" id="454">
-
 <type>Normal</type>
 <class>Other</class>
 <priority>-6</priority>
@@ -8988,7 +8535,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Will-o-wisp" id="455">
-
 <type>Fire</type>
 <class>Other</class>
 <power>0</power>
@@ -9009,7 +8555,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Wing Attack" id="456">
-
 <type>Flying</type>
 <class>Physical</class>
 <power>60</power>
@@ -9025,7 +8570,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Wish" id="457">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -9043,7 +8587,6 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </move>
 
 <move name="Withdraw" id="458">
-
 <type>Water</type>
 <class>Other</class>
 <power>0</power>
@@ -9061,7 +8604,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Wood Hammer" id="459">
-
 <type>Grass</type>
 <class>Physical</class>
 <power>120</power>
@@ -9083,7 +8625,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Worry Seed" id="460">
-
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>
@@ -9104,7 +8645,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Wrap" id="461">
-
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -9126,7 +8666,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Wring Out" id="462">
-
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -9148,7 +8687,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="X-Scissor" id="463">
-
 <type>Bug</type>
 <class>Physical</class>
 <power>80</power>
@@ -9164,7 +8702,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Yawn" id="464">
-
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -9185,7 +8722,6 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 </move>
 
 <move name="Zap Cannon" id="465">
-
 <type>Electric</type>
 <class>Special</class>
 <power>120</power>
@@ -9204,7 +8740,6 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </move>
 
 <move name="Zen Headbutt" id="466">
-
 <type>Psychic</type>
 <class>Physical</class>
 <power>80</power>
@@ -9225,3 +8760,4 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </use>
 </move>
 
+</shoddybattle>
