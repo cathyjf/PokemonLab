@@ -62,11 +62,14 @@ public:
     void terminate() {
         boost::unique_lock<boost::mutex> lock(m_mutex);
         if (!m_terminated) {
+            m_terminated = true;
             while (!m_empty) {
                 m_condition.wait(lock);
             }
-            m_thread.interrupt();
-            m_terminated = true;
+            m_empty = false;
+            lock.unlock();
+            m_condition.notify_one();
+            m_thread.join();
         }
     }
 
@@ -81,6 +84,9 @@ private:
         while (true) {
             while (m_empty) {
                 m_condition.wait(lock);
+            }
+            if (m_terminated) {
+                return;
             }
             m_delegate(m_item);
             m_empty = true;
