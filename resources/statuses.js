@@ -184,7 +184,7 @@ makeEffect({
     informFailure : function() { },
     unapplyEffect : function() {
         var present = this.subject.getStatLevel(this.stat);
-        this.subject.setStatLevel(this.stat, present + this.delta);
+        this.subject.setStatLevel(this.stat, present - this.delta);
     }
 });
 
