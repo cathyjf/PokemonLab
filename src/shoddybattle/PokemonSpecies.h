@@ -88,6 +88,7 @@ public:
     const MOVESET &getMoveset() const { return m_moveset; }
     const ABILITY_LIST &getAbilities() const { return m_abilities; }
     const MOVE_LIST &getMoveList() const { return m_moves; }
+    double getMass() const { return m_mass; }
 
     std::set<std::string> populateMoveList(const MoveDatabase &);
     const MoveTemplate *getMove(const std::string name) const {

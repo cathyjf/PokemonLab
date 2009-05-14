@@ -113,6 +113,10 @@ Pokemon::~Pokemon() {
     m_machine->releaseContext(cx);
 }
 
+double Pokemon::getMass() const {
+    return m_species->getMass();
+}
+
 string Pokemon::getSpeciesName() const {
     return m_species->getSpeciesName();
 }
@@ -282,7 +286,6 @@ StatusObject *Pokemon::getStatus(const int lock) {
     }
     return NULL;
 }
-
 
 /**
  * Execute an arbitrary move on a particular target.

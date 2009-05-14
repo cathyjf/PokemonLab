@@ -129,6 +129,7 @@ public:
     std::string getSpeciesName() const;
     int getSpeciesId() const;
     std::string getName() const { return m_nickname; }
+    double getMass() const;
 
     unsigned int getBaseStat(const STAT i) const;
     unsigned int getIv(const STAT i) const { return m_iv[i]; }
