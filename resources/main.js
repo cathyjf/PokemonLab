@@ -23,7 +23,7 @@ loadText("languages/english.lang", function(name) {
 });
 
 includeSpecies("resources/species.xml");
-includeMoves("resources/moves2.xml");
+includeMoves("resources/moves.xml");
 populateMoveLists();
 
 include("resources/moves.js");
