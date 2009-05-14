@@ -313,24 +313,15 @@ struct NetworkBattleImpl {
         if (pokemon.empty()) {
             return false;
         }
-        int alive[TEAM_COUNT];
-        for (int i = 0; i < TEAM_COUNT; ++i) {
-            alive[i] = field->getAliveCount(i);
-        }
-        replacement = false;
+
+        replacement = true;
         for (Pokemon::ARRAY::const_iterator i = pokemon.begin();
                 i != pokemon.end(); ++i) {
             const int party = (*i)->getParty();
-            if (alive[party] > 1) {
-                const int slot = (*i)->getSlot();
-                requests[party].push_back(slot);
-                replacement = true;
-                --alive[party];
-            }
+            const int slot = (*i)->getSlot();
+            requests[party].push_back(slot);
         }
-        if (!replacement) {
-            return false;
-        }
+
         for (int i = 0; i < TEAM_COUNT; ++i) {
             if (!requests[i].empty()) {
                 requestAction(i);

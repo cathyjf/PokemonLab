@@ -208,7 +208,7 @@ public:
     /**
      * Get the active pokemon.
      */
-    void getActivePokemon(std::vector<Pokemon::PTR> &);
+    void getActivePokemon(Pokemon::ARRAY &);
     boost::shared_ptr<PokemonParty> *getActivePokemon();
     Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
         return (*getActivePokemon()[i])[j].pokemon;
@@ -217,7 +217,7 @@ public:
     /**
      * Get the fainted pokemon.
      */
-    void getFaintedPokemon(std::vector<Pokemon::PTR> &);
+    void getFaintedPokemon(Pokemon::ARRAY &);
 
     /**
      * Get the number of living pokemon on a team.
