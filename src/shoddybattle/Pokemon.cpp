@@ -642,8 +642,8 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
  * Cause this pokemon to faint.
  */
 void Pokemon::faint() {
-    m_field->informFainted(this);
     m_fainted = true;
+    m_field->informFainted(this);
     clearMemory();
 }
 
