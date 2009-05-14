@@ -1060,12 +1060,16 @@ ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
     acceptClient();
 }
 
+inline bool stricmp(const string &s1, const string &s2) {
+    return (stricmp(s1.c_str(), s2.c_str()) == 0);
+}
+
 bool ServerImpl::authenticateClient(ClientImplPtr client) {
     lock_guard<shared_mutex> lock(m_clientMutex);
     const string &name = client->getName();
     CLIENT_LIST::iterator i = m_clients.begin();
     for (; i != m_clients.end(); ++i) {
-        if ((*i)->isAuthenticated() && ((*i)->getName() == name))
+        if ((*i)->isAuthenticated() && stricmp((*i)->getName(), name))
             return false;
     }
     client->setAuthenticated(true);
@@ -1076,7 +1080,7 @@ ClientImplPtr ServerImpl::getClient(const string &name) {
     shared_lock<shared_mutex> lock(m_clientMutex);
     CLIENT_LIST::iterator i = m_clients.begin();
     for (; i != m_clients.end(); ++i) {
-        if ((*i)->isAuthenticated() && ((*i)->getName() == name))
+        if ((*i)->isAuthenticated() && stricmp((*i)->getName(), name))
             return *i;
     }
     return ClientImplPtr();
