@@ -235,6 +235,13 @@ void Pokemon::switchOut() {
     m_moveUsed.clear();
     m_moveUsed.resize(m_moves.size(), false);
     // Adjust the memories other active pokemon.
+    clearMemory();
+}
+
+/**
+ * Adjust the memories other active pokemon.
+ */
+void Pokemon::clearMemory() {
     shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *active[i];
@@ -634,7 +641,7 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
 void Pokemon::faint() {
     m_field->informFainted(this);
     m_fainted = true;
-    //switchOut();
+    clearMemory();
 }
 
 /**

@@ -106,6 +106,7 @@ public:
     const MoveTemplate *getMemory() const;
     Pokemon *getMemoryPokemon() const;
     void removeMemory(Pokemon *);
+    void clearMemory();
     
     const STATUSES &getEffects() const { return m_effects; }
     StatusObject *applyStatus(Pokemon *, StatusObject *);
