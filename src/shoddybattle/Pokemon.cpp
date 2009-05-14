@@ -263,6 +263,21 @@ StatusObject *Pokemon::getStatus(const string &id) {
 }
 
 /**
+ * Get a status effect by lock.
+ */
+StatusObject *Pokemon::getStatus(const int lock) {
+    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
+        if ((*i)->isRemovable(m_cx))
+            continue;
+
+        if ((*i)->getLock(m_cx) == lock)
+            return *i;
+    }
+    return NULL;
+}
+
+
+/**
  * Execute an arbitrary move on a particular target.
  */
 bool Pokemon::useMove(MoveObject *move,
@@ -475,7 +490,10 @@ StatusObject *Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     if (!effect)
         return NULL;
 
-    // todo: locks
+    const int lock = effect->getLock(m_cx);
+    if ((lock != 0) && getStatus(lock)) {
+        return NULL;
+    }
 
     if (effect->isSingleton(m_cx)) {
         StatusObject *singleton = getStatus(effect->getId(m_cx));

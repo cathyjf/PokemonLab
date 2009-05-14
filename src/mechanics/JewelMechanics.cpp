@@ -103,6 +103,9 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
     int term = 0;
     ScriptContext *cx = field.getContext();
+    if (move.getFlag(cx, F_NO_CRITICAL)) {
+        return false;
+    }
     if (move.getFlag(cx, F_HIGH_CRITICAL)) {
         term += 1;
     }
@@ -139,8 +142,6 @@ int JewelMechanics::getRandomInt(const int lower, const int upper) const {
  */
 int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target, const int targets) const {
-
-    // TODO: stat levels
     
     ScriptContext *cx = field.getContext();
 

@@ -111,6 +111,7 @@ public:
     StatusObject *applyStatus(Pokemon *, StatusObject *);
     void removeStatus(StatusObject *);
     StatusObject *getStatus(const std::string &);
+    StatusObject *getStatus(const int lock);
     void getModifiers(Pokemon *, Pokemon *,
             MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);

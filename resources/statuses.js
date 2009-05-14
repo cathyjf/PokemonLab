@@ -22,67 +22,117 @@
  * online at http://gnu.org.
  */
 
+function makeEffect(obj) {
+    if (obj.ctor == undefined) {
+        obj.ctor = function() { };
+    }
+    var ctor = obj.ctor;
+    ctor.prototype = new StatusEffect(obj.id);
+    for (var i in obj) {
+        ctor.prototype[i] = obj[i];
+    }
+    this[obj.id] = ctor;
+}
+
+/**
+ * Confusion
+ */
+makeEffect({
+    id : "ConfusionEffect",
+    name : Text.status_effects_confusion(0),
+    applyEffect : function() {
+        var field = this.subject.field;
+        field.print(Text.status_effects_confusion(1, this.subject));
+        this.turns = field.random(2, 5);
+        return true;
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        if (target != null)
+            return false;
+        field.print(Text.status_effects_confusion(3, user));
+        if (--this.turns <= 0) {
+            field.print(Text.status_effects_confusion(2, user));
+            user.removeStatus(this);
+            return false;
+        }
+        if (field.random(0.5)) {
+            return false;
+        }
+        field.print(Text.status_effects_confusion(4, user));
+        var confuse = field.getMove("__confusion");
+        var damage = field.calculate(confuse, user, user, 1);
+        user.hp -= damage;
+        return true;
+    },
+    informFailure : function(subject) {
+        subject.field.print(Text.status_effects_confusion(5, subject));
+    }
+});
+
+
 /**
  * Poison
- *
- * TODO: tier
  */
-function PoisonEffect() { }
-PoisonEffect.prototype = new StatusEffect("PoisonEffect");
-PoisonEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
-PoisonEffect.prototype.name = Text.status_effects_poison(0);
-PoisonEffect.prototype.tier = 6;
-PoisonEffect.prototype.subtier = 4;
-PoisonEffect.prototype.switchOut = function() { return false; };
-PoisonEffect.prototype.applyEffect = function() {
-    this.subject.field.print(Text.status_effects_poison(1, this.subject));
-    return true;
-};
-PoisonEffect.prototype.tick = function() {
-    if (this.subject.sendMessage("informPoisonDamage"))
-        return;
+makeEffect({
+    id : "PoisonEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_poison(0),
+    tier : 6,
+    subtier : 4,
+    switchOut : function() { return false; },
+    applyEffect : function() {
+        this.subject.field.print(Text.status_effects_poison(1, this.subject));
+        return true;
+    },
+    tick : function() {
+        if (this.subject.sendMessage("informPoisonDamage"))
+            return;
 
-    var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
-    if (damage < 1) damage = 1;
-    this.subject.field.print(Text.status_effects_poison(3, this.subject));
-    this.subject.hp -= damage;
-};
+        var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
+        if (damage < 1) damage = 1;
+        this.subject.field.print(Text.status_effects_poison(3, this.subject));
+        this.subject.hp -= damage;
+    }
+});
 
 
 /**
  * Paralysis
  *
  */
-function ParalysisEffect() { }
-ParalysisEffect.prototype = new StatusEffect("ParalysisEffect");
-ParalysisEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
-ParalysisEffect.prototype.name = Text.status_effects_paralysis(0);
-ParalysisEffect.prototype.switchOut = function() { return false; };
-ParalysisEffect.prototype.applyEffect = function() {
-    var field = this.subject.field;
-    field.print(Text.status_effects_paralysis(1, this.subject));
-    return true;
-};
-ParalysisEffect.prototype.vetoExecution = function(field, user, target, move) {
-    if (user != this.subject)
-        return false;
-    if (target != null)
-        return false;
-    if (field.random(0.75))
-        return false;
-    field.print(Text.status_effects_paralysis(2));
-    return true;
-};
-ParalysisEffect.prototype.statModifier = function(field, stat, subject) {
-    if (subject != this.subject)
-        return null;
-    if (stat != Stat.SPEED)
-        return null;
-    if (this.subject.sendMessage("informParalysisMod"))
-        return null;
-    // reduces speed to 25%, priority of 3
-    return [0.25, 3];
-};
+makeEffect({
+    id : "ParalysisEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_paralysis(0),
+    switchOut : function() { return false; },
+    applyEffect : function() {
+        var field = this.subject.field;
+        field.print(Text.status_effects_paralysis(1, this.subject));
+        return true;
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        if (target != null)
+            return false;
+        if (field.random(0.75))
+            return false;
+        field.print(Text.status_effects_paralysis(2, user));
+        return true;
+    },
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+        if (this.subject.sendMessage("informParalysisMod"))
+            return null;
+        // reduces speed to 25%, priority of 3
+        return [0.25, 3];
+    }
+});
 
 
 /**
@@ -90,51 +140,53 @@ ParalysisEffect.prototype.statModifier = function(field, stat, subject) {
  *
  * Changes a stat level on one pokemon.
  */
-function StatChangeEffect(stat, delta) {
-    this.applyEffect = function() {
-        this.stat = stat;
-        var present = this.subject.getStatLevel(stat);
-        var result = present + delta;
-        if (result < -6) {
-            result = -6;
-        } else if (result > 6) {
-            result = 6;
+makeEffect({
+    id : "StatChangeEffect",
+    ctor : function(stat, delta) {
+        this.applyEffect = function() {
+            this.stat = stat;
+            var present = this.subject.getStatLevel(stat);
+            var result = present + delta;
+            if (result < -6) {
+                result = -6;
+            } else if (result > 6) {
+                result = 6;
+            }
+            this.delta = result - present;
+
+            var message = 0;
+            if (this.delta <= -2) {
+                message = 3;
+            } else if (this.delta == -1) {
+                message = 2;
+            } else if (this.delta == 1) {
+                message = 0;
+            } else if (this.delta >= 2) {
+                message = 1;
+            } else if (delta < 0) {
+                message = 4;
+            } else {
+                message = 5;
+            }
+
+            this.subject.field.print(Text.status_effects_stat_level(message,
+                    this.subject, Text.stats_long(stat)));
+
+            if (this.delta == 0)
+                return false;
+
+            this.subject.setStatLevel(stat, result);
+            return true;
         }
-        this.delta = result - present;
-
-        var message = 0;
-        if (this.delta <= -2) {
-            message = 3;
-        } else if (this.delta == -1) {
-            message = 2;
-        } else if (this.delta == 1) {
-            message = 0;
-        } else if (this.delta >= 2) {
-            message = 1;
-        } else if (delta < 0) {
-            message = 4;
-        } else {
-            message = 5;
-        }
-
-        this.subject.field.print(Text.status_effects_stat_level(message,
-                this.subject, Text.stats_long(stat)));
-
-        if (this.delta == 0)
-            return false;
-
-        this.subject.setStatLevel(stat, result);
-        return true;
+    },
+    singleton : false,
+    name : "StatChangeEffect",
+    informFailure : function() { },
+    unapplyEffect : function() {
+        var present = this.subject.getStatLevel(this.stat);
+        this.subject.setStatLevel(this.stat, present + this.delta);
     }
-}
-StatChangeEffect.prototype = new StatusEffect("StatChangeEffect");
-StatChangeEffect.prototype.singleton = false;
-StatChangeEffect.prototype.name = "StatChangeEffect";
-StatChangeEffect.prototype.informFailure = function() { };
-StatChangeEffect.prototype.unapplyEffect = function() {
-    var present = this.subject.getStatLevel(this.stat);
-    this.subject.setStatLevel(this.stat, present + this.delta);
-}
+});
 
 
 /**
@@ -145,40 +197,41 @@ StatChangeEffect.prototype.unapplyEffect = function() {
  * ability than each turn deducts two turns from the counter rather than
  * one.
  */
-function SleepEffect() { }
-SleepEffect.prototype = new StatusEffect("SleepEffect");
-SleepEffect.prototype.lock = StatusEffect.SPECIAL_EFFECT;
-SleepEffect.prototype.name = Text.status_effects_sleep(0);
-SleepEffect.prototype.switchOut = function() { return false; };
-SleepEffect.prototype.applyEffect = function() {
-    var field = this.subject.field;
-    this.turns = field.random(1, 4); // random duration
-    field.print(Text.status_effects_sleep(1, this.subject));
-    return true;
-};
-SleepEffect.prototype.vetoExecution = function(field, user, target, move) {
-    if (user != this.subject)
-        return false;
-    // Only handle the "overall veto", not target specific.
-    if (target != null)
-        return false;
-    if (this.turns <= 0) {
-        user.removeStatus(this);
-        field.print(Text.status_effects_sleep(2, user));
-        return false;
-    }
-    --this.turns;
-    if (user.hasAbility("Early Bird")) { // this is really a part of Sleep
+makeEffect({
+    id : "SleepEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_sleep(0),
+    switchOut : function() { return false; },
+    applyEffect : function() {
+        var field = this.subject.field;
+        this.turns = field.random(1, 4); // random duration
+        field.print(Text.status_effects_sleep(1, this.subject));
+        return true;
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        // Only handle the "overall veto", not target specific.
+        if (target != null)
+            return false;
+        if (this.turns <= 0) {
+            user.removeStatus(this);
+            field.print(Text.status_effects_sleep(2, user));
+            return false;
+        }
         --this.turns;
+        if (user.hasAbility("Early Bird")) { // this is really a part of Sleep
+            --this.turns;
+        }
+
+        // Sleep Talk and Snore are not vetoed by Sleep.
+        var name = move.name;
+        if ((name == "Sleep Talk") || (name == "Snore"))
+            return false;
+
+        field.print(Text.status_effects_sleep(3, user))
+        return true;
     }
-
-    // Sleep Talk and Snore are not vetoed by Sleep.
-    var name = move.name;
-    if ((name == "Sleep Talk") || (name == "Snore"))
-        return false;
-
-    field.print(Text.status_effects_sleep(3, user))
-    return true;
-};
+});
 
 

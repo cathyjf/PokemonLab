@@ -281,6 +281,9 @@ JSBool hasAbility(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.execute(move, target)
+ */
 JSBool execute(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     bool inform = false;

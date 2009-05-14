@@ -42,7 +42,7 @@ enum MOVE_CLASS {
     MC_OTHER
 };
 
-const int FLAG_COUNT = 9;
+const int FLAG_COUNT = 10;
 
 enum MOVE_FLAG {
     F_CONTACT,          // Makes contact?
@@ -54,7 +54,8 @@ enum MOVE_FLAG {
                         // of a "lastenemy" targeting move.
     F_HIGH_CRITICAL,    // Does this move have a high chance of a critical hit?
     F_UNIMPLEMENTED,    // Is this move unimplemented?
-    F_INTERNAL          // Is this move for internal use only?
+    F_INTERNAL,         // Is this move for internal use only?
+    F_NO_CRITICAL,      // Does this move never critical?
 };
 
 class ScriptMachine;

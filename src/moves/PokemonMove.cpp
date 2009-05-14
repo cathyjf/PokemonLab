@@ -209,6 +209,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         pMove->flags[F_HIGH_CRITICAL] = hasChildElement(node, "high-critical");
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
         pMove->flags[F_INTERNAL] = hasChildElement(node, "internal");
+        pMove->flags[F_NO_CRITICAL] = hasChildElement(node, "no-critical");
     }
 
     // power
@@ -407,21 +408,27 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Growl", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Dragon Dance", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
     field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
-    field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Counter", 5);
+    field.getActivePokemon(1, 0)->setMove(0, "Sludge", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Dark Void", 5);
+
+    field.getActivePokemon(0, 0)->setAbility("Poison Heal");
+    field.getActivePokemon(0, 1)->setAbility("Poison Heal");
+    field.getActivePokemon(1, 0)->setAbility("Poison Heal");
+    field.getActivePokemon(1, 0)->setAbility("Poison Heal");
 
     field.beginBattle();
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
     turns.push_back(PokemonTurn(TT_MOVE, 3, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
 
     time_t initial = clock();
+    field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);

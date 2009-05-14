@@ -103,6 +103,9 @@ JSBool getActivePokemon(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * getMove(name)
+ */
 JSBool getMove(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -177,6 +180,9 @@ JSBool attemptHit(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * field.calculate(move, user, target, targets)
+ */
 JSBool calculate(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
