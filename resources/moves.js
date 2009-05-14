@@ -71,7 +71,8 @@ function makeStatusMove(move, effects, immunities) {
             }
         }
         var serene = user.hasAbility("Serene Grace");
-        var immune = (target.hasAbility("Shield Dust") && (this.power != 0));
+        var immune = (target &&
+            target.hasAbility("Shield Dust") && (this.power != 0));
         for (var i = 0; i < effects.length; ++i) {
             var effect = effects[i];
             if (effect.length == 1) {

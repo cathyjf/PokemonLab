@@ -235,13 +235,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Arm Thrust" id="14">
@@ -1038,13 +1032,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, 1), 0.7, true]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Charm" id="56">
@@ -1117,13 +1110,15 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [
+        [new StatChangeEffect(Stat.DEFENCE, -1), 1, true],
+        [new StatChangeEffect(Stat.SPDEFENCE, -1), 1, true]
+    ]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Comet Punch" id="60">
@@ -1517,13 +1512,15 @@ makeStatusMove(this, [[SleepEffect]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [
+        [new StatChangeEffect(Stat.DEFENCE, 1), 1, true],
+        [new StatChangeEffect(Stat.SPDEFENCE, 1), 1, true]
+    ]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Defense Curl" id="82">
@@ -2612,13 +2609,14 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this,
+        [[ConfusionEffect], [new StatChangeEffect(Stat.SPATTACK, 1)]]
+    );
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fling" id="140">
@@ -4517,13 +4515,12 @@ makeCounterMove(this, undefined, 1.5);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.1, true]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Metal Sound" id="242">
@@ -4557,13 +4554,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.2, true]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Metronome" id="244">
@@ -5309,13 +5305,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Poison Jab" id="284">
@@ -5388,13 +5383,12 @@ makeStatusMove(this, [[PoisonEffect, 0.1]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Pound" id="288">
@@ -6406,13 +6400,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2), 0.4]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Seismic Toss" id="344">
@@ -7209,13 +7202,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, 1), 0.1, true]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Stockpile" id="388">
@@ -7453,13 +7445,15 @@ makeStatusMove(this, [[ParalysisEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [
+        [new StatChangeEffect(Stat.ATTACK, -1), 1, true],
+        [new StatChangeEffect(Stat.DEFENCE, -1), 1, true]
+    ]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Supersonic" id="401">
@@ -7506,13 +7500,14 @@ makeStatusMove(this, [[ConfusionEffect]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this,
+        [[ConfusionEffect], [new StatChangeEffect(Stat.ATTACK, 2)]]
+    );
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Swallow" id="404">
@@ -7758,13 +7753,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ConfusionEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Teleport" id="418">
@@ -7835,13 +7829,13 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+// TODO: take care of weather effects!
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunder Fang" id="422">
@@ -7950,13 +7944,15 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [
+        [new StatChangeEffect(Stat.ATTACK, -1)],
+        [new StatChangeEffect(Stat.DEFENCE, -1)]
+    ]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Torment" id="428">
@@ -8269,13 +8265,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Volt Tackle" id="445">
@@ -8696,6 +8686,10 @@ makeStatusMove(this, [[ParalysisEffect]]);
 </use>
 </move>
 
+<!--
+   This is the move that a pokemon uses when it hits itself in confusion. It
+   is referenced only by the implementation of confusion in statuses.js.
+-->
 <move name="__confusion" id="467">
 <type>Typeless</type>
 <class>Physical</class>

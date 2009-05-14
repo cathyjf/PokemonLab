@@ -344,8 +344,7 @@ unsigned int Pokemon::getStat(const STAT stat) {
 bool Pokemon::executeMove(MoveObject *move,
         Pokemon *target, bool inform) {
 
-    // TODO: research if this should be inside an inform check
-    if (m_field->vetoExecution(this, NULL, move)) {
+    if (inform && m_field->vetoExecution(this, NULL, move)) {
         // vetoed
         return false;
     }
