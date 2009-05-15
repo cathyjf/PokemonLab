@@ -36,6 +36,13 @@ function makeEffect(obj) {
 
 /**
  * Confusion
+ *
+ * For 2-5 turns, the afflicted pokemon has a 50% chance of attacking itself
+ * with a 40 base power typeless attack which never criticals and never
+ * misses. The turn counter decrements whenever the message "X is confused!"
+ * is displayed. If the counter is zero after the decrement then the pokemon
+ * snaps out of confusion; hence, a pokemon has at most four chances to
+ * attack itself in confusion.
  */
 makeEffect({
     id : "ConfusionEffect",
@@ -71,9 +78,55 @@ makeEffect({
     }
 });
 
+/**
+ * Burn
+ *
+ * The afflicted pokemon is hurt 1/8 of its max hp at the end of each turn,
+ * and Mod1 takes on a 50% modifier when the subject uses a physical attack.
+ *
+ * Fire-type pokemon are inherently immune to Burn.
+ */
+makeEffect({
+    id : "BurnEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_burn(0),
+    tier : 6,
+    subtier : 4,
+    switchOut : function() { return false; },
+    applyEffect : function() {
+        if (this.subject.isType(Type.FIRE)) {
+            return false;
+        }
+        this.subject.field.print(Text.status_effects_burn(1, this.subject));
+        return true;
+    },
+    tick : function() {
+        if (this.subject.sendMessage("informBurnDamage"))
+            return;
+
+        var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
+        if (damage < 1) damage = 1;
+        this.subject.field.print(Text.status_effects_burn(2, this.subject));
+        this.subject.hp -= damage;
+    },
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (move.moveClass != MoveClass.PHYSICAL)
+            return null;
+        if (user.sendMessage("informBurnMod"))
+            return null;
+        // 50% modifier in Mod1; first position
+        return [1, 0.5, 0];
+    }
+});
+
 
 /**
  * Poison
+ *
+ * The afflicted pokemon is hurt 1/8 of its max hp at the end of each turn.
+ * Poison- and Steel-type pokemon are immune to poison.
  */
 makeEffect({
     id : "PoisonEffect",
@@ -83,6 +136,10 @@ makeEffect({
     subtier : 4,
     switchOut : function() { return false; },
     applyEffect : function() {
+        if (this.subject.isType(Type.POISON)
+                || this.subject.isType(Type.STEEL)) {
+            return false;
+        }
         this.subject.field.print(Text.status_effects_poison(1, this.subject));
         return true;
     },
@@ -101,6 +158,8 @@ makeEffect({
 /**
  * Paralysis
  *
+ * The afflicted pokemon has a 25% chance of failing to act on any given turn.
+ * Additionally, the subject's speed is reduced to 25% of its original value.
  */
 makeEffect({
     id : "ParalysisEffect",

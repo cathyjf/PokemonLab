@@ -609,13 +609,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Blizzard" id="34">
@@ -2088,13 +2087,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Encore" id="113">
@@ -2391,13 +2389,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fire Fang" id="129">
@@ -2432,13 +2429,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fire Spin" id="131">
@@ -2512,13 +2508,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flamethrower" id="135">
@@ -2531,13 +2526,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flare Blitz" id="136">
@@ -3382,13 +3376,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Helping Hand" id="181">
@@ -3977,13 +3970,12 @@ if (usable) {
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Leaf Blade" id="212">
@@ -6220,13 +6212,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.5]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Safeguard" id="334">
@@ -8471,13 +8462,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Wing Attack" id="456">

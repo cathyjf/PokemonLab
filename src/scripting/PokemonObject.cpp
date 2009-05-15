@@ -127,6 +127,32 @@ JSBool removeStatus(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.isType(type)
+ */
+JSBool isType(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+
+    jsdouble d;
+    JS_ValueToNumber(cx, argv[0], &d);
+    const int type = (int)d;
+
+    *ret = JSVAL_FALSE;
+    const TYPE_ARRAY &types = p->getTypes();
+    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
+        if ((*i)->getTypeValue() == type) {
+            *ret = JSVAL_TRUE;
+            break;
+        }
+    }
+
+    return JS_TRUE;
+}
+
+/**
+ * pokemon.isImmune(move)
+ */
 JSBool isImmune(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -147,7 +173,7 @@ JSBool isImmune(JSContext *cx,
         }
     }
     *ret = JSVAL_FALSE;
-    return true;
+    return JS_TRUE;
 }
 
 JSBool isMoveUsed(JSContext *cx,
@@ -476,6 +502,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("toString", toString, 0, 0, 0),
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS("getStat", getStat, 1, 0, 0),
+    JS_FS("isType", isType, 1, 0, 0),
     JS_FS_END
 };
 

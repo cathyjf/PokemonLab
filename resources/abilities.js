@@ -143,6 +143,26 @@ makeAbility({
     }
 });
 
-
-
+/*******************
+ * Heatproof
+ *******************/
+makeAbility({
+    name : "Heatproof",
+    informBurnDamage : function() {
+        // Subject loses 1/16 hp rather than 1/8.
+        var damage = Math.floor(this.subject.getStat(Stat.HP) / 16);
+        if (damage < 1) damage = 1;
+        this.subject.field.print(Text.status_effects_burn(2, this.subject));
+        this.subject.hp -= damage;
+        return true;
+    },
+    modifier : function(field, user, target, move, critical) {
+        if (target != this.subject)
+            return null;
+        if (move.type != Type.FIRE)
+            return null;
+        // 50% base power mod; 6th (target ability) position.
+        return [0, 0.5, 6];
+    }
+});
 
