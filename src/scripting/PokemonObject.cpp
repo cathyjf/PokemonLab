@@ -253,14 +253,20 @@ JSBool getMove(JSContext *cx,
 
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
-    jsval v = argv[0];
-    if (!JSVAL_IS_STRING(v)) {
-        return JS_FALSE;
-    }
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
-
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    StatusObject *sobj = p->getStatus(str);
+    StatusObject *sobj = NULL;
+    
+    jsval v = argv[0];
+    if (JSVAL_IS_STRING(v)) {
+        char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+        sobj = p->getStatus(str);
+    } else if (JSVAL_IS_INT(v)) {
+        const int lock = JSVAL_TO_INT(v);
+        sobj = p->getStatus(lock);
+    } else {
+        JS_ReportError(cx, "getStatus: invalid parameter type");
+    }
+    
     if (sobj) {
         *ret = OBJECT_TO_JSVAL(sobj->getObject());
     } else {

@@ -52,7 +52,7 @@ static JSClass globalClass = {
 
 typedef set<ScriptContext *> CONTEXT_SET;
 
-void reportError(JSContext *cx, const char *message, JSErrorReport *report);
+static void reportError(JSContext *, const char *, JSErrorReport *);
 
 struct GlobalState {
     Text text;
@@ -156,7 +156,7 @@ private:
     ScriptFunction m_func;
 };
 
-JSBool getText(JSContext *cx,
+static JSBool getText(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     int32 category, text;
     JS_ConvertArguments(cx, 2, argv, "ii", &category, &text);
@@ -242,7 +242,8 @@ void ScriptMachine::includeMoves(const std::string file) {
     m_impl->state->moves.loadMoves(file);
 }
 
-void reportError(JSContext *cx, const char *message, JSErrorReport *report) {
+static void reportError(JSContext *cx, const char *message,
+        JSErrorReport *report) {
     fprintf(stderr, "%s:%u:%s\n",
             report->filename ? report->filename : "<no filename>",
             (unsigned int) report->lineno,

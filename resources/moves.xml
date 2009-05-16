@@ -3612,13 +3612,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FreezeEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ice Beam" id="194">
@@ -3672,13 +3671,12 @@ makeStatusMove(this, [[SleepEffect]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FreezeEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ice Shard" id="197">
@@ -5408,13 +5406,12 @@ makeStatusMove(this, [[PoisonEffect]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FreezeEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Power Gem" id="290">

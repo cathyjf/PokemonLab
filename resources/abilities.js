@@ -56,7 +56,11 @@ function makeStatusImmuneAbility(ability, immune) {
         },
         tier : 0, // TODO
         tick : function() {
-            // TODO: remove status from the subject
+            var effect = this.subject.getStatus(immune);
+            if (effect) {
+                this.subject.removeStatus(effect);
+                // todo: message
+            }
         }
     });
 }
@@ -136,10 +140,11 @@ makeAbility({
             return null;
         if (stat != Stat.SPEED)
             return null;
+        if (subject.getStatus(StatusEffect.SPECIAL_EFFECT) == null)
+            return null;
 
-        // TODO: When this Pokémon is burned, frozen, paralyzed, poisoned,
-        // or sleeping, its Speed increases by 50%
-        return null; // (temporary)
+        // 50% speed increase; priority of 1 (ability modifier)
+        return [1.5, 1];
     }
 });
 

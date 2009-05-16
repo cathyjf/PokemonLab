@@ -465,19 +465,47 @@ bool BattleField::vetoSelection(Pokemon *user, MoveObject *move) {
     return false;
 }
 
+namespace {
+
+/**
+ * The user's own statuses are checked first, then index order.
+ */
+bool vetoExecutionPredicate(Pokemon::PTR p1, Pokemon::PTR p2, Pokemon *user) {
+    if (p1.get() == user)
+        return true;
+    if (p2.get() == user)
+        return false;
+    int diff = p1->getParty() - p2->getParty();
+    if (diff != 0) {
+        return (diff < 0);
+    }
+    return ((p1->getSlot() - p2->getSlot()) < 0);
+}
+
+} // anonymous namespace
+
 /**
  * Determine whether to veto the execution of a move. A single effect wanting
  * to veto the execution is enough to do so.
  */
 bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
         MoveObject *move) {
+    Pokemon::ARRAY pokemon;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
-            if (p && !p->isFainted() && p->vetoExecution(user, target, move)) {
-                return true;
+            if (p && !p->isFainted()) {
+                pokemon.push_back(p);
             }
+        }
+    }
+    sort(pokemon.begin(), pokemon.end(),
+            boost::bind(vetoExecutionPredicate, _1, _2, user));
+    for (Pokemon::ARRAY::iterator i = pokemon.begin();
+            i != pokemon.end(); ++i) {
+        if ((*i)->vetoExecution(user, target, move)) {
+            return true;
         }
     }
     return false;

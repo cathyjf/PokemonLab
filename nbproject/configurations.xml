@@ -10,7 +10,7 @@
       <itemPath>/home/Catherine/ShoddyBattle2/resources/FieldEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/main.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/moves.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/moves2.xml</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/moves.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
@@ -129,7 +129,7 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/moves.js">
         <itemTool>3</itemTool>
       </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves2.xml">
+      <item path="/home/Catherine/ShoddyBattle2/resources/moves.xml">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
@@ -322,7 +322,7 @@
       <item path="/home/Catherine/ShoddyBattle2/resources/moves.js">
         <itemTool>3</itemTool>
       </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves2.xml">
+      <item path="/home/Catherine/ShoddyBattle2/resources/moves.xml">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">

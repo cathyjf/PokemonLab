@@ -696,6 +696,8 @@ const MoveTemplate *Pokemon::getMemory() const {
 void Pokemon::informDamaged(Pokemon *user, MoveObject *move, int damage) {
     RECENT_DAMAGE entry = { user, move->getTemplate(m_cx), damage };
     m_recent.push(entry);
+    ScriptValue argv[] = { user, move, damage };
+    sendMessage("informDamaged", 3, argv);
 }
 
 /**

@@ -35,6 +35,57 @@ function makeEffect(obj) {
 }
 
 /**
+ * Freeze
+ *
+ * The subject is prevented from using moves other than Sacred Fire,
+ * Flame Wheel, and Flare Blitz, all of which also cure the status when used.
+ * Additionally, each turn there is a 20% chance for the status to end.
+ * Moreover, if the subject is damaged by a Fire-type move, the status ends.
+ *
+ * Ice-type pokemon are immune to freeze.
+ */
+makeEffect({
+    id : "FreezeEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_freeze(0),
+    applyEffect : function() {
+        if (this.subject.isType(Type.ICE)) {
+            return false;
+        }
+        var field = this.subject.field;
+        field.print(Text.status_effects_freeze(1, this.subject));
+        return true;
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        if ((target != null) || field.random(0.2)) {
+            user.removeStatus(this);
+            return false;
+        }
+        var name = move.name;
+        if ((name == "Sacred Fire")
+                || (name == "Flame Wheel")
+                || (name == "Flare Blitz")) {
+            return false;
+        }
+        field.print(Text.status_effects_freeze(3, user));
+        return true;
+    },
+    informDamaged : function(user, move, damage) {
+        if (move.type != Type.FIRE)
+            return;
+        if (damage <= 0)
+            return;
+        this.subject.removeStatus(this);
+    },
+    unapplyEffect : function() {
+        this.subject.field.print(Text.status_effects_freeze(2, this.subject));
+    }
+});
+
+
+/**
  * Confusion
  *
  * For 2-5 turns, the afflicted pokemon has a 50% chance of attacking itself
