@@ -70,7 +70,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_abilityName = ability;
     m_itemName = item;
     m_shiny = shiny;
-    std::vector<std::string>::const_iterator i = moves.begin();
+    vector<string>::const_iterator i = moves.begin();
     for (; i != moves.end(); ++i) {
         const MoveTemplate *move = species->getMove(*i);
         if (move) {
@@ -188,6 +188,7 @@ bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {
  * the effects on this pokemon.
  */
 bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
+    // todo: sort these in reverse lock order
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))

@@ -226,11 +226,14 @@ int Channel::getPopulation() {
     return m_impl->clients.size();
 }
 
-void Channel::broadcast(const OutMessage &msg) {
+void Channel::broadcast(const OutMessage &msg, ClientPtr client) {
     shared_lock<shared_mutex> lock(m_impl->mutex);
     CLIENT_MAP::const_iterator i = m_impl->clients.begin();
     for (; i != m_impl->clients.end(); ++i) {
-        i->first->sendMessage(msg);
+        ClientPtr p = i->first;
+        if (p != client) {
+            p->sendMessage(msg);
+        }
     }
 }
 

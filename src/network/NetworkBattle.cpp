@@ -174,8 +174,8 @@ struct NetworkBattleImpl {
         requestAction(party);
     }
 
-    void broadcast(OutMessage &msg) {
-        channel->broadcast(msg);
+    void broadcast(OutMessage &msg, ClientPtr client = ClientPtr()) {
+        channel->broadcast(msg, client);
     }
 
     ClientPtr getClient(const int idx) const {
@@ -596,6 +596,9 @@ void NetworkBattle::informWithdraw(Pokemon *pokemon) {
  * byte   : slot
  * byte   : index
  * string : pokemon [nick]name
+ * int16  : species id
+ * byte   : gender
+ * byte   : level
  */
 void NetworkBattle::informSendOut(Pokemon *pokemon) {
     OutMessage msg(OutMessage::BATTLE_SEND_OUT);
@@ -604,6 +607,9 @@ void NetworkBattle::informSendOut(Pokemon *pokemon) {
     msg << (unsigned char)pokemon->getSlot();
     msg << (unsigned char)pokemon->getPosition();
     msg << pokemon->getName();
+    msg << (int16_t)pokemon->getSpeciesId();
+    msg << (unsigned char)pokemon->getGender();
+    msg << (unsigned char)pokemon->getLevel();
     msg.finalise();
 
     m_impl->broadcast(msg);
@@ -616,25 +622,43 @@ void NetworkBattle::informSendOut(Pokemon *pokemon) {
  * int32  : field id
  * byte   : party
  * byte   : slot
- * string : pokemon [nick]name
  * int16  : delta health in [0, 48]
  * int16  : new total health [0, 48]
+ * int16  : denominator
  */
+class BattleHealthChange : public OutMessage {
+public:
+    BattleHealthChange(const int fid, const int party, const int slot,
+            const int delta, const int total, const int denominator):
+                OutMessage(BATTLE_HEALTH_CHANGE) {
+        *this << (int32_t)fid;
+        *this << (unsigned char)party;
+        *this << (unsigned char)slot;
+        *this << (int16_t)delta;
+        *this << (int16_t)total;
+        *this << (int16_t)denominator;
+        finalise();
+    }
+};
+
 void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
     const int hp = pokemon->getRawStat(S_HP);
+    const int present = pokemon->getHp();
     const int delta = 48.0 * (double)raw / (double)hp + 0.5;
-    const int total = 48.0 * (double)pokemon->getHp() / (double)hp + 0.5;
+    const int total = 48.0 * (double)present / (double)hp + 0.5;
+    const int party = pokemon->getParty();
+    const int slot = pokemon->getSlot();
 
-    OutMessage msg(OutMessage::BATTLE_HEALTH_CHANGE);
-    msg << getId();
-    msg << (unsigned char)pokemon->getParty();
-    msg << (unsigned char)pokemon->getSlot();
-    msg << pokemon->getName();
-    msg << (int16_t)delta;
-    msg << (int16_t)total;
-    msg.finalise();
+    ClientPtr client = m_impl->clients[party];
 
-    m_impl->broadcast(msg);
+    // Send the approximate health change to everybody except the person who
+    // controls the pokemon.
+    BattleHealthChange msg(getId(), party, slot, delta, total, 48);
+    m_impl->broadcast(msg, client);
+
+    // Send the owner of the pokemon exact health change information.
+    BattleHealthChange msg2(getId(), party, slot, raw, present, hp);
+    client->sendMessage(msg2);
 }
 
 /**

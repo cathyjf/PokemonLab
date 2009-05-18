@@ -109,7 +109,7 @@ public:
 
     int getPopulation();
 
-    void broadcast(const OutMessage &msg);
+    void broadcast(const OutMessage &msg, ClientPtr client = ClientPtr());
 
     virtual void commitStatusFlags(ClientPtr client, FLAGS flags);
 
