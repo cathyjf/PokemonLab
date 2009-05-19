@@ -3630,13 +3630,12 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FreezeEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ice Fang" id="195">
