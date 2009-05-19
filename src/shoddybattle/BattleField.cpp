@@ -208,10 +208,9 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         Pokemon *user, Pokemon *target) {
     shared_ptr<PokemonParty> *active = m_impl->active;
     if (mc == T_SINGLE) {
-        if (target == NULL) {
-            target = getRandomTarget(1 - user->getParty());
+        if (target && !target->isFainted()) {
+            targets.push_back(target);
         }
-        targets.push_back(target);
     } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
         PokemonParty &party = *active[1 - user->getParty()].get();
         for (int i = 0; i < party.getSize(); ++i) {
