@@ -153,14 +153,9 @@
 2: $1 woke up!
 3: $1 is fast asleep.
 
-[status-effects-awesome]
-0: Awesomeness
-1: $1 insulted God out of anger!
-2: $1 is punished by God!
-3: God punishes $1 for leaving His presence!
-4: God struck down $1 will all His might!
-5: God forgave $1
-6: $1 was too God-fearing to move!
+[status-effects-flinch]
+0: Flinch
+1: $1 flinched!
 
 [status-effects-stockpile]
 0: Stockpile - $1

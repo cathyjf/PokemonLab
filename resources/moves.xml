@@ -145,13 +145,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Amnesia" id="9">
@@ -326,13 +325,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Attack Order" id="19">
@@ -569,13 +567,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Blast Burn" id="32">
@@ -685,13 +682,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bone Rush" id="38">
@@ -1476,13 +1472,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.2]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dark Void" id="80">
@@ -1909,13 +1904,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dragonbreath" id="103">
@@ -2221,13 +2215,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Extremespeed" id="120">
@@ -2409,13 +2402,12 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1], [BurnEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fire Punch" id="130">
@@ -3266,13 +3258,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Heal Bell" id="175">
@@ -3560,13 +3551,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hyper Voice" id="191">
@@ -3650,13 +3640,12 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1], [FreezeEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ice Punch" id="196">
@@ -3795,13 +3784,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Iron Tail" id="204">
@@ -4948,13 +4936,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Night Shade" id="266">
@@ -6047,13 +6034,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rock Smash" id="325">
@@ -6157,6 +6143,11 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 	<memorable/>
 	<flinch/>
 </flags>
+<init>
+<![CDATA[
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
+]]>
+</init>
 </move>
 
 <move name="Rollout" id="331">
@@ -6930,13 +6921,20 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    if (user.getStatus("SleepEffect") == null) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Softboiled" id="374">
@@ -7837,13 +7835,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.1], [ParalysisEffect, 0.1]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunder Wave" id="423">
@@ -8378,13 +8375,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.2]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Weather Ball" id="452">
@@ -8663,13 +8659,12 @@ makeStatusMove(this, [[ParalysisEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.2]]);
 ]]>
-</use>
+</init>
 </move>
 
 <!--

@@ -171,3 +171,17 @@ makeAbility({
     }
 });
 
+/*******************
+ * Steadfast
+ *******************/
+makeAbility({
+    name : "Steadfast",
+    informFlinched : function() {
+        // TODO: Steadfast specific message?
+        var subject = this.subject;
+        subject.applyStatus(subject, new StatChangeEffect(Stat.SPEED, 1));
+        return false;
+    }
+});
+
+

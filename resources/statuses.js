@@ -86,6 +86,31 @@ makeEffect({
 
 
 /**
+ * Flinch
+ *
+ * The subject's next move to be executed is vetoed. The status vanishes at
+ * the end of the turn on which it was applied.
+ */
+makeEffect({
+    id : "FlinchEffect",
+    name : Text.status_effects_flinch(0),
+    tier : 0,
+    vetoExecution : function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        if (target != null)
+            return false;
+        field.print(Text.status_effects_flinch(1, user));
+        user.sendMessage("informFlinched");
+        return true;
+    },
+    tick : function() {
+        this.subject.removeStatus(this);
+    }
+});
+
+
+/**
  * Confusion
  *
  * For 2-5 turns, the afflicted pokemon has a 50% chance of attacking itself
