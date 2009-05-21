@@ -683,12 +683,11 @@ void BattleField::getFaintedPokemon(Pokemon::ARRAY &pokemon) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         alive[i] = getAliveCount(i);
     }
-    const int size = getPartySize() - 1;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
             Pokemon::PTR p = party[j].pokemon;
-            if (p && p->isFainted() && (alive[i] > size)) {
+            if (p && p->isFainted() && (alive[i] > 0)) {
                 pokemon.push_back(p);
                 --alive[i];
             }
