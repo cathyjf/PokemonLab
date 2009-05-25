@@ -83,7 +83,8 @@ function makeChargeMove(move, text, vulnerable) {
         user.applyStatus(user, effect);
     };
     move.attemptHit = function(field, user, target) {
-        if (!user.getStatus("ChargeMoveEffect")) {
+        var effect = user.getStatus("ChargeMoveEffect");
+        if (!effect || (effect.turns == 2)) {
             return true;
         }
         return field.attemptHit(this, user, target);
