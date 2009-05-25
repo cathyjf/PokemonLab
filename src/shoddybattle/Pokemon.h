@@ -162,6 +162,8 @@ public:
         return m_moves[i];
     }
 
+    int getMove(const std::string &) const;
+
     bool isMoveUsed(const int i) const { return m_moveUsed[i]; }
     int getPp(const int i) const { return m_pp[i]; }
     void deductPp(const int i);
@@ -190,6 +192,7 @@ public:
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);
+    void setForcedTurn(const int, Pokemon *);
     PokemonTurn *getForcedTurn() const {
         if (!m_forcedTurn)
             return NULL;

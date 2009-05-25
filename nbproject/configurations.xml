@@ -14,6 +14,7 @@
       <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
       <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
+      <itemPath>/home/Catherine/ShoddyBattle2/resources/text.js</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -136,6 +137,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/text.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">
@@ -329,6 +333,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/Catherine/ShoddyBattle2/resources/text.js">
         <itemTool>3</itemTool>
       </item>
       <item path="/home/Catherine/ShoddyBattle2/src/database/DatabaseRegistry.cpp">

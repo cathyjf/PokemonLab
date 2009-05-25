@@ -22,13 +22,13 @@
  * online at http://gnu.org.
  */
 
-var Generation = {
+const Generation = {
     DP : 0,
     PLATINUM : 1,
     PLATINUM_FAKE : 2
 };
 
-var Stat = {
+const Stat = {
     HP : 0,
     ATTACK : 1,
     DEFENCE : 2,
@@ -40,13 +40,13 @@ var Stat = {
     NONE : -1
 };
 
-var MoveClass = {
+const MoveClass = {
     PHYSICAL : 0,
     SPECIAL : 1,
     OTHER : 2
 };
 
-var Type = {
+const Type = {
     NORMAL : 0,
     FIRE : 1,
     WATER : 2,

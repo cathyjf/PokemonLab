@@ -310,10 +310,33 @@ bool Pokemon::useMove(MoveObject *move,
 }
 
 /**
- * Force a pokemon to carry out a particular turn next round.
+ * Force the pokemon to carry out a particular turn next round.
  */
 void Pokemon::setForcedTurn(const PokemonTurn &turn) {
     m_forcedTurn = shared_ptr<PokemonTurn>(new PokemonTurn(turn));
+}
+
+/**
+ * Force the pokemon to use a particular move next round.
+ */
+void Pokemon::setForcedTurn(const int idx, Pokemon *p) {
+    int target = p ? p->getSlot() : - 1;
+    if (p && (p->getParty() == 1)) {
+        target += m_field->getPartySize();
+    }
+    setForcedTurn(PokemonTurn(TT_MOVE, idx, target));
+}
+
+/**
+ * Get the index of a named move, -1 if the pokemon does not know the move.
+ */
+int Pokemon::getMove(const string &name) const {
+    const int size = m_moves.size();
+    for (int i = 0; i < size; ++i) {
+        if (m_moves[i]->getName(m_cx) == name)
+            return i;
+    }
+    return -1;
 }
 
 /**

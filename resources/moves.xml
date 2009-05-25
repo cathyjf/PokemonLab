@@ -60,6 +60,10 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>30</pp>
+<!--
+  Note: This move actually has a unique target class. It can target either
+        the user or an ally.
+-->
 <target>User</target>
 <flags>
 	<snatch/>
@@ -742,13 +746,15 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
+makeChargeMove(this,
+        Text.battle_messages_charge.wrap(7),
+        ["Gust", "Thunder", "Twister", "Sky Uppercut"]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Brave Bird" id="41">
@@ -1601,13 +1607,14 @@ makeStatusMove(this, [
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this,
+        Text.battle_messages_charge.wrap(4),
+        ["Earthquake", "Magnitude"]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Disable" id="87">
@@ -1660,13 +1667,14 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this,
+        Text.battle_messages_charge.wrap(6),
+        ["Surf", "Whirlpool"]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dizzy Punch" id="90">
@@ -2636,13 +2644,14 @@ makeStatusMove(this,
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this,
+        Text.battle_messages_charge.wrap(5),
+        ["Gust", "Thunder", "Twister", "Sky Uppercut"]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Focus Blast" id="142">
@@ -5771,13 +5780,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this, Text.battle_messages_charge.wrap(1));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Recover" id="311">
@@ -6472,13 +6480,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 	<contact/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this, Text.battle_messages_charge.wrap(8), []);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Shadow Punch" id="349">
@@ -6672,13 +6679,16 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeChargeMove(this, Text.battle_messages_charge.wrap(2));
+this.additional = function(user) {
+    // Additional effect on charge turn: +1 defence.
+    user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sky Attack" id="360">
@@ -6692,13 +6702,13 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
+makeChargeMove(this, Text.battle_messages_charge.wrap(3));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sky Uppercut" id="361">

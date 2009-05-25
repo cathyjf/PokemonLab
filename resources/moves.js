@@ -23,6 +23,74 @@
  */
 
 /**
+ * Make a move into a charge move. A charge move is selected once and executes
+ * twice; the second time is a forced move. The position to attack is fixed
+ * when the move is selected. If the final parameter is not undefined then the
+ * move also makes the user invulnerable to all moves except those named in
+ * the array passed as the final parameter.
+ */
+function makeChargeMove(move, text, vulnerable) {
+    var execute = null;
+    if (move.use) {
+        execute = move.use;
+    } else {
+        execute = function(field, user, target, targets) {
+            // Just do a basic move use.
+            target.hp -= field.calculate(this, user, target, targets);
+        };
+    }
+    move.use = function(field, user, target, targets) {
+        var effect = user.getStatus("ChargeMoveEffect");
+        if (effect) {
+            if (effect.turns == 2) {
+                // We get here if the move has more than one target and this
+                // is the charge turn; hence, we don't need to do anything.
+                return;
+            }
+            // The charge turn has already been completed, so we proceed to
+            // execute the move.
+            execute.call(this, field, user, target, targets);
+            return;
+        }
+
+        // Otherwise, the user spends his turn charging.
+        field.print(text(user));
+        if (this.additional) {
+            this.additional(user);
+        }
+        user.setForcedMove(this, target);
+        effect = new StatusEffect("ChargeMoveEffect");
+        effect.turns = 2;
+        effect.informFinishedExecution = function() {
+            if (--this.turns == 0) {
+                this.subject.removeStatus(this);
+            }
+        };
+        effect.vetoSwitch = function(subject) {
+            return (subject == this.subject);
+        };
+        if (vulnerable != undefined) {
+            // This effect also makes the user immune to most moves.
+            effect.vetoExecution = function(field, user, target, move) {
+                if (target != this.subject)
+                    return false;
+                if (vulnerable.indexOf(move.name) != -1)
+                    return false;
+                field.print(Text.battle_messages(2, user, target));
+                return true;
+            };
+        }
+        user.applyStatus(user, effect);
+    };
+    move.attemptHit = function(field, user, target) {
+        if (!user.getStatus("ChargeMoveEffect")) {
+            return true;
+        }
+        return field.attemptHit(this, user, target);
+    };
+}
+
+/**
  * Make a move into a counter move.
  */
 function makeCounterMove(move, cls, ratio) {

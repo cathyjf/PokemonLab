@@ -802,6 +802,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 // only deduct pp if the move was chosen freely
                 p->deductPp(id);
             }
+            p->sendMessage("informFinishedExecution", 0, NULL);
         } else {
             switchPokemon(p.get(), id);
         }
