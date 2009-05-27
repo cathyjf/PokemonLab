@@ -4337,6 +4337,10 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 </use>
 </move>
 
+
+<!--
+   Note: This move actually has a unique target class.
+-->
 <move name="Me First" id="232">
 <type>Normal</type>
 <class>Other</class>

@@ -156,11 +156,7 @@ public:
     ScriptObject *getObject() { return (ScriptObject *)m_object; }
     BattleField *getField() { return m_field; }
 
-    MoveObject *getMove(const int i) {
-        if (m_moves.size() <= i)
-            return NULL;
-        return m_moves[i];
-    }
+    MoveObject *getMove(const int i);
 
     int getMove(const std::string &) const;
 
@@ -192,7 +188,7 @@ public:
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);
-    void setForcedTurn(const int, Pokemon *);
+    void setForcedTurn(const MoveTemplate *, Pokemon *);
     PokemonTurn *getForcedTurn() const {
         if (!m_forcedTurn)
             return NULL;
@@ -271,6 +267,7 @@ private:
 
     const PokemonTurn *m_turn;
     boost::shared_ptr<PokemonTurn> m_forcedTurn;
+    MoveObject *m_forcedMove;
 
     PokemonObject *m_object; // Pokemon object.
 

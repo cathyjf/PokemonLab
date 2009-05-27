@@ -101,14 +101,8 @@ JSBool setForcedMove(JSContext *cx,
         JS_ReportError(cx, "setForcedMove: illegal first parameter");
         return JS_FALSE;
     }
-    const string move = MoveObject(JSVAL_TO_OBJECT(argv[0])).getName(scx);
-    const int idx = p->getMove(move);
-
-    if (idx == -1) {
-        // The pokemon does not know the move.
-        *ret = JSVAL_FALSE;
-        return JS_TRUE;
-    }
+    const MoveTemplate *move =
+            MoveObject(JSVAL_TO_OBJECT(argv[0])).getTemplate(scx);
 
     const bool null = JSVAL_IS_NULL(argv[1]);
     if (!null && !JSVAL_IS_OBJECT(argv[1])) {
@@ -118,7 +112,7 @@ JSBool setForcedMove(JSContext *cx,
 
     Pokemon *target = null
             ? NULL : (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
-    p->setForcedTurn(idx, target);
+    p->setForcedTurn(move, target);
     *ret = JSVAL_TRUE;
     return JS_TRUE;
 }

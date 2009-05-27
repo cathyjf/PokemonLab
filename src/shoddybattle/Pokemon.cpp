@@ -88,6 +88,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_ability = NULL;
     m_legalSwitch = true;
     m_slot = -1;
+    m_forcedMove = NULL;
 }
 
 Pokemon::~Pokemon() {
@@ -103,6 +104,10 @@ Pokemon::~Pokemon() {
     vector<MoveObject *>::iterator i = m_moves.begin();
     for (; i != m_moves.end(); ++i) {
         cx->removeRoot(*i);
+    }
+
+    if (m_forcedMove) {
+        cx->removeRoot(m_forcedMove);
     }
 
     STATUSES::iterator j = m_effects.begin();
@@ -133,7 +138,7 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
  * Determine the legal actions a pokemon can take this turn.
  */
 void Pokemon::determineLegalActions() {
-    // todo: can this pokemon switch legally?
+    m_legalSwitch = !m_field->vetoSwitch(this);
 
     const int count = m_moves.size();
     m_legalMove.resize(count, false);
@@ -319,12 +324,16 @@ void Pokemon::setForcedTurn(const PokemonTurn &turn) {
 /**
  * Force the pokemon to use a particular move next round.
  */
-void Pokemon::setForcedTurn(const int idx, Pokemon *p) {
+void Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
     int target = p ? p->getSlot() : - 1;
     if (p && (p->getParty() == 1)) {
         target += m_field->getPartySize();
     }
-    setForcedTurn(PokemonTurn(TT_MOVE, idx, target));
+    if (m_forcedMove) {
+        m_cx->removeRoot(m_forcedMove);
+    }
+    m_forcedMove = m_cx->newMoveObject(move);
+    setForcedTurn(PokemonTurn(TT_MOVE, -1, target));
 }
 
 /**
@@ -370,6 +379,17 @@ unsigned int Pokemon::getStat(const STAT stat) {
         value *= val;
     }
     return value;
+}
+
+/**
+ * Get a move by index, or -1 for the pokemon's forced move.
+ */
+MoveObject *Pokemon::getMove(const int i) {
+    if (i == -1)
+        return m_forcedMove;
+    if (m_moves.size() <= i)
+        return NULL;
+    return m_moves[i];
 }
 
 /**

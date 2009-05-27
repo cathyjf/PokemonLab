@@ -249,6 +249,11 @@ public:
      * Determine whether the selection of a move should be vetoed.
      */
     bool vetoSelection(Pokemon *, MoveObject *);
+
+    /**
+     * Determiner whether a switch by the subject should be vetoed.
+     */
+    bool vetoSwitch(Pokemon *);
     
     /**
      * Determine whether a particular turn is legal for a given pokemon.

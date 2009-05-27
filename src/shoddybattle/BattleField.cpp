@@ -464,6 +464,26 @@ bool BattleField::vetoSelection(Pokemon *user, MoveObject *move) {
     return false;
 }
 
+/**
+ * Determine whether to veto a switch by the subject.
+ */
+bool BattleField::vetoSwitch(Pokemon *subject) {
+    ScriptValue args[] = { subject };
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted()) {
+                ScriptValue v = p->sendMessage("vetoSwitch", 1, args);
+                if (!v.failed() && v.getBool()) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 namespace {
 
 /**
