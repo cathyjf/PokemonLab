@@ -324,7 +324,7 @@ void Pokemon::setForcedTurn(const PokemonTurn &turn) {
 /**
  * Force the pokemon to use a particular move next round.
  */
-void Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
+MoveObject *Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
     int target = p ? p->getSlot() : - 1;
     if (p && (p->getParty() == 1)) {
         target += m_field->getPartySize();
@@ -334,6 +334,7 @@ void Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
     }
     m_forcedMove = m_cx->newMoveObject(move);
     setForcedTurn(PokemonTurn(TT_MOVE, -1, target));
+    return m_forcedMove;
 }
 
 /**

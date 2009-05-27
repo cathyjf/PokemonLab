@@ -39,7 +39,7 @@ function makeChargeMove(move, text, vulnerable) {
             target.hp -= field.calculate(this, user, target, targets);
         };
     }
-    move.accuracy_ = move.accuracy;
+    var accuracy_ = move.accuracy;
     move.accuracy = 0;
     move.use = function(field, user, target, targets) {
         var effect = user.getStatus("ChargeMoveEffect");
@@ -61,7 +61,7 @@ function makeChargeMove(move, text, vulnerable) {
             this.additional(user);
         }
         var move_ = user.setForcedMove(this, target);
-        move_.accuracy = this.accuracy_;
+        move_.accuracy = accuracy_;
         effect = new StatusEffect("ChargeMoveEffect");
         effect.turns = 2;
         effect.informFinishedExecution = function() {

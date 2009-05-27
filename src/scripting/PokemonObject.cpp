@@ -112,8 +112,9 @@ JSBool setForcedMove(JSContext *cx,
 
     Pokemon *target = null
             ? NULL : (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
-    p->setForcedTurn(move, target);
-    *ret = JSVAL_TRUE;
+    MoveObject *forced = p->setForcedTurn(move, target);
+
+    *ret = OBJECT_TO_JSVAL((JSObject *)forced->getObject());
     return JS_TRUE;
 }
 

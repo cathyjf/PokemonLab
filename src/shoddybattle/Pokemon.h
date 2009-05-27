@@ -188,7 +188,7 @@ public:
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);
-    void setForcedTurn(const MoveTemplate *, Pokemon *);
+    MoveObject *setForcedTurn(const MoveTemplate *, Pokemon *);
     PokemonTurn *getForcedTurn() const {
         if (!m_forcedTurn)
             return NULL;
