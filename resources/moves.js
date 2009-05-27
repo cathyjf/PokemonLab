@@ -41,6 +41,7 @@ function makeChargeMove(move, text, vulnerable) {
     }
     var accuracy_ = move.accuracy;
     move.accuracy = 0;
+    move.charge_ = true;
     move.use = function(field, user, target, targets) {
         var effect = user.getStatus("ChargeMoveEffect");
         if (effect) {
@@ -79,7 +80,9 @@ function makeChargeMove(move, text, vulnerable) {
                     return false;
                 if (vulnerable.indexOf(move.name) != -1)
                     return false;
-                if (move.accuracy == 0)
+                // TODO: Replace this by something wherein the charge turn
+                //       does not get a chance to be vetoed.
+                if (move.charge_ && (move.accuracy == 0))
                     return false;
                 field.print(Text.battle_messages(2, user, target));
                 return true;
