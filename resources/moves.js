@@ -39,6 +39,8 @@ function makeChargeMove(move, text, vulnerable) {
             target.hp -= field.calculate(this, user, target, targets);
         };
     }
+    move.accuracy_ = move.accuracy;
+    move.accuracy = 0;
     move.use = function(field, user, target, targets) {
         var effect = user.getStatus("ChargeMoveEffect");
         if (effect) {
@@ -76,6 +78,8 @@ function makeChargeMove(move, text, vulnerable) {
                     return false;
                 if (vulnerable.indexOf(move.name) != -1)
                     return false;
+                if (move.accuracy == 0)
+                    return false;
                 field.print(Text.battle_messages(2, user, target));
                 return true;
             };
@@ -87,7 +91,10 @@ function makeChargeMove(move, text, vulnerable) {
         if (!effect || (effect.turns == 2)) {
             return true;
         }
-        return field.attemptHit(this, user, target);
+        this.accuracy = this.accuracy_;
+        var ret = field.attemptHit(this, user, target);
+        this.accuracy = 0;
+        return ret;
     };
 }
 
