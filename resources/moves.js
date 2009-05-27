@@ -60,7 +60,8 @@ function makeChargeMove(move, text, vulnerable) {
         if (this.additional) {
             this.additional(user);
         }
-        user.setForcedMove(this, target);
+        var move_ = user.setForcedMove(this, target);
+        move_.accuracy = this.accuracy_;
         effect = new StatusEffect("ChargeMoveEffect");
         effect.turns = 2;
         effect.informFinishedExecution = function() {
@@ -85,16 +86,6 @@ function makeChargeMove(move, text, vulnerable) {
             };
         }
         user.applyStatus(user, effect);
-    };
-    move.attemptHit = function(field, user, target) {
-        var effect = user.getStatus("ChargeMoveEffect");
-        if (!effect || (effect.turns == 2)) {
-            return true;
-        }
-        this.accuracy = this.accuracy_;
-        var ret = field.attemptHit(this, user, target);
-        this.accuracy = 0;
-        return ret;
     };
 }
 
