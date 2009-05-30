@@ -252,13 +252,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Aromatherapy" id="15">
@@ -436,13 +435,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Barrier" id="25">
@@ -704,13 +702,12 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bonemerang" id="39">
@@ -937,13 +934,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Calm Mind" id="51">
@@ -1132,13 +1128,12 @@ makeStatusMove(this, [
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Confuse Ray" id="61">
@@ -1802,13 +1797,12 @@ makeRecoilMove(this, 3);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Draco Meteor" id="97">
@@ -2817,13 +2811,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fury Cutter" id="151">
@@ -2859,13 +2852,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Future Sight" id="153">
@@ -3702,13 +3694,12 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Icy Wind" id="199">
@@ -5230,13 +5221,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Pluck" id="281">
@@ -5986,13 +5976,12 @@ makeRecoveryMove(this);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rock Climb" id="322">
@@ -7068,13 +7057,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMultipleHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Spikes" id="381">

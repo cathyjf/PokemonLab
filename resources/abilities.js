@@ -184,4 +184,23 @@ makeAbility({
     }
 });
 
+/*******************
+ * Skill Link
+ *******************/
+makeAbility({
+    name : "Skill Link",
+    informMultipleHitMove : function() {
+        // Always do five hits.
+        return 5;
+    }
+});
 
+/*******************
+ * Rock Head
+ *******************/
+makeAbility({
+    name : "Rock Head",
+    informRecoilDamage : function(recoil) {
+        return (recoil > 0);
+    }
+});

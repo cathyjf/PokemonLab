@@ -23,6 +23,37 @@
  */
 
 /**
+ * Make a move into a multiple hit move, which hits between 2 and 5 times,
+ * with a nonuniform distribution. In particular, there is a 37.5% chance of
+ * 2 hits, a 37.5% chance of 3 hits, a 12.5% chance of 4 hits, and a 12.5%
+ * chance of 5 hits.
+ */
+function makeMultipleHitMove(move) {
+    move.use = function(field, user, target, targets) {
+        var hits = user.sendMessage("informMultipleHitMove");
+        if (!hits) {
+            var rand = field.random(0, 1000);
+            if (rand < 375) {
+                hits = 2;
+            } else if (rand < 750) {
+                hits = 3;
+            } else if (rand < 875) {
+                hits = 4;
+            } else {
+                hits = 5;
+            }
+        }
+        var i = 0;
+        for (; i < hits; ++i) {
+            if (target.fainted)
+                break;
+            target.hp -= field.calculate(this, user, target, targets);
+        }
+        field.print(Text.battle_messages_unique(0, i));
+    };
+}
+
+/**
  * Make a move into a recovery move.
  */
 function makeRecoveryMove(move, ratio) {
