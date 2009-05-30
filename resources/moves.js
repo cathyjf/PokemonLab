@@ -188,7 +188,7 @@ function makeCounterMove(move, cls, ratio) {
                 if (target.party == user.party) {
                     break;
                 }
-                if (target.fainted || target.isImmune(move)) {
+                if (target.fainted || target.isImmune(this)) {
                     field.print(Text.battle_messages(1, target));
                 } else {
                     target.hp -= recent[2] * ratio;

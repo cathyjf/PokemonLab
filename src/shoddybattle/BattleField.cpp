@@ -145,6 +145,24 @@ ScriptObject *BattleField::getObject() {
 }
 
 /**
+ * Send a message to a particular party.
+ */
+ScriptValue PokemonParty::sendMessage(const string &message,
+        int argc, ScriptValue *argv) {
+    ScriptValue ret;
+    for (int i = 0; i < m_size; ++i) {
+        Pokemon::PTR p = m_party[i].pokemon;
+        if (p && !p->isFainted()) {
+            ScriptValue v = p->sendMessage(message, argc, argv);
+            if (!v.failed()) {
+                ret = v;
+            }
+        }
+    }
+    return ret;
+}
+
+/**
  * Sort a set of pokemon by speed.
  */
 void BattleField::sortBySpeed(vector<Pokemon *> &pokemon) {
@@ -181,7 +199,7 @@ void BattleField::getLegalSwitches(Pokemon *pokemon, vector<bool> &switches) {
  * Get a random target from a particular party.
  */
 Pokemon *BattleField::getRandomTarget(const int partyIdx) const {
-    // build a list of all possible targets
+    // Build a list of all possible targets.
     vector<Pokemon::PTR> intermediate;
     PokemonParty &party = *m_impl->active[partyIdx].get();
     for (int i = 0; i < party.getSize(); ++i) {
@@ -195,7 +213,7 @@ Pokemon *BattleField::getRandomTarget(const int partyIdx) const {
         return NULL;
     }
 
-    // choose one randomly
+    // Choose a random target from the list.
     const int r = m_impl->mech->getRandomInt(
             0, intermediate.size() - 1);
     return intermediate[r].get();
@@ -392,15 +410,14 @@ const BattleMechanics *BattleField::getMechanics() const {
 void BattleField::switchPokemon(Pokemon *p, const int idx) {
     const int party = p->getParty();
     const int slot = p->getSlot();
-    const bool fainted = p->isFainted();
-    if (!fainted) {
+    if (!p->isFainted()) {
+        informWithdraw(p);
+        ScriptValue argv[] = { p };
+        m_impl->active[1 - party]->sendMessage("informWithdraw", 1, argv);
         p->switchOut(); // note: clears slot
     }
     Pokemon::PTR replacement = m_impl->teams[party][idx];
     (*m_impl->active[party])[slot].pokemon = replacement;
-    if (!fainted) {
-        informWithdraw(p);
-    }
     replacement->setSlot(slot);
     informSendOut(replacement.get());
     replacement->switchIn();
@@ -617,7 +634,7 @@ void BattleField::tickEffects() {
 
         Pokemon::PTR subject = i->subject;
         StatusObject *effect = i->effect;
-        // todo: use subject? - maybe not.
+        effect->setSubject(cx, subject.get());
         effect->tick(cx);
 
         if (i->tier == 6) {
@@ -643,13 +660,15 @@ void BattleField::tickEffects() {
 /**
  * Count the number of living pokemon on a team.
  */
-int BattleField::getAliveCount(const int party) const {
+int BattleField::getAliveCount(const int party, const bool reserve) const {
     Pokemon::ARRAY &arr = m_impl->teams[party];
     const int size = arr.size();
     int alive = 0;
     for (int i = 0; i < size; ++i) {
         if (arr[i] && !arr[i]->isFainted()) {
-            ++alive;
+            if (!reserve || (arr[i]->getSlot() == -1)) {
+                ++alive;
+            }
         }
     }
     return alive;
@@ -701,10 +720,9 @@ void BattleField::informVictory(const int party) {
  * Get the fainted pokemon.
  */
 void BattleField::getFaintedPokemon(Pokemon::ARRAY &pokemon) {
-    // TODO: Do not count active pokemon in the alive count!
     int alive[TEAM_COUNT];
     for (int i = 0; i < TEAM_COUNT; ++i) {
-        alive[i] = getAliveCount(i);
+        alive[i] = getAliveCount(i, true);
     }
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
@@ -774,7 +792,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     
     m_impl->sortInTurnOrder(pokemon, ordered);
 
-    // begin the turn
+    // Begin the turn.
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         p->clearRecentDamage();
@@ -782,18 +800,11 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 
         if (turn->type == TT_MOVE) {
             MoveObject *move = p->getMove(turn->id);
-            Pokemon *target = NULL;
-            int idx = turn->target;
-            if (idx != -1) { // exactly one target
-                int party = 0;
-                m_impl->decodeIndex(idx, party);
-                target = (*m_impl->active[party])[idx].pokemon.get();
-            }
-            move->beginTurn(m_impl->context, this, p.get(), target);
+            move->beginTurn(m_impl->context, this, p.get(), NULL);
         }
     }
 
-    // execute the actions
+    // Execute the actions.
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = ordered[i];
@@ -805,24 +816,32 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         }
         
         if (turn->type == TT_MOVE) {
+            const bool choice = (p->getForcedTurn() == NULL);
             MoveObject *move = p->getMove(id);
             Pokemon *target = NULL;
             TARGET tc = move->getTargetClass(m_impl->context);
             if ((tc == T_SINGLE) || (tc == T_ALLY)) {
                 int idx = turn->target;
-                assert(idx != -1);
-                int party = 0;
-                m_impl->decodeIndex(idx, party);
-                Pokemon::PTR p = (*m_impl->active[party])[idx].pokemon;
-                if (p) {
-                    target = p.get();
+                if (idx == -1) {
+                    target = getRandomTarget(1 - p->getParty());
+                } else {
+                    int party = 0;
+                    m_impl->decodeIndex(idx, party);
+                    Pokemon::PTR p = (*m_impl->active[party])[idx].pokemon;
+                    if (!choice && (!p || p->isFainted())) {
+                        // If this is a forced move and there is no target,
+                        // then select a target at random from among the
+                        // available enemies.
+                        target = getRandomTarget(1 - p->getParty());
+                    } else if (p) {
+                        target = p.get();
+                    }
                 }
             }
-
-            const bool choice = (p->getForcedTurn() == NULL);
+            
             p->clearForcedTurn();
             if (p->executeMove(move, target) && choice) {
-                // only deduct pp if the move was chosen freely
+                // Only deduct pp if the move was chosen freely.
                 p->deductPp(id);
             }
             p->sendMessage("informFinishedExecution", 0, NULL);

@@ -120,6 +120,7 @@ public:
     int getSize() const {
         return m_size;
     }
+    ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 private:
     const int m_size;
     const std::string m_name;
@@ -222,7 +223,7 @@ public:
     /**
      * Get the number of living pokemon on a team.
      */
-    int getAliveCount(const int party) const;
+    int getAliveCount(const int party, const bool reserve = false) const;
 
     /**
      * Get a pokemon team.

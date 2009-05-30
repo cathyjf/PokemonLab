@@ -5620,11 +5620,15 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.isImmune(this)) {
+    field.print(Text.battle_messages(1, target));
+    return;
+}
+var damage = Math.floor(user.level * (field.random(0, 10) * 10 + 50) / 100);
+target.hp -= damage;
 ]]>
 </use>
 </move>
@@ -7128,11 +7132,11 @@ makeMultipleHitMove(this);
 <pp>40</pp>
 <target>User</target>
 <flags>
-	<unimplemented/>
+	
 </flags>
 <use>
 <![CDATA[
-
+field.print(Text.battle_messages_unique(2));
 ]]>
 </use>
 </move>
