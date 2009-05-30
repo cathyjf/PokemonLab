@@ -23,6 +23,66 @@
  */
 
 /**
+ * Make a move into a recovery move.
+ */
+function makeRecoveryMove(move, ratio) {
+    if (ratio == undefined) {
+        ratio = 0.5;
+    }
+    move.use = function(field, user) {
+        var max = user.getStat(Stat.HP);
+        if (max == user.hp) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        user.hp += max * ratio;
+    };
+}
+
+/**
+ * Make a move into a recoil move with an arbitrary ratio of recoil. Note that
+ * absorb moves are a special case of recoil moves where the ratio is a
+ * negative number.
+ */
+function makeRecoilMove(move, divisor) {
+    var execute = getParentUse(move);
+    move.use = function(field, user, target, targets) {
+        var effective = target.sendMessage("getEffectiveHp");
+        var present = effective ? effective[0] : target.hp;
+        execute.call(this, field, user, target, targets);
+
+        // Calculate the relevant health change (delta).
+        var delta = 0;
+        if (effective) {
+            var max = effective[1];
+            effective = target.sendMessage("getEffectiveHp");
+            var after = effective ? effective[0] : target.hp;
+            delta = present - after;
+            if (delta > effective[1]) {
+                delta = effective[1];
+            }
+        } else {
+            delta = present - target.hp;
+            var max = target.getStat(Stat.HP);
+            if (delta > max) {
+                delta = max;
+            }
+        }
+
+        var recoil = Math.floor(delta / divisor);
+        if (user.sendMessage("informRecoilDamage", recoil))
+            return;
+
+        if (recoil > 0) {
+            field.print(Text.battle_messages_unique(58, user));
+        } else if (recoil < 0) {
+            field.print(Text.battle_messages_unique(59, user));
+        }
+        user.hp -= recoil;
+    };
+}
+
+/**
  * Make a move into a charge move. A charge move is selected once and executes
  * twice; the second time is a forced move. The position to attack is fixed
  * when the move is selected. If the final parameter is not undefined then the
@@ -30,15 +90,7 @@
  * the array passed as the final parameter.
  */
 function makeChargeMove(move, text, vulnerable) {
-    var execute = null;
-    if (move.use) {
-        execute = move.use;
-    } else {
-        execute = function(field, user, target, targets) {
-            // Just do a basic move use.
-            target.hp -= field.calculate(this, user, target, targets);
-        };
-    }
+    var execute = getParentUse(move);
     var accuracy_ = move.accuracy;
     move.accuracy = 0;
     move.charge_ = true;
@@ -174,5 +226,16 @@ function makeStatusMove(move, effects, immunities) {
             }
         }
     };
+}
+
+/**
+ * Get the use function of an arbitrary move, or a basic use function if the
+ * move has no use function.
+ */
+function getParentUse(move) {
+    return move.use || function(field, user, target, targets) {
+            // Just do a basic move use.
+            target.hp -= field.calculate(this, user, target, targets);
+        };
 }
 

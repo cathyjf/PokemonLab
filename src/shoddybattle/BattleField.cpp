@@ -208,7 +208,9 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         Pokemon *user, Pokemon *target) {
     shared_ptr<PokemonParty> *active = m_impl->active;
     if (mc == T_SINGLE) {
-        if (target && !target->isFainted()) {
+        if (!target) {
+            targets.push_back(getRandomTarget(1 - user->getParty()));
+        } else if (!target->isFainted()) {
             targets.push_back(target);
         }
     } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
@@ -699,6 +701,7 @@ void BattleField::informVictory(const int party) {
  * Get the fainted pokemon.
  */
 void BattleField::getFaintedPokemon(Pokemon::ARRAY &pokemon) {
+    // TODO: Do not count active pokemon in the alive count!
     int alive[TEAM_COUNT];
     for (int i = 0; i < TEAM_COUNT; ++i) {
         alive[i] = getAliveCount(i);
@@ -811,7 +814,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 int party = 0;
                 m_impl->decodeIndex(idx, party);
                 Pokemon::PTR p = (*m_impl->active[party])[idx].pokemon;
-                if (!p->isFainted()) {
+                if (p) {
                     target = p.get();
                 }
             }

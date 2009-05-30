@@ -10,13 +10,12 @@
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Acid" id="1">
@@ -769,13 +768,12 @@ makeChargeMove(this,
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 3);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Brick Break" id="42">
@@ -1784,13 +1782,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 3);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Doubleslap" id="96">
@@ -1951,13 +1948,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dream Eater" id="105">
@@ -1970,13 +1966,20 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    if (target.getStatus("SleepEffect") == null) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Drill Peck" id="106">
@@ -2545,13 +2548,13 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[BurnEffect, 0.1]]);
+makeRecoilMove(this, 3);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flash" id="137">
@@ -2912,13 +2915,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Giga Impact" id="156">
@@ -3247,13 +3249,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Headbutt" id="174">
@@ -3321,13 +3322,12 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoveryMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Healing Wish" id="178">
@@ -4024,13 +4024,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Leech Seed" id="215">
@@ -4406,13 +4405,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, -2);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mega Kick" id="236">
@@ -4578,13 +4576,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.2, true]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoveryMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mimic" id="246">
@@ -5801,13 +5798,12 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(1));
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoveryMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Recycle" id="312">
@@ -6739,13 +6735,12 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(3));
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoveryMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Slam" id="363">
@@ -6960,13 +6955,12 @@ this.use = function(field, user, target, targets) {
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoveryMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Solarbeam" id="375">
@@ -7347,13 +7341,12 @@ makeStatusMove(this, [[ParalysisEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 4);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Substitute" id="396">
@@ -7714,13 +7707,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 4);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Taunt" id="416">
@@ -8278,13 +8270,13 @@ makeStatusMove(this, [
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ParalysisEffect, 0.1]]);
+makeRecoilMove(this, 3);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Wake-up Slap" id="446">
@@ -8537,13 +8529,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRecoilMove(this, 3);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Worry Seed" id="460">
