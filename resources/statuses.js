@@ -79,6 +79,9 @@ makeEffect({
             return;
         this.subject.removeStatus(this);
     },
+    informBeginTurn : function() {
+        return true;
+    },
     unapplyEffect : function() {
         this.subject.field.print(Text.status_effects_freeze(2, this.subject));
     }
@@ -342,6 +345,9 @@ makeEffect({
         var field = this.subject.field;
         this.turns = field.random(1, 4); // random duration
         field.print(Text.status_effects_sleep(1, this.subject));
+        return true;
+    },
+    informBeginTurn : function() {
         return true;
     },
     vetoExecution : function(field, user, target, move) {

@@ -2702,15 +2702,6 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <init>
 <![CDATA[
 this.beginTurn = function(field, user) {
-    var effect = user.getStatus(StatusEffect.SPECIAL_EFFECT);
-    if (effect) {
-        if ((effect.id == "SleepEffect") || (effect.id == "FreezeEffect")) {
-            return;
-        }
-    }
-    // TODO: Do not show the following message if Truant is about to cause the
-    //       user to skip a turn. (Truant is literally the only special
-    //       interaction with this message.)
     field.print(Text.battle_messages_unique(22, user));
 }
 ]]>

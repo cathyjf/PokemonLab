@@ -800,7 +800,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 
         if (turn->type == TT_MOVE) {
             MoveObject *move = p->getMove(turn->id);
-            move->beginTurn(m_impl->context, this, p.get(), NULL);
+            ScriptValue v = p->sendMessage("informBeginTurn", 0, NULL);
+            if (v.failed() || !v.getBool()) {
+                move->beginTurn(m_impl->context, this, p.get(), NULL);
+            }
         }
     }
 
