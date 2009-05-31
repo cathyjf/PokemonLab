@@ -2698,11 +2698,34 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <flags>
 	<contact/>
 	<protect/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.beginTurn = function(field, user) {
+    var effect = user.getStatus(StatusEffect.SPECIAL_EFFECT);
+    if (effect) {
+        if ((effect.id == "SleepEffect") || (effect.id == "FreezeEffect")) {
+            return;
+        }
+    }
+    // TODO: Do not show the following message if Truant is about to cause the
+    //       user to skip a turn. (Truant is literally the only special
+    //       interaction with this message.)
+    field.print(Text.battle_messages_unique(22, user));
+}
+]]>
+</init>
 <use>
 <![CDATA[
-
+var entry = null;
+while (entry = user.popRecentDamage()) {
+    if (entry[1].name != "Pain Split") {
+        // But it failed!
+        field.print(Text.battle_messages(0));
+        return;
+    }
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
