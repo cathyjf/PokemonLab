@@ -109,6 +109,7 @@ typedef vector<int> PARTY_REQUEST;
 typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 
 struct NetworkBattleImpl {
+    Server *server;
     JewelMechanics mech;
     NetworkBattle *field;
     BattleChannelPtr channel;
@@ -128,6 +129,7 @@ struct NetworkBattleImpl {
             victory(false),
             field(p),
             turnCount(0),
+            server(server),
             channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))) { }
 
@@ -383,7 +385,7 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
         ret[OP] = true;
         ret[PROTECTED] = true;
     }
-    // todo: bans
+    // TODO: bans
     return ret;
 }
 
@@ -396,7 +398,7 @@ void BattleChannel::handlePart(ClientPtr client) {
         m_field->field->informVictory(1 - party);
     }
 
-    // todo: destroy the channel if this is the last user
+    // TODO: destroy the channel if this is the last user
 }
 
 void NetworkBattle::terminate() {
@@ -410,6 +412,8 @@ void NetworkBattle::terminate() {
     m_impl->clients[0]->terminateBattle(p, m_impl->clients[1]);
     
     BattleField::terminate();
+    // TODO: Maybe a better way to collect garbage here.
+    m_impl->server->getMachine()->acquireContext()->gc();
     m_impl->channel->informBattleTerminated();
 }
 

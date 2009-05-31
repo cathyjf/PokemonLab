@@ -158,7 +158,7 @@ bool hasChildElement(DOMElement *node, const string child) {
 }
 
 void getMove(DOMElement *node, MoveTemplateImpl *pMove,
-        ScriptContext *cx) {
+        ScriptContextPtr cx) {
     DOMNamedNodeMap *attributes = node->getAttributes();
     XMLCh tempStr[20];
 
@@ -330,7 +330,7 @@ void MoveDatabase::loadMoves(const string file) {
     XMLString::transcode("move", tempStr, 11);
     DOMNodeList *list = root->getElementsByTagName(tempStr);
 
-    ScriptContext *cx = m_machine.acquireContext();
+    ScriptContextPtr cx = m_machine.acquireContext();
 
     int implemented = 0;
     XMLSize_t length = list->getLength();
@@ -348,12 +348,10 @@ void MoveDatabase::loadMoves(const string file) {
         m_intData.insert(INT_MOVE_DATABASE::value_type(move->id, move->name));
     }
     cout << implemented << " / " << length << " moves implemented." << endl;
-
-    m_machine.releaseContext(cx);
 }
 
 MoveDatabase::~MoveDatabase() {
-    ScriptContext *cx = m_machine.acquireContext();
+    ScriptContextPtr cx = m_machine.acquireContext();
     MOVE_DATABASE::iterator i = m_data.begin();
     for (; i != m_data.end(); ++i) {
         MoveTemplate *move = i->second;
@@ -375,7 +373,6 @@ MoveDatabase::~MoveDatabase() {
         }
         delete move;
     }
-    m_machine.releaseContext(cx);
 }
 
 } // namespace shoddybattle
@@ -393,7 +390,7 @@ using namespace shoddybattle;
 
 int main() {
     ScriptMachine machine;
-    ScopedContext(machine)->runFile("resources/main.js");
+    machine.acquireContext()->runFile("resources/main.js");
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
     MoveDatabase *moves = machine.getMoveDatabase();
@@ -408,33 +405,35 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Dragon Dance", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Psych Up", 5);
+    field.getActivePokemon(0, 1)->setMove(1, "Snore", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
     field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Sludge", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Dark Void", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Focus Punch", 5);
 
     field.getActivePokemon(0, 0)->setAbility("Poison Heal");
-    field.getActivePokemon(0, 1)->setAbility("Poison Heal");
-    field.getActivePokemon(1, 0)->setAbility("Poison Heal");
-    field.getActivePokemon(1, 0)->setAbility("Poison Heal");
+    field.getActivePokemon(0, 1)->setAbility("Skill Link");
+    field.getActivePokemon(1, 0)->setAbility("Steadfast");
+    field.getActivePokemon(1, 1)->setAbility("Steadfast");
 
     field.beginBattle();
 
     vector<PokemonTurn> turns;
     turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
-    turns.push_back(PokemonTurn(TT_MOVE, 3, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
+    turns.push_back(PokemonTurn(TT_MOVE, 2, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
 
     time_t initial = clock();
     field.processTurn(turns);
+    //turns[1] = PokemonTurn(TT_MOVE, 1, 2);
+    /**field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);
-    field.processTurn(turns);
-    field.processTurn(turns);
+    field.processTurn(turns);**/
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
     cout << delta << " seconds to process the turn." << endl;

@@ -29,6 +29,7 @@
 #include <string>
 #include <set>
 #include <iostream>
+#include <boost/shared_ptr.hpp>
 
 #include "ObjectWrapper.h"
 #include "../moves/PokemonMove.h"
@@ -294,6 +295,8 @@ private:
     ScriptContext &operator=(const ScriptContext &);
 };
 
+typedef boost::shared_ptr<ScriptContext> ScriptContextPtr;
+
 class Text;
 class SpeciesDatabase;
 class MoveDatabase;
@@ -309,10 +312,7 @@ public:
     ~ScriptMachine();
 
     /** Obtain a new context for running scripts. **/
-    ScriptContext *acquireContext();
-
-    /** Release a context for running scripts. **/
-    void releaseContext(ScriptContext *cx);
+    ScriptContextPtr acquireContext();
 
     /** Global program state. **/
     Text *getText() const;
@@ -331,23 +331,6 @@ private:
 
     ScriptMachine(const ScriptMachine &);
     ScriptMachine &operator=(const ScriptMachine &);
-};
-
-/** RAII-style context **/
-class ScopedContext {
-public:
-    ScopedContext(ScriptMachine &machine): m_machine(machine) {
-        m_cx = m_machine.acquireContext();
-    }
-    ScriptContext *operator->() {
-        return m_cx;
-    }
-    ~ScopedContext() {
-        m_machine.releaseContext(m_cx);
-    }
-private:
-    ScriptContext *m_cx;
-    ScriptMachine &m_machine;
 };
 
 }

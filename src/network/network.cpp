@@ -1183,7 +1183,7 @@ int main() {
     network::Server server(8446);
 
     ScriptMachine *machine = server.getMachine();
-    ScopedContext(*machine)->runFile("resources/main.js");
+    machine->acquireContext()->runFile("resources/main.js");
 
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");

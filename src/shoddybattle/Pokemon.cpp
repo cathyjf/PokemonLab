@@ -95,27 +95,23 @@ Pokemon::~Pokemon() {
     if (!m_machine)
         return;
 
-    ScriptContext *cx = m_machine->acquireContext();
-
     if (m_object) {
-        cx->removeRoot(m_object);
+        m_cx->removeRoot(m_object);
     }
 
     vector<MoveObject *>::iterator i = m_moves.begin();
     for (; i != m_moves.end(); ++i) {
-        cx->removeRoot(*i);
+        m_cx->removeRoot(*i);
     }
 
     if (m_forcedMove) {
-        cx->removeRoot(m_forcedMove);
+        m_cx->removeRoot(m_forcedMove);
     }
 
     STATUSES::iterator j = m_effects.begin();
     for (; j != m_effects.end(); ++j) {
-        cx->removeRoot(*j);
+        m_cx->removeRoot(*j);
     }
-
-    m_machine->releaseContext(cx);
 }
 
 double Pokemon::getMass() const {
@@ -697,7 +693,9 @@ void Pokemon::faint() {
  * can cause side effects such as the printing of messages.
  */
 void Pokemon::setHp(const int hp) {
-    // TODO: implement this function properly
+    // TODO: Somehow handle the fact that being hit at 1 HP and saved by
+    //       Focus Band counts as being hit for the purpose of several
+    //       interactions.
     if (m_fainted) {
         return;
     }
@@ -818,7 +816,8 @@ void Pokemon::deductPp(const int i) {
     m_field->informSetPp(this, i, pp);
 }
 
-void Pokemon::initialise(BattleField *field, const int party, const int idx) {
+void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
+        const int party, const int idx) {
     m_field = field;
     m_party = party;
     m_position = idx;
@@ -835,7 +834,8 @@ void Pokemon::initialise(BattleField *field, const int party, const int idx) {
 
     // Get script machine.
     m_machine = field->getScriptMachine();
-    m_cx = field->getContext();
+    m_scx = cx;
+    m_cx = m_scx.get();
 
     // Create pokemon object.
     m_object = m_cx->newPokemonObject(this);

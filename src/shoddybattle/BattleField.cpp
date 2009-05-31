@@ -42,6 +42,7 @@ struct BattleFieldImpl {
     GENERATION generation;
     ScriptMachine *machine;
     ScriptContext *context;
+    ScriptContextPtr contextRef;
     Pokemon::ARRAY teams[TEAM_COUNT];
     int partySize;
     shared_ptr<PokemonParty> active[TEAM_COUNT];
@@ -95,21 +96,19 @@ struct BattleFieldImpl {
         Pokemon::ARRAY teams[TEAM_COUNT],
         const std::string trainer[TEAM_COUNT],
         const int activeParty);
-
-    void cleanUp() {
+    
+    void terminate() {
         if (object) {
             context->removeRoot(object);
             object = NULL;
         }
-        if (context) {
-            machine->releaseContext(context);
-            context = NULL;
-        }
+        contextRef.reset();
+        context = NULL;
         machine = NULL;
     }
 
     ~BattleFieldImpl() {
-        cleanUp();
+        terminate();
     }
 };
 
@@ -944,7 +943,7 @@ void BattleField::initialise(const BattleMechanics *mech,
         m_impl->initialise(this, mech, generation,
                 machine, teams, trainer, activeParty);
     } catch (BattleFieldException &e) {
-        m_impl->cleanUp();
+        m_impl->terminate();
         throw e;
     }
 }
@@ -963,7 +962,8 @@ void BattleFieldImpl::initialise(BattleField *field,
         throw BattleFieldException();
     }
     this->machine = machine;
-    this->context = machine->acquireContext();
+    this->contextRef = machine->acquireContext();
+    this->context = this->contextRef.get();
     this->object = context->newFieldObject(field);
     this->mech = mech;
     this->host = mech->getCoinFlip() ? 0 : 1;
@@ -995,7 +995,7 @@ void BattleFieldImpl::initialise(BattleField *field,
             if (!p) {
                 throw BattleFieldException();
             }
-            p->initialise(field, i, j);
+            p->initialise(field, contextRef, i, j);
         }
     }
 }

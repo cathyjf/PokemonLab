@@ -85,7 +85,8 @@ public:
             const std::vector<std::string> &moves,
             const std::vector<int> &ppUps);
 
-    void initialise(BattleField *field, const int i, const int j);
+    void initialise(BattleField *field, boost::shared_ptr<ScriptContext>,
+            const int i, const int j);
 
     ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 
@@ -260,6 +261,7 @@ private:
 
     ScriptMachine *m_machine;
     ScriptContext *m_cx;
+    boost::shared_ptr<ScriptContext> m_scx;
     BattleField *m_field;
     int m_party, m_position, m_slot;
 

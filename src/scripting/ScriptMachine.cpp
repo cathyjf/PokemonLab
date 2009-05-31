@@ -31,6 +31,7 @@
 #include <iostream>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/locks.hpp>
+#include <boost/bind.hpp>
 
 #include "ScriptMachine.h"
 #include "../text/Text.h"
@@ -84,6 +85,12 @@ struct ScriptMachineImpl {
         JS_SetContextPrivate(cx, context);
         context->m_machine = machine;
         return context;
+    }
+
+    void releaseContext(ScriptContext *cx) {
+        // Need external synchronisation for cx->m_busy.
+        lock_guard<mutex> guard(lock);
+        cx->m_busy = false;
     }
 };
 
@@ -501,7 +508,7 @@ bool isAvailable(ScriptContext *cx) {
     return !cx->isBusy();
 }
 
-ScriptContext *ScriptMachine::acquireContext() {
+ScriptContextPtr ScriptMachine::acquireContext() {
     // Need external synchronisation for a set.
     lock_guard<mutex> guard(m_impl->lock);
     CONTEXT_SET &contexts = m_impl->contexts;
@@ -512,20 +519,16 @@ ScriptContext *ScriptMachine::acquireContext() {
     if (i != contexts.end()) {
         ScriptContext *cx = *i;
         cx->m_busy = true;
-        return cx;
+        return ScriptContextPtr(cx,
+                boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
     }
 
     // Otherwise, we need to make a new context.
     ScriptContext *context = m_impl->newContext();
     context->m_busy = true;
     contexts.insert(context);
-    return context;
-}
-
-void ScriptMachine::releaseContext(ScriptContext *cx) {
-    // Need external synchronisation for cx->m_busy.
-    lock_guard<mutex> guard(m_impl->lock);
-    cx->m_busy = false;
+    return ScriptContextPtr(context,
+            boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
 }
 
 static JSFunctionSpec globalFunctions[] = {
@@ -583,14 +586,15 @@ ScriptMachine::~ScriptMachine() {
     CONTEXT_SET::iterator i = m_impl->contexts.begin();
     for (; i != m_impl->contexts.end(); ++i) {
         ScriptContext *cx = *i;
+        if (cx->isBusy()) {
+            cout << "Error: Busy context in ~ScriptMachine()." << endl;
+        }
         JS_DestroyContext((JSContext *)cx->m_p);
         delete cx;
     }
     int roots = m_impl->roots.size();
     if (roots != 0) {
-        cout << "Warning: " << roots << " unremoved roots." << endl;
-        cout << "This indicates a failure to remove a root somewhere.";
-        cout << endl;
+        cout << "Error: " << roots << " unremoved roots." << endl;
     }
     set<ScriptObject *>::iterator j = m_impl->roots.begin();
     for (; j != m_impl->roots.end(); ++j) {
