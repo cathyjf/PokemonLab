@@ -54,7 +54,7 @@ class ScriptValue;
 class Target;
 
 typedef std::vector<const PokemonType *> TYPE_ARRAY;
-typedef std::list<StatusObject *> STATUSES;
+typedef std::vector<StatusObject *> STATUSES;
 
 typedef std::map<int, double> PRIORITY_MAP;
 // map<position, map<priority, value>>

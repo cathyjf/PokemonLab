@@ -360,5 +360,16 @@ int StatusObject::getTier(ScriptContext *scx) const {
     return ret;
 }
 
+int StatusObject::getVetoTier(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "vetoTier", &val);
+    JS_EndRequest(cx);
+    assert(JSVAL_IS_INT(val));
+    int ret = JSVAL_TO_INT(val);
+    return ret;
+}
+
 }
 

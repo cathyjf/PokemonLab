@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <list>
+#include <boost/bind.hpp>
 
 #include "Pokemon.h"
 #include "PokemonSpecies.h"
@@ -184,14 +185,26 @@ bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {
     return false;
 }
 
+namespace {
+
+bool vetoExecutionPredicate(ScriptContext *cx,
+        StatusObject *s1,
+        StatusObject *s2) {
+    return (s1->getVetoTier(cx) < s2->getVetoTier(cx));
+}
+
+} // anonymous namespace
+
 /**
  * Determine whether the execution of a move should be vetoed, according to
  * the effects on this pokemon.
  */
 bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
-    // todo: sort these in reverse lock order
-    for (STATUSES::const_iterator i = m_effects.begin();
-            i != m_effects.end(); ++i) {
+    STATUSES effects = m_effects;
+    sort(effects.begin(), effects.end(),
+            boost::bind(vetoExecutionPredicate, m_cx, _1, _2));
+    for (STATUSES::const_iterator i = effects.begin();
+            i != effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
 

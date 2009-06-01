@@ -272,6 +272,16 @@ public:
     void switchPokemon(Pokemon *, const int);
 
     /**
+     * Withdraw a pokemon.
+     */
+    void withdrawPokemon(Pokemon *);
+
+    /**
+     * Send out a new pokemon.
+     */
+    void sendOutPokemon(const int, const int, const int);
+
+    /**
      * Check whether one party has won the battle.
      */
     bool determineVictory();

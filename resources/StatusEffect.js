@@ -77,6 +77,7 @@ StatusEffect.prototype = {
     passable : true,                // Can be Baton Passed?
     tier : -1,                      // End of turn tier for this effect.
     subtier : - 1,
+    vetoTier : 0,
 
     /**
      * Methods with a default implementation.

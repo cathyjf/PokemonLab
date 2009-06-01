@@ -2702,23 +2702,31 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <init>
 <![CDATA[
 this.beginTurn = function(field, user) {
-    field.print(Text.battle_messages_unique(22, user));
+    if (!user.sendMessage("informBeginTurn")) {
+        field.print(Text.battle_messages_unique(22, user));
+    }
+    var effect = new StatusEffect("FocusPunchEffect");
+    effect.vetoTier = 5;    // TODO: Get the correct tier.
+    effect.tick = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.informDamaged = function() {
+        this.lostFocus = true;
+    };
+    effect.vetoExecution = function(field, user, target, move) {
+        if (target != null)
+            return false;
+        if (!this.lostFocus)
+            return false;
+        if (user != this.subject)
+            return false;
+        field.print(Text.battle_messages_unique(23, user));
+        return true;
+    };
+    user.applyStatus(user, effect);
 }
 ]]>
 </init>
-<use>
-<![CDATA[
-var entry = null;
-while (entry = user.popRecentDamage()) {
-    if (entry[1].name != "Pain Split") {
-        // But it failed!
-        field.print(Text.battle_messages(0));
-        return;
-    }
-}
-target.hp -= field.calculate(this, user, target, targets);
-]]>
-</use>
 </move>
 
 <move name="Follow Me" id="145">
@@ -5614,11 +5622,15 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus(StatusEffect.SPECIAL_EFFECT);
+if (!effect || !target.applyStatus(user, effect)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.removeStatus(effect);
 ]]>
 </use>
 </move>
@@ -5679,11 +5691,48 @@ target.hp -= damage;
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+var move = this;
+this.beginTurn = function(field, user, target) {
+    if (user.sendMessage("informBeginTurn")) {
+        return;
+    }
+    var effect = new StatusEffect("PursuitEffect");
+    effect.vetoTier = -5;   // TODO (?)
+    effect.target = target;
+    effect.tick = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.informWithdraw = function(subject) {
+        if (subject != this.target)
+            return;
+        this.executed = true;
+        this.subject.execute(move, subject);
+    };
+    effect.vetoExecution = function(field, user, target, move) {
+        if (target != null)
+            return false;
+        if (user != this.subject)
+            return false;
+        if (!this.executed)
+            return false;
+        return true;
+    };
+    user.applyStatus(user, effect);
+};
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+var effect = user.getStatus("PursuitEffect");
+if (effect && effect.executed) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>

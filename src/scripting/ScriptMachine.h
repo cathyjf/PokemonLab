@@ -203,6 +203,7 @@ public:
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
     int getTier(ScriptContext *) const;
+    int getVetoTier(ScriptContext *) const;
     bool isSingleton(ScriptContext *) const;
     ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
     int getInherentPriority(ScriptContext *);

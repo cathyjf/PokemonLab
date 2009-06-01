@@ -404,17 +404,32 @@ const BattleMechanics *BattleField::getMechanics() const {
 }
 
 /**
- * Switch an active pokemon.
+ * Switch to a new pokemon.
  */
 void BattleField::switchPokemon(Pokemon *p, const int idx) {
     const int party = p->getParty();
     const int slot = p->getSlot();
-    if (!p->isFainted()) {
-        informWithdraw(p);
-        ScriptValue argv[] = { p };
-        m_impl->active[1 - party]->sendMessage("informWithdraw", 1, argv);
-        p->switchOut(); // note: clears slot
-    }
+    withdrawPokemon(p);
+    sendOutPokemon(party, slot, idx);
+}
+
+/**
+ * Withdraw an active pokemon.
+ */
+void BattleField::withdrawPokemon(Pokemon *p) {
+    if (p->isFainted())
+        return;
+    informWithdraw(p);
+    ScriptValue argv[] = { p };
+    m_impl->active[1 - p->getParty()]->sendMessage("informWithdraw", 1, argv);
+    p->switchOut(); // Note: clears slot.
+}
+
+/**
+ * Send out a new pokemon.
+ */
+void BattleField::sendOutPokemon(const int party,
+        const int slot, const int idx) {
     Pokemon::PTR replacement = m_impl->teams[party][idx];
     (*m_impl->active[party])[slot].pokemon = replacement;
     replacement->setSlot(slot);
@@ -799,11 +814,16 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 
         if (turn->type == TT_MOVE) {
             MoveObject *move = p->getMove(turn->id);
-            ScriptValue v = p->sendMessage("informBeginTurn", 0, NULL);
-            if (v.failed() || !v.getBool()) {
-                move->beginTurn(m_impl->context, this, p.get(), NULL);
+            Pokemon *target = NULL;
+            int idx = turn->target;
+            if (idx != -1) { // exactly one target
+                int party = 0;
+                m_impl->decodeIndex(idx, party);
+                target = (*m_impl->active[party])[idx].pokemon.get();
             }
+            move->beginTurn(m_impl->context, this, p.get(), target);
         }
+
     }
 
     // Execute the actions.
