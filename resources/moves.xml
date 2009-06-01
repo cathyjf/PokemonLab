@@ -2710,8 +2710,10 @@ this.beginTurn = function(field, user) {
     effect.tick = function() {
         this.subject.removeStatus(this);
     };
-    effect.informDamaged = function() {
-        this.lostFocus = true;
+    effect.informDamaged = function(user, move) {
+        if (move.name != "Pain Split") {
+            this.lostFocus = true;
+        }
     };
     effect.vetoExecution = function(field, user, target, move) {
         if (target != null)
