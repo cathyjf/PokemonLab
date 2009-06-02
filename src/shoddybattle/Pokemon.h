@@ -54,7 +54,7 @@ class ScriptValue;
 class Target;
 
 typedef std::vector<const PokemonType *> TYPE_ARRAY;
-typedef std::vector<StatusObject *> STATUSES;
+typedef std::list<StatusObject *> STATUSES;
 
 typedef std::map<int, double> PRIORITY_MAP;
 // map<position, map<priority, value>>
@@ -125,7 +125,7 @@ public:
     int transformHealthChange(int, bool) const;
     
     int getHp() const { return m_hp; }
-    void setHp(const int hp);
+    void setHp(int hp);
 
     std::string getSpeciesName() const;
     int getSpeciesId() const;
@@ -170,6 +170,8 @@ public:
     void setMove(const int, MoveObject *, const int);
     void setAbility(StatusObject *);
     void setAbility(const std::string &);
+    void setItem(StatusObject *);
+    void setItem(const std::string &);
 
     int getMoveCount() const { return m_moves.size(); }
 

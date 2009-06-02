@@ -66,7 +66,7 @@ function makeRecoveryMove(move, ratio) {
             field.print(Text.battle_messages(0));
             return;
         }
-        user.hp += max * ratio;
+        user.hp += Math.floor(max * ratio);
     };
 }
 

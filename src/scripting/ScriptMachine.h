@@ -259,7 +259,8 @@ public:
     void addRoot(ScriptObject *obj);
     void removeRoot(ScriptObject *obj);
 
-    StatusObject getAbility(const std::string) const;
+    StatusObject getAbility(const std::string &) const;
+    StatusObject getItem(const std::string &) const;
     
     ScriptValue callFunction(ScriptObject *obj,
             const ScriptFunction *func,

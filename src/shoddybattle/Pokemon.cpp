@@ -200,10 +200,12 @@ bool vetoExecutionPredicate(ScriptContext *cx,
  * the effects on this pokemon.
  */
 bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
-    STATUSES effects = m_effects;
+    //STATUSES effects = m_effects;
+    vector<StatusObject *> effects;
+    effects.insert(effects.begin(), m_effects.begin(), m_effects.end());
     sort(effects.begin(), effects.end(),
             boost::bind(vetoExecutionPredicate, m_cx, _1, _2));
-    for (STATUSES::const_iterator i = effects.begin();
+    for (vector<StatusObject *>::const_iterator i = effects.begin();
             i != effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
@@ -565,7 +567,7 @@ StatusObject *Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     }
 
     StatusObject *applied = effect->cloneAndRoot(m_cx);
-    if (inducer != NULL) {
+    if (inducer) {
         applied->setInducer(m_cx, inducer);
     }
     applied->setSubject(m_cx, this);
@@ -705,12 +707,16 @@ void Pokemon::faint() {
  * Set the current hp of the pokemon, and also inform the BattleField, which
  * can cause side effects such as the printing of messages.
  */
-void Pokemon::setHp(const int hp) {
+void Pokemon::setHp(int hp) {
     // TODO: Somehow handle the fact that being hit at 1 HP and saved by
     //       Focus Band counts as being hit for the purpose of several
     //       interactions.
     if (m_fainted) {
         return;
+    }
+    const int max = m_stat[S_HP];
+    if (hp > max) {
+        hp = max;
     }
     const BattleField::EXECUTION *move = m_field->topExecution();
     const bool indirect = !move || (move->user == this);
@@ -784,7 +790,6 @@ void Pokemon::informTargeted(Pokemon *user, MoveObject *move) {
  * Set this pokemon's ability.
  */
 void Pokemon::setAbility(StatusObject *obj) {
-    ScriptContext *cx = m_field->getContext();
     if (m_ability != NULL) {
         removeStatus(m_ability);
     }
@@ -794,13 +799,34 @@ void Pokemon::setAbility(StatusObject *obj) {
 /**
  * Set this pokemon's ability by name.
  */
-void Pokemon::setAbility(const std::string &name) {
-    ScriptContext *cx = m_field->getContext();
-    StatusObject ability = cx->getAbility(name);
+void Pokemon::setAbility(const string &name) {
+    StatusObject ability = m_cx->getAbility(name);
     if (!ability.isNull()) {
         setAbility(&ability);
     } else {
-        cout << "Warning: No such ability as " << name << "." << endl;
+        cout << "No such ability: " << name << "." << endl;
+    }
+}
+
+/**
+ * Set this pokemon's item.
+ */
+void Pokemon::setItem(StatusObject *obj) {
+    if (m_item) {
+        removeStatus(m_item);
+    }
+    m_item = applyStatus(NULL, obj);
+}
+
+/**
+ * Set this pokemon's item by name.
+ */
+void Pokemon::setItem(const string &name) {
+    StatusObject item = m_cx->getItem(name);
+    if (!item.isNull()) {
+        setItem(&item);
+    } else {
+        cout << "No such item: " << name << "." << endl;
     }
 }
 
@@ -864,11 +890,9 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
     }
 
     // Create ability object.
-    StatusObject ability = m_cx->getAbility(m_abilityName);
-    if (!ability.isNull()) {
-        m_ability = applyStatus(NULL, &ability);
-    } else {
-        cout << "No such ability: " << m_abilityName << endl;
+    setAbility(m_abilityName);
+    if (!m_itemName.empty()) {
+        setItem(m_itemName);
     }
 }
 

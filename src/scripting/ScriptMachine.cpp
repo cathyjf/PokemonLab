@@ -92,6 +92,23 @@ struct ScriptMachineImpl {
         lock_guard<mutex> guard(lock);
         cx->m_busy = false;
     }
+
+    StatusObject getSpecialStatus(JSContext *cx,
+            const string &type, const string &name) {
+        JS_BeginRequest(cx);
+        jsval val;
+        JS_GetProperty(cx, global, type.c_str(), &val);
+        JSObject *obj = JSVAL_TO_OBJECT(val);
+        JSBool has;
+        JS_HasProperty(cx, obj, name.c_str(), &has);
+        StatusObject ret(NULL);
+        if (has) {
+            JS_GetProperty(cx, obj, name.c_str(), &val);
+            ret = StatusObject(JSVAL_TO_OBJECT(val));
+        }
+        JS_EndRequest(cx);
+        return ret;
+    }
 };
 
 Text *ScriptMachine::getText() const {
@@ -308,21 +325,18 @@ bool ScriptValue::getBool() const {
  * Get an ability object by looking in the Ability property of the global
  * object for a property by the name of the ability.
  */
-StatusObject ScriptContext::getAbility(const string name) const {
+StatusObject ScriptContext::getAbility(const string &name) const {
     JSContext *cx = (JSContext *)m_p;
-    JS_BeginRequest(cx);
-    jsval val;
-    JS_GetProperty(cx, m_machine->m_impl->global, "Ability", &val);
-    JSObject *obj = JSVAL_TO_OBJECT(val);
-    JSBool has;
-    JS_HasProperty(cx, obj, name.c_str(), &has);
-    StatusObject ret(NULL);
-    if (has) {
-        JS_GetProperty(cx, obj, name.c_str(), &val);
-        ret = StatusObject(JSVAL_TO_OBJECT(val));
-    }
-    JS_EndRequest(cx);
-    return ret;
+    return m_machine->m_impl->getSpecialStatus(cx, "Ability", name);
+}
+
+/**
+ * Get an item object by looking in the HoldItem property of the global
+ * object for a property by the name of the ability.
+ */
+StatusObject ScriptContext::getItem(const string &name) const {
+    JSContext *cx = (JSContext *)m_p;
+    return m_machine->m_impl->getSpecialStatus(cx, "HoldItem", name);
 }
 
 bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {

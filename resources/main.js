@@ -14,3 +14,4 @@ include("resources/constants.js");
 include("resources/StatusEffect.js");
 include("resources/statuses.js");
 include("resources/abilities.js");
+include("resources/items.js");
