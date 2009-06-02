@@ -2255,11 +2255,19 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+if (user.getStatus(StatusEffect.SPECIAL_EFFECT)) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
@@ -4644,11 +4652,11 @@ makeRecoveryMove(this);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
+user.applyStatus(user, new StatusEffect("MinimiseEffect"));
 ]]>
 </use>
 </move>
@@ -6913,11 +6921,23 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+var effect = target.getStatus("ParalysisEffect");
+if (effect) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
+if (effect) {
+    target.removeStatus(effect);
+}
 ]]>
 </use>
 </move>
@@ -7289,11 +7309,19 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, 1), 0.1, true]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+if (target.getStatus("MinimiseEffect")) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
@@ -8387,11 +8415,23 @@ makeRecoilMove(this, 3);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+var effect = target.getStatus("SleepEffect");
+if (effect) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
+if (effect) {
+    target.removeStatus(effect);
+}
 ]]>
 </use>
 </move>
