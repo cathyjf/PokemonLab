@@ -247,6 +247,9 @@ function makeStatusMove(move, effects, immunities) {
                     continue;
                 }
                 var e = effect[0];
+                if (e.delayed) {
+                    e = e(field);
+                }
                 var obj = (typeof(e) == "function") ? new e() : e;
                 if (affected.applyStatus(user, obj) == null) {
                     if (this.power == 0) {

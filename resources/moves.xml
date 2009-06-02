@@ -7850,11 +7850,11 @@ makeStatusMove(this, [[ConfusionEffect]]);
 <pp>20</pp>
 <target>User</target>
 <flags>
-	<unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+field.print(Text.battle_messages(0));
 ]]>
 </use>
 </move>
@@ -8118,13 +8118,19 @@ makeStatusMove(this, [
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+var effect = function(field) {
+    var rand = field.random(1, 3);
+    if (rand == 1) return BurnEffect;
+    if (rand == 2) return FreezeEffect;
+    return ParalysisEffect;
+};
+effect.delayed = true;
+makeStatusMove(this, [[effect, 0.20]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Trick" id="433">
