@@ -147,6 +147,7 @@ function makeChargeMove(move, text, vulnerable) {
         var move_ = user.setForcedMove(this, target);
         move_.accuracy = accuracy_;
         effect = new StatusEffect("ChargeMoveEffect");
+        effect.move = this;
         effect.turns = 2;
         effect.informFinishedExecution = function() {
             if (--this.turns == 0) {
@@ -212,6 +213,9 @@ function makeStatusMove(move, effects, immunities) {
     }
     move.use = function(field, user, target, targets) {
         if (this.power != 0) {
+            if (this.prepare) {
+                this.prepare(field, user, target, targets);
+            }
             var damage = field.calculate(this, user, target, targets);
             if (damage == 0) {
                 return;
