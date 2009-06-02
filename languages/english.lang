@@ -227,15 +227,21 @@
 19: $1 blew away the spikes!
 20: The wall shattered!
 21: $1 became the centre of attention!
+
+// Focus Punch
 22: $1 is tightening its focus!
 23: $1 lost its focus and couldn't move!
+
+// Trick Room
 24: $1 twisted the dimensions!
 25: The twisted dimensions returned to normal!
+
+// Taunt
 26: $1's taunt wore off!
 27: $1 can't use $2 after the taunt!
-28: It reduced the PP of the foe's $2's $3 by $4!
-29: $1 is trying to take its foe with it!
-30: $1 took $2 with it!
+28: $1 fell for the taunt!
+29: Taunt // for status effect listing
+
 31: $1 lost its PP due to the Grudge!
 32: $1 got an encore!
 33: $1's encore ended.
@@ -265,6 +271,9 @@
 57: $1 must recharge!
 58: $1 was hit by recoil!
 59: $1 absorbed health!
+60: It reduced the PP of the foe's $2's $3 by $4!
+61: $1 is trying to take its foe with it!
+62: $1 took $2 with it!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

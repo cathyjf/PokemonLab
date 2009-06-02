@@ -48,6 +48,7 @@ makeEffect({
     id : "FreezeEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_freeze(0),
+    vetoTier : 0,
     applyEffect : function() {
         if (this.subject.isType(Type.ICE)) {
             return false;
@@ -98,6 +99,7 @@ makeEffect({
     id : "FlinchEffect",
     name : Text.status_effects_flinch(0),
     tier : 0,
+    vetoTier : 3,
     vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
             return false;
@@ -126,6 +128,7 @@ makeEffect({
 makeEffect({
     id : "ConfusionEffect",
     name : Text.status_effects_confusion(0),
+    vetoTier : 2,
     applyEffect : function() {
         var field = this.subject.field;
         field.print(Text.status_effects_confusion(1, this.subject));
@@ -245,6 +248,7 @@ makeEffect({
     id : "ParalysisEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_paralysis(0),
+    vetoTier : 10,
     switchOut : function() { return false; },
     applyEffect : function() {
         var field = this.subject.field;
@@ -340,6 +344,7 @@ makeEffect({
     id : "SleepEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_sleep(0),
+    vetoTier : 0,
     switchOut : function() { return false; },
     applyEffect : function() {
         var field = this.subject.field;

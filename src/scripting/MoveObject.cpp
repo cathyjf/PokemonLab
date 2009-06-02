@@ -167,12 +167,31 @@ const MoveTemplate *MoveObject::getTemplate(ScriptContext *scx) const {
     return scx->getMachine()->getMoveDatabase()->getMove(getName(scx));
 }
 
+namespace {
+
+JSBool toString(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    /**const string str = "whatever";
+    char *pstr = JS_strdup(cx, str.c_str());
+    JSString *ostr = JS_NewString(cx, pstr, str.length());
+    *ret = STRING_TO_JSVAL(ostr);**/
+
+    // TODO: internationalisation
+    JS_GetProperty(cx, obj, "name", ret);
+
+    return JS_TRUE;
+}
+
+} // anonymous namespace
+
 MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
     MoveObject *ret = new MoveObject(obj, p);
     addRoot(ret);
+
+    JS_DefineFunction(cx, obj, "toString", toString, 0, 0);
     
     string name = p->getName();
     char *pstr = JS_strdup(cx, name.c_str());

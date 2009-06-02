@@ -2706,7 +2706,8 @@ this.beginTurn = function(field, user) {
         field.print(Text.battle_messages_unique(22, user));
     }
     var effect = new StatusEffect("FocusPunchEffect");
-    effect.vetoTier = 5;    // TODO: Get the correct tier.
+    effect.vetoTier = 11;    // TODO: Get the correct tier.
+    effect.tier = 0;
     effect.tick = function() {
         this.subject.removeStatus(this);
     };
@@ -3627,10 +3628,11 @@ makeStatusMove(this, [[SleepEffect]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
+    <unimplemented/>
 </flags>
 <init>
 <![CDATA[
-makeStatusMove(this, [[FreezeEffect, 0.1]]);
+
 ]]>
 </init>
 </move>
@@ -3987,6 +3989,9 @@ makeStatusMove(this, [[BurnEffect, 0.3]]);
 </init>
 </move>
 
+<!--
+    TODO: This move has lower power (70) in RSE.
+-->
 <move name="Leaf Blade" id="212">
 <type>Grass</type>
 <class>Physical</class>
@@ -3999,14 +4004,8 @@ makeStatusMove(this, [[BurnEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 	<high-critical/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Leaf Storm" id="213">
@@ -5705,6 +5704,7 @@ this.beginTurn = function(field, user, target) {
     var effect = new StatusEffect("PursuitEffect");
     effect.vetoTier = -5;   // TODO (?)
     effect.target = target;
+    effect.tier = 0;
     effect.tick = function() {
         this.subject.removeStatus(this);
     };
@@ -7782,11 +7782,44 @@ makeRecoilMove(this, 4);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("TauntEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("TauntEffect");
+effect.name = Text.battle_messages_unique(29);
+effect.turns = field.random(3, 5);
+effect.tier = 0;
+effect.vetoTier = 4; // TODO (maybe)
+effect.applyEffect = function() {
+    field.print(Text.battle_messages_unique(28, this.subject));
+    return true;
+};
+effect.tick = function() {
+    if (--this.turns <= 0) {
+        field.print(Text.battle_messages_unique(26, this.subject));
+        this.subject.removeStatus(this);
+    }
+};
+effect.vetoSelection = function(user, move) {
+    if (user != this.subject)
+        return false;
+    return (move.moveClass == MoveClass.OTHER);
+};
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != null)
+        return false;
+    if (user != this.subject)
+        return false;
+    if (move.moveClass != MoveClass.OTHER)
+        return false;
+    field.print(Text.battle_messages_unique(27, this.subject, move));
+    return true;
+};
+target.applyStatus(user, effect);
 ]]>
 </use>
 </move>
