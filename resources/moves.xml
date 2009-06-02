@@ -5783,11 +5783,21 @@ target.hp -= damage;
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var n = 0;
+for (var i = 1; i < 8; ++i) {
+    var level = target.getStatLevel(i);
+    if (level > 0) {
+        n += level;
+    }
+}
+this.power = 60 + 20 * n;
+if (this.power > 200) {
+    this.power = 200;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
