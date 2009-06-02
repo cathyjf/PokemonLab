@@ -202,7 +202,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     if (critical) {
         int factor = 2;
         ScriptValue v = user.sendMessage("informCritical", 0, NULL);
-        if (!v.isFailed()) {
+        if (!v.failed()) {
             factor = v.getInt();
         }
         damage *= factor;
