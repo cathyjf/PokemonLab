@@ -206,6 +206,20 @@ makeAbility({
 });
 
 /*******************
+ * Anger Point
+ *******************/
+makeAbility({
+    name : "Anger Point",
+    informCriticalHit : function() {
+        var subject = this.subject;
+        subject.field.print(Text.ability_messages(1, subject));
+        var effect = new StatChangeEffect(Stat.ATTACK, 12);
+        effect.silent = true;
+        subject.applyStatus(subject, effect);
+    }
+});
+
+/*******************
  * Adaptability
  *******************/
 makeAbility({
