@@ -274,6 +274,8 @@
 60: It reduced the PP of the foe's $2's $3 by $4!
 61: $1 is trying to take its foe with it!
 62: $1 took $2 with it!
+63: Focus Energy
+64: $1 is getting pumped!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

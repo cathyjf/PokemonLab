@@ -1882,11 +1882,14 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.isImmune(this)) {
+    field.print(Text.battle_messages(1, target));
+    return;
+}
+target.hp -= 40;
 ]]>
 </use>
 </move>
@@ -2709,11 +2712,20 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("FocusEnergyEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("FocusEnergyEffect");
+effect.name = Text.battle_messages_unique(63);
+effect.criticalModifier = function() {
+    return 2;
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(64, user));
 ]]>
 </use>
 </move>
@@ -7166,11 +7178,14 @@ makeRecoveryMove(this);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.isImmune(this)) {
+    field.print(Text.battle_messages(1, target));
+    return;
+}
+target.hp -= 20;
 ]]>
 </use>
 </move>
@@ -7596,11 +7611,15 @@ makeRecoilMove(this, 4);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.isImmune(this)) {
+    field.print(Text.battle_messages(1, target));
+    return;
+}
+var damage = target.hp / 2;
+target.hp -= damage;
 ]]>
 </use>
 </move>
