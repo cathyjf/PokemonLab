@@ -312,8 +312,10 @@ makeEffect({
                 message = 5;
             }
 
-            this.subject.field.print(Text.status_effects_stat_level(message,
+            if (!this.silent) {
+                this.subject.field.print(Text.status_effects_stat_level(message,
                     this.subject, Text.stats_long(stat)));
+            }
 
             if (this.delta == 0)
                 return false;

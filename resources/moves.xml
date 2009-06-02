@@ -5635,11 +5635,18 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
 <target>Enemy</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+for (var i = 1; i < 8; ++i) {
+    var level = target.getStatLevel(i) - user.getStatLevel(i);
+    if (level) {
+        var effect = new StatChangeEffect(i, level);
+        effect.silent = true;
+        user.applyStatus(user, effect);
+    }
+}
+field.print(Text.battle_messages_unique(17, user));
 ]]>
 </use>
 </move>
