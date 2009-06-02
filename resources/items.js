@@ -24,13 +24,13 @@
 
 function HoldItem(name) {
     this.name = this.id = name;
-    this.switchOut = function() {
-        return false;
-    };
     HoldItem[name] = this;
 }
 
 HoldItem.prototype = new StatusEffect();
+HoldItem.prototype.switchOut = function() {
+    return false;
+};
 
 function makeItem(obj) {
     var item = new HoldItem(obj.name);

@@ -132,6 +132,18 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
 }
 
 /**
+ * Determine whether the pokemon has a particular type.
+ */
+bool Pokemon::isType(const PokemonType *type) const {
+    TYPE_ARRAY::const_iterator i = m_types.begin();
+    for (; i != m_types.end(); ++i) {
+        if (*i == type)
+            return true;
+    }
+    return false;
+}
+
+/**
  * Determine the legal actions a pokemon can take this turn.
  */
 void Pokemon::determineLegalActions() {

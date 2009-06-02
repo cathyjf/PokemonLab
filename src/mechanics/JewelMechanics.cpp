@@ -90,7 +90,8 @@ bool JewelMechanics::getCoinFlip(double p) const {
 bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
     ScriptContext *cx = field.getContext();
-    if (move.getAccuracy(cx) == 0.0) {
+    double accuracy = move.getAccuracy(cx);
+    if (accuracy == 0.0) {
         // "0" accuracy moves never miss.
         return true;
     }
@@ -199,7 +200,12 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     multiplyBy(damage, 1, mods); // "Mod1" in X-Act's essay
     damage += 2;
     if (critical) {
-        damage *= 2;
+        int factor = 2;
+        ScriptValue v = user.sendMessage("informCritical", 0, NULL);
+        if (!v.isFailed()) {
+            factor = v.getInt();
+        }
+        damage *= factor;
     }
     multiplyBy(damage, 2, mods); // "Mod2"
 
@@ -209,14 +215,21 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     damage *= r() * 100;
     damage /= 255;
     damage /= 100;
-    
-    int stab = 1; // TODO: stab
+
+    double stab = 1.0;
+    const PokemonType *moveType = move.getType(cx);
+    if (user.isType(moveType)) {
+        ScriptValue v = user.sendMessage("informStab", 0, NULL);
+        if (!v.failed()) {
+            stab = v.getDouble(cx);
+        } else {
+            stab = 1.5;
+        }
+    }
 
     damage *= stab;
 
     double effectiveness = 1.0;
-
-    const PokemonType *moveType = move.getType(cx);
     const TYPE_ARRAY &types = target.getTypes();
     for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
         const double factor = moveType->getMultiplier(**i);

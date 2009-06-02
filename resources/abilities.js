@@ -204,3 +204,24 @@ makeAbility({
         return (recoil > 0);
     }
 });
+
+/*******************
+ * Adaptability
+ *******************/
+makeAbility({
+    name : "Adaptability",
+    informStab : function() {
+        return 2;
+    }
+});
+
+/*******************
+ * Sniper
+ *******************/
+makeAbility({
+    name : "Sniper",
+    informCritical : function() {
+        return 3;
+    }
+});
+

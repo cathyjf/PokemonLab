@@ -147,9 +147,11 @@ public:
         m_statLevel[i] = level;
     }
 
+    const TYPE_ARRAY &getTypes() const { return m_types; }
+    bool isType(const PokemonType *) const;
+
     unsigned int getLevel() const { return m_level; }
     const PokemonNature *getNature() const { return m_nature; }
-    const TYPE_ARRAY &getTypes() const { return m_types; }
     const std::vector<int> &getPpUps() const { return m_ppUps; }
     unsigned int getGender() const { return m_gender; }
     bool isShiny() const { return m_shiny; }
