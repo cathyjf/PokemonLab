@@ -2140,11 +2140,19 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = target.hp - user.hp;
+if (damage <= 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+if (target.isImmune(this)) {
+    field.print(Text.battle_messages(1, target));
+    return;
+}
+target.hp -= damage;
 ]]>
 </use>
 </move>
@@ -5213,11 +5221,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var hp = Math.floor((target.hp + user.hp) / 2);
+user.hp = hp;
+target.hp = hp;
 ]]>
 </use>
 </move>
@@ -5233,11 +5242,11 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+target.hp -= field.calculate(this, user, target, targets);
+field.print(Text.battle_messages_unique(3));
 ]]>
 </use>
 </move>
