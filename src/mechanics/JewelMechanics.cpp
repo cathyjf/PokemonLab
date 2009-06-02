@@ -219,11 +219,9 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     const PokemonType *moveType = move.getType(cx);
     if (user.isType(moveType)) {
         ScriptValue v = user.sendMessage("informStab", 0, NULL);
-        double stab = 1.0;
+        double stab = 1.5;
         if (!v.failed()) {
             stab = v.getDouble(cx);
-        } else {
-            stab = 1.5;
         }
         damage *= stab;
     }
