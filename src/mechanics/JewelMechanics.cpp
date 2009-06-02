@@ -243,6 +243,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     if (critical) {
         field.print(TextMessage(4, 9));
+        target.sendMessage("informCriticalHit", 0, NULL);
     }
 
     if (effectiveness < 1.0) {
