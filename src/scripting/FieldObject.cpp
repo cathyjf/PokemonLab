@@ -40,7 +40,8 @@ namespace shoddybattle {
 namespace {
     
 enum FIELD_TINYID {
-    FTI_GENERATION
+    FTI_GENERATION,
+    FTI_LAST_MOVE
 };
 
 /**
@@ -214,6 +215,17 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case FTI_GENERATION: {
             *vp = INT_TO_JSVAL(p->getGeneration());
         } break;
+        case FTI_LAST_MOVE: {
+            const MoveTemplate *temp = p->getLastMove();
+            if (temp) {
+                ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+                MoveObject *move = scx->newMoveObject(temp);
+                *vp = OBJECT_TO_JSVAL(move->getObject());
+                scx->removeRoot(move);
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        } break;
     }
     return JS_TRUE;
 }
@@ -221,6 +233,7 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
 JSPropertySpec fieldProperties[] = {
     { "damage", 0, JSPROP_PERMANENT, NULL, NULL },
     { "generation", FTI_GENERATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
+    { "lastMove", FTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

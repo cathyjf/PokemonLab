@@ -276,6 +276,8 @@
 62: $1 took $2 with it!
 63: Focus Energy
 64: $1 is getting pumped!
+65: Torment
+66: $1 was subjected to Torment!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

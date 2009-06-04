@@ -219,6 +219,14 @@ public:
         m_recent.pop();
         return ret;
     }
+
+    void setLastMove(const MoveTemplate *move) {
+        m_lastMove = move;
+    }
+
+    const MoveTemplate *getLastMove() const {
+        return m_lastMove;
+    }
     
     ~Pokemon();
 
@@ -257,6 +265,8 @@ private:
 
     typedef RECENT_MOVE<const MoveTemplate> MEMORY;
     std::list<MEMORY> m_memory;
+
+    const MoveTemplate *m_lastMove;
 
     std::stack<RECENT_DAMAGE> m_recent;
 

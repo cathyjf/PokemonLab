@@ -90,6 +90,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_legalSwitch = true;
     m_slot = -1;
     m_forcedMove = NULL;
+    m_lastMove = NULL;
 }
 
 Pokemon::~Pokemon() {
@@ -267,6 +268,7 @@ void Pokemon::switchOut() {
     m_memory.clear();
     m_moveUsed.clear();
     m_moveUsed.resize(m_moves.size(), false);
+    m_lastMove = NULL;
     // Adjust the memories other active pokemon.
     clearMemory();
 }
@@ -422,9 +424,12 @@ MoveObject *Pokemon::getMove(const int i) {
 bool Pokemon::executeMove(MoveObject *move,
         Pokemon *target, bool inform) {
 
-    if (inform && m_field->vetoExecution(this, NULL, move)) {
-        // vetoed
-        return false;
+    if (inform) {
+        m_lastMove = NULL;
+        if (m_field->vetoExecution(this, NULL, move)) {
+            // vetoed
+            return false;
+        }
     }
 
     m_field->informUseMove(this, move);
@@ -738,7 +743,9 @@ void Pokemon::setHp(int hp) {
     }
     m_hp -= delta;
     m_field->informHealthChange(this, delta);
-    if (move) {
+    if (move && (delta > 0)) {
+        ScriptValue argv[] = { this };
+        move->user->sendMessage("informDamaging", 1, argv);
         informDamaged(move->user, move->move, delta);
     }
     if (m_hp <= 0) {

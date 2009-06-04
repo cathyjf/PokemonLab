@@ -1234,11 +1234,16 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <pp>20</pp>
 <target>Lastenemy</target>
 <flags>
-	<unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var move = field.lastMove;
+if (!move) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.execute(move);
 ]]>
 </use>
 </move>
@@ -8196,11 +8201,32 @@ makeStatusMove(this, [
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("TormentEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("TormentEffect");
+effect.name = Text.battle_messages_unique(65);
+effect.vetoSelection = function(user, move) {
+    if (user != this.subject)
+        return false;
+    if (!this.set_) {
+        this.move = user.lastMove;
+        this.set_ = true;
+    }
+    if (!this.move)
+        return false;
+    return (this.move.name == move.name);
+};
+effect.informFinishedExecution = function() {
+    this.move = this.subject.lastMove;
+    this.set_ = true;
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(66, target));
 ]]>
 </use>
 </move>

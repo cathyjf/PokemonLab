@@ -290,6 +290,16 @@ public:
      * Process end of turn effects.
      */
     void tickEffects();
+
+    /**
+     * Set the last move that was executed by any pokemon.
+     */
+    void setLastMove(const MoveTemplate *);
+
+    /**
+     * Get the last move that was executed by any pokemon.
+     */
+    const MoveTemplate *getLastMove() const;
     
     /**
      * Print a message to the BattleField.

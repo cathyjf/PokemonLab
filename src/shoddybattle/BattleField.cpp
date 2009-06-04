@@ -49,6 +49,7 @@ struct BattleFieldImpl {
     STATUSES effects;      // field effects
     bool descendingSpeed;
     std::stack<BattleField::EXECUTION> executing;
+    const MoveTemplate *lastMove;
     int host;
 
     typedef map<pair<Pokemon *, Pokemon *>, bool> RANDOM_MAP;
@@ -58,6 +59,7 @@ struct BattleFieldImpl {
             mech(NULL),
             machine(NULL),
             context(NULL),
+            lastMove(NULL),
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
@@ -118,6 +120,14 @@ void BattleField::terminate() {
 
 int BattleField::getPartySize() const {
     return m_impl->partySize;
+}
+
+void BattleField::setLastMove(const MoveTemplate *move) {
+    m_impl->lastMove = move;
+}
+
+const MoveTemplate *BattleField::getLastMove() const {
+    return m_impl->lastMove;
 }
 
 const BattleField::EXECUTION *BattleField::topExecution() const {
@@ -865,6 +875,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
             if (p->executeMove(move, target) && choice) {
                 // Only deduct pp if the move was chosen freely.
                 p->deductPp(id);
+                // Set last move used.
+                const MoveTemplate *temp = move->getTemplate(m_impl->context);
+                p->setLastMove(temp);
+                setLastMove(temp);
             }
             p->sendMessage("informFinishedExecution", 0, NULL);
         } else {
