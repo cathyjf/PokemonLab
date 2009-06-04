@@ -1239,7 +1239,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <use>
 <![CDATA[
 var move = field.lastMove;
-if (!move) {
+if (!move || (move.name == "Copycat")) {
     field.print(Text.battle_messages(0));
     return;
 }
