@@ -227,11 +227,7 @@ public:
     const MoveTemplate *getLastMove() const {
         return m_lastMove;
     }
-
-    void setActed() {
-        m_acted = true;
-    }
-
+    
     bool hasActed() const {
         return m_acted;
     }

@@ -877,7 +877,6 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 m_impl->lastMove = temp;
             }
             p->sendMessage("informFinishedExecution", 0, NULL);
-            p->setActed();
         } else {
             switchPokemon(p.get(), id);
         }

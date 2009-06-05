@@ -430,6 +430,7 @@ bool Pokemon::executeMove(MoveObject *move,
         m_lastMove = NULL;
         if (m_field->vetoExecution(this, NULL, move)) {
             // vetoed
+            m_acted = true;
             return false;
         }
     }
@@ -438,6 +439,7 @@ bool Pokemon::executeMove(MoveObject *move,
 
     if (move->getFlag(m_cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;
+        m_acted = true;
         return false;
     }
 
@@ -445,6 +447,7 @@ bool Pokemon::executeMove(MoveObject *move,
 
     if ((tc == T_USER) || (tc == T_ALLY) || (tc == T_ALLIES)) {
         move->use(m_cx, m_field, this, NULL, 0);
+        m_acted = true;
         return true;
     }
     
@@ -454,12 +457,14 @@ bool Pokemon::executeMove(MoveObject *move,
 
     if (tc == T_LAST_ENEMY) {
         move->use(m_cx, m_field, this, targets[0], 0);
+        m_acted = true;
         return true;
     }
 
     int targetCount = targets.size();
     if (targetCount == 0) {
         m_field->print(TextMessage(4, 3)); // no target
+        m_acted = true;
         return true;
     }
 
@@ -494,6 +499,7 @@ bool Pokemon::executeMove(MoveObject *move,
 
     m_field->popExecution();
 
+    m_acted = true;
     return true;
 }
 
