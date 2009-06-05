@@ -4606,13 +4606,18 @@ makeRecoilMove(this, -2);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)],
+        [new StatChangeEffect(Stat.SPATTACK, -2)]]);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    user.faint();
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Metal Burst" id="240">
