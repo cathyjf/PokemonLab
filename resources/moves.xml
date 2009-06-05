@@ -2387,11 +2387,15 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (damage >= target.hp) {
+    target.hp = 1;
+} else {
+    target.hp -= damage;
+}
 ]]>
 </use>
 </move>
