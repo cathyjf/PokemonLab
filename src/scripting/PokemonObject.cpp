@@ -65,7 +65,8 @@ enum POKEMON_TINYID {
     PTI_MOVE_COUNT,
     PTI_FAINTED,
     PTI_MASS,
-    PTI_LAST_MOVE
+    PTI_LAST_MOVE,
+    PTI_ACTED
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -508,6 +509,10 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 *vp = JSVAL_NULL;
             }
         } break;
+
+        case PTI_ACTED: {
+            *vp = BOOLEAN_TO_JSVAL(p->hasActed());
+        } break;
     }
     return JS_TRUE;
 }
@@ -533,6 +538,7 @@ JSPropertySpec pokemonProperties[] = {
     { "fainted", PTI_FAINTED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "mass", PTI_MASS, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "lastMove", PTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "acted", PTI_ACTED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

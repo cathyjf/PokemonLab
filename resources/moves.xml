@@ -1236,10 +1236,20 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <flags>
 
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Assist", "Chatter", "Copycat", "Counter", "Covet",
+                   "Destiny Bond", "Detect", "Endure", "Feint", "Focus Punch",
+                   "Follow Me", "Helping Hand", "Me First", "Metronome",
+                   "Mimic", "Mirror Coat", "Mirror Move", "Protect", "Sketch",
+                   "Sleep Talk", "Snatch", "Struggle", "Switcheroo", "Thief",
+                   "Trick"];
+]]>
+</init>
 <use>
 <![CDATA[
 var move = field.lastMove;
-if (!move || (move.name == "Copycat")) {
+if (!move || (this.forbidden_.indexOf(move.name) != -1)) {
     field.print(Text.battle_messages(0));
     return;
 }
@@ -2330,13 +2340,20 @@ target.hp -= field.calculate(this, user, target, targets);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FlinchEffect]]);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    if (user.acted) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fake Tears" id="124">

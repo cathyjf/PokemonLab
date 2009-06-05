@@ -292,11 +292,6 @@ public:
     void tickEffects();
 
     /**
-     * Set the last move that was executed by any pokemon.
-     */
-    void setLastMove(const MoveTemplate *);
-
-    /**
      * Get the last move that was executed by any pokemon.
      */
     const MoveTemplate *getLastMove() const;

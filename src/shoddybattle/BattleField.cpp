@@ -122,10 +122,6 @@ int BattleField::getPartySize() const {
     return m_impl->partySize;
 }
 
-void BattleField::setLastMove(const MoveTemplate *move) {
-    m_impl->lastMove = move;
-}
-
 const MoveTemplate *BattleField::getLastMove() const {
     return m_impl->lastMove;
 }
@@ -878,9 +874,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 // Set last move used.
                 const MoveTemplate *temp = move->getTemplate(m_impl->context);
                 p->setLastMove(temp);
-                setLastMove(temp);
+                m_impl->lastMove = temp;
             }
             p->sendMessage("informFinishedExecution", 0, NULL);
+            p->setActed();
         } else {
             switchPokemon(p.get(), id);
         }

@@ -227,6 +227,14 @@ public:
     const MoveTemplate *getLastMove() const {
         return m_lastMove;
     }
+
+    void setActed() {
+        m_acted = true;
+    }
+
+    bool hasActed() const {
+        return m_acted;
+    }
     
     ~Pokemon();
 
@@ -267,6 +275,8 @@ private:
     std::list<MEMORY> m_memory;
 
     const MoveTemplate *m_lastMove;
+
+    bool m_acted;   // Has this pokemon acted since it became active?
 
     std::stack<RECENT_DAMAGE> m_recent;
 
