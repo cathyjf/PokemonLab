@@ -721,13 +721,12 @@ makeMultipleHitMove(this);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTwoHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bounce" id="40">
@@ -1791,13 +1790,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTwoHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Double Kick" id="93">
@@ -1812,13 +1810,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTwoHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Double Team" id="94">
