@@ -23,8 +23,7 @@
  */
 
 /**
- * Make a move into a two hit move, each hit having its own individual chance
- * to miss the target. (?)
+ * Make a move into a two hit move.
  */
 function makeTwoHitMove(move) {
     move.use = function(field, user, target, targets) {
@@ -32,15 +31,10 @@ function makeTwoHitMove(move) {
         for (var i = 0; i < 2; ++i) {
             if (target.fainted)
                 break;
-            if (field.attemptHit(this, user, target)) {
-                ++hits;
-                target.hp -= field.calculate(this, user, target, targets);
-            }
+            ++hits;
+            target.hp -= field.calculate(this, user, target, targets);
         }
         field.print(Text.battle_messages_unique(0, hits));
-    };
-    move.attemptHit = function(field, user, target) {
-        return true;
     };
 }
 
@@ -49,8 +43,6 @@ function makeTwoHitMove(move) {
  * with a nonuniform distribution. In particular, there is a 37.5% chance of
  * 2 hits, a 37.5% chance of 3 hits, a 12.5% chance of 4 hits, and a 12.5%
  * chance of 5 hits.
- *
- * TODO: Give each hit its own accuracy check (?)
  */
 function makeMultipleHitMove(move) {
     move.use = function(field, user, target, targets) {
