@@ -278,6 +278,8 @@
 64: $1 is getting pumped!
 65: Torment
 66: $1 was subjected to Torment!
+67: Charge
+68: $1 is charging power
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
