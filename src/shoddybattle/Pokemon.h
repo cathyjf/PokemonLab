@@ -54,7 +54,7 @@ class ScriptValue;
 class Target;
 
 typedef std::vector<const PokemonType *> TYPE_ARRAY;
-typedef std::list<StatusObject *> STATUSES;
+typedef std::list<boost::shared_ptr<StatusObject> > STATUSES;
 
 typedef std::map<int, double> PRIORITY_MAP;
 // map<position, map<priority, value>>
@@ -96,31 +96,31 @@ public:
     int getInherentPriority() const;
     int getCriticalModifier() const;
 
-    bool executeMove(MoveObject *,
+    bool executeMove(boost::shared_ptr<MoveObject>,
             Pokemon *target, bool inform = true);
     bool useMove(MoveObject *, Pokemon *, const int);
     bool vetoExecution(Pokemon *, Pokemon *, MoveObject *);
     bool vetoSelection(Pokemon *, MoveObject *);
 
-    void informTargeted(Pokemon *, MoveObject *);
-    void informDamaged(Pokemon *, MoveObject *, int);
-    const MoveTemplate *getMemory() const;
+    void informTargeted(Pokemon *, boost::shared_ptr<MoveObject>);
+    void informDamaged(Pokemon *, boost::shared_ptr<MoveObject>, int);
+    boost::shared_ptr<MoveObject> getMemory() const;
     Pokemon *getMemoryPokemon() const;
     void removeMemory(Pokemon *);
     void clearMemory();
     
     const STATUSES &getEffects() const { return m_effects; }
-    StatusObject *applyStatus(Pokemon *, StatusObject *);
+    boost::shared_ptr<StatusObject> applyStatus(Pokemon *, StatusObject *);
     void removeStatus(StatusObject *);
-    StatusObject *getStatus(const std::string &);
-    StatusObject *getStatus(const int lock);
+    boost::shared_ptr<StatusObject> getStatus(const std::string &);
+    boost::shared_ptr<StatusObject> getStatus(const int lock);
     void getModifiers(Pokemon *, Pokemon *,
             MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);
     bool getTransformedStatLevel(Pokemon *, Pokemon *, STAT, int *);
     void removeStatuses();
     bool hasAbility(const std::string &);
-    bool transformStatus(Pokemon *, StatusObject **);
+    bool transformStatus(Pokemon *, boost::shared_ptr<StatusObject> *);
 
     int transformHealthChange(int, bool) const;
     
@@ -156,20 +156,20 @@ public:
     unsigned int getGender() const { return m_gender; }
     bool isShiny() const { return m_shiny; }
 
-    ScriptObject *getObject() { return (ScriptObject *)m_object; }
+    ScriptObject *getObject() { return (ScriptObject *)m_object.get(); }
     BattleField *getField() { return m_field; }
 
-    MoveObject *getMove(const int i);
+    boost::shared_ptr<MoveObject> getMove(const int i);
 
     int getMove(const std::string &) const;
 
     bool isMoveUsed(const int i) const { return m_moveUsed[i]; }
     int getPp(const int i) const { return m_pp[i]; }
     void deductPp(const int i);
-    void deductPp(MoveObject *);
+    void deductPp(boost::shared_ptr<MoveObject>);
 
     void setMove(const int, const std::string &, const int);
-    void setMove(const int, MoveObject *, const int);
+    void setMove(const int, boost::shared_ptr<MoveObject>, const int);
     void setAbility(StatusObject *);
     void setAbility(const std::string &);
     void setItem(StatusObject *);
@@ -193,7 +193,8 @@ public:
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);
-    MoveObject *setForcedTurn(const MoveTemplate *, Pokemon *);
+    boost::shared_ptr<MoveObject> setForcedTurn(
+            const MoveTemplate *, Pokemon *);
     PokemonTurn *getForcedTurn() const {
         if (!m_forcedTurn)
             return NULL;
@@ -204,7 +205,7 @@ public:
 
     struct RECENT_DAMAGE {
         Pokemon *user;
-        const MoveTemplate *move;
+        boost::shared_ptr<MoveObject> move;
         int damage;
     };
 
@@ -220,24 +221,21 @@ public:
         return ret;
     }
 
-    void setLastMove(const MoveTemplate *move) {
+    void setLastMove(boost::shared_ptr<MoveObject> move) {
         m_lastMove = move;
     }
 
-    const MoveTemplate *getLastMove() const {
+    boost::shared_ptr<MoveObject> getLastMove() const {
         return m_lastMove;
     }
     
     bool hasActed() const {
         return m_acted;
     }
-    
-    ~Pokemon();
 
-    template <class T>
     struct RECENT_MOVE {
         Pokemon *user;
-        T *move;
+        boost::shared_ptr<MoveObject> move;
         bool operator==(const RECENT_MOVE &rhs) const {
             return user == rhs.user;
         }
@@ -258,7 +256,7 @@ private:
     TYPE_ARRAY m_types; // Current effective type.
     std::vector<int> m_ppUps;
     std::vector<const MoveTemplate *> m_moveProto;
-    std::vector<MoveObject *> m_moves;
+    std::vector<boost::shared_ptr<MoveObject> > m_moves;
     std::vector<int> m_pp;
     std::vector<bool> m_moveUsed;
     std::vector<bool> m_legalMove;
@@ -267,17 +265,17 @@ private:
     std::string m_itemName;
     std::string m_abilityName;
 
-    typedef RECENT_MOVE<const MoveTemplate> MEMORY;
+    typedef RECENT_MOVE MEMORY;
     std::list<MEMORY> m_memory;
 
-    const MoveTemplate *m_lastMove;
+    boost::shared_ptr<MoveObject> m_lastMove;
 
     bool m_acted;   // Has this pokemon acted since it became active?
 
     std::stack<RECENT_DAMAGE> m_recent;
 
-    StatusObject *m_item;
-    StatusObject *m_ability;
+    boost::shared_ptr<StatusObject> m_item;
+    boost::shared_ptr<StatusObject> m_ability;
 
     ScriptMachine *m_machine;
     ScriptContext *m_cx;
@@ -289,9 +287,9 @@ private:
 
     const PokemonTurn *m_turn;
     boost::shared_ptr<PokemonTurn> m_forcedTurn;
-    MoveObject *m_forcedMove;
+    boost::shared_ptr<MoveObject> m_forcedMove;
 
-    PokemonObject *m_object; // Pokemon object.
+    boost::shared_ptr<PokemonObject> m_object;
 
     Pokemon(const Pokemon &);
     Pokemon &operator=(const Pokemon &);

@@ -37,7 +37,7 @@ using namespace boost;
 namespace shoddybattle {
 
 struct BattleFieldImpl {
-    FieldObject *object;
+    FieldObjectPtr object;
     const BattleMechanics *mech;
     GENERATION generation;
     ScriptMachine *machine;
@@ -49,17 +49,15 @@ struct BattleFieldImpl {
     STATUSES effects;      // field effects
     bool descendingSpeed;
     std::stack<BattleField::EXECUTION> executing;
-    const MoveTemplate *lastMove;
+    MoveObjectPtr lastMove;
     int host;
 
     typedef map<pair<Pokemon *, Pokemon *>, bool> RANDOM_MAP;
 
     BattleFieldImpl():
-            object(NULL),
             mech(NULL),
             machine(NULL),
             context(NULL),
-            lastMove(NULL),
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
@@ -101,8 +99,7 @@ struct BattleFieldImpl {
     
     void terminate() {
         if (object) {
-            context->removeRoot(object);
-            object = NULL;
+            object.reset();
         }
         contextRef.reset();
         context = NULL;
@@ -122,7 +119,7 @@ int BattleField::getPartySize() const {
     return m_impl->partySize;
 }
 
-const MoveTemplate *BattleField::getLastMove() const {
+MoveObjectPtr BattleField::getLastMove() const {
     return m_impl->lastMove;
 }
 
@@ -146,7 +143,7 @@ GENERATION BattleField::getGeneration() const {
 }
 
 ScriptObject *BattleField::getObject() {
-    return m_impl->object;
+    return m_impl->object.get();
 }
 
 /**
@@ -374,8 +371,8 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         entity.turn = turn;
         entity.move = (turn->type == TT_MOVE);
         if (entity.move) {
-            MoveObject *move = p->getMove(turn->id);
-            assert(move != NULL);
+            MoveObjectPtr move = p->getMove(turn->id);
+            assert(move);
             entity.priority = move->getPriority(context);
         }
         entity.party = p->getParty();
@@ -630,7 +627,7 @@ void BattleField::tickEffects() {
                         const int speed = p->getStat(S_SPEED);
                         const int tier = (*k)->getTier(cx);
                         // todo: subtier
-                        EffectEntity entity = { p, *k, speed, tier, 0 };
+                        EffectEntity entity = { p, k->get(), speed, tier, 0 };
                         effects.push_back(entity);
                     }
                 }
@@ -819,7 +816,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         const PokemonTurn *turn = ordered[i];
 
         if (turn->type == TT_MOVE) {
-            MoveObject *move = p->getMove(turn->id);
+            MoveObjectPtr move = p->getMove(turn->id);
             Pokemon *target = NULL;
             int idx = turn->target;
             if (idx != -1) { // exactly one target
@@ -845,7 +842,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         
         if (turn->type == TT_MOVE) {
             const bool choice = (p->getForcedTurn() == NULL);
-            MoveObject *move = p->getMove(id);
+            MoveObjectPtr move = p->getMove(id);
             Pokemon *target = NULL;
             TARGET tc = move->getTargetClass(m_impl->context);
             if ((tc == T_SINGLE) || (tc == T_ALLY)) {
@@ -872,9 +869,8 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                 // Only deduct pp if the move was chosen freely.
                 p->deductPp(id);
                 // Set last move used.
-                const MoveTemplate *temp = move->getTemplate(m_impl->context);
-                p->setLastMove(temp);
-                m_impl->lastMove = temp;
+                p->setLastMove(move);
+                m_impl->lastMove = move;
             }
             p->sendMessage("informFinishedExecution", 0, NULL);
         } else {
@@ -892,14 +888,14 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
 /**
  * Transform a status effect.
  */
-void BattleField::transformStatus(Pokemon *subject, StatusObject **status) {
+void BattleField::transformStatus(Pokemon *subject, StatusObjectPtr *status) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p && !p->isFainted()) {
                 p->transformStatus(subject, status);
-                if (status == NULL) {
+                if (!*status) {
                     return;
                 }
             }

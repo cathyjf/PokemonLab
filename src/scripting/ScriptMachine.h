@@ -30,6 +30,7 @@
 #include <set>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+#include <boost/bind.hpp>
 
 #include "ObjectWrapper.h"
 #include "../moves/PokemonMove.h"
@@ -178,7 +179,7 @@ public:
     
     StatusObject(void *p): ScriptObject(p) { }
 
-    StatusObject *cloneAndRoot(ScriptContext *);
+    boost::shared_ptr<StatusObject> cloneAndRoot(ScriptContext *);
 
     // State.
     int getState(ScriptContext *) const;
@@ -224,7 +225,8 @@ public:
     bool vetoExecution(ScriptContext *, BattleField *,
             Pokemon *, Pokemon *, MoveObject *);
     bool vetoSelection(ScriptContext *, Pokemon *, MoveObject *);
-    bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
+    bool transformStatus(ScriptContext *, Pokemon *,
+            boost::shared_ptr<StatusObject> *);
     bool vetoSwitch(ScriptContext *, Pokemon *);
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
     bool transformHealthChange(ScriptContext *, int, bool, int *);
@@ -235,7 +237,7 @@ public:
 
 class ScriptContext {
 public:
-    ScriptFunction *compileFunction(
+    boost::shared_ptr<ScriptFunction> compileFunction(
             const std::vector<std::string> args,
             const std::string body,
             const std::string file,
@@ -244,20 +246,25 @@ public:
     /**
      * Create a new PokemonObject from the given Pokemon.
      */
-    PokemonObject *newPokemonObject(Pokemon *p);
+    boost::shared_ptr<PokemonObject> newPokemonObject(Pokemon *p);
 
     /**
      * Create a new MoveObject from the given MoveTemplate.
      */
-    MoveObject *newMoveObject(const MoveTemplate *p);
+    boost::shared_ptr<MoveObject> newMoveObject(const MoveTemplate *p);
 
     /**
      * Create a new FieldObject for the given BattleField.
      */
-    FieldObject *newFieldObject(BattleField *field);
+    boost::shared_ptr<FieldObject> newFieldObject(BattleField *field);
 
-    void addRoot(ScriptObject *obj);
-    void removeRoot(ScriptObject *obj);
+    template <class T>
+    boost::shared_ptr<T> addRoot(T *sobj) {
+        if (!makeRoot(sobj))
+            return boost::shared_ptr<T>();
+        return boost::shared_ptr<T>(sobj,
+                boost::bind(&ScriptContext::removeRoot, this, _1));
+    }
 
     StatusObject getAbility(const std::string &) const;
     StatusObject getItem(const std::string &) const;
@@ -288,16 +295,23 @@ private:
     friend class MoveObject;
     friend class StatusObject;
     friend class ScriptArray;
-    ScriptContext(void *);
     void *m_p;
     ScriptMachine *m_machine;
     bool m_busy;
 
+    ScriptContext(void *);
+    bool makeRoot(ScriptObject *);
+    void removeRoot(ScriptObject *);
     ScriptContext(const ScriptContext &);
     ScriptContext &operator=(const ScriptContext &);
 };
 
 typedef boost::shared_ptr<ScriptContext> ScriptContextPtr;
+typedef boost::shared_ptr<ScriptFunction> ScriptFunctionPtr;
+typedef boost::shared_ptr<MoveObject> MoveObjectPtr;
+typedef boost::shared_ptr<StatusObject> StatusObjectPtr;
+typedef boost::shared_ptr<FieldObject> FieldObjectPtr;
+typedef boost::shared_ptr<PokemonObject> PokemonObjectPtr;
 
 class Text;
 class SpeciesDatabase;
@@ -312,6 +326,9 @@ class ScriptMachine {
 public:
     ScriptMachine() throw(ScriptMachineException);
     ~ScriptMachine();
+
+    /** Return the number of active roots. **/
+    unsigned int getRootCount() const;
 
     /** Obtain a new context for running scripts. **/
     ScriptContextPtr acquireContext();

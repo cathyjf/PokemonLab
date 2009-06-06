@@ -28,6 +28,7 @@
 #include <string>
 #include <map>
 #include <bitset>
+#include <boost/shared_ptr.hpp>
 #include "../mechanics/stat.h"
 
 namespace shoddybattle {
@@ -77,9 +78,9 @@ public:
     int getPriority() const;
     const PokemonType *getType() const;
     bool getFlag(const MOVE_FLAG i) const;
-    const ScriptFunction *getInitFunction() const;
-    const ScriptFunction *getUseFunction() const;
-    const ScriptFunction *getAttemptHitFunction() const;
+    boost::shared_ptr<ScriptFunction> getInitFunction() const;
+    boost::shared_ptr<ScriptFunction> getUseFunction() const;
+    boost::shared_ptr<ScriptFunction> getAttemptHitFunction() const;
 
 private:
     friend class MoveDatabase;

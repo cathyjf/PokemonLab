@@ -40,6 +40,7 @@
 #include "../mechanics/BattleMechanics.h"
 
 using namespace std;
+using boost::shared_ptr;
 
 namespace shoddybattle {
 
@@ -184,12 +185,11 @@ JSBool toString(JSContext *cx,
 
 } // anonymous namespace
 
-MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {
+MoveObjectPtr ScriptContext::newMoveObject(const MoveTemplate *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
-    MoveObject *ret = new MoveObject(obj, p);
-    addRoot(ret);
+    MoveObjectPtr ret = addRoot(new MoveObject(obj, p));
 
     JS_DefineFunction(cx, obj, "toString", toString, 0, 0);
     
@@ -228,23 +228,23 @@ MoveObject *ScriptContext::newMoveObject(const MoveTemplate *p) {
     val = OBJECT_TO_JSVAL(arr);
     JS_SetProperty(cx, obj, "flags", &val);
 
-    const ScriptFunction *func = p->getInitFunction();
+    ScriptFunctionPtr func = p->getInitFunction();
     if (func && !func->isNull()) {
         val = OBJECT_TO_JSVAL((JSObject *)func->getObject());
         JS_SetProperty(cx, obj, "init", &val);
     }
 
     if (func && !func->isNull()) { // init function
-        callFunction(ret, func, 0, NULL);
+        callFunction(ret.get(), func.get(), 0, NULL);
     }
     
-    const ScriptFunction *func2 = p->getUseFunction();
+    ScriptFunctionPtr func2 = p->getUseFunction();
     if (func2 && !func2->isNull()) {
         val = OBJECT_TO_JSVAL((JSObject *)func2->getObject());
         JS_SetProperty(cx, obj, "use", &val);
     }
 
-    const ScriptFunction *func3 = p->getAttemptHitFunction();
+    ScriptFunctionPtr func3 = p->getAttemptHitFunction();
     if (func3 && !func3->isNull()) {
         val = OBJECT_TO_JSVAL((JSObject *)func3->getObject());
         JS_SetProperty(cx, obj, "attemptHit", &val);

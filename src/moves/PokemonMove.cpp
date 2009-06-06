@@ -45,9 +45,6 @@ namespace shoddybattle {
 class MoveTemplateImpl {
 public:
     MoveTemplateImpl(): targetClass(targetClass) {
-        initFunction = NULL;
-        useFunction = NULL;
-        attemptHit = NULL;
         power = 0;
         moveClass = MC_PHYSICAL;
         pp = 0;
@@ -68,9 +65,9 @@ public:
     double accuracy;
     const PokemonType *type;
 
-    ScriptFunction *initFunction;
-    ScriptFunction *useFunction;
-    ScriptFunction *attemptHit;
+    ScriptFunctionPtr initFunction;
+    ScriptFunctionPtr useFunction;
+    ScriptFunctionPtr attemptHit;
 };
 
 /**
@@ -113,13 +110,13 @@ const PokemonType *MoveTemplate::getType() const {
 bool MoveTemplate::getFlag(const MOVE_FLAG i) const {
     return m_pImpl->flags[i];
 }
-const ScriptFunction *MoveTemplate::getInitFunction() const {
+ScriptFunctionPtr MoveTemplate::getInitFunction() const {
     return m_pImpl->initFunction;
 }
-const ScriptFunction *MoveTemplate::getUseFunction() const {
+ScriptFunctionPtr MoveTemplate::getUseFunction() const {
     return m_pImpl->useFunction;
 }
-const ScriptFunction *MoveTemplate::getAttemptHitFunction() const {
+ScriptFunctionPtr MoveTemplate::getAttemptHitFunction() const {
     return m_pImpl->attemptHit;
 }
 
@@ -359,18 +356,6 @@ MoveDatabase::~MoveDatabase() {
             //cout << "Missing move: " << i->first << endl;
             continue;
         }
-        ScriptFunction *func = move->m_pImpl->attemptHit;
-        if (func) {
-            cx->removeRoot(func);
-        }
-        func = move->m_pImpl->initFunction;
-        if (func) {
-            cx->removeRoot(func);
-        }
-        func = move->m_pImpl->useFunction;
-        if (func) {
-            cx->removeRoot(func);
-        }
         delete move;
     }
 }
@@ -405,24 +390,31 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Psych Up", 5);
-    field.getActivePokemon(0, 1)->setMove(1, "Snore", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "False Swipe", 5);
+    //field.getActivePokemon(0, 1)->setActed();
+    field.getActivePokemon(0, 1)->setMove(1, "Mirror Move", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
-    field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
-    field.getActivePokemon(1, 0)->setMove(0, "Sludge", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Focus Punch", 5);
+    field.getActivePokemon(0, 0)->setMove(0, "Twister", 5);
+    field.getActivePokemon(1, 0)->setMove(0, "Copycat", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Mirror Move", 5);
 
-    field.getActivePokemon(0, 0)->setAbility("Poison Heal");
-    field.getActivePokemon(0, 1)->setAbility("Skill Link");
-    field.getActivePokemon(1, 0)->setAbility("Steadfast");
-    field.getActivePokemon(1, 1)->setAbility("Steadfast");
+    field.getActivePokemon(0, 0)->setItem("Leftovers");
+    field.getActivePokemon(0, 1)->setItem("Leftovers");
+    field.getActivePokemon(1, 0)->setItem("Leftovers");
+    field.getActivePokemon(1, 1)->setItem("Leftovers");
+
+    field.getActivePokemon(0, 0)->setAbility("Anger Point");
+    field.getActivePokemon(0, 1)->setAbility("Anger Point");
+    field.getActivePokemon(1, 0)->setAbility("Anger Point");
+    field.getActivePokemon(1, 1)->setAbility("Anger Point");
 
     field.beginBattle();
 
     vector<PokemonTurn> turns;
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
+    //turns.push_back(PokemonTurn(TT_SWITCH, 5));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
-    turns.push_back(PokemonTurn(TT_MOVE, 2, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
 
     time_t initial = clock();

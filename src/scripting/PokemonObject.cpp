@@ -83,7 +83,7 @@ JSBool applyStatus(JSContext *cx,
         if (JSVAL_IS_OBJECT(argv[0])) {
             inducer = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
         }
-        StatusObject *objret = p->applyStatus(inducer, &status);
+        StatusObjectPtr objret = p->applyStatus(inducer, &status);
         if (objret) {
             *ret = OBJECT_TO_JSVAL(objret->getObject());
         }
@@ -114,7 +114,7 @@ JSBool setForcedMove(JSContext *cx,
 
     Pokemon *target = null
             ? NULL : (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
-    MoveObject *forced = p->setForcedTurn(move, target);
+    MoveObjectPtr forced = p->setForcedTurn(move, target);
 
     *ret = OBJECT_TO_JSVAL((JSObject *)forced->getObject());
     return JS_TRUE;
@@ -128,8 +128,7 @@ JSBool popRecentDamage(JSContext *cx,
         Pokemon::RECENT_DAMAGE entry = p->popRecentDamage();
 
         JSObject *user = (JSObject *)entry.user->getObject()->getObject();
-        MoveObject *pMove = scx->newMoveObject(entry.move);
-        JSObject *move = (JSObject *)pMove->getObject();
+        JSObject *move = (JSObject *)entry.move->getObject();
         const int damage = entry.damage;
 
         jsval arr[3];
@@ -139,8 +138,6 @@ JSBool popRecentDamage(JSContext *cx,
 
         JSObject *objArr = JS_NewArrayObject(cx, 3, arr);
         *ret = OBJECT_TO_JSVAL(objArr);
-        scx->removeRoot(pMove);
-
     } else {
         *ret = JSVAL_NULL;
     }
@@ -272,7 +269,7 @@ JSBool getMove(JSContext *cx,
     const int slot = JSVAL_TO_INT(v);
 
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    MoveObject *sobj = p->getMove(slot);
+    MoveObjectPtr sobj = p->getMove(slot);
     if (sobj) {
         *ret = OBJECT_TO_JSVAL(sobj->getObject());
     } else {
@@ -285,7 +282,7 @@ JSBool getMove(JSContext *cx,
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    StatusObject *sobj = NULL;
+    StatusObjectPtr sobj;
     
     jsval v = argv[0];
     if (JSVAL_IS_STRING(v)) {
@@ -345,16 +342,15 @@ JSBool hasAbility(JSContext *cx,
     return JS_TRUE;
 }
 
+struct nullDeleter {
+    void operator()(void const *) const { }
+};
+
 /**
- * pokemon.execute(move, target, inform)
+ * pokemon.execute(move, target)
  */
 JSBool execute(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
-    bool inform = false;
-    if (argv[2] != JSVAL_VOID) {
-        assert(JSVAL_IS_BOOLEAN(argv[2]));
-        inform = JSVAL_TO_BOOLEAN(argv[2]);
-    }
     assert(JSVAL_IS_OBJECT(argv[0]));
     MoveObject move(JSVAL_TO_OBJECT(argv[0]));
     Pokemon *target = NULL;
@@ -364,7 +360,8 @@ JSBool execute(JSContext *cx,
         target = (Pokemon *)JS_GetPrivate(cx, objp);
     }
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    p->executeMove(&move, target, inform);
+    MoveObjectPtr ptr(&move, nullDeleter());
+    p->executeMove(ptr, target, false);
     return JS_TRUE;
 }
 
@@ -392,6 +389,13 @@ JSBool toString(JSContext *cx,
     JSString *ostr = JS_NewString(cx, pstr, str.length());
     *ret = STRING_TO_JSVAL(ostr);
 
+    return JS_TRUE;
+}
+
+JSBool faint(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->faint();
     return JS_TRUE;
 }
 
@@ -462,12 +466,9 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         } break;
 
         case PTI_MEMORY: {
-            const MoveTemplate *temp = p->getMemory();
-            if (temp) {
-                ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-                MoveObject *move = scx->newMoveObject(temp);
+            MoveObjectPtr move = p->getMemory();
+            if (move) {
                 *vp = OBJECT_TO_JSVAL(move->getObject());
-                scx->removeRoot(move);
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -499,12 +500,9 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         } break;
 
         case PTI_LAST_MOVE: {
-            const MoveTemplate *temp = p->getLastMove();
-            if (temp) {
-                ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-                MoveObject *move = scx->newMoveObject(temp);
+            MoveObjectPtr move = p->getLastMove();
+            if (move) {
                 *vp = OBJECT_TO_JSVAL(move->getObject());
-                scx->removeRoot(move);
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -559,17 +557,17 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getStat", getStat, 1, 0, 0),
     JS_FS("isType", isType, 1, 0, 0),
     JS_FS("setForcedMove", setForcedMove, 2, 0, 0),
+    JS_FS("faint", faint, 0, 0, 0),
     JS_FS_END
 };
 
 } // anonymous namespace
 
-PokemonObject *ScriptContext::newPokemonObject(Pokemon *p) {
+PokemonObjectPtr ScriptContext::newPokemonObject(Pokemon *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
-    PokemonObject *ret = new PokemonObject(obj);
-    addRoot(ret);
+    PokemonObjectPtr ret = addRoot(new PokemonObject(obj));
     JS_DefineProperties(cx, obj, pokemonProperties);
     JS_DefineFunctions(cx, obj, pokemonFunctions);
     JS_SetPrivate(cx, obj, p);

@@ -38,6 +38,14 @@
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../moves/PokemonMove.h"
 
+/**
+ * When this debug option is enabled, the program keeps track of how many
+ * active roots exist. Although it should be impossible to lose a root since
+ * they are all managed through shared pointers, this setting may still be
+ * useful for debugging.
+ */
+#define ENABLE_ROOT_COUNT 0
+
 using namespace std;
 using namespace boost;
 
@@ -67,13 +75,21 @@ struct ScriptMachineImpl {
     JSObject *global;
     JSContext *cx;
     CONTEXT_SET contexts;
-    set<ScriptObject *> roots;
     ScriptMachine *machine;
     GlobalState *state;
     mutex lock;         // lock for contexts set
-    mutex rootLock;     // lock for roots set
 
-    ScriptMachineImpl(ScriptMachine *p): machine(p) { }
+#if ENABLE_ROOT_COUNT
+    mutex rootLock;     // lock for roots set
+    unsigned int roots;
+#endif
+
+    ScriptMachineImpl(ScriptMachine *p):
+            machine(p) {
+#if ENABLE_ROOT_COUNT
+        roots = 0;
+#endif
+    }
     
     ScriptContext *newContext() {
         JSContext *cx = JS_NewContext(runtime, 8192);
@@ -110,6 +126,14 @@ struct ScriptMachineImpl {
         return ret;
     }
 };
+
+unsigned int ScriptMachine::getRootCount() const {
+#if ENABLE_ROOT_COUNT
+    return m_impl->roots;
+#else
+    return 0;
+#endif
+}
 
 Text *ScriptMachine::getText() const {
     return &m_impl->state->text;
@@ -415,23 +439,25 @@ ScriptObject &ScriptObject::operator=(const ScriptObject &rhs) {
     return *this;
 }
 
-void ScriptContext::addRoot(ScriptObject *sobj) {
+bool ScriptContext::makeRoot(ScriptObject *sobj) {
     if (sobj->m_root) {
         // Already a root.
         throw ScriptMachineException();
     }
     void **obj = sobj->getObjectRef();
-    if (obj) {
-        JSContext *cx = (JSContext *)m_p;
-        JS_BeginRequest(cx);
-        JS_AddRoot(cx, obj);
-        JS_EndRequest(cx);
-        sobj->m_root = true;
-        // need external synchronisation for a set
-        lock_guard<mutex> guard(m_machine->m_impl->rootLock);
-        set<ScriptObject *> &s = m_machine->m_impl->roots;
-        s.insert(sobj); // Assume ownership of this ScriptObject
+    if (!obj) {
+        return false;
     }
+    JSContext *cx = (JSContext *)m_p;
+    JS_BeginRequest(cx);
+    JS_AddRoot(cx, obj);
+    JS_EndRequest(cx);
+    sobj->m_root = true;
+#if ENABLE_ROOT_COUNT
+    lock_guard<mutex> guard(m_machine->m_impl->rootLock);
+    ++m_machine->m_impl->roots;
+#endif
+    return true;
 }
 
 void ScriptContext::removeRoot(ScriptObject *sobj) {
@@ -445,17 +471,16 @@ void ScriptContext::removeRoot(ScriptObject *sobj) {
         JS_BeginRequest(cx);
         JS_RemoveRoot(cx, obj);
         JS_EndRequest(cx);
-        sobj->m_root = false;
-        // need external synchronisation for a set
-        lock_guard<mutex> guard(m_machine->m_impl->rootLock);
-        set<ScriptObject *> &s = m_machine->m_impl->roots;
-        s.erase(sobj);
         // We own this ScriptObject, so delete it.
         delete sobj;
+#if ENABLE_ROOT_COUNT
+        lock_guard<mutex> guard(m_machine->m_impl->rootLock);
+        --m_machine->m_impl->roots;
+#endif
     }
 }
 
-ScriptFunction *ScriptContext::compileFunction(
+shared_ptr<ScriptFunction> ScriptContext::compileFunction(
         const vector<string> args,
         const string body,
         const string file,
@@ -472,8 +497,7 @@ ScriptFunction *ScriptContext::compileFunction(
     JS_BeginRequest(cx);
     JSFunction *func = JS_CompileFunction(cx, NULL, NULL, argCount, params,
             pBody, bodyLength, file.c_str(), line);
-    ScriptFunction *ret = new ScriptFunction(func);
-    addRoot(ret);
+    shared_ptr<ScriptFunction> ret = addRoot(new ScriptFunction(func));
     JS_EndRequest(cx);
 
     return ret;
@@ -605,16 +629,6 @@ ScriptMachine::~ScriptMachine() {
         }
         JS_DestroyContext((JSContext *)cx->m_p);
         delete cx;
-    }
-    int roots = m_impl->roots.size();
-    if (roots != 0) {
-        cout << "Error: " << roots << " unremoved roots." << endl;
-    }
-    set<ScriptObject *>::iterator j = m_impl->roots.begin();
-    for (; j != m_impl->roots.end(); ++j) {
-        delete *j;
-        // No need to call removeRoot() since we are about to destroy
-        // the runtime anyway.
     }
     JS_DestroyContext(m_impl->cx);
     JS_DestroyRuntime(m_impl->runtime);

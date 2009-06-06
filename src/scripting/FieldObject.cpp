@@ -120,9 +120,8 @@ JSBool getMove(JSContext *cx,
     MoveDatabase *moves = p->getScriptMachine()->getMoveDatabase();
     const MoveTemplate *tpl = moves->getMove(str);
     if (tpl) {
-        MoveObject *move = scx->newMoveObject(tpl);
+        MoveObjectPtr move = scx->newMoveObject(tpl);
         *ret = OBJECT_TO_JSVAL(move->getObject());
-        scx->removeRoot(move);
     } else {
         *ret = JSVAL_NULL;
     }
@@ -216,12 +215,9 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             *vp = INT_TO_JSVAL(p->getGeneration());
         } break;
         case FTI_LAST_MOVE: {
-            const MoveTemplate *temp = p->getLastMove();
-            if (temp) {
-                ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
-                MoveObject *move = scx->newMoveObject(temp);
+            MoveObjectPtr move = p->getLastMove();
+            if (move) {
                 *vp = OBJECT_TO_JSVAL(move->getObject());
-                scx->removeRoot(move);
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -249,17 +245,16 @@ JSFunctionSpec fieldFunctions[] = {
 
 } // anonymous namespace
 
-FieldObject *ScriptContext::newFieldObject(BattleField *p) {
+FieldObjectPtr ScriptContext::newFieldObject(BattleField *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
-    FieldObject *ret = new FieldObject(obj);
-    addRoot(ret);
+    FieldObjectPtr ptr = addRoot(new FieldObject(obj));
     JS_DefineProperties(cx, obj, fieldProperties);
     JS_DefineFunctions(cx, obj, fieldFunctions);
     JS_SetPrivate(cx, obj, p);
     JS_EndRequest(cx);
-    return ret;
+    return ptr;
 }
 
 }

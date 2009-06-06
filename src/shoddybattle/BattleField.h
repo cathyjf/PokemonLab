@@ -194,7 +194,7 @@ public:
     /**
      * Transform a status effect.
      */
-    void transformStatus(Pokemon *, StatusObject **);
+    void transformStatus(Pokemon *, boost::shared_ptr<StatusObject> *);
 
     /**
      * Sort a set of pokemon by speed.
@@ -294,7 +294,7 @@ public:
     /**
      * Get the last move that was executed by any pokemon.
      */
-    const MoveTemplate *getLastMove() const;
+    boost::shared_ptr<MoveObject> getLastMove() const;
     
     /**
      * Print a message to the BattleField.
@@ -309,7 +309,7 @@ public:
     virtual void informSetPp(Pokemon *, const int, const int) { }
     virtual void informFainted(Pokemon *);
 
-    typedef Pokemon::RECENT_MOVE<MoveObject> EXECUTION;
+    typedef Pokemon::RECENT_MOVE EXECUTION;
     const EXECUTION *topExecution() const;
     void pushExecution(const EXECUTION &exec);
     void popExecution();
