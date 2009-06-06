@@ -1680,6 +1680,7 @@ effect.vetoSelection = function(user, move) {
         return false;
     return (move.name == this.move.name);
 };
+effect.vetoTier = 6; // TODO
 effect.vetoExecution = function(field, user, target, move) {
     if (target != null)
         return false;
