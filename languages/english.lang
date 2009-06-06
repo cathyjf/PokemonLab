@@ -245,7 +245,7 @@
 31: $1 lost its PP due to the Grudge!
 32: $1 got an encore!
 33: $1's encore ended.
-34: $1's $2 is disabled!
+
 35: $1 sealed the opponent's moves!
 36: $1 unleashed energy!
 37: $1 learned $2!
@@ -280,6 +280,9 @@
 66: $1 was subjected to Torment!
 67: Charge
 68: $1 is charging power!
+69: Disable
+70: $1's $2 was disabled!
+71: $1's $2 is disabled!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
@@ -448,7 +451,7 @@
 27: TODO: Limber
 28: $1 has Mold Breaker!
 29: $1's Motor Drive increased its speed!
-30: $1's Oblivious prevents attraction! 
+30: $1's Oblivious prevents attraction!
 31: TODO: Own Tempo
 32: $1's Poison Heal restored health!
 33: $1's Poison Point poisoned $2!
