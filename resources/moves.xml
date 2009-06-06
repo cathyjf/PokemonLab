@@ -1007,11 +1007,33 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("ChargeEffect");
+if (effect) {
+    user.removeStatus(effect);
+}
+effect = new StatusEffect("ChargeEffect");
+effect.name = Text.battle_messages_unique(67);
+effect.tier = 0;
+effect.turns = 2;
+effect.tick = function() {
+    if (--this.turns <= 0) {
+        this.subject.removeStatus(this);
+    }
+};
+effect.modifier = function(field, user, target, move, critical) {
+    if (user != this.subject)
+        return null;
+    if (move.type != Type.ELECTRIC)
+        return null;
+    // x2 multiplier in base power; priority of 2.
+    return [0, 2, 2];
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(68, user));
+user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 ]]>
 </use>
 </move>
