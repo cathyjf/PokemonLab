@@ -421,29 +421,15 @@ ScriptContext::ScriptContext(void *p) {
 }
 
 ScriptObject::ScriptObject(const ScriptObject &rhs) {
-    if (rhs.m_root) {
-        // Cannot make a copy of a root.
-        throw ScriptMachineException();
-    }
-    m_root = false;
     m_p = rhs.m_p;
 }
 
 ScriptObject &ScriptObject::operator=(const ScriptObject &rhs) {
-    if (m_root) {
-        // Cannot alter a root.
-        throw ScriptMachineException();
-    }
-    m_root = false;
     m_p = rhs.m_p;
     return *this;
 }
 
 bool ScriptContext::makeRoot(ScriptObject *sobj) {
-    if (sobj->m_root) {
-        // Already a root.
-        throw ScriptMachineException();
-    }
     void **obj = sobj->getObjectRef();
     if (!obj) {
         return false;
@@ -452,7 +438,6 @@ bool ScriptContext::makeRoot(ScriptObject *sobj) {
     JS_BeginRequest(cx);
     JS_AddRoot(cx, obj);
     JS_EndRequest(cx);
-    sobj->m_root = true;
 #if ENABLE_ROOT_COUNT
     lock_guard<mutex> guard(m_machine->m_impl->rootLock);
     ++m_machine->m_impl->roots;
@@ -461,10 +446,6 @@ bool ScriptContext::makeRoot(ScriptObject *sobj) {
 }
 
 void ScriptContext::removeRoot(ScriptObject *sobj) {
-    if (!sobj->m_root) {
-        // Not a root.
-        throw ScriptMachineException();
-    }
     void **obj = sobj->getObjectRef();
     if (obj) {
         JSContext *cx = (JSContext *)m_p;

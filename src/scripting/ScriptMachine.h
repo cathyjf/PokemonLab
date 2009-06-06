@@ -54,7 +54,6 @@ class ScriptObject {
 public:
     ScriptObject(void *p) {
         m_p = p;
-        m_root = false;
     }
     void *getObject() const {
         return m_p;
@@ -72,9 +71,7 @@ public:
     ScriptObject &operator=(const ScriptObject &);
 protected:
     void *m_p;
-private:
     friend class ScriptContext;
-    bool m_root;
 };
 
 class ScriptValue;
