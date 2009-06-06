@@ -31,6 +31,7 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include "ObjectWrapper.h"
 #include "../moves/PokemonMove.h"
@@ -235,7 +236,7 @@ public:
 
 };
 
-class ScriptContext {
+class ScriptContext : public boost::enable_shared_from_this<ScriptContext> {
 public:
     boost::shared_ptr<ScriptFunction> compileFunction(
             const std::vector<std::string> args,
@@ -263,7 +264,8 @@ public:
         if (!makeRoot(sobj))
             return boost::shared_ptr<T>();
         return boost::shared_ptr<T>(sobj,
-                boost::bind(&ScriptContext::removeRoot, this, _1));
+                boost::bind(&ScriptContext::removeRoot,
+                        shared_from_this(), _1));
     }
 
     StatusObject getAbility(const std::string &) const;
