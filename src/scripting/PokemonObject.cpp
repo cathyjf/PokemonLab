@@ -279,6 +279,29 @@ JSBool getMove(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.getPp(move)
+ *
+ * Get the PP of one of the pokemon's move. The argument is a move object.
+ * Returns -1 if the pokemon does not know the move.
+ */
+JSBool getPp(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    const string move = MoveObject(JSVAL_TO_OBJECT(v)).getName(scx);
+    const int id = p->getMove(move);
+    const int pp = (id == -1) ? -1 : p->getPp(id);
+    *ret = INT_TO_JSVAL(pp);
+
+    return JS_TRUE;
+}
+
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -542,7 +565,7 @@ JSPropertySpec pokemonProperties[] = {
 
 JSFunctionSpec pokemonFunctions[] = {
     JS_FS("applyStatus", applyStatus, 2, 0, 0),
-    JS_FS("execute", execute, 3, 0, 0),
+    JS_FS("execute", execute, 2, 0, 0),
     JS_FS("hasAbility", hasAbility, 1, 0, 0),
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS("isImmune", isImmune, 1, 0, 0),
@@ -558,6 +581,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("isType", isType, 1, 0, 0),
     JS_FS("setForcedMove", setForcedMove, 2, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
+    JS_FS("getPp", getPp, 1, 0, 0),
     JS_FS_END
 };
 

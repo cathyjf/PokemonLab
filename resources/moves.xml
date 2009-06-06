@@ -1657,11 +1657,46 @@ makeChargeMove(this,
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("DisableEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+// Fails if the target doesn't know the last move it used or if that move
+// has zero PP or if the target's last move is null.
+var move = target.lastMove;
+if (!move || (target.getPp(move) <= 0)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("DisableEffect");
+effect.name = Text.battle_messages_unique(69);
+effect.move = move;
+effect.turns = field.random(4, 7);
+effect.vetoSelection = function(user, move) {
+    if (user != this.subject)
+        return false;
+    return (move.name == this.move.name);
+};
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != null)
+        return false;
+    if (user != this.subject)
+        return false;
+    if (move.name != this.move.name)
+        return false;
+    field.print(Text.battle_messages_unique(71, user, move));
+    return true;
+};
+effect.informFinishedExecution = function() {
+    if ((--this.turns <= 0) || (this.subject.getPp(this.move) <= 0)) {
+        this.subject.removeStatus(this);
+    }
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(70, target, move));
 ]]>
 </use>
 </move>
