@@ -3314,11 +3314,16 @@ target.hp -= field.calculate(this, user, target, targets);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var speed = user.speed;
+if (speed < 1) speed = 1;
+this.power = Math.floor((target.speed * 25) / speed) + 1;
+if (this.power > 150) {
+    this.power = 150;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
@@ -3353,13 +3358,12 @@ target.hp -= field.calculate(this, user, target, targets);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 1, true]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Harden" id="171">
