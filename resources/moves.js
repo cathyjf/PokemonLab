@@ -34,7 +34,6 @@ function makeTemporaryTrappingMove(move, text) {
         if (target.getStatus("TemporaryTrappingEffect"))
             return;
         var effect = new StatusEffect("TemporaryTrappingEffect");
-        effect.user_ = user;
         effect.tier = 6;
         effect.subtier = 7;
         effect.turns = field.random(3, 6);
@@ -58,7 +57,7 @@ function makeTemporaryTrappingMove(move, text) {
             return true;
         };
         effect.informWithdraw = function(subject) {
-            if (subject == this.user_) {
+            if (subject == this.inducer) {
                 this.subject.removeStatus(this);
             }
         };
