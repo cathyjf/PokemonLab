@@ -283,6 +283,10 @@
 69: Disable
 70: $1's $2 was disabled!
 71: $1's $2 is disabled!
+72: $1 was bound!
+73: $1 was clamped!
+74: $1 was trapped in a vortex!
+75: $1 was wrapped!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
