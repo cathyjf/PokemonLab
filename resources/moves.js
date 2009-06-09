@@ -30,7 +30,7 @@ function makeRechargeMove(move) {
     move.use = function(field, user, target, targets) {
         execute.call(this, field, user, target, targets);
         user.setForcedMove(this, target);
-        effect = new StatusEffect("RechargeMoveEffect");
+        var effect = new StatusEffect("RechargeMoveEffect");
         effect.vetoTier = -5;
         effect.turns = 2;
         effect.informFinishedExecution = function() {
