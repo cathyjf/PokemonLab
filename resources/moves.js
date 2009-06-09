@@ -23,6 +23,37 @@
  */
 
 /**
+ * Make a move into a recharge move.
+ */
+function makeRechargeMove(move) {
+    var execute = getParentUse(move);
+    move.use = function(field, user, target, targets) {
+        execute.call(this, field, user, target, targets);
+        user.setForcedMove(this, target);
+        effect = new StatusEffect("RechargeMoveEffect");
+        effect.vetoTier = -5;
+        effect.turns = 2;
+        effect.informFinishedExecution = function() {
+            if (--this.turns == 0) {
+                this.subject.removeStatus(this);
+            }
+        };
+        effect.vetoSwitch = function(subject) {
+            return (subject == this.subject);
+        };
+        effect.vetoExecution = function(field, user, target, move) {
+            if (target != null)
+                return false;
+            if (user != this.subject)
+                return false;
+            field.print(Text.battle_messages_unique(57, user));
+            return true;
+        };
+        user.applyStatus(user, effect);
+    };
+}
+
+/**
  * Make a move into a two hit move.
  */
 function makeTwoHitMove(move) {
@@ -174,6 +205,7 @@ function makeChargeMove(move, text, vulnerable) {
             return (subject == this.subject);
         };
         if (vulnerable != undefined) {
+            // TODO: vetoTier?
             // This effect also makes the user immune to most moves.
             effect.vetoExecution = function(field, user, target, move) {
                 if (target != this.subject)

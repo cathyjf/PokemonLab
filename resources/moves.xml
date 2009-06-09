@@ -587,13 +587,12 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Blaze Kick" id="33">
@@ -2924,13 +2923,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Frustration" id="149">
@@ -3076,13 +3074,12 @@ makeRecoilMove(this, -2);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Glare" id="157">
@@ -3669,13 +3666,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hydro Pump" id="188">
@@ -3703,13 +3699,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hyper Fang" id="190">
@@ -6236,13 +6231,12 @@ makeRecoveryMove(this);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rock Blast" id="321">
@@ -6381,13 +6375,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRechargeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Role Play" id="329">
