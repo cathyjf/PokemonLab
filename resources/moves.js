@@ -63,7 +63,11 @@ function makeTemporaryTrappingMove(move, text) {
         var effect = new StatusEffect("TemporaryTrappingEffect");
         effect.tier = 6;
         effect.subtier = 7;
-        effect.turns = field.random(3, 6);
+        var turns = user.sendMessage("informTemporaryTrapping");
+        if (!turns) {
+            turns = field.random(3, 6);
+        }
+        effect.turns = turns;
         effect.tick = function() {
             if (--this.turns == 0) {
                 field.print(Text.battle_messages_unique(

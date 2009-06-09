@@ -40,6 +40,20 @@ function makeItem(obj) {
 }
 
 makeItem({
+    name : "Shed Shell",
+    informBlockSwitch : function() {
+        return true;
+    }
+});
+
+makeItem({
+    name : "Grip Claw",
+    informTemporaryTrapping : function() {
+        return 6;
+    }
+});
+
+makeItem({
     name : "Leftovers",
     tier : 6,
     subtier : 2,
