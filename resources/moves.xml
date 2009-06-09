@@ -2574,13 +2574,12 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeOneHitKillMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flail" id="133">
@@ -3235,13 +3234,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeOneHitKillMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Gunk Shot" id="166">
@@ -3625,13 +3623,12 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<contact/>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeOneHitKillMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Howl" id="186">
@@ -6810,13 +6807,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeOneHitKillMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Shock Wave" id="353">

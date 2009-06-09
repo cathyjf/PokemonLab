@@ -23,6 +23,32 @@
  */
 
 /**
+ * Make a move into a OHKO move. A OHKO move deals damage equal to the target's
+ * current HP. Whether the target has a substitute has no effect no the damage
+ * that a OHKO move deals.
+ */
+function makeOneHitKillMove(move) {
+    move.attemptHit = function(field, user, target) {
+        if (user.level < target.level)
+            return true;
+        var p = (user.level - target.level + 30) / 100;
+        return field.random(p);
+    };
+    move.use = function(field, user, target, targets) {
+        if (user.level < target.level) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        if (target.isImmune(this)) {
+            field.print(Text.battle_messages(1, target));
+            return;
+        }
+        target.hp = 0;
+        field.print(Text.battle_messages_unique(48));
+    };
+}
+
+/**
  * Make a move into a (full) trapping move.
  */
 function makeTrappingMove(move) {
@@ -312,7 +338,9 @@ function makeCounterMove(move, cls, ratio) {
                 if (target.party == user.party) {
                     break;
                 }
-                if (target.fainted || target.isImmune(this)) {
+                if (target.fainted)
+                    return;
+                if (target.isImmune(this)) {
                     field.print(Text.battle_messages(1, target));
                 } else {
                     target.hp -= recent[2] * ratio;
