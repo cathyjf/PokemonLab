@@ -548,13 +548,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(72));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bite" id="31">
@@ -1104,13 +1103,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(73));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Close Combat" id="59">
@@ -2559,13 +2557,12 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Fissure" id="132">
@@ -4431,13 +4428,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Magnet Bomb" id="229">
@@ -6506,13 +6502,12 @@ makeStatusMove(this, [[BurnEffect, 0.5]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sand-Attack" id="336">
@@ -8793,13 +8788,12 @@ makeStatusMove(this, [[FlinchEffect, 0.2]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Whirlwind" id="454">
@@ -8942,13 +8936,12 @@ makeRecoilMove(this, 3);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(75));
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Wring Out" id="462">

@@ -23,6 +23,51 @@
  */
 
 /**
+ * Make a move into a temporary trapping move.
+ */
+function makeTemporaryTrappingMove(move, text) {
+    move.use = function(field, user, target, targets) {
+        var damage = field.calculate(this, user, target, targets);
+        if (damage == 0)
+            return;
+        target.hp -= damage;
+        if (target.getStatus("TemporaryTrappingEffect"))
+            return;
+        var effect = new StatusEffect("TemporaryTrappingEffect");
+        effect.user_ = user;
+        effect.tier = 6;
+        effect.subtier = 7;
+        effect.turns = field.random(3, 6);
+        effect.tick = function() {
+            if (--this.turns == 0) {
+                field.print(Text.battle_messages_unique(
+                        53, this.subject, move));
+                this.subject.removeStatus(this);
+                return;
+            }
+            field.print(Text.battle_messages_unique(54, this.subject, move));
+            var damage = Math.floor(this.subject.getStat(Stat.HP) / 16);
+            if (damage < 1) damage = 1;
+            this.subject.hp -= damage;
+        };
+        effect.vetoSwitch = function(subject) {
+            if (subject != this.subject)
+                return false;
+            if (subject.sendMessage("informBlockSwitch"))
+                return false;
+            return true;
+        };
+        effect.informWithdraw = function(subject) {
+            if (subject == this.user_) {
+                this.subject.removeStatus(this);
+            }
+        };
+        field.print(text(target));
+        target.applyStatus(user, effect);
+    };
+}
+
+/**
  * Make a move into a recharge move.
  */
 function makeRechargeMove(move) {
