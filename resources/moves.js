@@ -23,6 +23,33 @@
  */
 
 /**
+ * Make a move into a (full) trapping move.
+ */
+function makeTrappingMove(move) {
+    move.use = function(field, user, target, targets) {
+        if (target.getStatus("TrappingEffect")) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var effect = new StatusEffect("TrappingEffect");
+        effect.vetoSwitch = function(subject) {
+            if (subject != this.subject)
+                return false;
+            if (subject.sendMessage("informBlockSwitch"))
+                return false;
+            return true;
+        };
+        effect.informWithdraw = function(subject) {
+            if (subject == this.inducer) {
+                this.subject.removeStatus(this);
+            }
+        };
+        field.print(Text.battle_messages_unique(76, target));
+        target.applyStatus(user, effect);
+    };
+}
+
+/**
  * Make a move into a temporary trapping move.
  */
 function makeTemporaryTrappingMove(move, text) {

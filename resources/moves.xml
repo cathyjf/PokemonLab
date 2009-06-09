@@ -643,13 +643,12 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTrappingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Body Slam" id="36">
@@ -4557,13 +4556,12 @@ target.hp -= field.calculate(this, user, target, targets);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTrappingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Meditate" id="234">
@@ -7323,13 +7321,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTrappingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Spike Cannon" id="380">
