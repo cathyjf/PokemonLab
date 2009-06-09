@@ -424,7 +424,9 @@ void BattleField::withdrawPokemon(Pokemon *p) {
         return;
     informWithdraw(p);
     ScriptValue argv[] = { p };
-    m_impl->active[1 - p->getParty()]->sendMessage("informWithdraw", 1, argv);
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        m_impl->active[i]->sendMessage("informWithdraw", 1, argv);
+    }
     p->switchOut(); // Note: clears slot.
 }
 
