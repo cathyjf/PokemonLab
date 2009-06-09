@@ -6771,13 +6771,7 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(8), []);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
-<![CDATA[
-
-]]>
-</use>
 </move>
 
 <move name="Sharpen" id="351">
