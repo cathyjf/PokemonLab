@@ -855,10 +855,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
                     int party = 0;
                     m_impl->decodeIndex(idx, party);
                     Pokemon::PTR p = (*m_impl->active[party])[idx].pokemon;
-                    if (!choice && (!p || p->isFainted())) {
-                        // If this is a forced move and there is no target,
-                        // then select a target at random from among the
-                        // available enemies.
+                    if (!p || p->isFainted()) {
+                        // If there is a single target move and there is no
+                        // target then choose a random target from among
+                        // the available enemies.
                         target = getRandomTarget(1 - p->getParty());
                     } else if (p) {
                         target = p.get();
