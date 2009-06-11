@@ -8866,14 +8866,18 @@ effect.applyEffect = function() {
         return false;
     return true;
 };
+effect.beginTick = function() {
+    if (--this.turns < 0) {
+        this.subject.field.removeStatus(this);
+    }
+};
 effect.tick = function() {
-    if (--this.turns != 0)
+    if (this.turns != 0)
         return;
     this.subject.field.print(Text.battle_messages_unique(78));
     var hp = Math.floor(this.subject.getStat(Stat.HP) / 2);
     if (hp < 1) hp = 1;
     this.subject.hp += hp;
-    this.subject.field.removeStatus(this);
 };
 field.print(Text.battle_messages_unique(77, user));
 field.applyStatus(effect);
