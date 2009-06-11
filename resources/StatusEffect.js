@@ -126,6 +126,9 @@ StatusEffect.prototype = {
 		return 0;
 	},
 
+    // Called before field effects are ticked.
+    beginTick : function() { },
+
     /**
      * Methods that may be implemented to achieve a desired function, but have no
      * default implementation.

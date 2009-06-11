@@ -118,6 +118,8 @@ public:
             MoveObject *, const bool, MODIFIERS &);
     void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);
     bool getTransformedStatLevel(Pokemon *, Pokemon *, STAT, int *);
+    template <class T>
+    static void removeStatuses(STATUSES &, T predicate);
     void removeStatuses();
     bool hasAbility(const std::string &);
     bool transformStatus(Pokemon *, boost::shared_ptr<StatusObject> *);

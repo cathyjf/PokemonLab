@@ -112,6 +112,7 @@ public:
         }
         return *this;
     }
+    bool isNull() const;
     void setFailure() { m_fail = true; }
     bool failed() const { return m_fail; }
 
@@ -169,7 +170,8 @@ public:
     ScriptFunction(void *p = NULL): ScriptObject(p) { }
 };
 
-class StatusObject : public ScriptObject {
+class StatusObject : public ScriptObject,
+        public boost::enable_shared_from_this<StatusObject> {
 public:
     static const int STATE_ACTIVE = 0;
     static const int STATE_DEACTIVATED = 1;
@@ -178,6 +180,7 @@ public:
     StatusObject(void *p): ScriptObject(p) { }
 
     boost::shared_ptr<StatusObject> cloneAndRoot(ScriptContext *);
+    void disableClone(ScriptContext *);
 
     // State.
     int getState(ScriptContext *) const;
@@ -204,7 +207,6 @@ public:
     int getTier(ScriptContext *) const;
     int getVetoTier(ScriptContext *) const;
     bool isSingleton(ScriptContext *) const;
-    ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
     int getInherentPriority(ScriptContext *);
     int getCriticalModifier(ScriptContext *);
 

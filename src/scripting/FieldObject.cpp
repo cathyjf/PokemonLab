@@ -105,7 +105,7 @@ JSBool getActivePokemon(JSContext *cx,
 }
 
 /**
- * getMove(name)
+ * field.getMove(name)
  */
 JSBool getMove(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
@@ -125,6 +125,45 @@ JSBool getMove(JSContext *cx,
     } else {
         *ret = JSVAL_NULL;
     }
+
+    return JS_TRUE;
+}
+
+/**
+ * field.applyStatus(effect)
+ */
+JSBool applyStatus(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    StatusObject effect(JSVAL_TO_OBJECT(v));
+    StatusObjectPtr ptr = field->applyStatus(&effect);
+    if (ptr) {
+        *ret = OBJECT_TO_JSVAL(ptr->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+
+    return JS_TRUE;
+}
+
+/**
+ * field.removeStatus(effect)
+ */
+JSBool removeStatus(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    StatusObject effect(JSVAL_TO_OBJECT(v));
+    field->removeStatus(&effect);
 
     return JS_TRUE;
 }
@@ -240,6 +279,8 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getMove", getMove, 1, 0, 0),
     JS_FS("print", print, 1, 0, 0),
     JS_FS("getActivePokemon", getActivePokemon, 2, 0, 0),
+    JS_FS("applyStatus", applyStatus, 1, 0, 0),
+    JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS_END
 };
 

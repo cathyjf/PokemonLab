@@ -326,6 +326,10 @@ int ScriptValue::getInt() const {
     return JSVAL_TO_INT((jsval)m_val);
 }
 
+bool ScriptValue::isNull() const {
+    return JSVAL_IS_NULL((jsval)m_val);
+}
+
 double ScriptValue::getDouble(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);

@@ -8845,11 +8845,36 @@ makeStatusMove(this, [[BurnEffect]]);
 <pp>10</pp>
 <target>User</target>
 <flags>
-	<unimplemented/>
+	
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("WishEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("WishEffect");
+effect.turns = 2;
+effect.party_ = user.party;
+effect.position_ = user.position;
+effect.tier = 2;
+effect.subtier = 0;
+effect.applyEffect = function() {
+    if (this.subject.party != this.party_)
+        return false;
+    if (this.subject.position != this.position_)
+        return false;
+    return true;
+};
+effect.tick = function() {
+    if (--this.turns != 0)
+        return;
+    this.subject.field.print(Text.battle_messages_unique(78));
+    this.subject.hp += Math.floor(this.subject.getStat(Stat.HP) / 2);
+    this.subject.field.removeStatus(this);
+};
+field.print(Text.battle_messages_unique(77, user));
+field.applyStatus(effect);
 ]]>
 </use>
 </move>

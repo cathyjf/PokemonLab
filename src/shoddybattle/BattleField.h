@@ -295,6 +295,21 @@ public:
      * Get the last move that was executed by any pokemon.
      */
     boost::shared_ptr<MoveObject> getLastMove() const;
+
+    /**
+     * Apply a status effect to the whole field.
+     */
+    boost::shared_ptr<StatusObject> applyStatus(StatusObject *);
+
+    /**
+     * Remove a status effect from the field.
+     */
+    void removeStatus(StatusObject *);
+
+    /**
+     * Remove removable statuses from the field.
+     */
+    void removeStatuses();
     
     /**
      * Print a message to the BattleField.

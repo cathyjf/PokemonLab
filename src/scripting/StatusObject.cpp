@@ -34,22 +34,6 @@
 
 using namespace std;
 
-/**
-// Basic properties.
-ScriptFunction *getOverride(ScriptContext *, std::string, std::string) const;
-
-// Transformers.
-bool getModifier(ScriptContext *,
-        BattleField *, Pokemon *, Pokemon *, MODIFIER &);
-bool transformMove(ScriptContext *, Pokemon *, MoveObject **);
-bool vetoMove(ScriptContext *, Pokemon *, MoveObject *);
-bool transformStatus(ScriptContext *, Pokemon *, StatusObject **);
-bool vetoSwitch(ScriptContext *, Pokemon *);
-bool transformEffectiveness(int, int, Pokemon *, double *);
-bool transformHealthChange(int, int *);
-// TODO: transformMultiplier
- **/
-
 namespace shoddybattle {
 
 bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
@@ -221,8 +205,13 @@ StatusObjectPtr StatusObject::cloneAndRoot(ScriptContext *scx) {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
     ScriptValue val = scx->callFunctionByName(this, "copy", 0, NULL);
-    StatusObjectPtr ret =
-            scx->addRoot(new StatusObject(val.getObject().getObject()));
+    StatusObjectPtr ret;
+    void *obj = val.getObject().getObject();
+    if (obj != m_p) {
+        ret = scx->addRoot(new StatusObject(obj));
+    } else {
+        ret = shared_from_this();
+    }
     JS_EndRequest(cx);
     return ret;
 }
@@ -367,6 +356,23 @@ int StatusObject::getVetoTier(ScriptContext *scx) const {
     assert(JSVAL_IS_INT(val));
     int ret = JSVAL_TO_INT(val);
     return ret;
+}
+
+namespace {
+
+JSBool returnSelf(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    *ret = OBJECT_TO_JSVAL(obj);
+    return JS_TRUE;
+}
+
+} // anonymous namespace
+
+void StatusObject::disableClone(ScriptContext *scx) {
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    JS_DefineFunction(cx, (JSObject *)m_p, "copy", returnSelf, 0, 0);
+    JS_EndRequest(cx);
 }
 
 }

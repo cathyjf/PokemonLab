@@ -217,21 +217,25 @@ void Pokemon::switchIn() {
     }
 }
 
+namespace {
+
+bool switchOutPredicate(StatusObjectPtr effect, ScriptContext *cx) {
+    if (!effect->isActive(cx))
+        return false;
+    if (!effect->switchOut(cx))
+        return false;
+    effect->unapplyEffect(cx);
+    return true;
+}
+
+} // anonymous namespace
+
 /**
  * Switch this pokemon out of the field.
  */
 void Pokemon::switchOut() {
     // Remove effects that do not survive switches.
-    for (STATUSES::const_iterator i = m_effects.begin();
-            i != m_effects.end(); ++i) {
-        if (!(*i)->isActive(m_cx))
-            continue;
-
-        if ((*i)->switchOut(m_cx)) {
-            removeStatus(i->get());
-        }
-    }
-    removeStatuses();
+    removeStatuses(m_effects, boost::bind(switchOutPredicate, _1, m_cx));   
     // Restore original ability.
     setAbility(m_abilityName);
     // Indicate that the pokemon is no longer active.
@@ -511,14 +515,20 @@ void Pokemon::setMove(const int i, const string &name, const int pp) {
  * Remove defunct statuses from this pokemon.
  */
 void Pokemon::removeStatuses() {
+    removeStatuses(m_effects,
+            boost::bind(&StatusObject::isRemovable, _1, m_cx));
+}
+
+template <class T>
+void Pokemon::removeStatuses(STATUSES &effects, T predicate) {
     bool removed = false;
     do {
-        for (STATUSES::iterator i = m_effects.begin();
-                i != m_effects.end(); ++i) {
-            if (!(*i)->isRemovable(m_cx))
+        for (STATUSES::iterator i = effects.begin();
+                i != effects.end(); ++i) {
+            if (!predicate(*i))
                 continue;
 
-            m_effects.erase(i);
+            effects.erase(i);
             removed = true;
             break;
         }

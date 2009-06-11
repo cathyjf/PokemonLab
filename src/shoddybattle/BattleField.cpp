@@ -440,6 +440,48 @@ void BattleField::sendOutPokemon(const int party,
     replacement->setSlot(slot);
     informSendOut(replacement.get());
     replacement->switchIn();
+
+    // Apply field effects to the new pokemon.
+    STATUSES &effects = m_impl->effects;
+    for (STATUSES::const_iterator i = effects.begin();
+            i != effects.end(); ++i) {
+        if (!(*i)->isActive(m_impl->context))
+            continue;
+
+        replacement->applyStatus(NULL, i->get());
+    }
+}
+
+/**
+ * Apply a status effect to the whole field.
+ */
+StatusObjectPtr BattleField::applyStatus(StatusObject *effect) {
+    StatusObjectPtr ret = effect->cloneAndRoot(m_impl->context);
+    ret->disableClone(m_impl->context);
+    bool applied = false;
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted() && p->applyStatus(NULL, ret.get())) {
+                applied = true;
+            }
+        }
+    }
+    if (!applied) {
+        return StatusObjectPtr();
+    }
+    // TODO: Call a function to inform that the effect was applied.
+    m_impl->effects.push_back(ret);
+    return ret;
+}
+
+/**
+ * Remove a status effect from the field.
+ */
+void BattleField::removeStatus(StatusObject *effect) {
+    effect->unapplyEffect(m_impl->context);
+    effect->dispose(m_impl->context);
 }
 
 /**
@@ -616,6 +658,14 @@ bool effectComparator(const bool descendingSpeed,
 void BattleField::tickEffects() {
     ScriptContext *cx = m_impl->context;
 
+    for (STATUSES::const_iterator i = m_impl->effects.begin();
+            i != m_impl->effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        cx->callFunctionByName(i->get(), "beginTick", 0, NULL);
+    }
+
     vector<EffectEntity> effects;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
@@ -672,6 +722,9 @@ void BattleField::tickEffects() {
             }
         }
     }
+
+    Pokemon::removeStatuses(m_impl->effects,
+            boost::bind(&StatusObject::isRemovable, _1, m_impl->context));
 
     determineVictory();
 }
