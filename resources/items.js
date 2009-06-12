@@ -40,6 +40,13 @@ function makeItem(obj) {
 }
 
 makeItem({
+    name : "Light Clay",
+    informPartyBuffTurns : function() {
+        return 8;
+    }
+});
+
+makeItem({
     name : "Shed Shell",
     informBlockSwitch : function() {
         return true;
