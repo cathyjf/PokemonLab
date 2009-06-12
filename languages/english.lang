@@ -256,7 +256,7 @@
 42: $1's rage is building!
 43: $1 created a barrier!
 44: $1 can't use $2 because of $3 //heal block
-45: $1's $2 wore off // heal block
+45: $1's $2 wore off!
 46: $1 is no longer immune to Ground attacks!
 47: $1 kept going and crashed!
 48: It's a OHKO!
@@ -290,6 +290,8 @@
 76: $1 was trapped!
 77: $1 made a wish!
 78: The wish came true!
+79: A barrier was formed!
+80: $1 wore off! // TODO: Reflect & Light Screen message
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

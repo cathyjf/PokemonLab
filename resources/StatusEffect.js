@@ -143,11 +143,12 @@ StatusEffect.prototype = {
      *        priority is how this multiplier should be sorted with others
      *        move is the move being used
      *        critical is whether it is a critical hit
+     *        target is the number of targets
      * Return null for no modifier.
      *
      * Example:
      *
-     *    function(field, user, target, move, critical) {
+     *    function(field, user, target, move, critical, targets) {
      *        return null;
      *    }
      */

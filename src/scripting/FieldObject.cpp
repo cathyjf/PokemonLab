@@ -41,7 +41,8 @@ namespace {
     
 enum FIELD_TINYID {
     FTI_GENERATION,
-    FTI_LAST_MOVE
+    FTI_LAST_MOVE,
+    FTI_PARTY_SIZE
 };
 
 /**
@@ -261,6 +262,9 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 *vp = JSVAL_NULL;
             }
         } break;
+        case FTI_PARTY_SIZE: {
+            *vp = INT_TO_JSVAL(p->getPartySize());
+        } break;
     }
     return JS_TRUE;
 }
@@ -269,6 +273,7 @@ JSPropertySpec fieldProperties[] = {
     { "damage", 0, JSPROP_PERMANENT, NULL, NULL },
     { "generation", FTI_GENERATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "lastMove", FTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
+    { "partySize", FTI_PARTY_SIZE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

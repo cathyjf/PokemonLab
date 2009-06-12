@@ -4247,13 +4247,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <target>Allies</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makePartyBuffMove(this, MoveClass.SPECIAL);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Lock-on" id="219">
@@ -6088,13 +6087,12 @@ makeRecoveryMove(this);
 <target>Allies</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makePartyBuffMove(this, MoveClass.PHYSICAL);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Refresh" id="314">

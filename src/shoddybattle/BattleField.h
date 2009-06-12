@@ -184,7 +184,7 @@ public:
      * Get the modifiers in play for a particular hit.
      */
     void getModifiers(Pokemon &, Pokemon &, MoveObject &,
-            const bool, MODIFIERS &);
+            const bool, const int, MODIFIERS &);
 
     /**
      * Get the modifiers in play for a particular stat.

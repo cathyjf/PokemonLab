@@ -154,7 +154,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     const bool critical = isCriticalHit(field, move, user, target);
     MODIFIERS mods;
-    field.getModifiers(user, target, move, critical, mods);
+    field.getModifiers(user, target, move, critical, targets, mods);
 
     if (targets > 1) {
         mods[1][2] = 0.75;

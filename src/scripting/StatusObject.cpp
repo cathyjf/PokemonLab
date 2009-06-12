@@ -38,16 +38,16 @@ namespace shoddybattle {
 
 bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
         Pokemon *user, Pokemon *target, MoveObject *mobj, const bool critical,
-        MODIFIER &mod) {
+        const int targets, MODIFIER &mod) {
     if (!scx->hasProperty(this, "modifier"))
         return false;
     
-    ScriptValue argv[5] = { field, user, target, mobj, critical };
+    ScriptValue argv[] = { field, user, target, mobj, critical, targets };
 
     // need request to avoid the gc freeing the return value of the call
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
-    ScriptValue ret = scx->callFunctionByName(this, "modifier", 5, argv);
+    ScriptValue ret = scx->callFunctionByName(this, "modifier", 6, argv);
     bool b = false;
     if (!ret.failed()) {
         ScriptArray arr(ret.getObject().getObject(), scx);

@@ -673,14 +673,15 @@ void Pokemon::getStatModifiers(STAT stat,
  * Check for modifiers on all status effects.
  */
 void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
-        MoveObject *obj, const bool critical, MODIFIERS &mods) {
+        MoveObject *obj, const bool critical, const int targets,
+        MODIFIERS &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
 
         if ((*i)->getModifier(m_cx, m_field,
-                user, target, obj, critical, mod)) {
+                user, target, obj, critical, targets, mod)) {
             mods[mod.position][mod.priority] = mod.value;
         }
     }

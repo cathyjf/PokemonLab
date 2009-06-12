@@ -219,7 +219,8 @@ public:
 
     // Transformers.
     bool getModifier(ScriptContext *, BattleField *,
-            Pokemon *, Pokemon *, MoveObject *, const bool, MODIFIER &);
+            Pokemon *, Pokemon *, MoveObject *, const bool, const int,
+            MODIFIER &);
     bool getStatModifier(ScriptContext *, BattleField *,
             STAT, Pokemon *, MODIFIER &);
     bool vetoExecution(ScriptContext *, BattleField *,

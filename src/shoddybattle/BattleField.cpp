@@ -963,13 +963,14 @@ void BattleField::transformStatus(Pokemon *subject, StatusObjectPtr *status) {
  * pokemon for "modifier" properties.
  */
 void BattleField::getModifiers(Pokemon &user, Pokemon &target,
-        MoveObject &obj, const bool critical, MODIFIERS &mods) {
+        MoveObject &obj, const bool critical, const int targets,
+        MODIFIERS &mods) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p && !p->isFainted()) {
-                p->getModifiers(&user, &target, &obj, critical, mods);
+                p->getModifiers(&user, &target, &obj, critical, targets, mods);
             }
         }
     }

@@ -23,6 +23,55 @@
  */
 
 /**
+ * Make a move into a party buff move. A party buff move decreases the
+ * effectiveness of attacks against the party, either physical attacks or
+ * special attacks, for five turns. Critical hits ignore this boost.
+ */
+function makePartyBuffMove(move, moveClass) {
+    var id = "BuffEffect" + moveClass;
+    move.use = function(field, user, target, targets) {
+        if (user.getStatus(id)) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var effect = new StatusEffect(id);
+        var turns = user.sendMessage("informPartyBuffTurns");
+        effect.turns = turns ? turns : 5;
+        effect.party_ = user.party;
+        effect.applyEffect = function() {
+            return (this.subject.party == this.party_);
+        };
+        effect.beginTick = function() {
+            if (--this.turns != 0)
+                return;
+            // TODO: Fix this message to reference the trainer's name.
+            field.print(Text.battle_messages_unique(80, move));
+            this.subject.field.removeStatus(this);
+        };
+        effect.modifier = function(field, user, target, move, critical) {
+            if (target.party != this.party_)
+                return null;
+            if (move.moveClass != moveClass)
+                return null;
+            if (critical)
+                return null;
+            // Determine the number of active pokemon on the buffed team.
+            var active = 0;
+            for (var i = 0; i < field.partySize; ++i) {
+                if (field.getActivePokemon(this.party_, i)) {
+                    ++active;
+                }
+            }
+            var m = (active > 1) ? 2.0 / 3.0 : 0.5;
+            // Multiplier in Mod1; priority of 1 (i.e. second position).
+            return [1, m, 1];
+        };
+        field.print(Text.battle_messages_unique(79));
+        field.applyStatus(effect);
+    };
+}
+
+/**
  * Make a move into a OHKO move. A OHKO move deals damage equal to the target's
  * current HP. Whether the target has a substitute has no effect no the damage
  * that a OHKO move deals.
