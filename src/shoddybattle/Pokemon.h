@@ -116,7 +116,7 @@ public:
     boost::shared_ptr<StatusObject> getStatus(const int lock);
     void getModifiers(Pokemon *, Pokemon *,
             MoveObject *, const bool, const int, MODIFIERS &);
-    void getStatModifiers(STAT, Pokemon *, PRIORITY_MAP &);
+    void getStatModifiers(STAT, Pokemon *, Pokemon *, PRIORITY_MAP &);
     bool getTransformedStatLevel(Pokemon *, Pokemon *, STAT, int *);
     template <class T>
     static void removeStatuses(STATUSES &, T predicate);

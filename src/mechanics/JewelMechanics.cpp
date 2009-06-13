@@ -106,7 +106,7 @@ bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         target.getTransformedStatLevel(&user, &target, S_ACCURACY, &level0);
     }
 
-    int level1 = user.getStatLevel(S_EVASION);
+    int level1 = target.getStatLevel(S_EVASION);
     if (!user.getTransformedStatLevel(&user, &target, S_EVASION, &level1)) {
         target.getTransformedStatLevel(&user, &target, S_EVASION, &level1);
     }
@@ -119,7 +119,7 @@ bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
     }
 
     PRIORITY_MAP mods;
-    field.getStatModifiers(S_ACCURACY, user, mods);
+    field.getStatModifiers(S_ACCURACY, &user, &target, mods);
     mods[0] = getStatMultiplier(S_ACCURACY, level);
 
     // Calculate effective accuracy.
@@ -198,7 +198,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     PRIORITY_MAP statMod;
 
     int attack = user.getRawStat(stat0);
-    field.getStatModifiers(stat0, user, statMod);
+    field.getStatModifiers(stat0, &user, NULL, statMod);
     int level = user.getStatLevel(stat0);
     if (!user.getTransformedStatLevel(&user, &target, stat0, &level)) {
         target.getTransformedStatLevel(&user, &target, stat0, &level);
@@ -211,7 +211,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     statMod.clear();
     int defence = target.getRawStat(stat1);
-    field.getStatModifiers(stat1, target, statMod);
+    field.getStatModifiers(stat1, &target, NULL, statMod);
     level = target.getStatLevel(stat1);
     if (!user.getTransformedStatLevel(&user, &target, stat1, &level)) {
         target.getTransformedStatLevel(&user, &target, stat1, &level);

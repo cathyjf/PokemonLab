@@ -222,7 +222,7 @@ public:
             Pokemon *, Pokemon *, MoveObject *, const bool, const int,
             MODIFIER &);
     bool getStatModifier(ScriptContext *, BattleField *,
-            STAT, Pokemon *, MODIFIER &);
+            STAT, Pokemon *, Pokemon *, MODIFIER &);
     bool vetoExecution(ScriptContext *, BattleField *,
             Pokemon *, Pokemon *, MoveObject *);
     bool vetoSelection(ScriptContext *, Pokemon *, MoveObject *);

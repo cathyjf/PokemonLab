@@ -981,13 +981,13 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
  * active pokemon for "modifier" properties.
  */
 void BattleField::getStatModifiers(STAT stat,
-        Pokemon &subject, PRIORITY_MAP &mods) {
+        Pokemon *subject, Pokemon *target, PRIORITY_MAP &mods) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p && !p->isFainted()) {
-                p->getStatModifiers(stat, &subject, mods);
+                p->getStatModifiers(stat, subject, target, mods);
             }
         }
     }

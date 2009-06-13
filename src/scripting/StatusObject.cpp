@@ -63,15 +63,15 @@ bool StatusObject::getModifier(ScriptContext *scx, BattleField *field,
 }
 
 bool StatusObject::getStatModifier(ScriptContext *scx, BattleField *field,
-        STAT stat, Pokemon *subject, MODIFIER &mod) {
+        STAT stat, Pokemon *subject, Pokemon *target, MODIFIER &mod) {
     if (!scx->hasProperty(this, "statModifier"))
         return false;
 
-    ScriptValue argv[3] = { field, stat, subject };
+    ScriptValue argv[] = { field, stat, subject, target };
 
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
-    ScriptValue ret = scx->callFunctionByName(this, "statModifier", 3, argv);
+    ScriptValue ret = scx->callFunctionByName(this, "statModifier", 4, argv);
     bool b = false;
     if (!ret.failed()) {
         ScriptArray arr(ret.getObject().getObject(), scx);

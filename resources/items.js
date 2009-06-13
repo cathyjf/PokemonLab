@@ -39,6 +39,22 @@ function makeItem(obj) {
     }
 }
 
+function makeEvadeItem(item) {
+    makeItem({
+        name : item,
+        statModifier : function(field, stat, subject, target) {
+            if (stat != Stat.ACCURACY)
+                return null;
+            if (target != this.subject)
+                return null;
+            return [0.9, 8];
+        }
+    });
+}
+
+makeEvadeItem("Brightpowder");
+makeEvadeItem("Lax Incense");
+
 makeItem({
     name : "Light Clay",
     informPartyBuffTurns : function() {

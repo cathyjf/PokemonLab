@@ -377,7 +377,7 @@ unsigned int Pokemon::getStat(const STAT stat) {
     if (stat == S_HP)
         return m_stat[stat];
     PRIORITY_MAP mods;
-    m_field->getStatModifiers(stat, *this, mods);
+    m_field->getStatModifiers(stat, this, NULL, mods);
     mods[0] = getStatMultiplier(stat, m_statLevel[stat]);
     int value = getRawStat(stat);
     PRIORITY_MAP::const_iterator i = mods.begin();
@@ -663,13 +663,13 @@ int Pokemon::getInherentPriority() const {
  * Check for stat modifiers on all status effects.
  */
 void Pokemon::getStatModifiers(STAT stat,
-        Pokemon *subject, PRIORITY_MAP &mods) {
+        Pokemon *subject, Pokemon *target, PRIORITY_MAP &mods) {
     MODIFIER mod;
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
 
-        if ((*i)->getStatModifier(m_cx, m_field, stat, subject, mod)) {
+        if ((*i)->getStatModifier(m_cx, m_field, stat, subject, target, mod)) {
             // position unused
             mods[mod.priority] = mod.value;
         }

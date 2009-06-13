@@ -189,7 +189,7 @@ public:
     /**
      * Get the modifiers in play for a particular stat.
      */
-    void getStatModifiers(STAT, Pokemon &, PRIORITY_MAP &);
+    void getStatModifiers(STAT, Pokemon *, Pokemon *, PRIORITY_MAP &);
 
     /**
      * Transform a status effect.
