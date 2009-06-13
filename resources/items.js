@@ -68,7 +68,7 @@ makeItem({
         var max = this.subject.getStat(Stat.HP);
         if (this.subject.hp == max)
             return;
-        this.subject.field.print(Text.items_messages(0));
+        this.subject.field.print(Text.items_messages(0, this.subject));
         var delta = Math.floor(max / 16);
         this.subject.hp += delta;
     }
