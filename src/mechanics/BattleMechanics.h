@@ -42,7 +42,8 @@ public:
     virtual bool getCoinFlip(double = 0.5) const = 0;
     virtual unsigned int calculateStat(const Pokemon &p, const STAT i) const = 0;
     virtual int calculateDamage(BattleField &field, MoveObject &move,
-        Pokemon &user, Pokemon &target, const int targets) const = 0;
+        Pokemon &user, Pokemon &target, const int targets,
+        const bool weight = true) const = 0;
     virtual bool attemptHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const = 0;
     virtual int getRandomInt(const int lower, const int upper) const = 0;

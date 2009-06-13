@@ -87,17 +87,40 @@ bool JewelMechanics::getCoinFlip(double p) const {
     return coin();
 }
 
+template <class T>
+inline void multiplyBy(T &value, PRIORITY_MAP &elements) {
+    PRIORITY_MAP::const_iterator i = elements.begin();
+    for (; i != elements.end(); ++i) {
+        double val = i->second;
+        value *= val;
+    }
+}
+
 bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
     ScriptContext *cx = field.getContext();
-    double accuracy = move.getAccuracy(cx);
-    if (accuracy == 0.0) {
-        // "0" accuracy moves never miss.
-        return true;
+    int accuracy = move.getAccuracy(cx) * 100;
+
+    int level0 = user.getStatLevel(S_ACCURACY);
+    if (!user.getTransformedStatLevel(&user, &target, S_ACCURACY, &level0)) {
+        target.getTransformedStatLevel(&user, &target, S_ACCURACY, &level0);
     }
 
-    // TODO: implement this
-    return true;
+    int level1 = user.getStatLevel(S_EVASION);
+    if (!user.getTransformedStatLevel(&user, &target, S_EVASION, &level1)) {
+        target.getTransformedStatLevel(&user, &target, S_EVASION, &level1);
+    }
+
+    const int level = level0 - level1;
+
+    PRIORITY_MAP mods;
+    field.getStatModifiers(S_ACCURACY, user, mods);
+    mods[0] = getStatMultiplier(S_ACCURACY, level);
+
+    // Calculate effective accuracy.
+    multiplyBy(accuracy, mods);
+
+    return ((getRandomInt(0, 99) + 1) <= accuracy);
 }
 
 bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
@@ -120,12 +143,14 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
     return generator();
 }
 
-inline void multiplyBy(int &value, PRIORITY_MAP &elements) {
+inline int multiplyOut(PRIORITY_MAP &elements) {
     PRIORITY_MAP::const_iterator i = elements.begin();
+    double value = i->second;
+    ++i;
     for (; i != elements.end(); ++i) {
-        double val = i->second;
-        value *= val;
+        value = floor(value * i->second);
     }
+    return int(value);
 }
 
 inline void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
@@ -142,7 +167,8 @@ int JewelMechanics::getRandomInt(const int lower, const int upper) const {
  * Calculate damage.
  */
 int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
-        Pokemon &user, Pokemon &target, const int targets) const {
+        Pokemon &user, Pokemon &target, const int targets,
+        const bool weight) const {
     
     ScriptContext *cx = field.getContext();
 
@@ -187,13 +213,12 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     statMod[0] = getStatMultiplier(stat1, level);
     multiplyBy(defence, statMod);
 
-    int power = move.getPower(cx);
-
-    mods[0][0] = power; // base power
-
+    mods[0][0] = move.getPower(cx); // base power
+    const int power = multiplyOut(mods[0]);
+    
     int damage = user.getLevel() * 2 / 5;
     damage += 2;
-    multiplyBy(damage, 0, mods);
+    damage *= power;
     damage *= attack;
     damage /= 50;
     damage /= defence;
@@ -209,12 +234,11 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
     }
     multiplyBy(damage, 2, mods); // "Mod2"
 
-    boost::uniform_int<> range(217, 255);
-    variate_generator<GENERATOR &, uniform_int<> > r(m_impl->rand, range);
-
-    damage *= r() * 100;
-    damage /= 255;
-    damage /= 100;
+    if (weight) {
+        damage *= getRandomInt(217, 255) * 100;
+        damage /= 255;
+        damage /= 100;
+    }
 
     const PokemonType *moveType = move.getType(cx);
     if (user.isType(moveType)) {
@@ -236,7 +260,7 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     if (effectiveness == 0.0) {
         vector<string> args;
-        args.push_back(target.getName());
+        args.push_back(target.getToken());
         field.print(TextMessage(4, 1, args));
         return 0;
     }

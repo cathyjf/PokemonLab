@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <list>
+#include <sstream>
 #include <boost/bind.hpp>
 
 #include "Pokemon.h"
@@ -87,6 +88,12 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_legalSwitch = true;
     m_slot = -1;
     m_acted = false;
+}
+
+string Pokemon::getToken() const {
+    stringstream ss;
+    ss << "$p{" << getParty() << "," << getPosition() << "}";
+    return ss.str();
 }
 
 double Pokemon::getMass() const {
@@ -308,8 +315,8 @@ bool Pokemon::useMove(MoveObject *move,
         move->use(m_cx, m_field, this, target, targets);
     } else {
         vector<string> args;
-        args.push_back(getName());
-        args.push_back(target->getName());
+        args.push_back(getToken());
+        args.push_back(target->getToken());
         TextMessage msg(4, 2, args); // attack missed
         m_field->print(msg);
     }

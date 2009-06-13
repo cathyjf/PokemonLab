@@ -37,7 +37,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <sstream>
 
 using namespace std;
 
@@ -405,9 +404,7 @@ JSBool toString(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
 
-    stringstream ss;
-    ss << "$p{" << p->getParty() << "," << p->getPosition() << "}";
-    const string str = ss.str();
+    const string str = p->getToken();
     char *pstr = JS_strdup(cx, str.c_str());
     JSString *ostr = JS_NewString(cx, pstr, str.length());
     *ret = STRING_TO_JSVAL(ostr);

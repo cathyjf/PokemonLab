@@ -42,7 +42,8 @@ public:
     bool getCoinFlip(double) const;
     unsigned int calculateStat(const Pokemon &p, const STAT i) const;
     int calculateDamage(BattleField &field, MoveObject &move,
-            Pokemon &user, Pokemon &target, const int targets) const;
+            Pokemon &user, Pokemon &target, const int targets,
+            const bool weight = true) const;
     bool isCriticalHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const;
     bool attemptHit(BattleField &field, MoveObject &move,

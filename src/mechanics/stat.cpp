@@ -28,19 +28,19 @@ namespace shoddybattle {
 
 namespace {
 
-double STAT_MULTIPLIER[] = { 4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0,
+const double STAT_MULTIPLIER[] = { 4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0,
         2.0/3.0, 0.5, 0.4, 1.0/3.0, 2.0/7.0, 0.25 };
 
-double EVASION_MULTIPLIER[] = { 3.0, 8.0/3.0, 7.0/3.0, 2.0, 5.0/3.0, 4.0/3.0,
-        1.0, 0.75, 0.6, 0.5, 3.0/7.0, 3.0/8.0, 1.0/3.0 };
+const double ACCURACY_MULTIPLIER[] = { 3.0, 2.66, 2.5, 2.0, 1.66, 1.33, 1.0,
+        0.75, 0.6, 0.5, 0.43, 0.36, 0.33 };
 
 } // anonymous namespace
 
 double getStatMultiplier(const STAT i, const int level) {
     if ((i != S_EVASION) && (i != S_ACCURACY)) {
-        return STAT_MULTIPLIER[6 - level];
+        return ACCURACY_MULTIPLIER[6 - level];
     }
-    return EVASION_MULTIPLIER[6 - level];
+    return ACCURACY_MULTIPLIER[6 - level];
 }
 
 }
