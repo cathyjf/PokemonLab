@@ -120,6 +120,10 @@ bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
     // Calculate effective accuracy.
     multiplyBy(accuracy, mods);
 
+    if (accuracy == 0) {
+        return true;
+    }
+
     return ((getRandomInt(0, 99) + 1) <= accuracy);
 }
 
