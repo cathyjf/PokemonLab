@@ -60,7 +60,7 @@ public:
         return m_list[idx];
     }
 
-    static const PokemonType *getByCanonicalName(const std::string name) {
+    static const PokemonType *getByCanonicalName(const std::string &name) {
         for (int i = 0; i < TYPE_COUNT; ++i) {
             const PokemonType *p = m_list[i];
             if (p->m_name == name)
@@ -79,7 +79,8 @@ private:
     static const PokemonType *m_list[TYPE_COUNT];
     static const double m_multiplier[TYPE_COUNT][TYPE_COUNT];
 
-    PokemonType(int type, std::string name): m_type(type), m_name(name) { }
+    PokemonType(int type, const std::string &name):
+            m_type(type), m_name(name) { }
 };
 
 }
