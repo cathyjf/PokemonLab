@@ -62,7 +62,7 @@ function makePartyBuffMove(move, moveClass) {
                     ++active;
                 }
             }
-            var m = (active > 1) ? 2.0 / 3.0 : 0.5;
+            var m = 1 - 1.0 / (active + 1);
             // Multiplier in Mod1; priority of 1 (i.e. second position).
             return [1, m, 1];
         };
