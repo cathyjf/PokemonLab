@@ -111,7 +111,12 @@ bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         target.getTransformedStatLevel(&user, &target, S_EVASION, &level1);
     }
 
-    const int level = level0 - level1;
+    int level = level0 - level1;
+    if (level < -6) {
+        level = -6;
+    } else if (level > 6) {
+        level = 6;
+    }
 
     PRIORITY_MAP mods;
     field.getStatModifiers(S_ACCURACY, user, mods);
