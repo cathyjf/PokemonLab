@@ -169,6 +169,11 @@
 1: $1 was seeded!
 2: $1's health was sapped by Leech Seed!
 
+[status-effects-attract]
+0: Attract
+1: $1 is in love with foe $2!
+2: $1 is immobilised by love!
+
 [field-effects-spikes]
 0: Spikes - $1
 1: Toxic Spikes
@@ -210,10 +215,10 @@
 1: $1 was cured of paralysis!
 2: But nothing happened!
 3: Coins scattered everywhere!
-5: $1 is having a nightmare!
+5: $1 fell asleep and became healthy! //rest if you have a status effect
 6: The Pokémon swapped stats!
-7: $1 ($2)'s attack! //beat up
-8: $1 cut its health and laid a curse on $2!
+7: $1's attack! //beat up
+8: $1 is getting focused!
 9: $1 became the $2 type!
 10: $1 stole $2's $3!
 11: Could not steal the $1 from $2
@@ -233,6 +238,7 @@
 23: $1 lost its focus and couldn't move!
 
 // Trick Room
+34: Trick Room
 24: $1 twisted the dimensions!
 25: The twisted dimensions returned to normal!
 
@@ -242,11 +248,11 @@
 28: $1 fell for the taunt!
 29: Taunt // for status effect listing
 
-31: $1 lost its PP due to the Grudge!
+31: $1 consumed $2's $3 //bug bite
 32: $1 got an encore!
 33: $1's encore ended.
 
-35: $1 sealed the opponent's moves!
+35: $1's power was weakened!
 36: $1 unleashed energy!
 37: $1 learned $2!
 38: $1's ability was suppressed
@@ -260,9 +266,9 @@
 46: $1 is no longer immune to Ground attacks!
 47: $1 kept going and crashed!
 48: It's a OHKO!
-49: All affected Pokémon will faint in three turns!
-50: $1's count fell to $2! //perish song
-51: $1's power was weakened!
+49: Perish Song
+50: All affected Pokémon will faint in three turns!
+51: $1's count fell to $2! //perish song
 52: $1 transformed into $2!
 53: $1 was released from $2!
 54: $1 is hurt by $2!
@@ -292,12 +298,87 @@
 78: The wish came true!
 79: A barrier was formed!
 80: $1 wore off! // TODO: Reflect & Light Screen message
+81: Foresight
+82: Odor Sleuth
+83: Miracle Eye
+84: $1 identified $2!
+85: $1 took aim at the foe!
+
+85: Nightmare
+86: $1 fell into a nightmare!
+87: $1 is having a nightmare!
+
+88: Curse
+89: $1 cut its health and laid a curse on $2!
+90: $1 is afflicted by the curse!
+
+91: Yawn
+92: $1 became drowsy!
+93: $1 is ready to help $2! //helping hand
+94: $1 foresaw an attack! //future sight, doom desire
+95: $1 took the attack! // ^
+96: $1 went back to $2! //u-turn
+97: $1 became confused due to fatigue! //thrash et al
+
+98: Grudge
+99: $1 is bearing a grudge!
+100: $1 lost its PP due to the grudge!
+
+101: Imprison
+102: $1 sealed the opponent's moves!
+
+103: Bide
+104: $1 is storing energy!
+105: $1 released energy!
+
+106: Mist
+107: $1's team became shrouded in mist!
+108: $1's team's mist wore off!
+109: Safeguard
+110: $1's team is protected by a veil!
+111: $1's team is no longer protected by safeguard!
+
+112: Gravity
+113: Gravity intensified!
+114: $1 can't use $2 during the strong gravity!
+115: Gravity returned to normal.
+
+116: Embargo
+117: $1 can't use items anymore!
+118: $1 can use items again!
+
+119: Power Trick
+120: $1 swapped its stats!
+121: $1 caused an uproar!
+122: $1 calmed down.
+
+123: Lucky Chant
+124: $1's lucky chant shielded its team from critical hits!
+125: The lucky chant wore off.
+
+126: Heal Block
+127: $1 was prevented from healing
+128: $1 can't use $2 because of Heal Block!
+129: $1's Heal Block wore off!
+
+130: Magnet Rise
+131: $1 became immune to ground attacks!
+132: $1 is no longer immune to ground attacks!
+
+133: Substitute
+134: $1 made a substitute!
+135: $1's substitute took damage for it! //highly questionable
+136: $1's substitute faded!
+
+137: Tailwind
+138: The tailwind blew from behind $1's team!
+139: $1's tailwind petered out!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind
 2: $1 lowered its head!     // Skull Bash
-3: $1 became cloaked in a harsh light!  // Sky Attack
+3: $1 became cloaked in a harsh light!           // Sky Attack
 4: $1 dug a hole!           // Dig
 5: $1 flew up high!         // Fly
 6: $1 dove underwater!      // Dive
