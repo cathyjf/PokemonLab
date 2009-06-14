@@ -23,6 +23,59 @@
  */
 
 /**
+ * Make a move into a rampage move.
+ */
+function makeRampageMove(move) {
+    move.prepareSelf = function(field, user) {
+        if (user.getStatus("SleepEffect"))
+            return;
+        
+        user.setForcedMove(this, null);
+
+        if (user.getStatus("RampageEffect"))
+            return;
+
+        var effect = new StatusEffect("RampageEffect");
+        effect.turns = field.random(2, 3);
+        effect.vetoSwitch = function(subject) {
+            return (subject == this.subject);
+        };
+        effect.unapplyEffect = function() {
+            this.subject.clearForcedMove();
+        };
+        effect.informFreeze = effect.informSleep = function() {
+            this.subject.removeStatus(this);
+        };
+        effect.informFinishedExecution = function() {
+            if (!this.subject.lastMove) {
+                // Subject was prevented from using the move, so the effect
+                // does not continue.
+                this.subject.removeStatus(this);
+            } else if (--this.turns == 0) {
+                var user = this.subject;
+                if (!user.getStatus("ConfusionEffect")) {
+                    field.print(Text.battle_messages_unique(97, user));
+                    user.applyStatus(user, new ConfusionEffect());
+                }
+                this.subject.removeStatus(this);
+            }
+        };
+        user.applyStatus(user, effect);
+    };
+    move.use = function(field, user, target, targets) {
+        var damage = field.calculate(this, user, target, targets);
+        if (damage == 0) {
+            var effect = user.getStatus("RampageEffect");
+            if (effect) {
+                user.removeStatus(effect);
+            }
+            return;
+        }
+        target.hp -= damage;
+    };
+}
+
+/**
  * Make a move into a party buff move. A party buff move decreases the
  * effectiveness of attacks against the party, either physical attacks or
  * special attacks, for five turns. Critical hits ignore this boost.

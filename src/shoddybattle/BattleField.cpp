@@ -923,10 +923,10 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
             if (p->executeMove(move, target) && choice) {
                 // Only deduct pp if the move was chosen freely.
                 p->deductPp(id);
-                // Set last move used.
-                p->setLastMove(move);
-                m_impl->lastMove = move;
             }
+            // Set last move used.
+            p->setLastMove(move);
+            m_impl->lastMove = move;
             p->sendMessage("informFinishedExecution", 0, NULL);
         } else {
             switchPokemon(p.get(), id);

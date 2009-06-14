@@ -5270,13 +5270,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRampageMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Overheat" id="273">
@@ -5403,13 +5402,12 @@ field.print(Text.battle_messages_unique(3));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRampageMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Pin Missile" id="280">
@@ -8105,13 +8103,12 @@ field.print(Text.battle_messages(0));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRampageMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thunder" id="421">

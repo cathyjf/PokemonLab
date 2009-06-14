@@ -55,6 +55,7 @@ makeEffect({
         }
         var field = this.subject.field;
         field.print(Text.status_effects_freeze(1, this.subject));
+        this.subject.sendMessage("informFreeze");
         return true;
     },
     vetoExecution : function(field, user, target, move) {
@@ -352,6 +353,7 @@ makeEffect({
         var field = this.subject.field;
         this.turns = field.random(1, 4); // random duration
         field.print(Text.status_effects_sleep(1, this.subject));
+        this.subject.sendMessage("informSleep");
         return true;
     },
     informBeginTurn : function() {

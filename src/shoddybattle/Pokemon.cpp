@@ -459,6 +459,8 @@ bool Pokemon::executeMove(MoveObjectPtr move,
 
     BattleField::EXECUTION entry = { this, move };
     m_field->pushExecution(entry);
+    
+    move->prepareSelf(m_cx, m_field, this);
 
     if (isEnemyTarget(tc)) {
         for (vector<Pokemon *>::iterator i = targets.begin();

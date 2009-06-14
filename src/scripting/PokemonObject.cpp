@@ -119,6 +119,16 @@ JSBool setForcedMove(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.clearForcedMove()
+ */
+JSBool clearForcedMove(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->clearForcedTurn();
+    return JS_TRUE;
+}
+
 JSBool popRecentDamage(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -577,6 +587,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getStat", getStat, 1, 0, 0),
     JS_FS("isType", isType, 1, 0, 0),
     JS_FS("setForcedMove", setForcedMove, 2, 0, 0),
+    JS_FS("clearForcedMove", clearForcedMove, 0, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
     JS_FS("getPp", getPp, 1, 0, 0),
     JS_FS_END
