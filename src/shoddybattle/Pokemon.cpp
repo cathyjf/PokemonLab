@@ -702,6 +702,7 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
 void Pokemon::faint() {
     m_fainted = true;
     m_field->informFainted(this);
+    // TODO: Clear memory at end of move execution instead.
     clearMemory();
 }
 

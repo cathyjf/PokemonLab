@@ -247,6 +247,36 @@ JSBool calculate(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * field.sendMessage(message, ...)
+ *
+ * TODO: This method duplicates a method in PokemonObject. The two methods
+ *       should probably be consolidated.
+ */
+JSBool sendMessage(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+
+    const int c = argc - 1;
+    ScriptValue val[c];
+    for (int i = 0; i < c; ++i) {
+        val[i] = ScriptValue::fromValue((void *)argv[i + 1]);
+    }
+
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    ScriptValue vret = p->sendMessage(str, c, val);
+    if (vret.failed()) {
+        *ret = JSVAL_NULL;
+    } else {
+        *ret = (jsval)vret.getValue();
+    }
+    return JS_TRUE;
+}
+
 JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
@@ -286,6 +316,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getActivePokemon", getActivePokemon, 2, 0, 0),
     JS_FS("applyStatus", applyStatus, 1, 0, 0),
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
+    JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS_END
 };
 

@@ -310,6 +310,11 @@ public:
      * Remove removable statuses from the field.
      */
     void removeStatuses();
+
+    /**
+     * Send a message to the whole field.
+     */
+    ScriptValue sendMessage(const std::string &, int, ScriptValue *);
     
     /**
      * Print a message to the BattleField.

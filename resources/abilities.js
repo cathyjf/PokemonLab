@@ -239,3 +239,13 @@ makeAbility({
     }
 });
 
+/*******************
+ * Damp
+ *******************/
+makeAbility({
+    name : "Damp",
+    informExplosion : function() {
+        this.subject.field.print(Text.ability_messages(6, this.subject));
+        return true;
+    }
+})

@@ -23,6 +23,32 @@
  */
 
 /**
+ * Make a move into an explosion move. For the purpose of an exlosion move,
+ * the target's defence stat is temporarily halved.
+ */
+function makeExplosionMove(move) {
+    move.prepareSelf = function(field, user) {
+        var effect = new StatusEffect("ExplosionEffect");
+        effect.statModifier = function(field, stat, subject) {
+            if (subject != this.subject)
+                return null;
+            if (stat != Stat.DEFENCE)
+                return null;
+            return [0.5, 4];
+        };
+        effect.informFinishedExecution = function() {
+            this.subject.removeStatus(this);
+        };
+        if (!field.sendMessage("informExplosion")) {
+            user.faint();
+        } else {
+            effect.vetoExecution = function() { return true; };
+        }
+        user.applyStatus(user, effect);
+    };
+}
+
+/**
  * Make a move into a rampage move.
  */
 function makeRampageMove(move) {

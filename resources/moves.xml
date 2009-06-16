@@ -2295,13 +2295,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeExplosionMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Extrasensory" id="119">
@@ -6706,13 +6705,12 @@ target.hp -= user.level;
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeExplosionMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Shadow Ball" id="346">

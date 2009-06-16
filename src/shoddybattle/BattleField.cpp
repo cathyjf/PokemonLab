@@ -152,6 +152,7 @@ ScriptObject *BattleField::getObject() {
 ScriptValue PokemonParty::sendMessage(const string &message,
         int argc, ScriptValue *argv) {
     ScriptValue ret;
+    ret.setFailure();
     for (int i = 0; i < m_size; ++i) {
         Pokemon::PTR p = m_party[i].pokemon;
         if (p && !p->isFainted()) {
@@ -159,6 +160,22 @@ ScriptValue PokemonParty::sendMessage(const string &message,
             if (!v.failed()) {
                 ret = v;
             }
+        }
+    }
+    return ret;
+}
+
+/**
+ * Send a message to the whole field.
+ */
+ScriptValue BattleField::sendMessage(const string &message,
+        int argc, ScriptValue *argv) {
+    ScriptValue ret;
+    ret.setFailure();
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        ScriptValue v = m_impl->active[i]->sendMessage(message, argc, argv);
+        if (!v.failed()) {
+            ret = v;
         }
     }
     return ret;
