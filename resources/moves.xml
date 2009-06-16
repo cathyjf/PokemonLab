@@ -4661,10 +4661,8 @@ makeRecoilMove(this, -2);
 <![CDATA[
 makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)],
         [new StatChangeEffect(Stat.SPATTACK, -2)]]);
-var parent = this.use;
-this.use = function(field, user, target, targets) {
+this.prepareSelf = function(field, user) {
     user.faint();
-    parent.call(this, field, user, target, targets);
 };
 ]]>
 </init>
