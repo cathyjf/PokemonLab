@@ -5381,11 +5381,34 @@ field.print(Text.battle_messages_unique(3));
 <pp>5</pp>
 <target>All</target>
 <flags>
-	<unimplemented/>
+	
 </flags>
+<init>
+<![CDATA[
+this.prepareSelf = function(field) {
+    field.print(Text.battle_messages_unique(50));
+};
+]]>
+</init>
 <use>
 <![CDATA[
-
+if (target.getStatus("PerishSongEffect")) {
+    return;
+}
+var effect = new StatusEffect("PerishSongEffect");
+effect.name = Text.battle_messages_unique(49);
+effect.turns = 4;
+effect.tier = 8;
+effect.subtier = 0;
+effect.tick = function() {
+    --this.turns;
+    this.subject.field.print(Text.battle_messages_unique(
+            51, this.subject, this.turns));
+    if (this.turns > 0)
+        return;
+    this.subject.faint();
+};
+target.applyStatus(user, effect);
 ]]>
 </use>
 </move>

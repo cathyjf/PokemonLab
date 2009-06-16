@@ -69,7 +69,8 @@ inline bool isEnemyTarget(const TARGET t) {
     return ((t == T_SINGLE) ||
             (t == T_ENEMIES) ||
             (t == T_RANDOM_ENEMY) ||
-            (t == T_OTHERS));
+            (t == T_OTHERS) ||
+            (t == T_ALL));
     // T_LAST_ENEMY intentionally omitted
 }
 
