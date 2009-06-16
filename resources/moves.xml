@@ -3382,11 +3382,17 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 <pp>30</pp>
 <target>All</target>
 <flags>
-	<unimplemented/>
+	
 </flags>
+<!--
+    TODO: This move might have a message in prepareSelf.
+-->
 <use>
 <![CDATA[
-
+var effect = null;
+while (effect = target.getStatus("StatChangeEffect")) {
+    target.removeStatus(effect);
+}
 ]]>
 </use>
 </move>
