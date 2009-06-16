@@ -43,7 +43,10 @@ function makeExplosionMove(move) {
             return [0.5, 4];
         };
         effect = target.applyStatus(user, effect);
-        target.hp -= field.calculate(this, user, target, targets + 1);
+        if (field.partySize > 1) {
+            targets = 2;
+        }
+        target.hp -= field.calculate(this, user, target, targets);
         target.removeStatus(effect);
     };
 }
