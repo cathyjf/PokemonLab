@@ -30,8 +30,6 @@ function makeExplosionMove(move) {
     move.prepareSelf = function(field, user) {
         var effect = new StatusEffect("ExplosionEffect");
         effect.statModifier = function(field, stat, subject) {
-            if (subject != this.subject)
-                return null;
             if (stat != Stat.DEFENCE)
                 return null;
             return [0.5, 4];
