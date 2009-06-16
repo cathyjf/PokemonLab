@@ -1284,13 +1284,15 @@ user.execute(move);
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [
+        [new StatChangeEffect(Stat.DEFENCE, 1), 1, true],
+        [new StatChangeEffect(Stat.SPDEFENCE, 1), 1, true]
+    ]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Cotton Spore" id="68">
