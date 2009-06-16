@@ -23,6 +23,31 @@
  */
 
 /**
+ * Make a move into a move that depends on the user's health.
+ */
+function makeUserHealthMove(move) {
+    move.use = function(field, user, target, targets) {
+        this.power = Math.floor(user.hp * 150 / user.getStat(Stat.HP));
+        if (this.power == 0) {
+            this.power = 1;
+        } else if (this.power > 150) {
+            this.power = 150;
+        }
+        target.hp -= field.calculate(this, user, target, targets);
+    };
+}
+
+/**
+ * Make a move into a move that depends on the target's health.
+ */
+function makeTargetHealthMove(move) {
+    move.use = function(field, user, target, targets) {
+        this.power = Math.floor(target.hp * 120 / target.getStat(Stat.HP)) + 1;
+        target.hp -= field.calculate(this, user, target, targets);
+    };
+}
+
+/**
  * Make a move into an explosion move. For the purpose of an exlosion move,
  * the target's defence stat is temporarily halved.
  */

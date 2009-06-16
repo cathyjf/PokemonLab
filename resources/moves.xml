@@ -1461,13 +1461,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTargetHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Curse" id="77">
@@ -2283,13 +2282,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeUserHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Explosion" id="118">
@@ -8745,13 +8743,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 <flags>
 	<protect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeUserHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Waterfall" id="451">
@@ -9004,13 +9001,12 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(75));
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeTargetHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="X-Scissor" id="463">
