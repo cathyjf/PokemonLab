@@ -506,11 +506,19 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <target>User</target>
 <flags>
 	<snatch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var delta = Math.floor(user.getStat(Stat.HP) / 2);
+if ((delta >= user.hp) || (user.getStatLevel(Stat.ATTACK) == 6)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.hp -= delta;
+var effect = new StatChangeEffect(Stat.ATTACK, 12);
+//effect.silent = true;
+user.applyStatus(user, effect);
+// TODO: Belly Drum-specific message?
 ]]>
 </use>
 </move>
