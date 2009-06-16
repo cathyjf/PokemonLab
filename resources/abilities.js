@@ -247,5 +247,10 @@ makeAbility({
     informExplosion : function() {
         this.subject.field.print(Text.ability_messages(6, this.subject));
         return true;
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (target == null)
+            return false;
+        return ((move.name == "Explosion") || (move.name == "Selfdestruct"));
     }
 })

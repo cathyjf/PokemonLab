@@ -28,21 +28,23 @@
  */
 function makeExplosionMove(move) {
     move.prepareSelf = function(field, user) {
+        if (field.sendMessage("informExplosion")) {
+            return;
+        }
+        user.faint();
+    };
+    move.use = function(field, user, target, targets) {
         var effect = new StatusEffect("ExplosionEffect");
         effect.statModifier = function(field, stat, subject) {
+            if (subject != this.subject)
+                return null;
             if (stat != Stat.DEFENCE)
                 return null;
             return [0.5, 4];
         };
-        effect.informFinishedExecution = function() {
-            this.subject.removeStatus(this);
-        };
-        if (!field.sendMessage("informExplosion")) {
-            user.faint();
-        } else {
-            effect.vetoExecution = function() { return true; };
-        }
-        user.applyStatus(user, effect);
+        effect = target.applyStatus(user, effect);
+        target.hp -= field.calculate(this, user, target, targets);
+        target.removeStatus(effect);
     };
 }
 
