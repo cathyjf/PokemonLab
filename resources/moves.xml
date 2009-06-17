@@ -789,13 +789,34 @@ makeRecoilMove(this, 3);
 	<protect/>
 	<memorable/>
 	<flinch/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+this.prepareSelf = function(field, user) {
+    // Note (TODO?): This implementation will shatter opponent walls even
+    //               if the attack is blocked by Protect or Detect. Is this
+    //               the correct mechanics?
+    var party = 1 - user.party;
+    var enemy = null;
+    for (var i = 0; i < field.partySize; ++i) {
+        if (enemy = field.getActivePokemon(party, i)) {
+            break;
+        }
+    }
+    var removed = false;
+    for (var i = 0; i < 2; ++i) {
+        var effect = enemy.getStatus("BuffEffect" + i);
+        if (effect) {
+            field.removeStatus(effect);
+            removed = true;
+        }
+    }
+    if (removed) {
+        field.print(Text.battle_messages_unique(20));
+    }
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Brine" id="43">
