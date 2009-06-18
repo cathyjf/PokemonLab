@@ -1011,13 +1011,20 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 	<protect/>
 	<reflect/>
 	<memorable/>
-	<unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2)]]);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    if (!isOppositeGender(user, target)) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Charge" id="54">

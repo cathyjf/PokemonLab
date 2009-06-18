@@ -67,3 +67,9 @@ const Type = {
     TYPELESS : 17
 };
 
+const Gender = {
+    MALE : 1,
+    FEMALE : 2,
+    NONE : 0
+};
+

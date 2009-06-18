@@ -23,6 +23,19 @@
  */
 
 /**
+ * Return whether two pokemon have opposite genders.
+ */
+function isOppositeGender(user, target) {
+    if (target.sendMessage("informGenderBased"))
+        return false;
+    if (user.gender == Gender.NONE)
+        return false;
+    if (target.gender == Gender.NONE)
+        return false;
+    return (user.gender != target.gender);
+}
+
+/**
  * Make a move into a move that depends on the user's health.
  */
 function makeUserHealthMove(move) {
