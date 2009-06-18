@@ -254,3 +254,13 @@ makeAbility({
         return ((move.name == "Explosion") || (move.name == "Selfdestruct"));
     }
 })
+
+/*******************
+ * Oblivious
+ *******************/
+makeAbility({
+    name : "Oblivious",
+    informGenderBased : function() {
+        return true;
+    }
+})
