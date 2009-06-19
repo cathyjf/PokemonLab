@@ -6,7 +6,7 @@
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -81,7 +81,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -96,7 +96,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>100</power>
 <accuracy>0.95</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -143,7 +143,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 2));
 <power>75</power>
 <accuracy>0.95</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -179,7 +179,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -199,7 +199,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -231,7 +231,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 <power>90</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -246,7 +246,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 <power>15</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -284,7 +284,7 @@ makeMultipleHitMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -301,7 +301,7 @@ makeMultipleHitMove(this);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -322,7 +322,7 @@ makeMultipleHitMove(this);
 <power>30</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -341,7 +341,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -356,7 +356,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -376,7 +376,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>90</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -390,7 +390,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -409,7 +409,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -430,7 +430,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
 <power>15</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -483,7 +483,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>10</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -550,7 +550,7 @@ user.applyStatus(user, effect);
 <power>15</power>
 <accuracy>0.75</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -570,7 +570,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(72));
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -589,7 +589,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -608,7 +608,7 @@ makeRechargeMove(this);
 <power>85</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -646,7 +646,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -665,7 +665,7 @@ makeTrappingMove(this);
 <power>85</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -684,7 +684,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>65</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -702,7 +702,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 <power>25</power>
 <accuracy>0.80</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -721,7 +721,7 @@ makeMultipleHitMove(this);
 <power>50</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -740,7 +740,7 @@ makeTwoHitMove(this);
 <power>85</power>
 <accuracy>0.85</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -763,7 +763,7 @@ makeChargeMove(this,
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -783,7 +783,7 @@ makeRecoilMove(this, 3);
 <power>75</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -814,7 +814,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -860,7 +860,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -878,7 +878,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -899,7 +899,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -936,7 +936,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -951,7 +951,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 <power>10</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1073,7 +1073,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 <power>50</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1092,7 +1092,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, 1), 0.7, true]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -1111,7 +1111,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<unimplemented/>
@@ -1129,7 +1129,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <power>35</power>
 <accuracy>0.75</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1149,7 +1149,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(73));
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1172,7 +1172,7 @@ makeStatusMove(this, [
 <power>18</power>
 <accuracy>0.85</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1192,7 +1192,7 @@ makeMultipleHitMove(this);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -1211,7 +1211,7 @@ makeStatusMove(this, [[ConfusionEffect]]);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1229,7 +1229,7 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
 <power>10</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1282,7 +1282,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 
 </flags>
@@ -1334,7 +1334,7 @@ makeStatusMove(this, [
 <power>0</power>
 <accuracy>0.85</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -1354,7 +1354,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<contact/>
 </flags>
@@ -1369,7 +1369,7 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1389,7 +1389,7 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 <power>90</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1405,7 +1405,7 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 <power>100</power>
 <accuracy>0.80</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1421,7 +1421,7 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1442,7 +1442,7 @@ makeStatusMove(this, [[PoisonEffect, 0.1]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1461,7 +1461,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.2]]);
 <power>75</power>
 <accuracy>0.95</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1480,7 +1480,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1500,7 +1500,7 @@ makeTargetHealthMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -1517,7 +1517,7 @@ makeTargetHealthMove(this);
 <power>50</power>
 <accuracy>0.95</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1532,7 +1532,7 @@ makeTargetHealthMove(this);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1606,7 +1606,7 @@ makeStatusMove(this, [
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1660,7 +1660,7 @@ makeStatusMove(this, [
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1682,7 +1682,7 @@ makeChargeMove(this,
 <power>0</power>
 <accuracy>0.80</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1756,7 +1756,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1778,7 +1778,7 @@ makeChargeMove(this,
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1797,7 +1797,7 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 <power>120</power>
 <accuracy>0.85</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
     <no-critical/>
 </flags>
@@ -1814,7 +1814,7 @@ makeDelayedAttackMove(this);
 <power>35</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1834,7 +1834,7 @@ makeTwoHitMove(this);
 <power>30</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1871,7 +1871,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1891,7 +1891,7 @@ makeRecoilMove(this, 3);
 <power>15</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1911,7 +1911,7 @@ makeMultipleHitMove(this);
 <power>140</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1930,7 +1930,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -1963,7 +1963,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 1));
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -1977,7 +1977,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPEED, 1));
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2000,7 +2000,7 @@ target.hp -= 40;
 <power>100</power>
 <accuracy>0.75</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2020,7 +2020,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2039,7 +2039,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2059,7 +2059,7 @@ makeRecoilMove(this, -2);
 <power>100</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2085,7 +2085,7 @@ this.use = function(field, user, target, targets) {
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2100,7 +2100,7 @@ this.use = function(field, user, target, targets) {
 <power>100</power>
 <accuracy>0.50</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2119,7 +2119,7 @@ makeStatusMove(this, [[ConfusionEffect]]);
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2167,7 +2167,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>100</power>
 <accuracy>0.75</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2181,7 +2181,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2200,7 +2200,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2218,7 +2218,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2237,7 +2237,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2284,7 +2284,7 @@ target.hp -= damage;
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2340,7 +2340,7 @@ makeExplosionMove(this);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2359,7 +2359,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2374,7 +2374,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2402,7 +2402,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2418,7 +2418,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2445,7 +2445,7 @@ this.use = function(field, user, target, targets) {
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -2464,7 +2464,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2489,7 +2489,7 @@ if (damage >= target.hp) {
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -2509,7 +2509,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -2526,7 +2526,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <power>120</power>
 <accuracy>0.85</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2544,7 +2544,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>65</power>
 <accuracy>0.95</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2564,7 +2564,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1], [BurnEffect, 0.1]]);
 <power>75</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2583,7 +2583,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>15</power>
 <accuracy>0.70</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2602,7 +2602,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <power>1</power>
 <accuracy>0.30</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2620,7 +2620,7 @@ makeOneHitKillMove(this);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2641,7 +2641,7 @@ makeOneHitKillMove(this);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2660,7 +2660,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>95</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2678,7 +2678,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2698,7 +2698,7 @@ makeRecoilMove(this, 3);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -2717,7 +2717,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2736,7 +2736,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -2757,7 +2757,7 @@ makeStatusMove(this,
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2776,7 +2776,7 @@ makeStatusMove(this,
 <power>90</power>
 <accuracy>0.95</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2798,7 +2798,7 @@ makeChargeMove(this,
 <power>120</power>
 <accuracy>0.70</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2844,7 +2844,7 @@ field.print(Text.battle_messages_unique(64, user));
 <power>150</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2906,7 +2906,7 @@ this.beginTurn = function(field, user) {
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2926,7 +2926,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2945,7 +2945,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -2964,7 +2964,7 @@ makeRechargeMove(this);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2979,7 +2979,7 @@ makeRechargeMove(this);
 <power>15</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -2999,7 +2999,7 @@ makeMultipleHitMove(this);
 <power>10</power>
 <accuracy>0.95</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3020,7 +3020,7 @@ makeMultipleHitMove(this);
 <power>18</power>
 <accuracy>0.80</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3040,7 +3040,7 @@ makeMultipleHitMove(this);
 <power>80</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
     <no-critical/>
 </flags>
@@ -3057,7 +3057,7 @@ makeDelayedAttackMove(this);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -3077,7 +3077,7 @@ makeDelayedAttackMove(this);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3095,7 +3095,7 @@ makeRecoilMove(this, -2);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3115,7 +3115,7 @@ makeRechargeMove(this);
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -3134,7 +3134,7 @@ makeStatusMove(this, [[ParalysisEffect]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3155,7 +3155,7 @@ makeStatusMove(this, [[ParalysisEffect]]);
 <power>0</power>
 <accuracy>0.55</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -3242,7 +3242,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3261,7 +3261,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 <power>1</power>
 <accuracy>0.30</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3280,7 +3280,7 @@ makeOneHitKillMove(this);
 <power>120</power>
 <accuracy>0.70</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3299,7 +3299,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3331,7 +3331,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3375,7 +3375,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>100</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3435,7 +3435,7 @@ while (effect = target.getStatus("StatChangeEffect")) {
 <power>150</power>
 <accuracy>0.80</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3455,7 +3455,7 @@ makeRecoilMove(this, 2);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3545,7 +3545,7 @@ makeRecoveryMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3600,7 +3600,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>100</power>
 <accuracy>0.90</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3621,7 +3621,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3641,7 +3641,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3656,7 +3656,7 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <power>1</power>
 <accuracy>0.30</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3692,7 +3692,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3711,7 +3711,7 @@ makeRechargeMove(this);
 <power>120</power>
 <accuracy>0.80</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3725,7 +3725,7 @@ makeRechargeMove(this);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3744,7 +3744,7 @@ makeRechargeMove(this);
 <power>80</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3776,7 +3776,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 <power>0</power>
 <accuracy>0.60</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -3794,7 +3794,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>30</power>
 <accuracy>0.90</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3815,7 +3815,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>95</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3833,7 +3833,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>65</power>
 <accuracy>0.95</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3853,7 +3853,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1], [FreezeEffect, 0.1]]);
 <power>75</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3873,7 +3873,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3887,7 +3887,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>10</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -3976,7 +3976,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -3996,7 +3996,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>100</power>
 <accuracy>0.75</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4015,7 +4015,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 <power>100</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4035,7 +4035,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 <power>85</power>
 <accuracy>0.95</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4056,7 +4056,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4072,7 +4072,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
 <power>0</power>
 <accuracy>0.80</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -4091,7 +4091,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4111,7 +4111,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>130</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4170,7 +4170,7 @@ makeStatusMove(this, [[BurnEffect, 0.3]]);
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4186,7 +4186,7 @@ makeStatusMove(this, [[BurnEffect, 0.3]]);
 <power>140</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4205,7 +4205,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4224,7 +4224,7 @@ makeRecoilMove(this, -2);
 <power>0</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -4263,7 +4263,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4299,7 +4299,7 @@ makePartyBuffMove(this, MoveClass.SPECIAL);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4318,7 +4318,7 @@ makePartyBuffMove(this, MoveClass.SPECIAL);
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -4335,7 +4335,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4390,7 +4390,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4409,7 +4409,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4425,7 +4425,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>15</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -4442,7 +4442,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4456,7 +4456,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <power>120</power>
 <accuracy>0.70</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4475,7 +4475,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4567,7 +4567,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<unimplemented/>
@@ -4585,7 +4585,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -4621,7 +4621,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4639,7 +4639,7 @@ makeRecoilMove(this, -2);
 <power>120</power>
 <accuracy>0.75</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4654,7 +4654,7 @@ makeRecoilMove(this, -2);
 <power>80</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4669,7 +4669,7 @@ makeRecoilMove(this, -2);
 <power>120</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4684,7 +4684,7 @@ makeRecoilMove(this, -2);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4706,7 +4706,7 @@ this.prepareSelf = function(field, user) {
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<memorable/>
 </flags>
@@ -4721,7 +4721,7 @@ makeCounterMove(this, undefined, 1.5);
 <power>50</power>
 <accuracy>0.95</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4740,7 +4740,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.1, true]]);
 <power>0</power>
 <accuracy>0.85</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -4759,7 +4759,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2)]]);
 <power>100</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -4779,7 +4779,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.2, true]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -4813,7 +4813,7 @@ makeRecoveryMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<unimplemented/>
@@ -4831,7 +4831,7 @@ makeRecoveryMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4870,7 +4870,7 @@ user.applyStatus(user, effect);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4890,7 +4890,7 @@ user.applyStatus(user, effect);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 
 </flags>
@@ -4905,7 +4905,7 @@ makeCounterMove(this, MoveClass.SPECIAL, 2);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 
 </flags>
@@ -4930,7 +4930,7 @@ user.execute(move);
 <power>65</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -4967,7 +4967,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5021,7 +5021,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 <power>65</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5040,7 +5040,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 <power>55</power>
 <accuracy>0.95</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5076,7 +5076,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5130,7 +5130,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5149,7 +5149,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -5166,7 +5166,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5185,7 +5185,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5208,7 +5208,7 @@ target.hp -= user.level;
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5224,7 +5224,7 @@ target.hp -= user.level;
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5243,7 +5243,7 @@ target.hp -= user.level;
 <power>65</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5261,7 +5261,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5280,7 +5280,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5320,7 +5320,7 @@ makeRampageMove(this);
 <power>140</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5339,7 +5339,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5359,7 +5359,7 @@ target.hp = hp;
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5379,7 +5379,7 @@ field.print(Text.battle_messages_unique(3));
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5400,7 +5400,7 @@ field.print(Text.battle_messages_unique(3));
 <power>35</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5475,7 +5475,7 @@ makeRampageMove(this);
 <power>14</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5494,7 +5494,7 @@ makeMultipleHitMove(this);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5515,7 +5515,7 @@ makeMultipleHitMove(this);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5535,7 +5535,7 @@ makeMultipleHitMove(this);
 <power>0</power>
 <accuracy>0.55</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -5554,7 +5554,7 @@ makeStatusMove(this, [[PoisonEffect]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5574,7 +5574,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 <power>15</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5592,7 +5592,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5613,7 +5613,7 @@ makeStatusMove(this, [[PoisonEffect, 0.1]]);
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -5632,7 +5632,7 @@ makeStatusMove(this, [[PoisonEffect]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5665,7 +5665,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5679,7 +5679,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5715,7 +5715,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>120</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5730,7 +5730,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>1</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5767,7 +5767,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5785,7 +5785,7 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<snatch/>
 </flags>
@@ -5810,7 +5810,7 @@ field.print(Text.battle_messages_unique(17, user));
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5828,7 +5828,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 <power>140</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5847,7 +5847,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5862,7 +5862,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <power>0</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5885,7 +5885,7 @@ user.removeStatus(effect);
 <power>1</power>
 <accuracy>0.80</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -5909,7 +5909,7 @@ target.hp -= damage;
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5940,7 +5940,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -5999,7 +5999,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6014,7 +6014,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6052,7 +6052,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6194,7 +6194,7 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6210,7 +6210,7 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6231,7 +6231,7 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6253,7 +6253,7 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6272,7 +6272,7 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6291,7 +6291,7 @@ makeRechargeMove(this);
 <power>25</power>
 <accuracy>0.80</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6310,7 +6310,7 @@ makeMultipleHitMove(this);
 <power>90</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6365,7 +6365,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6384,7 +6384,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 <power>50</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6398,7 +6398,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.5]]);
 <power>50</power>
 <accuracy>0.80</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6416,7 +6416,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <power>150</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6435,7 +6435,7 @@ makeRechargeMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -6452,7 +6452,7 @@ makeRechargeMove(this);
 <power>60</power>
 <accuracy>0.85</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6472,7 +6472,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>30</power>
 <accuracy>0.90</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6511,7 +6511,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <power>100</power>
 <accuracy>0.95</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6547,7 +6547,7 @@ makeStatusMove(this, [[BurnEffect, 0.5]]);
 <power>15</power>
 <accuracy>0.70</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6566,7 +6566,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -6602,7 +6602,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>0</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -6621,7 +6621,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6636,7 +6636,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -2)]]);
 <power>0</power>
 <accuracy>0.85</accuracy>
 <pp>40</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -6655,7 +6655,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6674,7 +6674,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6688,7 +6688,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 <power>120</power>
 <accuracy>0.85</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6707,7 +6707,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -2), 0.4]]);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6750,7 +6750,7 @@ makeExplosionMove(this);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6768,7 +6768,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6784,7 +6784,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.2]]);
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<memorable/>
@@ -6803,7 +6803,7 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(8), []);
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6819,7 +6819,7 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(8), []);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6851,7 +6851,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 1));
 <power>1</power>
 <accuracy>0.30</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6869,7 +6869,7 @@ makeOneHitKillMove(this);
 <power>60</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6883,7 +6883,7 @@ makeOneHitKillMove(this);
 <power>75</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6902,7 +6902,7 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6922,7 +6922,7 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
 <power>0</power>
 <accuracy>0.55</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -6939,7 +6939,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>1</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -6956,7 +6956,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -6975,7 +6975,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>100</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -6999,7 +6999,7 @@ this.additional = function(user) {
 <power>140</power>
 <accuracy>0.90</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7019,7 +7019,7 @@ makeChargeMove(this, Text.battle_messages_charge.wrap(3));
 <power>85</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7051,7 +7051,7 @@ makeRecoveryMove(this);
 <power>80</power>
 <accuracy>0.75</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7066,7 +7066,7 @@ makeRecoveryMove(this);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7082,7 +7082,7 @@ makeRecoveryMove(this);
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7099,7 +7099,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -7116,7 +7116,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7134,7 +7134,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 <power>90</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7152,7 +7152,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7184,7 +7184,7 @@ if (effect) {
 <power>20</power>
 <accuracy>0.70</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7202,7 +7202,7 @@ makeStatusMove(this, [[PoisonEffect, 0.4]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7222,7 +7222,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Lastenemy</target>
+<target>None</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -7239,7 +7239,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7283,7 +7283,7 @@ makeRecoveryMove(this);
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7303,7 +7303,7 @@ makeRecoveryMove(this);
 <power>1</power>
 <accuracy>0.90</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7326,7 +7326,7 @@ target.hp -= 20;
 <power>100</power>
 <accuracy>0.95</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7341,7 +7341,7 @@ target.hp -= 20;
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7360,7 +7360,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7379,7 +7379,7 @@ makeTrappingMove(this);
 <power>20</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7415,7 +7415,7 @@ makeMultipleHitMove(this);
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<flinch/>
@@ -7434,7 +7434,7 @@ makeMultipleHitMove(this);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7470,7 +7470,7 @@ field.print(Text.battle_messages_unique(2));
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7504,7 +7504,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <power>70</power>
 <accuracy>0.90</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7542,7 +7542,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, 1), 0.1, true]]);
 <power>65</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7570,7 +7570,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>100</power>
 <accuracy>0.80</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7585,7 +7585,7 @@ target.hp -= field.calculate(this, user, target, targets);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7619,7 +7619,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 <power>50</power>
 <accuracy>0</accuracy>
 <pp>1</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7639,7 +7639,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7658,7 +7658,7 @@ makeStatusMove(this, [[ParalysisEffect]]);
 <power>80</power>
 <accuracy>0.80</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7697,7 +7697,7 @@ makeRecoilMove(this, 4);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7735,7 +7735,7 @@ makeRecoilMove(this, 4);
 <power>1</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7759,7 +7759,7 @@ target.hp -= damage;
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -7781,7 +7781,7 @@ makeStatusMove(this, [
 <power>0</power>
 <accuracy>0.55</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7814,7 +7814,7 @@ makeStatusMove(this, [[ConfusionEffect]]);
 <power>0</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7853,7 +7853,7 @@ makeStatusMove(this,
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -7905,7 +7905,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -7959,7 +7959,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 <power>35</power>
 <accuracy>0.95</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8028,7 +8028,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1)]]);
 <power>90</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8048,7 +8048,7 @@ makeRecoilMove(this, 4);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8135,7 +8135,7 @@ field.print(Text.battle_messages(0));
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8175,7 +8175,7 @@ makeRampageMove(this);
 <power>120</power>
 <accuracy>0.70</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8194,7 +8194,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <power>65</power>
 <accuracy>0.95</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8214,7 +8214,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1], [ParalysisEffect, 0.1]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -8233,7 +8233,7 @@ makeStatusMove(this, [[ParalysisEffect]], true);
 <power>95</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8251,7 +8251,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 <power>75</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8270,7 +8270,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8288,7 +8288,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -8310,7 +8310,7 @@ makeStatusMove(this, [
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8350,7 +8350,7 @@ field.print(Text.battle_messages_unique(66, target));
 <power>0</power>
 <accuracy>0.85</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -8387,7 +8387,7 @@ field.print(Text.battle_messages_unique(66, target));
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<unimplemented/>
 </flags>
@@ -8404,7 +8404,7 @@ field.print(Text.battle_messages_unique(66, target));
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8429,7 +8429,7 @@ makeStatusMove(this, [[effect, 0.20]]);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8467,7 +8467,7 @@ makeStatusMove(this, [[effect, 0.20]]);
 <power>10</power>
 <accuracy>0.90</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8488,7 +8488,7 @@ makeStatusMove(this, [[effect, 0.20]]);
 <power>1</power>
 <accuracy>0</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8509,7 +8509,7 @@ makeStatusMove(this, [[effect, 0.20]]);
 <power>25</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8558,7 +8558,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>70</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8600,7 +8600,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8614,7 +8614,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>55</power>
 <accuracy>1.00</accuracy>
 <pp>30</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8629,7 +8629,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>35</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8645,7 +8645,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>70</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8660,7 +8660,7 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8681,7 +8681,7 @@ makeRecoilMove(this, 3);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8714,7 +8714,7 @@ if (effect) {
 <power>40</power>
 <accuracy>1.00</accuracy>
 <pp>25</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8728,7 +8728,7 @@ if (effect) {
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8782,7 +8782,7 @@ makeUserHealthMove(this);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8802,7 +8802,7 @@ makeStatusMove(this, [[FlinchEffect, 0.2]]);
 <power>50</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8822,7 +8822,7 @@ makeStatusMove(this, [[FlinchEffect, 0.2]]);
 <power>15</power>
 <accuracy>0.70</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8842,7 +8842,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -8861,7 +8861,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <power>0</power>
 <accuracy>0.75</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -8880,7 +8880,7 @@ makeStatusMove(this, [[BurnEffect]]);
 <power>60</power>
 <accuracy>1.00</accuracy>
 <pp>35</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8960,7 +8960,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
 <power>120</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -8980,7 +8980,7 @@ makeRecoilMove(this, 3);
 <power>0</power>
 <accuracy>1.00</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -9000,7 +9000,7 @@ makeRecoilMove(this, 3);
 <power>15</power>
 <accuracy>0.85</accuracy>
 <pp>20</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -9020,7 +9020,7 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(75));
 <power>1</power>
 <accuracy>1.00</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -9040,7 +9040,7 @@ makeTargetHealthMove(this);
 <power>80</power>
 <accuracy>1.00</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -9055,7 +9055,7 @@ makeTargetHealthMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<reflect/>
@@ -9075,7 +9075,7 @@ makeTargetHealthMove(this);
 <power>120</power>
 <accuracy>0.50</accuracy>
 <pp>5</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<protect/>
 	<memorable/>
@@ -9093,7 +9093,7 @@ makeStatusMove(this, [[ParalysisEffect]]);
 <power>80</power>
 <accuracy>0.90</accuracy>
 <pp>15</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
 	<contact/>
 	<protect/>
@@ -9117,7 +9117,7 @@ makeStatusMove(this, [[FlinchEffect, 0.2]]);
 <power>40</power>
 <accuracy>0</accuracy>
 <pp>0</pp>
-<target>Enemy</target>
+<target>Non-user</target>
 <flags>
     <no-critical/>
     <internal/>

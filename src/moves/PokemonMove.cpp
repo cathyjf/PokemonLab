@@ -242,7 +242,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
     // target
     string strTarget = getElementText(node, "target");
     TARGET tc = T_SINGLE;
-    if (strTarget == "Enemy") {
+    if (strTarget == "Non-user") {
         tc = T_SINGLE;
     } else if (strTarget == "Enemies") {
         tc = T_ENEMIES;
@@ -254,8 +254,8 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         tc = T_ALLIES;
     } else if (strTarget == "Others") {
         tc = T_OTHERS;
-    } else if (strTarget == "Lastenemy") {
-        tc = T_LAST_ENEMY;
+    } else if (strTarget == "None") {
+        tc = T_NONE;
     } else if (strTarget == "All") {
         tc = T_ALL;
     } else if (strTarget == "Enemyfield") {
@@ -329,6 +329,8 @@ void MoveDatabase::loadMoves(const string file) {
 
     ScriptContextPtr cx = m_machine.acquireContext();
 
+    cout << "Unimplemented moves:" << endl;
+
     int implemented = 0;
     XMLSize_t length = list->getLength();
     for (int i = 0; i < length; ++i) {
@@ -338,6 +340,8 @@ void MoveDatabase::loadMoves(const string file) {
 
         if (!move->flags[F_UNIMPLEMENTED]) {
             ++implemented;
+        } else {
+            cout << "    " << move->name << endl;
         }
 
         MoveTemplate *pMove = new MoveTemplate(move);
@@ -390,18 +394,17 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "False Swipe", 5);
-    //field.getActivePokemon(0, 1)->setActed();
-    field.getActivePokemon(0, 1)->setMove(1, "Mirror Move", 5);
-    //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
-    field.getActivePokemon(0, 0)->setMove(0, "Twister", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Doom Desire", 5);
+    field.getActivePokemon(0, 1)->setMove(1, "Thunderbolt", 5);
+    team[0][4]->setHp(10);
+    field.getActivePokemon(0, 0)->setMove(0, "Torment", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Copycat", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Mirror Move", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Brick Break", 5);
 
-    field.getActivePokemon(0, 0)->setItem("Leftovers");
-    field.getActivePokemon(0, 1)->setItem("Leftovers");
-    field.getActivePokemon(1, 0)->setItem("Leftovers");
-    field.getActivePokemon(1, 1)->setItem("Leftovers");
+    field.getActivePokemon(0, 0)->setItem("Brightpowder");
+    field.getActivePokemon(0, 1)->setItem("Brightpowder");
+    field.getActivePokemon(1, 0)->setItem("Brightpowder");
+    field.getActivePokemon(1, 1)->setItem("Brightpowder");
 
     field.getActivePokemon(0, 0)->setAbility("Anger Point");
     field.getActivePokemon(0, 1)->setAbility("Anger Point");
@@ -413,17 +416,17 @@ int main() {
     vector<PokemonTurn> turns;
     //turns.push_back(PokemonTurn(TT_SWITCH, 5));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
 
     time_t initial = clock();
     field.processTurn(turns);
-    //turns[1] = PokemonTurn(TT_MOVE, 1, 2);
+    turns[1] = PokemonTurn(TT_MOVE, 3);
+    field.processTurn(turns);
+    field.processTurn(turns);
+    field.processTurn(turns);
     /**field.processTurn(turns);
-    field.processTurn(turns);
-    field.processTurn(turns);
-    field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);**/
     time_t final = clock();

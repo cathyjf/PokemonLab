@@ -274,7 +274,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         if (rand) {
             targets.push_back(rand);
         }
-    } else if (mc == T_LAST_ENEMY) {
+    } else if (mc == T_NONE) {
         targets.push_back(user->getMemoryPokemon());
     } else if (mc == T_OTHERS) {
         for (int i = 0; i < TEAM_COUNT; ++i) {

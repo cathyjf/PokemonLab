@@ -59,7 +59,7 @@ enum TARGET {
     T_SINGLE,
     T_ENEMIES,
     T_RANDOM_ENEMY,
-    T_LAST_ENEMY,
+    T_NONE,
     T_ENEMY_FIELD,
     T_OTHERS,
     T_ALL,
@@ -71,7 +71,6 @@ inline bool isEnemyTarget(const TARGET t) {
             (t == T_RANDOM_ENEMY) ||
             (t == T_OTHERS) ||
             (t == T_ALL));
-    // T_LAST_ENEMY intentionally omitted
 }
 
 double getStatMultiplier(const STAT i, const int level);

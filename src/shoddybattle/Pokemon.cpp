@@ -434,7 +434,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
     vector<Pokemon *> targets;
     m_field->getTargetList(tc, targets, this, target);
 
-    if (tc == T_LAST_ENEMY) {
+    if (tc == T_NONE) {
         move->use(m_cx, m_field, this, targets[0], 0);
         m_acted = true;
         return true;
