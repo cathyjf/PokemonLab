@@ -51,6 +51,7 @@ struct BattleFieldImpl {
     std::stack<BattleField::EXECUTION> executing;
     MoveObjectPtr lastMove;
     int host;
+    bool narration;
 
     typedef map<pair<Pokemon *, Pokemon *>, bool> RANDOM_MAP;
 
@@ -58,6 +59,7 @@ struct BattleFieldImpl {
             mech(NULL),
             machine(NULL),
             context(NULL),
+            narration(true),
             host(0) { }
 
     void sortInTurnOrder(vector<Pokemon::PTR> &, vector<const PokemonTurn *> &);
@@ -110,6 +112,14 @@ struct BattleFieldImpl {
         terminate();
     }
 };
+
+void BattleField::setNarrationEnabled(const bool enabled) {
+    m_impl->narration = enabled;
+}
+
+bool BattleField::isNarrationEnabled() const {
+    return m_impl->narration;
+}
 
 void BattleField::terminate() {
     m_impl.reset();
@@ -505,6 +515,9 @@ void BattleField::removeStatus(StatusObject *effect) {
  * Print a message to the BattleField.
  */
 void BattleField::print(const TextMessage &msg) {
+    if (!isNarrationEnabled())
+        return;
+
     const vector<string> &args = msg.getArgs();
     const int argc = args.size();
     const char *argv[argc];
@@ -950,6 +963,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
         } else {
             switchPokemon(p.get(), id);
         }
+        p->setTurn(NULL);
         if (determineVictory()) {
             return;
         }

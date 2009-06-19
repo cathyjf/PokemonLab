@@ -315,6 +315,9 @@ public:
      * Send a message to the whole field.
      */
     ScriptValue sendMessage(const std::string &, int, ScriptValue *);
+
+    void setNarrationEnabled(const bool);
+    bool isNarrationEnabled() const;
     
     /**
      * Print a message to the BattleField.

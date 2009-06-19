@@ -42,7 +42,8 @@ namespace {
 enum FIELD_TINYID {
     FTI_GENERATION,
     FTI_LAST_MOVE,
-    FTI_PARTY_SIZE
+    FTI_PARTY_SIZE,
+    FTI_NARRATION
 };
 
 /**
@@ -277,6 +278,18 @@ JSBool sendMessage(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool fieldSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    int tid = JSVAL_TO_INT(id);
+    switch (tid) {
+        case FTI_NARRATION: {
+            const bool enabled = JSVAL_TO_BOOLEAN(*vp);
+            p->setNarrationEnabled(enabled);
+        } break;
+    }
+    return JS_TRUE;
+}
+
 JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
@@ -295,6 +308,9 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case FTI_PARTY_SIZE: {
             *vp = INT_TO_JSVAL(p->getPartySize());
         } break;
+        case FTI_NARRATION: {
+            *vp = BOOLEAN_TO_JSVAL(p->isNarrationEnabled());
+        } break;
     }
     return JS_TRUE;
 }
@@ -304,6 +320,7 @@ JSPropertySpec fieldProperties[] = {
     { "generation", FTI_GENERATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "lastMove", FTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "partySize", FTI_PARTY_SIZE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
+    { "narration", FTI_NARRATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, fieldSet },
     { 0, 0, 0, 0, 0 }
 };
 

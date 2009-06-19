@@ -23,6 +23,56 @@
  */
 
 /**
+ * Make a move into a delayed attack move. A delayed move deals damage two
+ * turns after the turn it was used.
+ */
+function makeDelayedAttackMove(move) {
+    move.attemptHit = function(field, user, target) {
+        return true;
+    };
+    move.use = function(field, user, target, targets) {
+        if (target.getStatus("DelayedAttack")) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+
+        // Calculate the damage that the attack will do.
+        var type_ = this.type;
+        this.type = Type.TYPELESS;
+        var damage = field.calculate(this, user, target, targets);
+        this.type = type_;
+
+        // Create an effect to deal the damage.
+        var effect = new StatusEffect("DelayedAttack");
+        effect.turns = 3;
+        effect.tier = 7;
+        effect.subtier = 0;
+        effect.party_ = target.party;
+        effect.position_ = target.position;
+        effect.applyEffect = function() {
+            if (this.subject.party != this.party_)
+                return false;
+            if (this.subject.position != this.position_)
+                return false;
+            return true;
+        };
+        effect.tick = function() {
+            if (--this.turns != 0)
+                return;
+            field.print(Text.battle_messages_unique(95, this.subject));
+            if (field.attemptHit(move, user, this.subject)) {
+                this.subject.hp -= damage;
+            } else {
+                field.print(Text.battle_messages(2, user, this.subject));
+            }
+            field.removeStatus(this);
+        };
+        field.applyStatus(effect);
+        field.print(Text.battle_messages_unique(94, target));
+    };
+}
+
+/**
  * Return whether two pokemon have opposite genders.
  */
 function isOppositeGender(user, target) {

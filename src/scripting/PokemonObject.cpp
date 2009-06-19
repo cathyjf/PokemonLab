@@ -397,7 +397,7 @@ JSBool execute(JSContext *cx,
     return JS_TRUE;
 }
 
-JSBool PokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
@@ -555,7 +555,7 @@ JSPropertySpec pokemonProperties[] = {
     { "stat", PTI_STAT, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "level", PTI_LEVEL, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "nature", PTI_NATURE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
-    { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, PokemonSet },
+    { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },

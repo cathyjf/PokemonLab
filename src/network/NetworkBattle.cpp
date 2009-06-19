@@ -515,6 +515,9 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
  *     string : value of the argument
  */
 void NetworkBattle::print(const TextMessage &text) {
+    if (!isNarrationEnabled())
+        return;
+    
     OutMessage msg(OutMessage::BATTLE_PRINT);
     msg << getId();
     msg << (unsigned char)text.getCategory();

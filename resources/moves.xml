@@ -1799,13 +1799,13 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 <pp>5</pp>
 <target>Enemy</target>
 <flags>
-	<unimplemented/>
+    <no-critical/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeDelayedAttackMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Double Hit" id="92">
@@ -3042,13 +3042,13 @@ makeMultipleHitMove(this);
 <pp>15</pp>
 <target>Enemy</target>
 <flags>
-	<unimplemented/>
+    <no-critical/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeDelayedAttackMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Gastro Acid" id="154">
