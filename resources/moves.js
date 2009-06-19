@@ -37,6 +37,7 @@ function makeDelayedAttackMove(move) {
         }
 
         // Calculate the damage that the attack will do.
+        // TODO: Make sure that this is not affected by Life Orb.
         var type_ = this.type;
         this.type = Type.TYPELESS;
         var damage = field.calculate(this, user, target, targets);
@@ -56,8 +57,13 @@ function makeDelayedAttackMove(move) {
                 return false;
             return true;
         };
+        effect.beginTick = function() {
+            if (--this.turns < 0) {
+                field.removeStatus(this);
+            }
+        };
         effect.tick = function() {
-            if (--this.turns != 0)
+            if (this.turns != 0)
                 return;
             field.print(Text.battle_messages_unique(95, this.subject));
             if (field.attemptHit(move, user, this.subject)) {
@@ -65,7 +71,6 @@ function makeDelayedAttackMove(move) {
             } else {
                 field.print(Text.battle_messages(2, user, this.subject));
             }
-            field.removeStatus(this);
         };
         field.applyStatus(effect);
         field.print(Text.battle_messages_unique(94, target));
