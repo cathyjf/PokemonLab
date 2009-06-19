@@ -206,6 +206,7 @@ public:
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
     int getTier(ScriptContext *) const;
+    int getSubtier(ScriptContext *) const;
     int getVetoTier(ScriptContext *) const;
     bool isSingleton(ScriptContext *) const;
     int getInherentPriority(ScriptContext *);

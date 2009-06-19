@@ -708,8 +708,9 @@ void BattleField::tickEffects() {
                     if ((*k)->isActive(cx)) {
                         const int speed = p->getStat(S_SPEED);
                         const int tier = (*k)->getTier(cx);
-                        // todo: subtier
-                        EffectEntity entity = { p, k->get(), speed, tier, 0 };
+                        const int subtier = (*k)->getSubtier(cx);
+                        EffectEntity entity = { p, k->get(), speed, tier,
+                                subtier };
                         effects.push_back(entity);
                     }
                 }
