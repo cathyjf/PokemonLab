@@ -7624,11 +7624,17 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 	<contact/>
 	<protect/>
 	<flinch/>
-	<unimplemented/>
 </flags>
 <use>
 <![CDATA[
+var type_ = this.type;
+this.type = Type.TYPELESS;
+target.hp -= field.calculate(this, user, target, targets);
+this.type = type_;
 
+var recoil = Math.floor(user.getStat(Stat.HP) / 4);
+if (recoil < 1) recoil = 1;
+user.hp -= recoil;
 ]]>
 </use>
 </move>
