@@ -158,9 +158,9 @@
 1: $1 flinched!
 
 [status-effects-stockpile]
-0: Stockpile - $1
-2: $1 stockpiled $2 levels!
-3: But it failed to spit up a thing!
+0: Stockpile
+1: $1 stockpiled $2 levels!
+2: But it failed to spit up a thing!
 3: But it failed to swallow a thing!
 4: $1 couldn't stockpile any more!
 
