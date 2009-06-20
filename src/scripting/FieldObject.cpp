@@ -222,7 +222,7 @@ JSBool attemptHit(JSContext *cx,
 }
 
 /**
- * field.calculate(move, user, target, targets)
+ * field.calculate(move, user, target, targets[, weight = true])
  */
 JSBool calculate(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
@@ -233,6 +233,9 @@ JSBool calculate(JSContext *cx,
     assert(JSVAL_IS_OBJECT(argv[1]));   // user
     assert(JSVAL_IS_OBJECT(argv[2]));   // target
     assert(JSVAL_IS_INT(argv[3]));      // targets
+    if (argc > 4) {
+        assert(JSVAL_IS_BOOLEAN(argv[4]));
+    }
 
     JSObject *mobj = JSVAL_TO_OBJECT(argv[0]);
     MoveObject move(mobj);
@@ -240,9 +243,11 @@ JSBool calculate(JSContext *cx,
     Pokemon *user = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
     Pokemon *target = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[2]));
     const int targets = JSVAL_TO_INT(argv[3]);
+    const bool weight = (argc > 4) ? JSVAL_TO_BOOLEAN(argv[4]) : true;
 
     const BattleMechanics *mech = p->getMechanics();
-    const int damage = mech->calculateDamage(*p, move, *user, *target, targets);
+    const int damage = mech->calculateDamage(*p, move, *user, *target,
+            targets, weight);
 
     *ret = INT_TO_JSVAL(damage);
     return JS_TRUE;
@@ -325,7 +330,7 @@ JSPropertySpec fieldProperties[] = {
 };
 
 JSFunctionSpec fieldFunctions[] = {
-    JS_FS("calculate", calculate, 4, 0, 0),
+    JS_FS("calculate", calculate, 5, 0, 0),
     JS_FS("attemptHit", attemptHit, 3, 0, 0),
     JS_FS("random", random, 1, 0, 0),
     JS_FS("getMove", getMove, 1, 0, 0),
