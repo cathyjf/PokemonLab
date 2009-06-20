@@ -33,7 +33,7 @@ function makeAllStatBoostMove(move) {
         }
         return false;
     };
-    makeStatusMove(move, [[effect, 0.1]]);
+    makeStatusMove(move, [[effect, 0.1, true]]);
 }
 
 /**
