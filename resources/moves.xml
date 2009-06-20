@@ -3140,13 +3140,12 @@ makeStatusMove(this, [[ParalysisEffect]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMassBasedMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Grasswhistle" id="159">
@@ -4341,13 +4340,12 @@ makeStatusMove(this, [[SleepEffect]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMassBasedMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Lucky Chant" id="222">

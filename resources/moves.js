@@ -23,11 +23,34 @@
  */
 
 /**
+ * Make a move into a mass-based move.
+ */
+function makeMassBasedMove(move) {
+    move.use = function(field, user, target, targets) {
+        var mass = target.mass;
+        if (mass <= 10) {
+            this.power = 20;
+        } else if (mass <= 25) {
+            this.power = 40;
+        } else if (mass <= 50) {
+            this.power = 60;
+        } else if (mass <= 100) {
+            this.power = 80;
+        } else if (mass <= 200) {
+            this.power = 100;
+        } else {
+            this.power = 120;
+        }
+        target.hp -= field.calculate(this, user, target, targets);
+    };
+}
+
+/**
  * Make a move into a delayed attack move. A delayed move deals damage two
  * turns after the turn it was used.
  */
 function makeDelayedAttackMove(move) {
-    move.attemptHit = function(field, user, target) {
+    move.attemptHit = function() {
         return true;
     };
     move.use = function(field, user, target, targets) {
