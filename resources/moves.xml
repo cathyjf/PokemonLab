@@ -183,13 +183,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeAllStatBoostMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Aqua Jet" id="11">
@@ -5284,13 +5283,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeAllStatBoostMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Outrage" id="272">
@@ -6918,13 +6916,12 @@ makeStatusMove(this, [[ConfusionEffect, 0.1]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeAllStatBoostMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sing" id="356">

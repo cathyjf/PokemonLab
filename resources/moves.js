@@ -23,6 +23,20 @@
  */
 
 /**
+ * Make a move that has a chance of boosting all stats.
+ */
+function makeAllStatBoostMove(move) {
+    var effect = new StatusEffect("AllStatBoostEffect");
+    effect.applyEffect = function() {
+        for (var i = 1; i < 6; ++i) {
+            this.subject.applyStatus(this.subject, new StatChangeEffect(i, 1));
+        }
+        return false;
+    };
+    makeStatusMove(move, [[effect, 0.1]]);
+}
+
+/**
  * Make a move into a mass-based move.
  */
 function makeMassBasedMove(move) {
