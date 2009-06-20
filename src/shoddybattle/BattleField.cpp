@@ -30,6 +30,7 @@
 #include "../text/Text.h"
 #include <iostream>
 #include <list>
+#include <cmath>
 
 using namespace std;
 using namespace boost;
@@ -549,7 +550,8 @@ void BattleField::informUseMove(Pokemon *p, MoveObject *move) {
 }
 
 void BattleField::informHealthChange(Pokemon *p, const int delta) {
-    const int numerator = 48.0 * (double)delta / (double)p->getRawStat(S_HP) + 0.5;
+    const int numerator = floor(48.0 * (double)delta
+            / (double)p->getRawStat(S_HP) + 0.5);
     cout << p->getName() << " lost " << numerator << "/48 of its health!"
             << endl;
 }

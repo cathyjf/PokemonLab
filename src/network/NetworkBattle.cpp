@@ -23,6 +23,7 @@
  */
 
 #include <vector>
+#include <cmath>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -651,8 +652,8 @@ public:
 void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
     const int hp = pokemon->getRawStat(S_HP);
     const int present = pokemon->getHp();
-    const int delta = 48.0 * (double)raw / (double)hp + 0.5;
-    const int total = 48.0 * (double)present / (double)hp + 0.5;
+    const int delta = floor(48.0 * (double)raw / (double)hp + 0.5);
+    const int total = floor(48.0 * (double)present / (double)hp + 0.5);
     const int party = pokemon->getParty();
     const int slot = pokemon->getSlot();
 
