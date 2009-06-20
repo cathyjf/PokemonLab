@@ -253,7 +253,7 @@ makeAbility({
             return false;
         return ((move.name == "Explosion") || (move.name == "Selfdestruct"));
     }
-})
+});
 
 /*******************
  * Oblivious
@@ -263,4 +263,16 @@ makeAbility({
     informGenderBased : function() {
         return true;
     }
-})
+});
+
+/*******************
+ * Sticky Hold
+ *******************/
+makeAbility({
+    name : "Sticky Hold",
+    informRemoveItem : function() {
+        this.subject.field.print(Text.ability_messages(46, this.subject));
+        return true;
+    }
+});
+

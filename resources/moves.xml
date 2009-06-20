@@ -4095,11 +4095,17 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
     <contact/>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (damage) {
+    target.hp -= damage;
+    if (target.item && !target.sendMessage("informRemoveItem")) {
+        field.print(Text.battle_messages_unique(12, user, target, target.item));
+        target.item = null;
+    }
+}
 ]]>
 </use>
 </move>

@@ -83,6 +83,11 @@ StatusEffect.prototype = {
      * Methods with a default implementation.
      */
 
+    // Convert this status effect to a canonical string.
+    toString : function() {
+        return this.name.toString();
+    },
+
     // Make a copy of this StatusEffect.
     copy : function() {
         var ret = { };
