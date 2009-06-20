@@ -2969,7 +2969,9 @@ makeRechargeMove(this);
     <protect/>
     <memorable/>
     <flinch/>
+    <unimplemented/>
 </flags>
+<!-- TODO -->
 </move>
 
 <move name="Fury Attack" id="150">
@@ -6197,7 +6199,9 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
     <protect/>
     <memorable/>
     <flinch/>
+    <unimplemented/>
 </flags>
+<!-- TODO -->
 </move>
 
 <move name="Revenge" id="317">
@@ -7415,11 +7419,29 @@ makeMultipleHitMove(this);
 <flags>
     <protect/>
     <flinch/>
-    <unimplemented/>
 </flags>
+<attemptHit>
+<![CDATA[
+return true;
+]]>
+</attemptHit>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("StockpileEffect");
+if (!effect) {
+    field.print(Text.status_effects_stockpile(2));
+    return;
+}
+if (field.attemptHit(this, user, target)) {
+    this.power = effect.levels * 100;
+    // Note: Damage weighting (randomisation) is not performed by this attack,
+    //       which is the significance of the final parameter to calculate()
+    //       being false.
+    target.hp -= field.calculate(this, user, target, targets, false);
+} else {
+    field.print(Text.battle_messages(2, user, target));
+}
+user.removeStatus(effect);
 ]]>
 </use>
 </move>
@@ -7523,11 +7545,42 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, 1), 0.1, true]]);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("StockpileEffect");
+if (effect) {
+    effect.addLevel();
+    return;
+}
+effect = new StatusEffect("StockpileEffect");
+effect.name = Text.status_effects_stockpile(0);
+effect.levels = 0;
+effect.boosts_ = [];
+effect.addBoost = function(stat) {
+    var boost = new StatChangeEffect(stat, 1);
+    boost.silent = true;
+    boost = this.subject.applyStatus(this.subject, boost);
+    if (boost) {
+        this.boosts_.push(boost);
+    }
+};
+effect.addLevel = function() {
+    var subject = this.subject;
+    if (this.levels == 3) {
+        field.print(Text.status_effects_stockpile(4, subject));
+        return;
+    }
+    ++this.levels;
+    field.print(Text.status_effects_stockpile(1, subject, this.levels));
+    this.addBoost(Stat.DEFENCE);
+    this.addBoost(Stat.SPDEFENCE);
+};
+effect.unapplyEffect = function() {
+    this.boosts_.forEach(this.subject.removeStatus, this.subject);
+};
+effect = user.applyStatus(user, effect);
+effect.addLevel();
 ]]>
 </use>
 </move>
@@ -7840,11 +7893,20 @@ makeStatusMove(this,
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("StockpileEffect");
+if (!effect) {
+    field.print(Text.status_effects_stockpile(3));
+    return;
+}
+var max = user.getStat(Stat.HP);
+if (user.hp != max) {
+    var factor = 0.5 * Math.pow(2, effect.levels - 2);
+    user.hp += Math.floor(max * factor);
+}
+user.removeStatus(effect);
 ]]>
 </use>
 </move>
