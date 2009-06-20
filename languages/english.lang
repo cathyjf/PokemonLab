@@ -103,7 +103,7 @@
 9: A critical hit!
 10: $1 used $2!
 11: $1 withdrew $2!
-12: $1 sent out $2!
+12: $1 sent out $2 (lvl $3 $4)!
 13: $1 lost $2 of its health!
 14: $1 regained $2 of its health!
 15: $1 fainted!
@@ -221,7 +221,7 @@
 8: $1 is getting focused!
 9: $1 became the $2 type!
 10: $1 stole $2's $3!
-11: Could not steal the $1 from $2
+11: Could not steal the $1 from $2!
 12: $1 knocked off foe $2's $3!
 13: $1 obtained $2! //trick
 14: Magnitude $1!
