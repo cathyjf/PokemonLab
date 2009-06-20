@@ -65,7 +65,9 @@ enum POKEMON_TINYID {
     PTI_FAINTED,
     PTI_MASS,
     PTI_LAST_MOVE,
-    PTI_ACTED
+    PTI_ACTED,
+    PTI_ITEM,   // modifiable
+    PTI_ABILITY // modifiable
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -397,19 +399,6 @@ JSBool execute(JSContext *cx,
     return JS_TRUE;
 }
 
-JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
-    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    int tid = JSVAL_TO_INT(id);
-    switch (tid) {
-        case PTI_HP: {
-            jsdouble d;
-            JS_ValueToNumber(cx, *vp, &d);
-            p->setHp(ceil(d));
-        } break;
-    }
-    return JS_TRUE;
-}
-
 JSBool toString(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -426,6 +415,37 @@ JSBool faint(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     p->faint();
+    return JS_TRUE;
+}
+
+JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    int tid = JSVAL_TO_INT(id);
+    switch (tid) {
+        case PTI_HP: {
+            jsdouble d;
+            JS_ValueToNumber(cx, *vp, &d);
+            p->setHp(ceil(d));
+        } break;
+
+        case PTI_ITEM: {
+            if (!JSVAL_IS_NULL(*vp)) {
+                StatusObject effect(JSVAL_TO_OBJECT(*vp));
+                p->setItem(&effect);
+            } else {
+                p->setItem(NULL);
+            }
+        } break;
+
+        case PTI_ABILITY: {
+            if (!JSVAL_IS_NULL(*vp)) {
+                StatusObject effect(JSVAL_TO_OBJECT(*vp));
+                p->setAbility(&effect);
+            } else {
+                p->setAbility(NULL);
+            }
+        } break;
+    }
     return JS_TRUE;
 }
 
@@ -541,6 +561,24 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_ACTED: {
             *vp = BOOLEAN_TO_JSVAL(p->hasActed());
         } break;
+
+        case PTI_ITEM: {
+            StatusObjectPtr item = p->getItem();
+            if (item) {
+                *vp = OBJECT_TO_JSVAL(item->getObject());
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        } break;
+
+        case PTI_ABILITY: {
+            StatusObjectPtr ability = p->getAbility();
+            if (ability) {
+                *vp = OBJECT_TO_JSVAL(ability->getObject());
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        } break;
     }
     return JS_TRUE;
 }
@@ -567,6 +605,8 @@ JSPropertySpec pokemonProperties[] = {
     { "mass", PTI_MASS, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "lastMove", PTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "acted", PTI_ACTED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "item", PTI_ITEM, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
+    { "ability", PTI_ABILITY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { 0, 0, 0, 0, 0 }
 };
 

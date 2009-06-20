@@ -236,6 +236,14 @@ public:
         return m_acted;
     }
 
+    boost::shared_ptr<StatusObject> getItem() const {
+        return m_item;
+    }
+
+    boost::shared_ptr<StatusObject> getAbility() const {
+        return m_ability;
+    }
+
     struct RECENT_MOVE {
         Pokemon *user;
         boost::shared_ptr<MoveObject> move;
