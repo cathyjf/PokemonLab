@@ -4511,43 +4511,41 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
     <memorable/>
     <flinch/>
 </flags>
-<use>
+<init>
 <![CDATA[
-var effect = user.getStatus("MagnitudeEffect");
-if (!effect) {
-    effect = new StatusEffect("MagnitudeEffect");
-    effect.informFinishedExecution = function() {
-        this.subject.removeStatus(this);
-    };
+this.prepareSelf = function(field, user) {
     var magnitude;
     var rand = field.random(0, 100);
     if (rand < 5) {
-        effect.power = 10;
+        this.power_ = 10;
         magnitude = 4;
     } else if (rand < 15) {
-        effect.power = 30;
+        this.power_ = 30;
         magnitude = 5;
     } else if (rand < 35) {
-        effect.power = 50;
+        this.power_ = 50;
         magnitude = 6;
     } else if (rand < 65) {
-        effect.power = 70;
+        this.power_ = 70;
         magnitude = 7;
     } else if (rand < 85) {
-        effect.power = 90;
+        this.power_ = 90;
         magnitude = 8;
     } else if (rand < 95) {
-        effect.power = 110;
+        this.power_ = 110;
         magnitude = 9;
     } else {
-        effect.power = 150;
+        this.power_ = 150;
         magnitude = 10;
     }
-    user.applyStatus(user, effect);
     field.print(Text.battle_messages_unique(14, magnitude));
-}
-this.power = effect.power;
-effect = target.getStatus("ChargeMoveEffect");
+};
+]]>
+</init>
+<use>
+<![CDATA[
+this.power = this.power_;
+var effect = target.getStatus("ChargeMoveEffect");
 if (effect && (effect.move.name == "Dig")) {
     this.power *= 2;
 }
