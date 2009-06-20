@@ -96,7 +96,7 @@ function makeDelayedAttackMove(move) {
             }
         };
         field.applyStatus(effect);
-        field.print(Text.battle_messages_unique(94, target));
+        field.print(Text.battle_messages_unique(94, user));
     };
 }
 
