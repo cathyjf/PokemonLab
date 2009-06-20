@@ -241,9 +241,9 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
 
     // target
     string strTarget = getElementText(node, "target");
-    TARGET tc = T_SINGLE;
+    TARGET tc = T_NONUSER;
     if (strTarget == "Non-user") {
-        tc = T_SINGLE;
+        tc = T_NONUSER;
     } else if (strTarget == "Enemies") {
         tc = T_ENEMIES;
     } else if (strTarget == "User") {
@@ -262,6 +262,10 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         tc = T_ENEMY_FIELD;
     } else if (strTarget == "Ally") {
         tc = T_ALLY;
+    } else if (strTarget == "Enemy") {
+        tc = T_ENEMY;
+    } else if (strTarget == "User or ally") {
+        tc = T_USER_OR_ALLY;
     } else {
         cout << "Unknown target class: " << strTarget << endl;
     }
@@ -394,15 +398,15 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Doom Desire", 5);
-    field.getActivePokemon(0, 1)->setMove(1, "Thunderbolt", 5);
-    team[0][4]->setHp(10);
+    field.getActivePokemon(0, 1)->setMove(0, "Covet", 5);
+    field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5);
+    team[0][1]->setHp(10);
     field.getActivePokemon(0, 0)->setMove(0, "Torment", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Copycat", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Brick Break", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Copycat", 5);
 
     field.getActivePokemon(0, 0)->setItem("Brightpowder");
-    field.getActivePokemon(0, 1)->setItem("Brightpowder");
+    field.getActivePokemon(0, 1)->setItem(NULL);
     field.getActivePokemon(1, 0)->setItem("Brightpowder");
     field.getActivePokemon(1, 1)->setItem("Brightpowder");
 
@@ -422,9 +426,11 @@ int main() {
 
     time_t initial = clock();
     field.processTurn(turns);
-    turns[1] = PokemonTurn(TT_MOVE, 3);
+    
     field.processTurn(turns);
+    
     field.processTurn(turns);
+    turns[1] = PokemonTurn(TT_MOVE, 1, 2);
     field.processTurn(turns);
     /**field.processTurn(turns);
     field.processTurn(turns);

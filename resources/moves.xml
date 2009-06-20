@@ -59,11 +59,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>30</pp>
-<!--
-  Note: This move actually has a unique target class. It can target either
-        the user or an ally.
--->
-<target>User</target>
+<target>User or ally</target>
 <flags>
     <snatch/>
     <unimplemented/>
@@ -4560,17 +4556,13 @@ target.hp -= field.calculate(this, user, target, targets);
 </use>
 </move>
 
-
-<!--
-   Note: This move actually has a unique target class.
--->
 <move name="Me First" id="232">
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>20</pp>
-<target>Non-user</target>
+<target>Enemy</target>
 <flags>
     <protect/>
     <unimplemented/>

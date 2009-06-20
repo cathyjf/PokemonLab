@@ -81,7 +81,7 @@ public:
                     if (legal[option]) {
                         TARGET t = p->getMove(move)->getTargetClass(cx);
                         int target = -1;
-                        if (t == T_SINGLE) {
+                        if (t == T_NONUSER) {
                             cout << "Target which enemy?" << endl;
                             int pt = 1 - p->getParty();
                             PokemonParty &party = *getActivePokemon()[pt];

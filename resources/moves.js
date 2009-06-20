@@ -620,6 +620,9 @@ function makeChargeMove(move, text, vulnerable) {
                 //       does not get a chance to be vetoed.
                 if (move.charge_ && (move.accuracy == 0))
                     return false;
+                var tc = move.targetClass;
+                if ((tc == Target.ALL) || (tc == Target.USER_OR_ALLY))
+                    return false;
                 field.print(Text.battle_messages(2, user, target));
                 return true;
             };

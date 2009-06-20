@@ -53,24 +53,28 @@ enum STAT {
 };
 
 enum TARGET {
-    T_USER,
-    T_ALLY,
+    T_USER = 0,
+    T_ALLY,         // Helping Hand
     T_ALLIES,
-    T_SINGLE,
+    T_NONUSER,
     T_ENEMIES,
     T_RANDOM_ENEMY,
     T_NONE,
     T_ENEMY_FIELD,
     T_OTHERS,
     T_ALL,
+    T_ENEMY,        // Me First
+    T_USER_OR_ALLY  // Acupressure
 };
 
 inline bool isEnemyTarget(const TARGET t) {
-    return ((t == T_SINGLE) ||
+    return ((t == T_NONUSER) ||
             (t == T_ENEMIES) ||
             (t == T_RANDOM_ENEMY) ||
             (t == T_OTHERS) ||
-            (t == T_ALL));
+            (t == T_ALL) ||
+            (t == T_ENEMY) ||
+            (t == T_USER_OR_ALLY));
 }
 
 double getStatMultiplier(const STAT i, const int level);

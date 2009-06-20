@@ -86,3 +86,17 @@ const Flag = {
     NO_CRITICAL : 9
 };
 
+const Target = {
+    USER : 0,
+    ALLY : 1,
+    ALLIES : 2,
+    NONUSER : 3,
+    ENEMIES : 4,
+    RANDOM_ENEMY : 5,
+    NONE : 6,
+    ENEMY_FIELD : 7,
+    OTHERS : 8,
+    ALL : 9,
+    ENEMY : 10,
+    USER_OR_ALLY : 11
+};
