@@ -5733,11 +5733,22 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var rand = field.random(0, 255);
+if (rand < 52) {
+    user.hp += Math.floor(user.getStat(Stat.HP) / 4);
+} else {
+    if (rand < 154) {
+        this.power = 40;
+    } else if (rand < 230) {
+        this.power = 80;
+    } else {
+        this.power = 120;
+    }
+    target.hp -= field.calculate(this, user, target, targets);
+}
 ]]>
 </use>
 </move>
