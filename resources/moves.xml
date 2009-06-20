@@ -2626,13 +2626,12 @@ makeOneHitKillMove(this);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeUserLowHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Flame Wheel" id="134">
@@ -6235,13 +6234,12 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeUserLowHealthMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Roar" id="319">

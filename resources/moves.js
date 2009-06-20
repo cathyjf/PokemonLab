@@ -114,7 +114,30 @@ function isOppositeGender(user, target) {
 }
 
 /**
- * Make a move into a move that depends on the user's health.
+ * Make a move into a move that depends on the user's health being low.
+ */
+function makeUserLowHealthMove(move) {
+    move.use = function(field, user, target, targets) {
+        var n = Math.floor(user.hp * 64 / user.getStat(Stat.HP));
+        if (n < 2) {
+            this.power = 200;
+        } else if (n < 6) {
+            this.power = 150;
+        } else if (n < 13) {
+            this.power = 100;
+        } else if (n < 22) {
+            this.power = 80;
+        } else if (n < 43) {
+            this.power = 40;
+        } else {
+            this.power = 20;
+        }
+        target.hp -= field.calculate(this, user, target, targets);
+    };
+}
+
+/**
+ * Make a move into a move that depends on the user's health being high.
  */
 function makeUserHealthMove(move) {
     move.use = function(field, user, target, targets) {
