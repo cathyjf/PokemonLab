@@ -23,6 +23,25 @@
  */
 
 /**
+ * Make a move that steals the target's item.
+ */
+function makeThiefMove(move) {
+    move.use = function(field, user, target, targets) {
+        var damage = field.calculate(this, user, target, targets);
+        if (!damage)
+            return;
+        target.hp -= damage;
+        if (!user.item && target.item
+                && !target.sendMessage("informRemoveItem")) {
+            field.print(Text.battle_messages_unique(10, user, target,
+                    target.item));
+            user.item = target.item;
+            target.item = null;
+        }
+    };
+}
+
+/**
  * Make a move that has a chance of boosting all stats.
  */
 function makeAllStatBoostMove(move) {

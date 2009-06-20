@@ -1373,13 +1373,12 @@ makeCounterMove(this, MoveClass.PHYSICAL, 2);
     <contact/>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeThiefMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Crabhammer" id="71">
@@ -8218,13 +8217,12 @@ field.print(Text.battle_messages(0));
     <contact/>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeThiefMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Thrash" id="420">
