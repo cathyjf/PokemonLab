@@ -73,3 +73,16 @@ const Gender = {
     NONE : 0
 };
 
+const Flag = {
+    CONTACT : 0,
+    PROTECT : 1,
+    FLINCH : 2,
+    REFLECT : 3,
+    SNATCH : 4,
+    MEMORABLE : 5,
+    HIGH_CRITICAL : 6,
+    UNIMPLEMENTED : 7,
+    INTERNAL : 8,
+    NO_CRITICAL : 9
+};
+
