@@ -100,7 +100,7 @@ makeEffect({
     id : "FlinchEffect",
     name : Text.status_effects_flinch(0),
     tier : 0,
-    vetoTier : 3,
+    vetoTier : 6,
     vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
             return false;
@@ -129,7 +129,7 @@ makeEffect({
 makeEffect({
     id : "ConfusionEffect",
     name : Text.status_effects_confusion(0),
-    vetoTier : 2,
+    vetoTier : 5,
     applyEffect : function() {
         var field = this.subject.field;
         field.print(Text.status_effects_confusion(1, this.subject));

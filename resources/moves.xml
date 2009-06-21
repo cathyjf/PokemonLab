@@ -1703,7 +1703,7 @@ effect.vetoSelection = function(user, move) {
         return false;
     return (move.name == this.move.name);
 };
-effect.vetoTier = 6; // TODO
+effect.vetoTier = 2;
 effect.vetoExecution = function(field, user, target, move) {
     if (target != null)
         return false;
@@ -8130,7 +8130,7 @@ var effect = new StatusEffect("TauntEffect");
 effect.name = Text.battle_messages_unique(29);
 effect.turns = field.random(3, 5);
 effect.tier = 0;
-effect.vetoTier = 4; // TODO (maybe)
+effect.vetoTier = 7;
 effect.applyEffect = function() {
     field.print(Text.battle_messages_unique(28, this.subject));
     return true;
