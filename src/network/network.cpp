@@ -944,56 +944,11 @@ void ClientImpl::handleModeMessage(InMessage &msg) {
     unsigned char mode;
     unsigned char enabled;
     msg >> id >> user >> mode >> enabled;
-    ChannelPtr p = getChannel(id);
-    if (!p) {
+    ChannelPtr channel = getChannel(id);
+    if (!channel) {
         return;
     }
-    Channel::CLIENT_MAP::value_type target = p->getClient(user);
-    if (!target.first) {
-        // todo: maybe issue an error message
-        return;
-    }
-    Channel::FLAGS auth = p->getStatusFlags(shared_from_this());
-    Channel::FLAGS flags = target.second;
-    switch (mode) {
-        case Channel::Mode::Q: {
-            if (auth[Channel::OWNER]) {
-                flags[Channel::OWNER] = enabled;
-            }
-        } break;
-        case Channel::Mode::A: {
-            if (auth[Channel::OWNER]) {
-                flags[Channel::PROTECTED] = enabled;
-            }
-        } break;
-        case Channel::Mode::O: {
-            if (auth[Channel::OWNER] || auth[Channel::OP]) {
-                if (!enabled && flags[Channel::PROTECTED]
-                        && !auth[Channel::OWNER]) {
-                    // todo: error message
-                    break;
-                }
-                flags[Channel::OP] = enabled;
-            }
-        } break;
-        case Channel::Mode::H: {
-            if (auth[Channel::OWNER] || auth[Channel::OP]) {
-                flags[Channel::HALF_OP] = enabled;
-            }
-        } break;
-        case Channel::Mode::V: {
-            if (auth[Channel::OWNER]
-                    || auth[Channel::OP]
-                    || auth[Channel::HALF_OP]) {
-                flags[Channel::VOICE] = enabled;
-            }
-        } break;
-        // TODO: the other modes
-    }
-
-    if (flags != target.second) {
-        p->setStatusFlags(target.first, flags);
-    }
+    channel->setMode(shared_from_this(), user, mode, enabled);
 }
 
 /**

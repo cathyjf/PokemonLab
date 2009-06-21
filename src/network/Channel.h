@@ -51,10 +51,8 @@ public:
     class Mode {
     public:
         enum MODE {
-            Q,
-            A,
+            A = 0,
             O,
-            H,
             V,
             B,
             M,
@@ -64,16 +62,14 @@ public:
     };
 
     enum STATUS_FLAGS {
-        OWNER,      // +q
-        PROTECTED,  // +a
-        OP,         // +o
-        HALF_OP,    // +h
-        VOICE,      // +v
-        BAN,        // +b
-        IDLE,       // inactive
-        BUSY        // ("ignoring challenges")
+        PROTECTED = 0,  // +a
+        OP,             // +o
+        VOICE,          // +v
+        BAN,            // +b
+        IDLE,           // inactive
+        BUSY            // ("ignoring challenges")
     };
-    static const int FLAG_COUNT = 8;
+    static const int FLAG_COUNT = 6;
     typedef std::bitset<FLAG_COUNT> FLAGS;
 
     enum {
@@ -97,7 +93,7 @@ public:
 
     FLAGS getStatusFlags(ClientPtr client);
 
-    void setStatusFlags(ClientPtr client, FLAGS flags);
+    void setStatusFlags(const std::string &, ClientPtr client, FLAGS flags);
 
     CLIENT_MAP::value_type getClient(const std::string &name);
 
@@ -106,6 +102,8 @@ public:
     std::string getTopic();
 
     void sendMessage(const std::string &message, ClientPtr client);
+
+    bool setMode(ClientPtr, const std::string &, const int, const bool);
 
     int getPopulation();
 
@@ -116,6 +114,8 @@ public:
     virtual FLAGS handleJoin(ClientPtr client);
 
     virtual void handlePart(ClientPtr client);
+
+    virtual bool handleBan() const { return false; }
 
     virtual int32_t getId() const;
 

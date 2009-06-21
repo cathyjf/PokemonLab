@@ -86,6 +86,11 @@ public:
 
     void handlePart(ClientPtr client);
 
+    bool handleBan() const {
+        // Banned users cannot join a battle.
+        return true;
+    }
+
     void informBattleTerminated() {
         m_field = NULL;
     }
@@ -376,15 +381,15 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     ChannelPtr p = m_server->getMainChannel();
     if (p) {
         FLAGS flags = p->getStatusFlags(client);
-        if (flags[OP] || flags[OWNER]) {
-            // user is a main chat op, so he gets +q
-            ret[OWNER] = true;
+        if (flags[OP]) {
+            // This user is a main chat op, so he gets +ao (protected ops).
+            ret[PROTECTED] = true;
+            ret[OP] = true;
         }
     }
     if (m_field && (m_field->field->getParty(client) != -1)) {
-        // user is a participant in the battle, so he gets +ao
+        // This user is a participant in the battle, so he gets +o.
         ret[OP] = true;
-        ret[PROTECTED] = true;
     }
     // TODO: bans
     return ret;

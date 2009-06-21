@@ -24,6 +24,7 @@
 
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
+#include <boost/algorithm/string.hpp>
 #include "Channel.h"
 #include "network.h"
 #include "../database/DatabaseRegistry.h"
@@ -72,9 +73,11 @@ public:
 
 class Channel::ChannelStatus : public OutMessage {
 public:
-    ChannelStatus(ChannelPtr channel, ClientPtr client, int flags):
+    ChannelStatus(ChannelPtr channel, const string &user,
+            ClientPtr client, int flags):
             OutMessage(CHANNEL_STATUS) {
         *this << channel->getId();
+        *this << user;
         *this << client->getName();
         *this << flags;
         finalise();
@@ -127,7 +130,8 @@ Channel::FLAGS Channel::getStatusFlags(ClientPtr client) {
     return i->second;
 }
 
-void Channel::setStatusFlags(ClientPtr client, Channel::FLAGS flags) {
+void Channel::setStatusFlags(const string &name, ClientPtr client,
+        Channel::FLAGS flags) {
     {
         shared_lock<shared_mutex> lock(m_impl->mutex);
         CLIENT_MAP::iterator i = m_impl->clients.find(client);
@@ -137,7 +141,8 @@ void Channel::setStatusFlags(ClientPtr client, Channel::FLAGS flags) {
         i->second = flags;
         commitStatusFlags(client, flags);
     }
-    broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
+    broadcast(ChannelStatus(shared_from_this(), name,
+            client, flags.to_ulong()));
 }
 
 Channel::CLIENT_MAP::value_type Channel::getClient(const string &name) {
@@ -177,7 +182,7 @@ bool Channel::join(ClientPtr client) {
     }
     // look up the client's auto flags on this channel
     Channel::FLAGS flags = handleJoin(client);
-    if (flags[BAN]) {
+    if (flags[BAN] && handleBan()) {
         // user is banned from this channel
         return false;
     }
@@ -188,7 +193,8 @@ bool Channel::join(ClientPtr client) {
     lock.unlock();
     // inform the channel
     broadcast(ChannelJoinPart(shared_from_this(), client, true));
-    broadcast(ChannelStatus(shared_from_this(), client, flags.to_ulong()));
+    broadcast(ChannelStatus(shared_from_this(), string(),
+            client, flags.to_ulong()));
     return true;
 }
 
@@ -218,7 +224,58 @@ void Channel::handlePart(ClientPtr client) {
 }
 
 void Channel::sendMessage(const string &message, ClientPtr client) {
-    broadcast(ChannelMessage(shared_from_this(), client, message));
+    FLAGS flags = getStatusFlags(client);
+    if (flags[PROTECTED]
+            || flags[OP]
+            || (!flags[BAN] && (flags[VOICE] || !m_impl->flags[MODERATED]))) {
+        broadcast(ChannelMessage(shared_from_this(), client, message));
+    }
+}
+
+bool Channel::setMode(ClientPtr setter, const string &user,
+        const int mode, const bool enabled) {
+    CLIENT_MAP::value_type target = getClient(user);
+    if (!target.first) {
+        // todo: maybe issue an error message
+        return false;
+    }
+    FLAGS auth = getStatusFlags(setter);
+    FLAGS flags = target.second;
+    switch (mode) {
+        case Mode::A: {
+            if (auth[PROTECTED]) {
+                // There is no good reason why a user with +a would ever
+                // intentionally take away his own PROTECTED bit, so to guard
+                // against an accident, we prevent users from taking away
+                // their own +a.
+                if (!iequals(user, setter->getName())) {
+                    flags[PROTECTED] = enabled;
+                }
+            }
+        } break;
+        case Mode::O: {
+            if (auth[PROTECTED]) {
+                flags[OP] = enabled;
+            }
+        } break;
+        case Mode::V: {
+            if (auth[OP]) {
+                flags[VOICE] = enabled;
+            }
+        } break;
+        case Mode::B: {
+            if (auth[OP]) {
+                flags[BAN] = enabled;
+            }
+        } break;
+        // TODO: the other modes
+    }
+
+    if (flags == target.second)
+        return false;
+
+    setStatusFlags(setter->getName(), target.first, flags);
+    return true;
 }
 
 int Channel::getPopulation() {
