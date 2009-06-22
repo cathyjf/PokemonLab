@@ -4578,6 +4578,11 @@ if (!turn) {
     field.print(Text.battle_messages(0));
     return;
 }
+/**
+ * TODO: RESEARCH QUESTION
+ * Does Me First fail if the target has a forced move and did not select its
+ * move freely?
+ */
 var move = target.getMove(turn.move);
 if ((move.moveClass == MoveClass.OTHER) ||
         (this.forbidden_.indexOf(move.name) != -1)) {
