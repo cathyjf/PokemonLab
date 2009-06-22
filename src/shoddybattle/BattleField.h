@@ -173,7 +173,7 @@ public:
     /**
      * Process a turn.
      */
-    void processTurn(const std::vector<PokemonTurn> &turn);
+    void processTurn(std::vector<PokemonTurn> &turn);
 
     /**
      * Process a set of replacements.

@@ -874,7 +874,7 @@ void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
 /**
  * Process a turn.
  */
-void BattleField::processTurn(const vector<PokemonTurn> &turns) {
+void BattleField::processTurn(vector<PokemonTurn> &turns) {
     vector<Pokemon::PTR> pokemon;
     getActivePokemon(pokemon);
     const int count = pokemon.size();
@@ -884,7 +884,7 @@ void BattleField::processTurn(const vector<PokemonTurn> &turns) {
     vector<const PokemonTurn *> ordered;
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
-        const PokemonTurn *turn = &turns[i];
+        PokemonTurn *turn = &turns[i];
 
         PokemonTurn *forced = p->getForcedTurn();
         if (forced) {

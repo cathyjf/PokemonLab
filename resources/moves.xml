@@ -5377,11 +5377,19 @@ field.print(Text.battle_messages_unique(3));
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+if (!target.turn) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>

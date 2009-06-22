@@ -66,8 +66,14 @@ enum POKEMON_TINYID {
     PTI_MASS,
     PTI_LAST_MOVE,
     PTI_ACTED,
-    PTI_ITEM,   // modifiable
-    PTI_ABILITY // modifiable
+    PTI_ITEM,    // modifiable
+    PTI_ABILITY, // modifiable
+    PTI_TURN
+};
+
+enum TURN_TINYID {
+    TTI_MOVE,   // the id of the move the pokemon is about to use
+    TTI_TARGET  // the target of the move
 };
 
 JSBool applyStatus(JSContext *cx,
@@ -418,6 +424,40 @@ JSBool faint(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool turnSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+    PokemonTurn *p = (PokemonTurn *)JS_GetPrivate(cx, obj);
+    int tid = JSVAL_TO_INT(id);
+    switch (tid) {
+        case TTI_MOVE: {
+            p->id = JSVAL_TO_INT(*vp);
+        } break;
+        case TTI_TARGET: {
+            p->target = JSVAL_TO_INT(*vp);
+        } break;
+    }
+    return JS_TRUE;
+}
+
+JSBool turnGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
+    PokemonTurn *p = (PokemonTurn *)JS_GetPrivate(cx, obj);
+    int tid = JSVAL_TO_INT(id);
+    switch (tid) {
+        case TTI_MOVE: {
+            *vp = INT_TO_JSVAL(p->id);
+        } break;
+        case TTI_TARGET: {
+            *vp = INT_TO_JSVAL(p->target);
+        } break;
+    }
+    return JS_TRUE;
+}
+
+JSPropertySpec turnProperties[] = {
+    { "move", TTI_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
+    { "target", TTI_TARGET, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
+    { 0, 0, 0, 0, 0 }
+};
+
 JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     int tid = JSVAL_TO_INT(id);
@@ -533,7 +573,6 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         } break;
 
         case PTI_POSITION: {
-            // todo: maybe change the name of this
             *vp = INT_TO_JSVAL(p->getSlot());
         } break;
 
@@ -579,6 +618,18 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 *vp = JSVAL_NULL;
             }
         } break;
+
+        case PTI_TURN: {
+            PokemonTurn *turn = p->getTurn();
+            if (turn) {
+                JSObject *turnobj = JS_NewObject(cx, NULL, NULL, NULL);
+                JS_DefineProperties(cx, turnobj, turnProperties);
+                JS_SetPrivate(cx, turnobj, turn);
+                *vp = OBJECT_TO_JSVAL(turnobj);
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        } break;
     }
     return JS_TRUE;
 }
@@ -607,6 +658,7 @@ JSPropertySpec pokemonProperties[] = {
     { "acted", PTI_ACTED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "item", PTI_ITEM, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "ability", PTI_ABILITY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
+    { "turn", PTI_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
