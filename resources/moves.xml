@@ -4563,11 +4563,36 @@ target.hp -= field.calculate(this, user, target, targets);
 <target>Enemy</target>
 <flags>
     <protect/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Counter", "Mirror Coat", "Thief", "Covet",
+                   "Focus Punch", "Chatter"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+var turn = target.turn;
+if (!turn) {
+    // The target has already processed its turn, so Me First fails.
+    field.print(Text.battle_messages(0));
+    return;
+}
+var move = target.getMove(turn.move);
+if ((move.moveClass == MoveClass.OTHER) ||
+        (this.forbidden_.indexOf(move.name) != -1)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("MeFirstEffect");
+effect.modifier = function(field, user) {
+    if (user != this.subject)
+        return null;
+    return [2, 1.5, 1];
+};
+effect = user.applyStatus(user, effect);
+user.execute(move);
+user.removeStatus(effect);
 ]]>
 </use>
 </move>
