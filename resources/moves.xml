@@ -7799,11 +7799,25 @@ makeRecoilMove(this, 4);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var turn = target.turn;
+if (!turn) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+/**
+ * TODO: RESEARCH QUESTION
+ * Does Sucker Punch fail if the target has a forced move and did not select
+ * its move freely?
+ */
+var move = target.getMove(turn.move);
+if (move.moveClass == MoveClass.OTHER) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
