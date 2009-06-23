@@ -38,7 +38,7 @@ const double ACCURACY_MULTIPLIER[] = { 3.0, 2.66, 2.5, 2.0, 1.66, 1.33, 1.0,
 
 double getStatMultiplier(const STAT i, const int level) {
     if ((i != S_EVASION) && (i != S_ACCURACY)) {
-        return ACCURACY_MULTIPLIER[6 - level];
+        return STAT_MULTIPLIER[6 - level];
     }
     return ACCURACY_MULTIPLIER[6 - level];
 }
