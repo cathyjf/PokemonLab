@@ -262,10 +262,11 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
         if (party == pokemon->getParty())
             return false;
     } else if (tc == T_ALLY) {
-        // Target cannot be the user and cannot be an enemy.
-        if (target.get() == pokemon)
-            return false;
+        // Target cannot be an enemy, and cannot be the user unless the
+        // active party size is one.
         if (party != pokemon->getParty())
+            return false;
+        if ((m_impl->partySize > 1) && (target.get() == pokemon))
             return false;
     } else if (tc == T_USER_OR_ALLY) {
         // Target cannot be an enemy.
