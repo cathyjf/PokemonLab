@@ -207,7 +207,72 @@ void BattleField::sortBySpeed(vector<Pokemon *> &pokemon) {
 bool BattleField::isTurnLegal(Pokemon *pokemon,
         const PokemonTurn *turn,
         const bool replacement) const {
-    // todo
+    if (turn->type == TT_SWITCH) {
+        if (!replacement && !pokemon->isSwitchLegal())
+            return false;
+        if (turn->id < 0)
+            return false;
+        Pokemon::ARRAY &arr = m_impl->teams[pokemon->getParty()];
+        if (turn->id >= arr.size())
+            return false;
+        Pokemon::PTR p = arr[turn->id];
+        return ((p->getSlot() == -1) && !p->isFainted());
+    } else if (replacement) {
+        // Client must send a TT_SWITCH action if it's a replacement.
+        return false;
+    }
+
+    if (pokemon->getForcedTurn()) {
+        // If the pokemon has a forced move then it doesn't matter what
+        // action the client sent in.
+        return true;
+    }
+
+    if (turn->id < 0)
+        return false;
+    if (turn->id >= pokemon->getMoveCount())
+        return false;
+    if (!pokemon->isMoveLegal(turn->id))
+        return false;
+
+    MoveObjectPtr move = pokemon->getMove(turn->id);
+    TARGET tc = move->getTargetClass(m_impl->context);
+    if (!isTargeted(tc))
+        return true;
+
+    int idx = turn->target;
+    if (idx < 0)
+        return false;
+    int party = 0;
+    m_impl->decodeIndex(idx, party);
+
+    if (idx >= m_impl->partySize)
+        return false;
+
+    Pokemon::PTR target = (*m_impl->active[party])[idx].pokemon;
+    if (!target || target->isFainted())
+        return false;
+
+    if (tc == T_NONUSER) {
+        // Target cannot be the user.
+        if (target.get() == pokemon)
+            return false;
+    } else if (tc == T_ENEMY) {
+        // Target cannot be a member of the user's party.
+        if (party == pokemon->getParty())
+            return false;
+    } else if (tc == T_ALLY) {
+        // Target cannot be the user and cannot be an enemy.
+        if (target.get() == pokemon)
+            return false;
+        if (party != pokemon->getParty())
+            return false;
+    } else if (tc == T_USER_OR_ALLY) {
+        // Target cannot be an enemy.
+        if (party != pokemon->getParty())
+            return false;
+    }
+
     return true;
 }
 
@@ -933,7 +998,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
             MoveObjectPtr move = p->getMove(id);
             Pokemon *target = NULL;
             TARGET tc = move->getTargetClass(m_impl->context);
-            if ((tc == T_NONUSER) || (tc == T_ALLY) || (tc == T_ENEMY)) {
+            if (isTargeted(tc)) {
                 int idx = turn->target;
                 if (idx == -1) {
                     target = getRandomTarget(1 - p->getParty());
@@ -945,6 +1010,8 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
                         // If this is a single target move and there is no
                         // target then choose a random target from among
                         // the available enemies.
+
+                        // TODO: Handle T_ALLY and T_USER_OR_ALLY here.
                         target = getRandomTarget(1 - p->getParty());
                     } else {
                         target = t.get();

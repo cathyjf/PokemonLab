@@ -138,6 +138,8 @@ void Pokemon::determineLegalActions() {
             m_legalMove[i] = !m_field->vetoSelection(this, move.get());
         }
     }
+
+    // TODO: Handle Struggle.
 }
 
 /**
