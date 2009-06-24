@@ -8605,11 +8605,31 @@ makeStatusMove(this, [[effect, 0.20]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
+<attemptHit>
+<![CDATA[
+return true;
+]]>
+</attemptHit>
 <use>
 <![CDATA[
-
+var i = 0;
+for (; i < 3; ++i) {
+    if (target.fainted)
+        break;
+    if (!field.attemptHit(this, user, target)) {
+        field.print(Text.battle_messages(2, user, target));
+        break;
+    }
+    this.power = this.power_ * (i + 1);
+    target.hp -= field.calculate(this, user, target, targets);
+}
+field.print(Text.battle_messages_unique(0, i));
 ]]>
 </use>
 </move>
