@@ -23,6 +23,43 @@
  */
 
 /**
+ * Make a move that makes the next move to target the target of this move
+ * always hit. The effect lasts for two turns, including the present turn,
+ * or until the user leaves the field.
+ *
+ * TODO: Major research is required here. Does Lock On make the next move to
+ *       target the subject hit; the next move to target the subject on the
+ *       next turn; all moves targeting the subject on the turn turn; or some
+ *       other possibility?
+ */
+function makeLockOnMove(move) {
+    move.use = function(field, user, target, targets) {
+        if (target.getStatus("LockOnEffect")) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var effect = new StatusEffect("LockOnEffect");
+        effect.tier = 0;
+        effect.turns = 2;
+        effect.tick = function() {
+            if (--this.turns <= 0) {
+                this.subject.removeStatus(this);
+            }
+        };
+        effect.statModifier = function(field, stat, subject, target) {
+            if (stat != Stat.ACCURACY)
+                return null;
+            if (target != this.subject)
+                return null;
+            this.subject.removeStatus(this);
+            return [0, 13];
+        };
+        target.applyStatus(user, effect);
+        field.print(Text.battle_messages_unique(141, user, target));
+    };
+}
+
+/**
  * Make a move that steals the target's item.
  */
 function makeThiefMove(move) {
