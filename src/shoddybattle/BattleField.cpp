@@ -321,7 +321,7 @@ Pokemon *BattleField::getRandomTarget(const int partyIdx) const {
 void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         Pokemon *user, Pokemon *target) {
     shared_ptr<PokemonParty> *active = m_impl->active;
-    if ((mc == T_NONUSER) || (mc == T_ENEMY)) {
+    if (isTargeted(mc)) {
         if (!target) {
             targets.push_back(getRandomTarget(1 - user->getParty()));
         } else if (!target->isFainted()) {

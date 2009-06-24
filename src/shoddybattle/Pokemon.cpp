@@ -214,9 +214,7 @@ bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
  * Send this pokemon out onto the field.
  */
 void Pokemon::switchIn() {
-    // todo: apply field + party effects?
-
-    // inform status effects of switching in
+    // Inform status effects of switching in.
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
@@ -426,7 +424,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
 
     TARGET tc = move->getTargetClass(m_cx);
 
-    if ((tc == T_USER) || (tc == T_ALLY) || (tc == T_ALLIES)) {
+    if ((tc == T_USER) || (tc == T_ALLIES)) {
         move->use(m_cx, m_field, this, NULL, 0);
         m_acted = true;
         return true;

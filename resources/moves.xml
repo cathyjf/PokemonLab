@@ -3579,11 +3579,25 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <pp>20</pp>
 <target>Ally</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+if ((user == target) || !target.turn || target.getStatus("HelpingHandEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("HelpingHandEffect");
+effect.modifier = function(field, user, target, move, critical) {
+    if (user != this.subject)
+        return null;
+    return [0, 1.5, -1];
+};
+effect.informFinishedExecution = function() {
+    this.subject.removeStatus(this);
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(93, user, target));
 ]]>
 </use>
 </move>
