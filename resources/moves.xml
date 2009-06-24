@@ -3543,11 +3543,59 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Heal Order", "Milk Drink", "Moonlight", "Morning Sun",
+                   "Recover", "Rest", "Roost", "Slack Off", "Softboiled",
+                   "Swallow", "Synthesis", "Wish"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+// TODO: Handle interaction with Big Root (they both use the same message)!
+if (target.getStatus("HealBlockEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("HealBlockEffect");
+effect.name = Text.battle_messages_unique(126);
+effect.vetoTier = 4;
+// TODO: Get the correct tier for Heal Block. Note that it actually matters
+//       whether Heal Block is before or after Aqua Ring / Ingrain healing.
+effect.tier = 6;
+effect.subtier = 3;
+effect.turns = 5;
+var forbidden_ = this.forbidden_;
+effect.vetoSelection = function(user, move) {
+    if (user != this.subject)
+        return null;
+    return (forbidden_.indexOf(move.name) != -1);
+};
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != null)
+        return null;
+    if (user != this.subject)
+        return null;
+    if (forbidden_.indexOf(move.name) == -1)
+        return null;
+    field.print(Text.battle_messages_unique(128, this.subject, move));
+    return true;
+};
+effect.tick = function() {
+    if (--this.turns <= 0) {
+        field.print(Text.battle_messages_unique(129, this.subject));
+        this.subject.removeStatus(this);
+    }
+};
+effect.informRecoilDamage = function(recoil) {
+    return (recoil < 0);
+};
+effect.informHealing = function() {
+    return true;
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(127, target));
 ]]>
 </use>
 </move>
@@ -9145,10 +9193,13 @@ effect.beginTick = function() {
 effect.tick = function() {
     if (this.turns != 0)
         return;
-    this.subject.field.print(Text.battle_messages_unique(78));
-    var hp = Math.floor(this.subject.getStat(Stat.HP) / 2);
-    if (hp < 1) hp = 1;
-    this.subject.hp += hp;
+    if (!user.sendMessage("informHealing")) {
+        this.subject.field.print(Text.battle_messages_unique(78));
+        var hp = Math.floor(this.subject.getStat(Stat.HP) / 2);
+        if (hp < 1) hp = 1;
+        this.subject.hp += hp;
+    }
+    field.removeStatus(this);
 };
 field.print(Text.battle_messages_unique(77, user));
 field.applyStatus(effect);
