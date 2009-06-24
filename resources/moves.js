@@ -25,7 +25,7 @@
 /**
  * Make a move that makes the next move to target the target of this move
  * always hit. The effect lasts for two turns, including the present turn,
- * or until the user leaves the field.
+ * or until the target leaves the field.
  *
  * TODO: Major research is required here. Does Lock On make the next move to
  *       target the subject hit; the next move to target the subject on the
