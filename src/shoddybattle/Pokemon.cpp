@@ -132,6 +132,7 @@ void Pokemon::determineLegalActions() {
 
     bool struggle = true;
     const int count = m_moves.size();
+    m_legalMove.clear();
     m_legalMove.resize(count, false);
     for (int i = 0; i < count; ++i) {
         MoveObjectPtr move = m_moves[i];
