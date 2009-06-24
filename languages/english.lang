@@ -374,6 +374,8 @@
 138: The tailwind blew from behind $1's team!
 139: $1's tailwind petered out!
 
+140: $1's ability became $2! // Worry Seed (TODO: Get actual message.)
+
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind
