@@ -127,6 +127,7 @@ function makeDelayedAttackMove(move) {
             } else {
                 field.print(Text.battle_messages(2, user, this.subject));
             }
+            field.removeStatus(this);
         };
         field.applyStatus(effect);
         field.print(Text.battle_messages_unique(94, user));
