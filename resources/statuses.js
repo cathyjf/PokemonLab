@@ -141,6 +141,8 @@ makeEffect({
             return false;
         if (target != null)
             return false;
+        if (user.getStatus("SleepEffect")) // TODO: research this
+            return false;
         field.print(Text.status_effects_confusion(3, user));
         if (--this.turns <= 0) {
             field.print(Text.status_effects_confusion(2, user));

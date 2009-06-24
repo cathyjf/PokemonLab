@@ -53,7 +53,7 @@ enum POKEMON_TINYID {
     PTI_STAT,
     PTI_LEVEL,
     PTI_NATURE,
-    PTI_HP,     // modifiable
+    PTI_HP,      // modifiable
     PTI_TYPES,
     PTI_PPUPS,
     PTI_GENDER,
@@ -315,6 +315,26 @@ JSBool getPp(JSContext *cx,
     const int id = p->getMove(move);
     const int pp = (id == -1) ? -1 : p->getPp(id);
     *ret = INT_TO_JSVAL(pp);
+
+    return JS_TRUE;
+}
+
+/**
+ * pokemon.getSelectable(move)
+ *
+ * Return whether the pokemon can legally select the move. The argument is a
+ * move object.
+ */
+JSBool isSelectable(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    MoveObject move(JSVAL_TO_OBJECT(v));
+    *ret = BOOLEAN_TO_JSVAL(!p->getField()->vetoSelection(p, &move));
 
     return JS_TRUE;
 }
@@ -682,6 +702,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("clearForcedMove", clearForcedMove, 0, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
     JS_FS("getPp", getPp, 1, 0, 0),
+    JS_FS("isSelectable", isSelectable, 1, 0, 0),
     JS_FS_END
 };
 

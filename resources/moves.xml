@@ -7255,11 +7255,37 @@ makeStatusMove(this, [[SleepEffect]]);
 <pp>10</pp>
 <target>None</target>
 <flags>
-    <unimplemented/>
+
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Assist", "Bide", "Chatter", "Copycat", "Focus Punch",
+                   "Me First", "Metronome", "Mirror Move", "Sleep Talk",
+                   "Uproar", "Skull Bash", "Razor Wind", "Sky Attack",
+                   "Solarbeam", "Fly", "Dig", "Dive", "Bounce", "Shadow Force"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+if (!user.getStatus("SleepEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var choices = [];
+for (var i = 0; i < user.moveCount; ++i) {
+    var move = user.getMove(i);
+    if ((user.getPp(move) > 0) && (this.forbidden_.indexOf(move.name) == -1)
+            && user.isSelectable(move)) {
+        choices.push(move);
+    }
+}
+var length = choices.length;
+if (length == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var move = choices[field.random(0, length - 1)];
+user.execute(move);
 ]]>
 </use>
 </move>
