@@ -570,3 +570,7 @@
 
 [items-messages]
 0: $1's leftovers restored its health a little!
+
+[client-messages]
+0: *** $1 sets mode $2 $3
+1: *** Mode $1 $2
