@@ -9255,11 +9255,15 @@ makeRecoilMove(this, 3);
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.ability && (target.ability.id == "Multitype")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+target.ability = Ability["Insomnia"];
+field.print(Text.battle_messages_unique(140, target, target.ability));
 ]]>
 </use>
 </move>
