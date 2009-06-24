@@ -130,16 +130,21 @@ bool Pokemon::isType(const PokemonType *type) const {
 void Pokemon::determineLegalActions() {
     m_legalSwitch = !m_field->vetoSwitch(this);
 
+    bool struggle = true;
     const int count = m_moves.size();
     m_legalMove.resize(count, false);
     for (int i = 0; i < count; ++i) {
         MoveObjectPtr move = m_moves[i];
-        if (move) {
-            m_legalMove[i] = !m_field->vetoSelection(this, move.get());
+        if (move && (m_pp[i] > 0)) {
+            if (m_legalMove[i] = !m_field->vetoSelection(this, move.get())) {
+                struggle = false;
+            }
         }
     }
 
-    // TODO: Handle Struggle.
+    if (struggle) {
+        setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"), NULL);
+    }
 }
 
 /**
@@ -334,7 +339,7 @@ void Pokemon::setForcedTurn(const PokemonTurn &turn) {
  * Force the pokemon to use a particular move next round.
  */
 MoveObjectPtr Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
-    int target = p ? p->getSlot() : - 1;
+    int target = p ? p->getSlot() : -1;
     if (p && (p->getParty() == 1)) {
         target += m_field->getPartySize();
     }

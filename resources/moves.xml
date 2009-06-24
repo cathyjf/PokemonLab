@@ -7723,7 +7723,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1)]]);
 <power>50</power>
 <accuracy>0</accuracy>
 <pp>1</pp>
-<target>Non-user</target>
+<target>Randenemy</target>
 <flags>
     <contact/>
     <protect/>
