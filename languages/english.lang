@@ -302,7 +302,6 @@
 82: Odor Sleuth
 83: Miracle Eye
 84: $1 identified $2!
-85: $1 took aim at the foe!
 
 85: Nightmare
 86: $1 fell into a nightmare!
@@ -375,6 +374,7 @@
 139: $1's tailwind petered out!
 
 140: $1's ability became $2! // Worry Seed (TODO: Get actual message.)
+141: $1 took aim at foe $2!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
