@@ -62,11 +62,22 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <target>User or ally</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var stats = [];
+for (var i = 1; i < 8; ++i) {
+    if (target.getStatLevel(i) < 6) {
+        stats.push(i);
+    }
+}
+var length = stats.length;
+if (length == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var stat = stats[field.random(0, length - 1)];
+target.applyStatus(user, new StatChangeEffect(stat, 2));
 ]]>
 </use>
 </move>
