@@ -461,13 +461,14 @@ function makeRechargeMove(move) {
  * Make a move into a two hit move.
  */
 function makeTwoHitMove(move) {
+    var execute = getParentUse(move);
     move.use = function(field, user, target, targets) {
         var hits = 0;
         for (var i = 0; i < 2; ++i) {
             if (target.fainted)
                 break;
             ++hits;
-            target.hp -= field.calculate(this, user, target, targets);
+            execute.call(this, field, user, target, targets);
         }
         field.print(Text.battle_messages_unique(0, hits));
     };

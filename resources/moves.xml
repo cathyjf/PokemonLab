@@ -8659,13 +8659,13 @@ target.hp -= field.calculate(this, user, target, targets);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[PoisonEffect, 0.2]]);
+makeTwoHitMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Twister" id="438">
