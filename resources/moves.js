@@ -551,9 +551,10 @@ function makeRecoilMove(move, divisor) {
                 delta = max;
             }
         }
-
-        var recoil = Math.floor(delta / divisor);
-        if (user.sendMessage("informRecoilDamage", recoil))
+        
+        var sgn = (divisor > 0) ? 1 : -1;
+        var recoil = sgn * Math.floor(Math.abs(delta / divisor));
+        if (user.sendMessage("informRecoilDamage", recoil, move))
             return;
 
         if (recoil > 0) {

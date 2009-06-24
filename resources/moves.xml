@@ -246,11 +246,29 @@ makeAllStatBoostMove(this);
 <pp>20</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("AquaRingEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var move_ = this;
+var effect = new StatusEffect("AquaRingEffect");
+effect.tier = 6;
+effect.subtier = 1; // Note that this is a guess (TODO).
+effect.tick = function() {
+    var max = this.subject.getStat(Stat.HP);
+    if (this.subject.hp == max)
+        return;
+    var delta = Math.floor(max / 16);
+    if (this.subject.sendMessage("informRecoilDamage", -delta, move_))
+        return;
+    field.print(Text.battle_messages_unique(56, this.subject, move_));
+    this.subject.hp += delta;
+};
+user.applyStatus(user, effect);
 ]]>
 </use>
 </move>
