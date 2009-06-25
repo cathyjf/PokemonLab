@@ -22,9 +22,6 @@
  * online at http://gnu.org.
  */
 
-#include <set>
-
-
 #include <boost/random.hpp>
 
 #include "JewelMechanics.h"
