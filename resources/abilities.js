@@ -70,14 +70,10 @@ function makeStatusImmuneAbility(ability, immune) {
  *******************/
 makeAbility({
     name : "Levitate",
-    vetoExecution : function(field, user, target, move) {
+    immunity : function(user, target) {
         if (target != this.subject)
-            return false;
-        if (move.type != Type.GROUND)
-            return false;
-
-        field.print(Text.ability_messages(25, target));
-        return true;
+            return -1;
+        return Type.GROUND;
     }
 });
 
