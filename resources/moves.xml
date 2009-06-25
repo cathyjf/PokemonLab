@@ -4052,11 +4052,38 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("IngrainEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var move_ = this;
+var effect = new StatusEffect("IngrainEffect");
+effect.name = Text.battle_messages_unique(142);
+effect.tier = 6;
+effect.subtier = 1;
+effect.tick = function() {
+    var max = this.subject.getStat(Stat.HP);
+    if (this.subject.hp == max)
+        return;
+    var delta = Math.floor(max / 16);
+    if (this.subject.sendMessage("informRecoilDamage", -delta, move_))
+        return;
+    field.print(Text.battle_messages_unique(144, this.subject));
+    this.subject.hp += delta;
+};
+effect.vulnerability = function(user, target) {
+    if (target != this.subject)
+        return -1;
+    return Type.GROUND;
+};
+effect.vetoSwitch = function(subject) {
+    return (subject == this.subject);
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(143, user));
 ]]>
 </use>
 </move>
