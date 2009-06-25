@@ -26,12 +26,14 @@
 #define _BATTLE_MECHANICS_H_
 
 #include "stat.h"
+#include <vector>
 
 namespace shoddybattle {
 
 class Pokemon;
 class BattleField;
 class MoveObject;
+class PokemonType;
 
 /**
  * A general notion of battle mechanics, allowing for the calculation of some
@@ -47,6 +49,9 @@ public:
     virtual bool attemptHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const = 0;
     virtual int getRandomInt(const int lower, const int upper) const = 0;
+    virtual double getEffectiveness(BattleField &field,
+            const PokemonType *, Pokemon *, Pokemon *,
+            std::vector<double> *) const = 0;
     virtual ~BattleMechanics() { }
 protected:
     BattleMechanics() { }

@@ -49,6 +49,8 @@ public:
     bool attemptHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const;
     int getRandomInt(const int lower, const int upper) const;
+    double getEffectiveness(BattleField &field, const PokemonType *,
+            Pokemon *, Pokemon *, std::vector<double> *) const;
 private:
     JewelMechanicsImpl *m_impl;
 };

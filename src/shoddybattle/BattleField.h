@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <vector>
+#include <set>
 #include "Pokemon.h"
 #include "../scripting/ObjectWrapper.h"
 
@@ -310,6 +311,13 @@ public:
      * Remove removable statuses from the field.
      */
     void removeStatuses();
+
+    /**
+     * Get a list of special types to which a pokemon is immune or vulnerable.
+     */
+    void getImmunities(Pokemon *user, Pokemon *target,
+            std::set<const PokemonType *> &immunities,
+            std::set<const PokemonType *> &vulnerabilities);
 
     /**
      * Send a message to the whole field.

@@ -34,6 +34,7 @@
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/BattleField.h"
 #include "../mechanics/PokemonType.h"
+#include "../mechanics/BattleMechanics.h"
 
 #include <iostream>
 #include <cmath>
@@ -206,18 +207,12 @@ JSBool isImmune(JSContext *cx,
     }
     MoveObject move(JSVAL_TO_OBJECT(v));
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    // todo: review this (in case effectiveness transformer is needed)
-    const TYPE_ARRAY &types = p->getTypes();
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    BattleField *field = p->getField();
     const PokemonType *moveType = move.getType(scx);
-    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
-        const double factor = moveType->getMultiplier(**i);
-        if (factor == 0.00) {
-            *ret = JSVAL_TRUE;
-            break;
-        }
-    }
-    *ret = JSVAL_FALSE;
+    const double factor = field->getMechanics()->getEffectiveness(*field,
+            moveType, NULL, p, NULL);
+    *ret = (factor == 0.00) ? JSVAL_TRUE : JSVAL_FALSE;
     return JS_TRUE;
 }
 

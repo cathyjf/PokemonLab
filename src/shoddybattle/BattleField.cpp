@@ -1081,6 +1081,24 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
 }
 
 /**
+ * Get additional immunities or vulnerabilities in play for a given user
+ * attacking a given target.
+ */
+void BattleField::getImmunities(Pokemon *user, Pokemon *target,
+        set<const PokemonType *> &immunities,
+        set<const PokemonType *> &vulnerabilities) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted()) {
+                p->getImmunities(user, target, immunities, vulnerabilities);
+            }
+        }
+    }
+}
+
+/**
  * Get the stat modifiers in play for a particular hit. Checks all of the
  * active pokemon for "modifier" properties.
  */

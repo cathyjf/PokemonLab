@@ -172,6 +172,33 @@ ScriptValue Pokemon::sendMessage(const string &name,
 }
 
 /**
+ * Get additional immunities or vulnerabilities in play for a given user
+ * attacking a given target.
+ */
+void Pokemon::getImmunities(Pokemon *user, Pokemon *target,
+        std::set<const PokemonType *> &immunities,
+        std::set<const PokemonType *> &vulnerabilities) {
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
+            continue;
+
+        const PokemonType *type = (*i)->getImmunity(m_cx, user, target);
+        if (type) {
+            immunities.insert(type);
+        }
+        type = (*i)->getVulnerability(m_cx, user, target);
+        if (type) {
+            if (immunities.find(type) != immunities.end()) {
+                immunities.erase(type);
+            } else {
+                vulnerabilities.insert(type);
+            }
+        }
+    }
+}
+
+/**
  * Determine whether the selection of a move should be vetoed.
  */
 bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {

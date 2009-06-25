@@ -2976,13 +2976,12 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeForesightMove(this, [Type.NORMAL, Type.FIGHTING]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Frenzy Plant" id="148">
@@ -5010,13 +5009,12 @@ user.applyStatus(user, effect);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeForesightMove(this, [Type.PSYCHIC]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mirror Coat" id="250">
@@ -5401,13 +5399,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.5]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeForesightMove(this, [Type.NORMAL, Type.FIGHTING]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Ominous Wind" id="271">

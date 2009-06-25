@@ -29,6 +29,7 @@
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/BattleField.h"
+#include "../mechanics/PokemonType.h"
 
 #include <iostream>
 
@@ -141,6 +142,32 @@ bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
             "transformHealthChange", 2, argv);
     *pHp = v.getInt();
     return true;
+}
+
+const PokemonType *StatusObject::getVulnerability(ScriptContext *scx,
+        Pokemon *user, Pokemon *target) {
+    if (!scx->hasProperty(this, "vulnerability"))
+        return NULL;
+    
+    ScriptValue argv[] = { user, target };
+    ScriptValue v = scx->callFunctionByName(this, "vulnerability", 2, argv);
+    const int type = v.getInt();
+    if (type == -1)
+        return NULL;
+    return PokemonType::getByValue(type);
+}
+
+const PokemonType *StatusObject::getImmunity(ScriptContext *scx,
+        Pokemon *user, Pokemon *target) {
+    if (!scx->hasProperty(this, "immunity"))
+        return NULL;
+
+    ScriptValue argv[] = { user, target };
+    ScriptValue v = scx->callFunctionByName(this, "immunity", 2, argv);
+    const int type = v.getInt();
+    if (type == -1)
+        return NULL;
+    return PokemonType::getByValue(type);
 }
 
 bool StatusObject::vetoSelection(ScriptContext *scx,

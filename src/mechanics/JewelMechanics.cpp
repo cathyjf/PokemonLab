@@ -22,6 +22,9 @@
  * online at http://gnu.org.
  */
 
+#include <set>
+
+
 #include <boost/random.hpp>
 
 #include "JewelMechanics.h"
@@ -172,6 +175,29 @@ int JewelMechanics::getRandomInt(const int lower, const int upper) const {
     return r();
 }
 
+double JewelMechanics::getEffectiveness(BattleField &field,
+        const PokemonType *type,
+        Pokemon *user, Pokemon *target, vector<double> *factors) const {
+    set<const PokemonType *> immunities, vulnerabilities;
+    field.getImmunities(user, target, immunities, vulnerabilities);
+    if (immunities.find(type) != immunities.end()) {
+        return 0.0;
+    }
+    const bool immune = (vulnerabilities.find(type) == vulnerabilities.end());
+    double effectiveness = 1.0;
+    const TYPE_ARRAY &types = target->getTypes();
+    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
+        const double factor = type->getMultiplier(**i);
+        if ((factor != 0.0) || immune) {
+            effectiveness *= factor;
+            if (factors) {
+                factors->push_back(factor);
+            }
+        }
+    }
+    return effectiveness;
+}
+
 /**
  * Calculate damage.
  */
@@ -259,19 +285,20 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
         damage *= stab;
     }
 
-    double effectiveness = 1.0;
-    const TYPE_ARRAY &types = target.getTypes();
-    for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
-        const double factor = moveType->getMultiplier(**i);
-        damage *= factor;
-        effectiveness *= factor;
-    }
+    vector<double> factors;
+    const double effectiveness =
+            getEffectiveness(field, moveType, &user, &target, &factors);
 
     if (effectiveness == 0.0) {
         vector<string> args;
         args.push_back(target.getToken());
         field.print(TextMessage(4, 1, args));
         return 0;
+    }
+
+    vector<double>::const_iterator i = factors.begin();
+    for (; i != factors.end(); ++i) {
+        damage *= *i;
     }
 
     if (critical) {

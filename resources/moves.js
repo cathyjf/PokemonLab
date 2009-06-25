@@ -23,6 +23,41 @@
  */
 
 /**
+ * Make a move that causes the target's evasiveness stat to become zero until
+ * it is replaced, as well as making the target vulnerable to the given types.
+ */
+function makeForesightMove(move, types) {
+    move.use = function(field, user, target, targets) {
+        field.print(Text.battle_messages_unique(84, user, target));
+        if (!target.getStatus("ForesightEffect")) {
+            var effect = new StatusEffect("ForesightEffect");
+            effect.transformStatLevel = function(user, target, stat, level) {
+                if (target != this.subject)
+                    return null;
+                if (stat != Stat.EVASION)
+                    return null;
+                if (level <= 0)
+                    return null;
+                return [0, true];
+            };
+            target.applyStatus(user, effect);
+        }
+        types.forEach(function(type) {
+            var id = "VulnerabilityEffect" + type;
+            if (target.getStatus(id))
+                return;
+            var effect = new StatusEffect(id);
+            effect.vulnerability = function(user, target) {
+                if (target != this.subject)
+                    return -1;
+                return type;
+            };
+            target.applyStatus(user, effect);
+        });
+    };
+}
+
+/**
  * Make a move that makes the next move to target the target of this move
  * always hit. The effect lasts for two turns, including the present turn,
  * or until the target leaves the field.

@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 #include <stack>
+#include <set>
 #include "../mechanics/stat.h"
 #include "../scripting/ObjectWrapper.h"
 
@@ -243,6 +244,10 @@ public:
     boost::shared_ptr<StatusObject> getAbility() const {
         return m_ability;
     }
+
+    void getImmunities(Pokemon *user, Pokemon *target,
+            std::set<const PokemonType *> &immunities,
+            std::set<const PokemonType *> &vulnerabilities);
 
     struct RECENT_MOVE {
         Pokemon *user;

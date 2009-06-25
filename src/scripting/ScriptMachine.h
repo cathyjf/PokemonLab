@@ -235,6 +235,8 @@ public:
     bool transformHealthChange(ScriptContext *, int, bool, int *);
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
     bool transformStatLevel(ScriptContext *, Pokemon *, Pokemon *, STAT, int *);
+    const PokemonType *getVulnerability(ScriptContext *, Pokemon *, Pokemon *);
+    const PokemonType *getImmunity(ScriptContext *, Pokemon *, Pokemon *);
 
 };
 
