@@ -4630,11 +4630,32 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("MagnetRiseEffect")
+        || user.getStatus("IngrainEffect")
+        || user.hasAbility("Levitate")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("MagnetRiseEffect");
+effect.name = Text.battle_messages_unique(130);
+effect.turns = 5;
+effect.immunity = function(user, target) {
+    if (target != this.subject)
+        return -1;
+    return Type.GROUND;
+};
+effect.tick = function() {
+    if (--this.turns <= 0) {
+        field.print(Text.battle_messages_unique(132, this.subject));
+        this.subject.removeStatus(this);
+    }
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(131, user));
 ]]>
 </use>
 </move>
