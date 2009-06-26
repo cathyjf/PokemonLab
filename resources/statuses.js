@@ -141,12 +141,12 @@ makeEffect({
             return false;
         if (target != null)
             return false;
-        field.print(Text.status_effects_confusion(3, user));
         if (--this.turns <= 0) {
             field.print(Text.status_effects_confusion(2, user));
             user.removeStatus(this);
             return false;
         }
+        field.print(Text.status_effects_confusion(3, user));
         if (field.random(0.5)) {
             return false;
         }
