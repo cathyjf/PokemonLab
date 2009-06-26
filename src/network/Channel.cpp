@@ -149,8 +149,7 @@ Channel::CLIENT_MAP::value_type Channel::getClient(const string &name) {
     shared_lock<shared_mutex> lock(m_impl->mutex);
     CLIENT_MAP::iterator i = m_impl->clients.begin();
     for (; i != m_impl->clients.end(); ++i) {
-        // todo: maybe make this lowercase?
-        if (name == (*i).first->getName()) {
+        if (iequals(name, (*i).first->getName())) {
             return *i;
         }
     }
