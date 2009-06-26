@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   SimpleBattle.cpp
  * Author: Catherine
  *
@@ -118,14 +118,8 @@ using namespace shoddybattle;
 
 int main() {
     ScriptMachine machine;
-    ScriptContext *cx = machine.acquireContext();
+    ScriptContextPtr cx = machine.acquireContext();
     cx->runFile("resources/main.js");
-    cx->runFile("resources/moves.js");
-    cx->runFile("resources/constants.js");
-    cx->runFile("resources/StatusEffect.js");
-    cx->runFile("resources/statuses.js");
-    cx->runFile("resources/abilities.js");
-    machine.releaseContext(cx);
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
     MoveDatabase *moves = machine.getMoveDatabase();
@@ -142,7 +136,8 @@ int main() {
 
     field.getActivePokemon(0, 1)->setMove(0, "Quick Attack", 5);
     //field.getActivePokemon(0, 0)->setMove(0, "Last Resort", 5);
-    field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 5);
+    field.getActivePokemon(0, 0)->setMove(0, "Taunt", 0);
+    field.getActivePokemon(0, 0)->setMove(1, "Mirror Move", 0);
     field.getActivePokemon(1, 0)->setMove(0, "Metal Burst", 5);
     field.getActivePokemon(1, 1)->setMove(0, "Counter", 5);
 
