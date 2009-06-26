@@ -463,11 +463,10 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+makeRevengeMove(this);
 ]]>
 </use>
 </move>
@@ -6417,13 +6416,12 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRevengeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Reversal" id="318">

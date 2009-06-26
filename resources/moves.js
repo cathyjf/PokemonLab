@@ -23,6 +23,27 @@
  */
 
 /**
+ * Make a move that doubles in power if the target was the last non-user to
+ * hit to the target with an attack (other than Pain Split).
+ */
+function makeRevengeMove(move) {
+    var power_ = move.power;
+    move.use = function(field, user, target, targets) {
+        this.power = power_;
+        var recent = null;
+        while ((recent = user.popRecentDamage()) != null) {
+            if (recent[1].name == "Pain Split")
+                continue;
+            if (recent[0] == target) {
+                this.power *= 2;
+            }
+            break;
+        }
+        target.hp -= field.calculate(this, user, target, targets);
+    };
+}
+
+/**
  * Make a move that causes the target's evasiveness stat to become zero until
  * it is replaced, as well as making the target vulnerable to the given types.
  */
