@@ -8210,13 +8210,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.EVASION, -1)]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeItemSwitchMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Swords Dance" id="409">
@@ -8733,13 +8732,12 @@ makeStatusMove(this, [[effect, 0.20]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeItemSwitchMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Trick Room" id="434">

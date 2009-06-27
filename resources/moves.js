@@ -116,6 +116,29 @@ function makeLockOnMove(move) {
 }
 
 /**
+ * Make a move that causes the user to switch items with the target.
+ */
+function makeItemSwitchMove(move) {
+    move.use = function(field, user, target, targets) {
+        if (!user.item && !target.item) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        if (user.sendMessage("informRemoveItem"))
+            return;
+        if (target.sendMessage("informRemoveItem"))
+            return;
+        [user.item, target.item] = [target.item, user.item];
+        if (user.item) {
+            field.print(Text.battle_messages_unique(13, user, user.item));
+        }
+        if (target.item) {
+            field.print(Text.battle_messages_unique(13, target, target.item));
+        }
+    };
+}
+
+/**
  * Make a move that steals the target's item.
  */
 function makeThiefMove(move) {
