@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   network.cpp
  * Author: Catherine
  *
@@ -126,7 +126,7 @@ OutMessage &OutMessage::operator<<(const string &str) {
 class InMessage {
 public:
     class InvalidMessage {
-        
+
     };
 
     enum TYPE {
@@ -141,6 +141,7 @@ public:
         CHALLENGE_TEAM = 8,
         WITHDRAW_CHALLENGE = 9,
         BATTLE_ACTION = 10,
+        PART_CHANNEL = 11
     };
 
     InMessage() {
@@ -180,12 +181,12 @@ public:
 
     InMessage &operator>>(unsigned char &c) {
         ensureMoreData(sizeof(unsigned char));
-        
+
         c = *(unsigned char *)(&m_data[m_pos]);
         m_pos += sizeof(unsigned char);
         return *this;
     }
-    
+
     InMessage &operator>>(string &str) {
         ensureMoreData(sizeof(uint16_t));
 
@@ -294,7 +295,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     vector<int> ppUp;
     int ivs[STAT_COUNT];
     int evs[STAT_COUNT];
-    
+
     msg >> speciesId >> nickname >> shiny >> gender >> level
             >> item >> ability >> nature >> moveCount;
 
@@ -389,7 +390,7 @@ public:
     bool authenticateClient(ClientImplPtr client);
     void addChannel(ChannelPtr);
     void removeChannel(ChannelPtr);
-    
+
 private:
     void acceptClient();
     void handleAccept(ClientImplPtr client,
@@ -499,7 +500,7 @@ public:
     void disconnect();
     void joinChannel(ChannelPtr channel);
     void partChannel(ChannelPtr channel);
-    
+
 private:
 
     ChannelPtr getChannel(const int id);
@@ -718,7 +719,7 @@ private:
         if (!client) {
             return;
         }
-        
+
         m_challenges[opponent] = challenge;
         client->sendMessage(IncomingChallenge(m_name, *challenge));
     }
@@ -836,6 +837,18 @@ private:
         }
     }
 
+    /**
+     * int32 : channel id
+     */
+    void handlePartChannel(InMessage &msg) {
+        int32_t id;
+        msg >> id;
+        ChannelPtr p = getChannel(id);
+        if (p) {
+            partChannel(p);
+        }
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -872,7 +885,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleResolveChallenge,
     &ClientImpl::handleChallengeTeam,
     &ClientImpl::handleWithdrawChallenge,
-    &ClientImpl::handleBattleAction
+    &ClientImpl::handleBattleAction,
+    &ClientImpl::handlePartChannel,
 };
 
 /**
@@ -1128,7 +1142,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 1
+#if 0
 
 #include <boost/thread.hpp>
 
