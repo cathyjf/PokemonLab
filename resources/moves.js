@@ -23,6 +23,31 @@
  */
 
 /**
+ * Make a move that weakens attacks of a particular type while the user of the
+ * move remains active.
+ */
+function makeTypeWeakeningMove(move, type) {
+    var id = "TypeWeakeningEffect" + type;
+    move.prepareSelf = function(field, user) {
+        if (user.getStatus(id)) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var effect = new StatusEffect(id);
+        effect.modifier = function(field, user, target, move, critical) {
+            if (move.type != type)
+                return null;
+            return [0, 0.5, 3];
+        };
+        user.applyStatus(user, effect);
+        field.print(Text.battle_messages_unique(35, Text.types(type)));
+    };
+    move.use = function() {
+        // Does nothing.
+    };
+}
+
+/**
  * Make a move that cures every target of special status effects and confusion.
  */
 function makeStatusCureMove(move) {

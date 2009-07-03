@@ -5276,13 +5276,13 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <pp>15</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeTypeWeakeningMove(this, Type.ELECTRIC);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mud-Slap" id="260">
@@ -9128,13 +9128,13 @@ makeStatusMove(this, [[ConfusionEffect, 0.2]]);
 <pp>15</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeTypeWeakeningMove(this, Type.FIRE);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Water Spout" id="450">
