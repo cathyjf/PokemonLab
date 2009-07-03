@@ -23,6 +23,24 @@
  */
 
 /**
+ * Make a move that cures every target of special status effects and confusion.
+ */
+function makeStatusCureMove(move) {
+    move.use = function(field, user, target, targets) {
+        var effect = target.getStatus(StatusEffect.SPECIAL_EFFECT);
+        if (effect) {
+            field.print(Text.battle_messages_unique(1, target, effect));
+            target.removeStatus(effect);
+        }
+        effect = target.getStatus("ConfusionEffect");
+        if (effect) {
+            field.print(Text.battle_messages_unique(1, target, effect));
+            target.removeStatus(effect);
+        }
+    };
+}
+
+/**
  * Make a move that doubles in power if the target was the last non-user to
  * hit to the target with an attack (other than Pain Split).
  */
@@ -692,6 +710,9 @@ function makeRecoilMove(move, divisor) {
  * when the move is selected. If the final parameter is not undefined then the
  * move also makes the user invulnerable to all moves except those named in
  * the array passed as the final parameter.
+ *
+ * NOTE (TODO): It should not be possible for the charge turn to be stopped
+ *              by an immunity veto (target != null).
  */
 function makeChargeMove(move, text, vulnerable) {
     var execute = getParentUse(move);

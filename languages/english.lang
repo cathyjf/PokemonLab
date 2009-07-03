@@ -212,7 +212,7 @@
 
 [battle-messages-unique]
 0: Hit $1 time(s)!
-1: $1 was cured of paralysis!
+1: $1 was cured of $2!
 2: But nothing happened!
 3: Coins scattered everywhere!
 5: $1 fell asleep and became healthy! //rest if you have a status effect

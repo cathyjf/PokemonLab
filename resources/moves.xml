@@ -317,13 +317,12 @@ makeMultipleHitMove(this);
 <target>Allies</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusCureMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Assist" id="16">
@@ -3556,13 +3555,12 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 <flags>
     <snatch/>
     <sound/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusCureMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Heal Block" id="176">
