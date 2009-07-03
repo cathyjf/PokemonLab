@@ -334,11 +334,40 @@ makeMultipleHitMove(this);
 <pp>20</pp>
 <target>None</target>
 <flags>
-    <unimplemented/>
+
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Metronome", "Struggle", "Sketch", "Mimic", "Chatter",
+                   "Sleep Talk", "Assist", "Mirror Move", "Counter",
+                   "Mirror Coat", "Protect", "Detect", "Endure",
+                   "Destiny Bond", "Thief", "Follow Me", "Snatch",
+                   "Helping Hand", "Covet", "Trick", "Focus Punch", "Feint",
+                   "Copycat", "Me First", "Switcheroo"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+var choices = [];
+var size = field.getPartySize(user.party);
+for (var i = 0; i < size; ++i) {
+    var p = field.getPokemon(user.party, i);
+    if (p == user)
+        continue;
+    for (var j = 0; j < p.moveCount; ++j) {
+        var move = p.getMove(j);
+        if (this.forbidden_.indexOf(move.name) == -1) {
+            choices.push(move);
+        }
+    }
+}
+var length = choices.length;
+if (length == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var choice = choices[field.random(0, length - 1)];
+user.execute(choice);
 ]]>
 </use>
 </move>

@@ -254,6 +254,49 @@ JSBool calculate(JSContext *cx,
 }
 
 /**
+ * field.getPartySize(party)
+ *
+ * Get the length of a particular party.
+ */
+JSBool getPartySize(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    const jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int party = JSVAL_TO_INT(v);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getPartySize: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    *ret = INT_TO_JSVAL(p->getTeam(party).size());
+    return JS_TRUE;
+}
+
+/**
+ * field.getPokemon(party, idx)
+ *
+ * Get a particular pokemon.
+ */
+JSBool getPokemon(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_INT(argv[1])) {
+        return JS_FALSE;
+    }
+    const int party = JSVAL_TO_INT(argv[0]);
+    const int idx = JSVAL_TO_INT(argv[1]);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getPokemon: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    void *sobj = p->getTeam(party)[idx]->getObject()->getObject();
+    *ret = OBJECT_TO_JSVAL((JSObject *)sobj);
+    return JS_TRUE;
+}
+
+/**
  * field.sendMessage(message, ...)
  *
  * TODO: This method duplicates a method in PokemonObject. The two methods
@@ -339,6 +382,8 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("applyStatus", applyStatus, 1, 0, 0),
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
+    JS_FS("getPartySize", getPartySize, 1, 0, 0),
+    JS_FS("getPokemon", getPokemon, 2, 0, 0),
     JS_FS_END
 };
 
