@@ -6393,11 +6393,16 @@ makePartyBuffMove(this, MoveClass.PHYSICAL);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus(StatusEffect.SPECIAL_EFFECT);
+if (!effect || (effect.id == "SleepEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+field.print(Text.battle_messages_unique(1, user, effect));
+user.removeStatus(effect);
 ]]>
 </use>
 </move>
