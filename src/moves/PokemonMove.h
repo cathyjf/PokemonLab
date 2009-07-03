@@ -43,7 +43,7 @@ enum MOVE_CLASS {
     MC_OTHER
 };
 
-const int FLAG_COUNT = 10;
+const int FLAG_COUNT = 11;
 
 enum MOVE_FLAG {
     F_CONTACT,          // Makes contact?
@@ -57,6 +57,7 @@ enum MOVE_FLAG {
     F_UNIMPLEMENTED,    // Is this move unimplemented?
     F_INTERNAL,         // Is this move for internal use only?
     F_NO_CRITICAL,      // Does this move never critical?
+    F_SOUND             // Is this move sound-based?
 };
 
 class ScriptMachine;

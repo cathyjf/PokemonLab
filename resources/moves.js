@@ -400,7 +400,7 @@ function makeRampageMove(move) {
  */
 function makePartyBuffMove(move, moveClass) {
     var id = "BuffEffect" + moveClass;
-    move.use = function(field, user, target, targets) {
+    move.prepareSelf = function(field, user) {
         if (user.getStatus(id)) {
             field.print(Text.battle_messages(0));
             return;
@@ -439,6 +439,9 @@ function makePartyBuffMove(move, moveClass) {
         };
         field.print(Text.battle_messages_unique(79));
         field.applyStatus(effect);
+    };
+    move.use = function() {
+        // Does nothing.
     };
 }
 

@@ -272,3 +272,19 @@ makeAbility({
     }
 });
 
+/*******************
+ * Soundproof
+ *******************/
+makeAbility({
+    name : "Soundproof",
+    vetoExecution : function(field, user, target, move) {
+        if (target != this.subject)
+            return false;
+        if (!move.flags[Flag.SOUND])
+            return false;
+        field.print(Text.ability_messages(42, this.subject, this, move));
+        return true;
+    }
+});
+
+

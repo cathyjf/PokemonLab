@@ -83,7 +83,8 @@ const Flag = {
     HIGH_CRITICAL : 6,
     UNIMPLEMENTED : 7,
     INTERNAL : 8,
-    NO_CRITICAL : 9
+    NO_CRITICAL : 9,
+    SOUND : 10
 };
 
 const Target = {

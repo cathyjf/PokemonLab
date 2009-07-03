@@ -365,6 +365,16 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
             }
         }
         sortBySpeed(targets);
+    } else if (mc == T_ALLIES) {
+        Pokemon::ARRAY &team = m_impl->teams[user->getParty()];
+        const int size = team.size();
+        for (int i = 0; i < size; ++i) {
+            Pokemon::PTR p = team[i];
+            if (!p->isFainted()) {
+                targets.push_back(p.get());
+            }
+        }
+        sortBySpeed(targets);
     }
 }
 

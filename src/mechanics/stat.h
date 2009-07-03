@@ -75,7 +75,8 @@ inline bool isEnemyTarget(const TARGET t) {
             (t == T_ALL) ||
             (t == T_ENEMY) ||
             (t == T_USER_OR_ALLY) ||
-            (t == T_ALLY));
+            (t == T_ALLY) ||
+            (t == T_ALLIES));
 }
 
 inline bool isTargeted(const TARGET t) {

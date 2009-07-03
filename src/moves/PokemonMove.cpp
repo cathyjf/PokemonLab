@@ -53,7 +53,7 @@ public:
         accuracy = 1.00;
         type = &PokemonType::NORMAL;
     }
-    
+
     string name;
     int id;
     unsigned int power;
@@ -207,6 +207,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         pMove->flags[F_UNIMPLEMENTED] = hasChildElement(node, "unimplemented");
         pMove->flags[F_INTERNAL] = hasChildElement(node, "internal");
         pMove->flags[F_NO_CRITICAL] = hasChildElement(node, "no-critical");
+        pMove->flags[F_SOUND] = hasChildElement(node, "sound");
     }
 
     // power
@@ -389,7 +390,7 @@ int main() {
     MoveDatabase *moves = machine.getMoveDatabase();
 
     Pokemon::ARRAY team[2];
-    loadTeam("/home/Catherine/randomteam", *species, team[0]);
+    loadTeam("/home/Catherine/gengarteam", *species, team[0]);
     loadTeam("/home/Catherine/toxicorb", *species, team[1]);
 
     const string trainer[] = { "Catherine", "bearzly" };
@@ -398,43 +399,45 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Covet", 5);
+    field.getActivePokemon(0, 1)->setMove(0, "Perish Song", 3);
     field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5);
-    team[0][1]->setHp(10);
-    field.getActivePokemon(0, 0)->setMove(0, "Torment", 5);
+    team[1][0]->setHp(10);
+    field.getActivePokemon(0, 0)->setMove(0, "Revenge", 5);
+    field.getActivePokemon(0, 0)->setMove(1, "Acupressure", 5);
+    field.getActivePokemon(0, 0)->setMove(2, "Focus Punch", 5);
     field.getActivePokemon(1, 0)->setMove(0, "Copycat", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Copycat", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Wish", 5);
 
     field.getActivePokemon(0, 0)->setItem("Brightpowder");
-    field.getActivePokemon(0, 1)->setItem(NULL);
-    field.getActivePokemon(1, 0)->setItem("Brightpowder");
-    field.getActivePokemon(1, 1)->setItem("Brightpowder");
+    field.getActivePokemon(0, 1)->setItem("Lagging Tail");
+    field.getActivePokemon(1, 0)->setItem("Leftovers");
+    field.getActivePokemon(1, 1)->setItem("Light Clay");
 
-    field.getActivePokemon(0, 0)->setAbility("Anger Point");
-    field.getActivePokemon(0, 1)->setAbility("Anger Point");
-    field.getActivePokemon(1, 0)->setAbility("Anger Point");
+    field.getActivePokemon(0, 0)->setAbility("Sand Veil");
+    field.getActivePokemon(0, 1)->setAbility("Levitate");
+    field.getActivePokemon(1, 0)->setAbility("Soundproof");
     field.getActivePokemon(1, 1)->setAbility("Anger Point");
 
     field.beginBattle();
 
     vector<PokemonTurn> turns;
     //turns.push_back(PokemonTurn(TT_SWITCH, 5));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 2));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
 
     time_t initial = clock();
     field.processTurn(turns);
-    
+
     field.processTurn(turns);
-    
-    field.processTurn(turns);
+
+    //field.processTurn(turns);
     turns[1] = PokemonTurn(TT_MOVE, 1, 2);
     field.processTurn(turns);
-    /**field.processTurn(turns);
     field.processTurn(turns);
-    field.processTurn(turns);**/
+    field.processTurn(turns);
+    field.processTurn(turns);
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
     cout << delta << " seconds to process the turn." << endl;

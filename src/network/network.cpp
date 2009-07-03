@@ -1142,7 +1142,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 0
+#if 1
 
 #include <boost/thread.hpp>
 

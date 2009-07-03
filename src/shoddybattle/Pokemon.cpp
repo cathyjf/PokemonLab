@@ -457,7 +457,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
 
     TARGET tc = move->getTargetClass(m_cx);
 
-    if ((tc == T_USER) || (tc == T_ALLIES)) {
+    if (tc == T_USER) {
         move->use(m_cx, m_field, this, NULL, 0);
         m_acted = true;
         return true;
@@ -492,7 +492,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
 
     BattleField::EXECUTION entry = { this, move };
     m_field->pushExecution(entry);
-    
+
     move->prepareSelf(m_cx, m_field, this);
 
     if (isEnemyTarget(tc)) {
