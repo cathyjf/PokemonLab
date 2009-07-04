@@ -23,6 +23,51 @@
  */
 
 /**
+ * Make a move that heals a different amount depending on the weather.
+ *
+ * TODO: WARNING! The mechanics of this move were MADE UP by me! It is unknown
+ *       which weather takes precedence when multiple weathers are present. I
+ *       assume that sun takes precedence over any other weather, and that
+ *       any combination of weathers takes precedence over no weather.
+ */
+function makeWeatherBasedHealingMove(move) {
+    move.use = function(field, user, target, targets) {
+        var max = user.getStat(Stat.HP);
+        if (user.hp == max) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var flags = getGlobalController(user).flags;
+        var delta = 0;
+        if (flags[GlobalEffect.SUN]) {
+            delta = Math.floor(max * 2 / 3);
+        } else if (flags[GlobalEffect.RAIN] || flags[GlobalEffect.HAIL] ||
+                flags[GlobalEffect.GRAVITY] || flags[GlobalEffect.FOG] ||
+                flags[GlobalEffect.SAND] || flags[GlobalEffect.TRICK_ROOM]) {
+            delta = Math.floor(max / 4);
+        } else {
+            delta = Math.floor(max / 2);
+        }
+        user.hp += delta;
+    };
+}
+
+/**
+ * Make a move that summons weather.
+ */
+function makeWeatherMove(move, idx) {
+    move.prepareSelf = function(field, user) {
+        var effect = getGlobalController(user);
+        if (!effect.applyWeather(user, idx)) {
+            field.print(Text.battle_messages(0));
+        }
+    };
+    move.use = function() {
+        // Does nothing.
+    };
+}
+
+/**
  * Make a move that weakens attacks of a particular type while the user of the
  * move remains active.
  */

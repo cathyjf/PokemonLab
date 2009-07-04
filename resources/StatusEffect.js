@@ -52,7 +52,7 @@ function StatusEffect(id) {
 
 // Special categories of status effects.
 StatusEffect.SPECIAL_EFFECT = 2;
-StatusEffect.WEATHER_EFFECT = 3;
+StatusEffect.GLOBAL_EFFECT = 3;
 
 // Flags used for the "garbage collection" system.
 StatusEffect.STATE_ACTIVE = 0;

@@ -706,13 +706,22 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[FreezeEffect, 0.1]]);
+var accuracy_ = this.accuracy;
+this.attemptHit = function(field, user, target) {
+    this.accuracy = accuracy_;
+    var flags = getGlobalController(user).flags;
+    if (flags[GlobalEffect.HAIL]) {
+        this.accuracy = 0;
+        // TODO: maybe apply effect for x0 instead...
+    }
+    return field.attemptHit(this, user, target);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Block" id="35">
@@ -3436,14 +3445,13 @@ target.hp -= field.calculate(this, user, target, targets);
 <pp>10</pp>
 <target>All</target>
 <flags>
-    <protect/>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeWeatherMove(this, GlobalEffect.HAIL);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hammer Arm" id="170">
@@ -5203,13 +5211,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeWeatherBasedHealingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Morning Sun" id="256">
@@ -5221,13 +5228,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -1), 0.5]]);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeWeatherBasedHealingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mud Bomb" id="257">
@@ -6216,10 +6222,14 @@ this.beginTurn = function(field, user, target) {
 <![CDATA[
 this.power = this.power_;
 var effect = user.getStatus("PursuitEffect");
-if (effect && effect.executed) {
+var switching = effect && effect.executed;
+if (switching) {
     this.power *= 2;
 }
 target.hp -= field.calculate(this, user, target, targets);
+if (target.fainted && switching && (user.party == field.host)) {
+    getGlobalController(user).simulateBufferOverflow();
+}
 ]]>
 </use>
 </move>
@@ -6269,13 +6279,13 @@ target.hp -= field.calculate(this, user, target, targets);
 <pp>5</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeWeatherMove(this, GlobalEffect.RAIN);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Rapid Spin" id="308">
@@ -6826,13 +6836,13 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1)]]);
 <pp>10</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeWeatherMove(this, GlobalEffect.SAND);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Scary Face" id="338">
@@ -7555,13 +7565,34 @@ makeRecoveryMove(this);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+/** TODO: WARNING! These mechanics are in fact MADE UP by me. I am making it so
+  *       that one-turn Solarbeam always has max power, regardless of what
+  *       other weathers are in effect. This may not be correct, but I doubt
+  *       it is going to be tested any time soon, so in the interest of getting
+  *       this done, I am making up some mechanics.
+  */
+makeChargeMove(this, Text.battle_messages_charge.wrap(0));
+var parent = this.use;
+var power_ = this.power;
+this.use = function(field, user, target, targets) {
+    this.power = power_;
+    var flags = getGlobalController(user).flags;
+    if (flags[GlobalEffect.SUN]) {
+        target.hp -= field.calculate(this, user, target, targets);
+        return;
+    }
+    if (flags[GlobalEffect.RAIN]
+            || flags[GlobalEffect.SAND]
+            || flags[GlobalEffect.HAIL]) {
+        this.power /= 2;
+    }
+    parent.call(this, field, user, target, targets);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sonicboom" id="376">
@@ -8057,13 +8088,13 @@ target.hp -= field.calculate(this, user, target, targets);
 <pp>5</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeWeatherMove(this, GlobalEffect.SUN);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Super Fang" id="399">
@@ -8290,13 +8321,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.ATTACK, 2));
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeWeatherBasedHealingMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Tackle" id="411">
@@ -8527,8 +8557,22 @@ makeRampageMove(this);
 </flags>
 <init>
 <![CDATA[
-// TODO: take care of weather effects!
+/**
+  * TODO: WARNING! Mechanics MADE UP by me here.
+  */
 makeStatusMove(this, [[ParalysisEffect, 0.3]]);
+var accuracy_ = this.accuracy;
+this.attemptHit = function(field, user, target) {
+    this.accuracy = accuracy_;
+    var flags = getGlobalController(user).flags;
+    if (flags[GlobalEffect.RAIN]) {
+        this.accuracy = 0;
+        // TODO: maybe apply effect for x0 instead...
+    } else if (flags[GlobalEffect.SUN]) {
+        this.accuracy = 0.50;
+    }
+    return field.attemptHit(this, user, target);
+};
 ]]>
 </init>
 </move>

@@ -719,21 +719,27 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
 }
 
 /**
+ * Begin the battle for a particular party.
+ */
+void BattleField::beginBattle(const int party) {
+    for (int i = 0; i < m_impl->partySize; ++i) {
+        PokemonSlot &slot = (*m_impl->active[party])[i];
+        Pokemon::PTR p = slot.pokemon;
+        if (p) {
+            p->setSlot(i);
+            informSendOut(p.get());
+            p->switchIn();
+        }
+    }
+}
+
+/**
  * Begin the battle.
  */
 void BattleField::beginBattle() {
-    // todo: maybe sort these by speed? not sure on these mechanics
-    for (int i = 0; i < TEAM_COUNT; ++i) {
-        for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
-            if (p) {
-                p->setSlot(j);
-                informSendOut(p.get());
-                p->switchIn();
-            }
-        }
-    }
+    // Host goes second (if I remember correctly). TODO: Check this.
+    beginBattle(1 - m_impl->host);
+    beginBattle(m_impl->host);
 }
 
 namespace {

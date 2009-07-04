@@ -22,12 +22,17 @@
  * online at http://gnu.org.
  */
 
-function makeEffect(obj) {
+/**
+ * Make a new effect object. The first parameter is the parent effect and the
+ * second parameter is the object whose properties will be added to a new
+ * instance of the parent.
+ */
+function makeEffect(f, obj) {
     if (obj.ctor == undefined) {
         obj.ctor = function() { };
     }
     var ctor = obj.ctor;
-    ctor.prototype = new StatusEffect(obj.id);
+    ctor.prototype = new f(obj.id);
     for (var i in obj) {
         ctor.prototype[i] = obj[i];
     }
@@ -44,13 +49,14 @@ function makeEffect(obj) {
  *
  * Ice-type pokemon are immune to freeze.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "FreezeEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_freeze(0),
     vetoTier : 0,
     applyEffect : function() {
-        if (this.subject.isType(Type.ICE)) {
+        if (this.subject.isType(Type.ICE)
+                || this.subject.getStatus("SunEffect")) {
             return false;
         }
         var field = this.subject.field;
@@ -96,7 +102,7 @@ makeEffect({
  * The subject's next move to be executed is vetoed. The status vanishes at
  * the end of the turn on which it was applied.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "FlinchEffect",
     name : Text.status_effects_flinch(0),
     tier : 0,
@@ -126,7 +132,7 @@ makeEffect({
  * snaps out of confusion; hence, a pokemon has at most four chances to
  * attack itself in confusion.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "ConfusionEffect",
     name : Text.status_effects_confusion(0),
     vetoTier : 5,
@@ -170,7 +176,7 @@ makeEffect({
  *
  * Fire-type pokemon are inherently immune to Burn.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "BurnEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_burn(0),
@@ -212,7 +218,7 @@ makeEffect({
  * The afflicted pokemon is hurt 1/8 of its max hp at the end of each turn.
  * Poison- and Steel-type pokemon are immune to poison.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "PoisonEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_poison(0),
@@ -245,7 +251,7 @@ makeEffect({
  * The afflicted pokemon has a 25% chance of failing to act on any given turn.
  * Additionally, the subject's speed is reduced to 25% of its original value.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "ParalysisEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_paralysis(0),
@@ -284,7 +290,7 @@ makeEffect({
  *
  * Changes a stat level on one pokemon.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "StatChangeEffect",
     ctor : function(stat, delta) {
         this.applyEffect = function() {
@@ -343,7 +349,7 @@ makeEffect({
  * ability than each turn deducts two turns from the counter rather than
  * one.
  */
-makeEffect({
+makeEffect(StatusEffect, {
     id : "SleepEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_sleep(0),

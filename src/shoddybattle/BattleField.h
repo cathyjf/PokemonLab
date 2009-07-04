@@ -39,7 +39,6 @@ const int TEAM_COUNT = 2;
 enum GENERATION {
     GEN_DP,             // Diamond and Pearl
     GEN_PLATINUM,       // Platinum
-    GEM_PLATINUM_FAKE   // Platinum + incorrect weather mechanics
 };
 
 class BattleFieldImpl;
@@ -170,6 +169,11 @@ public:
      * Begin the battle.
      */
     virtual void beginBattle();
+
+    /**
+     * Begin the battle for a particular party.
+     */
+    void beginBattle(const int party);
 
     /**
      * Process a turn.
