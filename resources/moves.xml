@@ -437,11 +437,36 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("AttractEffect") || !isOppositeGender(user, target)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("AttractEffect");
+effect.name = Text.status_effects_attract(0);
+effect.vetoTier = 9;
+effect.informWithdraw = function(subject) {
+    if (subject == this.inducer) {
+        this.subject.removeStatus(this);
+    }
+};
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != null)
+        return false;
+    if (user != this.subject)
+        return false;
+    // TODO: RESEARCH QUESTION: Does Attract veto only those moves that target
+    //                          the user of Attract?
+    field.print(Text.status_effects_attract(1, this.subject, this.inducer));
+    if (field.random(0.5))
+        return false;
+    field.print(Text.status_effects_attract(2, this.subject));
+    return true;
+};
+target.applyStatus(user, effect);
+field.print(Text.status_effects_attract(3, target, user));
 ]]>
 </use>
 </move>

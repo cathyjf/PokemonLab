@@ -173,6 +173,7 @@
 0: Attract
 1: $1 is in love with foe $2!
 2: $1 is immobilised by love!
+3: $1 became infatuated with $2!
 
 [field-effects-spikes]
 0: Spikes - $1
