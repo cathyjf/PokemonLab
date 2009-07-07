@@ -22,8 +22,6 @@
  * online at http://gnu.org.
  */
 
-// TODO: Fix weather tiers by allowing fractional tiers.
-
 makeEffect(StatusEffect, {
     id : "GlobalEffect",
     ticked_ : false,
