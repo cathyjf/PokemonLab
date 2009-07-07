@@ -363,15 +363,15 @@ bool StatusObject::isPassable(ScriptContext *scx) const {
     return JSVAL_TO_BOOLEAN(val);
 }
 
-int StatusObject::getTier(ScriptContext *scx) const {
+double StatusObject::getTier(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "tier", &val);
+    jsdouble d;
+    JS_ValueToNumber(cx, val, &d);
     JS_EndRequest(cx);
-    assert(JSVAL_IS_INT(val));
-    int ret = JSVAL_TO_INT(val);
-    return ret;
+    return d;
 }
 
 int StatusObject::getSubtier(ScriptContext *scx) const {

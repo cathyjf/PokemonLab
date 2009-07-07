@@ -22,6 +22,8 @@
  * online at http://gnu.org.
  */
 
+// TODO: Fix weather tiers by allowing fractional tiers.
+
 makeEffect(StatusEffect, {
     id : "GlobalEffect",
     ticked_ : false,
@@ -43,11 +45,13 @@ makeEffect(StatusEffect, {
 makeEffect(GlobalEffect, {
     id : "WeatherEffect",
     turns_ : 5,
-    tier : 3,
+    applyEffect : function() {
+        this.tier = 3 + 0.1 * this.idx_;
+    },
     tickField : function(field) {
         if ((this.turns_ != -1) && (--this.turns_ == 0)) {
             var effect = getGlobalController(this.subject);
-            effect.removeGlobalEffect(this.subject, this.subtier);
+            effect.removeGlobalEffect(this.subject, this.idx_);
             return true;
         }
         this.tickWeather(field);
@@ -55,7 +59,7 @@ makeEffect(GlobalEffect, {
     },
     informApplied : function(user) {
         user.field.print(this.text_(1));
-        var turns = user.sendMessage("informApplyWeather", this.subtier);
+        var turns = user.sendMessage("informApplyWeather", this.idx_);
         if (turns) {
             this.turns_ = turns;
         }
@@ -118,7 +122,7 @@ makeEffect(WeatherEffect, {
     id : "RainEffect",
     name : Text.weather_rain(0),
     text_ : Text.weather_rain,
-    subtier : GlobalEffect.RAIN,
+    idx_ : GlobalEffect.RAIN,
     tickPokemon : function() {
         this.subject.sendMessage("informRainHealing");
         WeatherEffect.prototype.tickPokemon.call(this);
@@ -137,7 +141,7 @@ makeEffect(WeatherEffect, {
     id : "SandEffect",
     name : Text.weather_sandstorm(0),
     text_ : Text.weather_sandstorm,
-    subtier : GlobalEffect.SAND,
+    idx_ : GlobalEffect.SAND,
     statModifier : function(field, stat, subject) {
         if (stat != Stat.SPDEFENCE)
             return null;
@@ -151,7 +155,7 @@ makeEffect(WeatherEffect, {
     id : "SunEffect",
     name : Text.weather_sun(0),
     text_ : Text.weather_sun,
-    subtier : GlobalEffect.SUN,
+    idx_ : GlobalEffect.SUN,
     modifier : function(field, user, target, move, critical) {
         var type = move.type;
         if (type == Type.FIRE)
@@ -166,7 +170,7 @@ makeEffect(WeatherEffect, {
     id : "HailEffect",
     name : Text.weather_hail(0),
     text_ : Text.weather_hail,
-    subtier : GlobalEffect.HAIL,
+    idx_ : GlobalEffect.HAIL,
 });
 
 makeEffect(StatusEffect, {

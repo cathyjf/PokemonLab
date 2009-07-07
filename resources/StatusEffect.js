@@ -69,7 +69,7 @@ StatusEffect.prototype = {
     inducer : null,                 // Pokemon who induced this status effect.
     subject : null,                 // Subject (i.e. victim) of this status effect.
     lock : 0,                       // Special category of status effects, which cannot coexist.
-	state : StatusEffect.STATE_ACTIVE,
+    state : StatusEffect.STATE_ACTIVE,
     singleton : true,
 
     // Properties specific to each type of status effect
@@ -101,12 +101,12 @@ StatusEffect.prototype = {
     applyEffect : function() {
         return true;
     },
+    
+    // Handle the pokemon with the effect switching in.
+    switchIn : function() { },
 
-	// Handle the pokemon with the effect switching in.
-	switchIn : function() { },
-
-	// Unapply the effect.
-	unapplyEffect : function() { },
+    // Unapply the effect.
+    unapplyEffect : function() { },
 
     // Inform that this status effect could not be applied.
     informFailure : function(subject) {
@@ -121,15 +121,15 @@ StatusEffect.prototype = {
         return true;
     },
 
-	// A term in the subject's inherent priority.
-	inherentPriority : function() {
-		return 0;
-	},
+    // A term in the subject's inherent priority.
+    inherentPriority : function() {
+        return 0;
+    },
 
-	// A term in the subject's critical hit sum.
-	criticalModifier : function() {
-		return 0;
-	},
+    // A term in the subject's critical hit sum.
+    criticalModifier : function() {
+        return 0;
+    },
 
     // Called before field effects are ticked.
     beginTick : function() { },
@@ -241,39 +241,39 @@ StatusEffect.prototype = {
      */
     vetoSwitch : null,
 
-	/**
-	 * Modify the effectiveness of a move of a particular type being used on a
+    /**
+     * Modify the effectiveness of a move of a particular type being used on a
      * particular pokemon. Only handle one type at a time, not all the types
      * of the target. The second parameter is the particular type to handle, but
      * it is not always needed.
-	 *
-	 * Example:
-	 *
-	 *    function(moveType, type, target) {
+     *
+     * Example:
+     *
+     *    function(moveType, type, target) {
      *        if ((moveType == GROUND) && (target == this.subject)) {
      *            // immune to ground attacks
-	 *            return 0;
+     *            return 0;
      *        }
-	 *	      // return the usual effectiveness
+     *          // return the usual effectiveness
      *        return getEffectiveness(moveType, type);
      *    }
-	 *
-	 */
-	transformEffectiveness : null,
+     *
+     */
+    transformEffectiveness : null,
     
-	/**
-	 */
-	transformMultiplier : null,
+    /**
+     */
+    transformMultiplier : null,
 
-	/**
+    /**
      * Transform the amount of hp by which the subject's hp is about to
      * change.
      *
      *      function(hp, indirect) {
      *          return hp;
      *      }
-	 */
-	transformHealthChange : null,
+     */
+    transformHealthChange : null,
 
     /**
      * Transform the level of a stat modifier. Returns an array containing
@@ -285,9 +285,9 @@ StatusEffect.prototype = {
      */
     transformStatLevel : null,
 
-	speedComparator : null,
+    speedComparator : null,
 
-	informLostItem : null,
+    informLostItem : null,
 
     /**
      * Inform that the subject was the target of a move.
@@ -298,7 +298,7 @@ StatusEffect.prototype = {
      */
     informTargeted : null,
 
-	/** bunch of other informs **/
+    /** bunch of other informs **/
 
 };
 

@@ -748,7 +748,7 @@ struct EffectEntity {
     Pokemon::PTR subject;
     StatusObject *effect;
     int speed;
-    int tier;
+    double tier;
     int subtier;
 };
 
@@ -791,7 +791,7 @@ void BattleField::tickEffects() {
                 for (; k != statuses.end(); ++k) {
                     if ((*k)->isActive(cx)) {
                         const int speed = p->getStat(S_SPEED);
-                        const int tier = (*k)->getTier(cx);
+                        const double tier = (*k)->getTier(cx);
                         const int subtier = (*k)->getSubtier(cx);
                         EffectEntity entity = { p, k->get(), speed, tier,
                                 subtier };

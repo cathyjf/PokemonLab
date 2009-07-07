@@ -205,7 +205,7 @@ public:
     int getLock(ScriptContext *) const;
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
-    int getTier(ScriptContext *) const;
+    double getTier(ScriptContext *) const;
     int getSubtier(ScriptContext *) const;
     int getVetoTier(ScriptContext *) const;
     bool isSingleton(ScriptContext *) const;
