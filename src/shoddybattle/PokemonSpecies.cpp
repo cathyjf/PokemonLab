@@ -23,7 +23,10 @@
  */
 
 #include <set>
+#include <map>
 #include <string>
+#include <iostream>
+#include <boost/bind.hpp>
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -31,12 +34,10 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
 
-#include <iostream>
-#include <map>
-
 #include "PokemonSpecies.h"
 #include "../mechanics/PokemonType.h"
 #include "../moves/PokemonMove.h"
+#include "../scripting/ScriptMachine.h"
 
 using namespace std;
 using namespace xercesc;
@@ -366,6 +367,34 @@ set<string> PokemonSpecies::populateMoveList(const MoveDatabase &p) {
         }
     }
     return ret;
+}
+
+/**
+ * Verify that every ability is implemented.
+ */
+void SpeciesDatabase::verifyAbilities(ScriptMachine *machine) const {
+    set<string> abilities;
+    SPECIES_SET::iterator i = m_set.begin();
+    for (; i != m_set.end(); ++i) {
+        const ABILITY_LIST &part = i->second->getAbilities();
+        ABILITY_LIST::const_iterator j = part.begin();
+        for (; j != part.end(); ++j) {
+            abilities.insert(*j);
+        }
+    }
+    cout << "Unimplemented abilities:" << endl;
+    int implemented = 0;
+    ScriptContextPtr cx = machine->acquireContext();
+    set<string>::const_iterator j = abilities.begin();
+    for (; j != abilities.end(); ++j) {
+        if (cx->getAbility(*j).isNull()) {
+            cout << "    " << *j << endl;
+        } else {
+            ++implemented;
+        }
+    }
+    cout << implemented << " / " << abilities.size()
+            << " abilities implemented." << endl;
 }
 
 } // namespace shoddybattle

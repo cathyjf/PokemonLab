@@ -1154,6 +1154,8 @@ int main() {
     ScriptMachine *machine = server.getMachine();
     machine->acquireContext()->runFile("resources/main.js");
 
+    machine->getSpeciesDatabase()->verifyAbilities(machine);
+
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");
     registry->startThread();

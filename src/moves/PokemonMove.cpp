@@ -389,6 +389,8 @@ int main() {
     SpeciesDatabase *species = machine.getSpeciesDatabase();
     MoveDatabase *moves = machine.getMoveDatabase();
 
+    species->verifyAbilities(&machine);
+
     Pokemon::ARRAY team[2];
     loadTeam("/home/Catherine/gengarteam", *species, team[0]);
     loadTeam("/home/Catherine/toxicorb", *species, team[1]);
@@ -399,14 +401,15 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Perish Song", 3);
+    field.getActivePokemon(0, 1)->setMove(0, "Synthesis", 3);
     field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5);
-    team[1][0]->setHp(10);
-    field.getActivePokemon(0, 0)->setMove(0, "Revenge", 5);
+    team[0][5]->setHp(50);
+    field.getActivePokemon(0, 0)->setMove(0, "Hail", 5);
     field.getActivePokemon(0, 0)->setMove(1, "Acupressure", 5);
     field.getActivePokemon(0, 0)->setMove(2, "Focus Punch", 5);
-    field.getActivePokemon(1, 0)->setMove(0, "Copycat", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Wish", 5);
+    field.getActivePokemon(1, 0)->setMove(0, "Pursuit", 5);
+    field.getActivePokemon(1, 1)->setMove(0, "Hail", 5);
+    field.getActivePokemon(1, 1)->setMove(1, "Tackle", 5);
 
     field.getActivePokemon(0, 0)->setItem("Brightpowder");
     field.getActivePokemon(0, 1)->setItem("Lagging Tail");
@@ -428,12 +431,17 @@ int main() {
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
 
     time_t initial = clock();
-    field.processTurn(turns);
 
     field.processTurn(turns);
+    turns[0] = PokemonTurn(TT_SWITCH, 5);
+    turns[3] = PokemonTurn(TT_MOVE, 1, 1);
+    
+
+    field.processTurn(turns);
+    turns[0] = PokemonTurn(TT_SWITCH, 2);
 
     //field.processTurn(turns);
-    turns[1] = PokemonTurn(TT_MOVE, 1, 2);
+    
     field.processTurn(turns);
     field.processTurn(turns);
     field.processTurn(turns);

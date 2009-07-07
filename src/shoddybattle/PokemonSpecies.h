@@ -68,6 +68,7 @@ typedef std::vector<std::string> ABILITY_LIST;
 
 class MoveDatabase;
 class SpeciesDatabase;
+class ScriptMachine;
 
 /**
  * A species of pokemon. Each PokemonSpecies object is immutable and cannot be
@@ -153,6 +154,10 @@ public:
         }
         return ret;
     }
+    /**
+     * Verify that every ability is implemented.
+     */
+    void verifyAbilities(ScriptMachine *) const;
     ~SpeciesDatabase() {
         SPECIES_SET::iterator i = m_set.begin();
         for (; i != m_set.end(); ++i) {
