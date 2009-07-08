@@ -5772,13 +5772,12 @@ makeMultipleHitMove(this);
     <contact/>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ToxicEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Poison Gas" id="283">
@@ -8769,13 +8768,12 @@ field.print(Text.battle_messages_unique(66, target));
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatusMove(this, [[ToxicEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Toxic Spikes" id="430">

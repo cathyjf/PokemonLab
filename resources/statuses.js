@@ -246,6 +246,53 @@ makeEffect(StatusEffect, {
 
 
 /**
+ * Toxic (bad poisoning)
+ *
+ * Each turn the afflicted pokemon loses x/16 of its max HP, where x is the
+ * number of turns since the status was applied, including the turn it was
+ * applied; or, the number of turns since the pokemon became active, if the
+ * pokemon was already badly poisoned when it was sent out.
+ *
+ * The variable x does not increase beyond 15.
+ *
+ * Poison- and Steel-type pokemon are immune to bad poison.
+ */
+makeEffect(StatusEffect, {
+    id : "ToxicEffect",
+    lock : StatusEffect.SPECIAL_EFFECT,
+    name : Text.status_effects_poison(0),
+    tier : 6,
+    subtier : 4,
+    turns_ : 0,
+    switchOut : function() { return false; },
+    applyEffect : function() {
+        if (this.subject.isType(Type.POISON)
+                || this.subject.isType(Type.STEEL)) {
+            return false;
+        }
+        this.subject.field.print(Text.status_effects_poison(2, this.subject));
+        return true;
+    },
+    switchIn : function() {
+        this.turns_ = 0;
+    },
+    tick : function() {
+        if (this.turns_ < 15) {
+            ++this.turns_;
+        }
+
+        if (this.subject.sendMessage("informPoisonDamage"))
+            return;
+
+        var hp = Math.floor(this.subject.getStat(Stat.HP) * this.turns_ / 16);
+        if (hp < 1) hp = 1;
+        this.subject.field.print(Text.status_effects_poison(3, this.subject));
+        this.subject.hp -= hp;
+    }
+});
+
+
+/**
  * Paralysis
  *
  * The afflicted pokemon has a 25% chance of failing to act on any given turn.
