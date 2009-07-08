@@ -172,6 +172,26 @@ makeEffect(WeatherEffect, {
 });
 
 makeEffect(StatusEffect, {
+    id : "TrickRoomEffect",
+    name : Text.battle_messages_unique(34),
+    idx_ : GlobalEffect.TRICK_ROOM,
+    turns_ : 5,
+    informSpeedSort : function() {
+        // Sort speeds in ascending order.
+        return false;
+    },
+    informFinished : function(field) {
+        field.print(Text.battle_messages_unique(25));
+    },
+    endTick : function() {
+        if (--this.turns_ == 0) {
+            getGlobalController(this.subject).removeGlobalEffect(
+                    this.subject, GlobalEffect.TRICK_ROOM);
+        }
+    }
+});
+
+makeEffect(StatusEffect, {
     id : "GlobalEffectController",
     flags : [false, false, false, false, false, false, false, false],
     removeGlobalEffect : function(user, idx) {

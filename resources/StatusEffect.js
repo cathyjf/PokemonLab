@@ -134,6 +134,9 @@ StatusEffect.prototype = {
     // Called before field effects are ticked.
     beginTick : function() { },
 
+    // Called after field effecrts are ficked.
+    endTick : function() { },
+
     /**
      * Methods that may be implemented to achieve a desired function, but have no
      * default implementation.

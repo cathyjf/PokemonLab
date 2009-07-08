@@ -8863,13 +8863,23 @@ makeItemSwitchMove(this);
 <target>All</target>
 <flags>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+this.prepareSelf = function(field, user) {
+    var effect = getGlobalController(user);
+    if (effect.flags[GlobalEffect.TRICK_ROOM]) {
+        effect.removeGlobalEffect(user, GlobalEffect.TRICK_ROOM);
+    } else {
+        effect.applyGlobalEffect(user, GlobalEffect.TRICK_ROOM);
+        field.print(Text.battle_messages_unique(24, user));
+    }
+};
+this.use = function() {
+    // Does nothing.
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Triple Kick" id="435">

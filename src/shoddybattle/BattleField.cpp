@@ -828,6 +828,14 @@ void BattleField::tickEffects() {
         }
     }
 
+    for (STATUSES::const_iterator i = m_impl->effects.begin();
+            i != m_impl->effects.end(); ++i) {
+        if (!(*i)->isActive(cx))
+            continue;
+
+        cx->callFunctionByName(i->get(), "endTick", 0, NULL);
+    }
+
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
@@ -976,6 +984,13 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         p->setTurn(turn);
         ordered.push_back(turn);
     }
+
+    // Determine whether to sort speeds in ascending or descending order for
+    // this turn. Note that the choice to send this message to the first
+    // pokemon is arbitrary; any pokemon would work, since any effect that
+    // affects speed sorting should be present on all pokemon.
+    ScriptValue v = pokemon[0]->sendMessage("informSpeedSort", 0, NULL);
+    m_impl->descendingSpeed = v.failed() ? true : v.getBool();
     
     m_impl->sortInTurnOrder(pokemon, ordered);
 
