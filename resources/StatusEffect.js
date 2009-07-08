@@ -134,7 +134,7 @@ StatusEffect.prototype = {
     // Called before field effects are ticked.
     beginTick : function() { },
 
-    // Called after field effecrts are ficked.
+    // Called after field effects are ficked.
     endTick : function() { },
 
     /**
