@@ -8862,7 +8862,7 @@ makeItemSwitchMove(this);
 <pp>5</pp>
 <target>All</target>
 <flags>
-    <memorable/>
+
 </flags>
 <init>
 <![CDATA[
