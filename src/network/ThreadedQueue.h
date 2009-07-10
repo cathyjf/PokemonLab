@@ -27,6 +27,7 @@
 
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace shoddybattle { namespace network {
 
@@ -43,33 +44,37 @@ public:
     typedef boost::function<void (T &)> DELEGATE;
 
     ThreadedQueue(DELEGATE delegate):
-            m_delegate(delegate),
-            m_empty(true),
-            m_terminated(false),
-            m_thread(boost::bind(&ThreadedQueue::process, this)) { }
+            m_impl(new ThreadedQueueImpl(delegate)) {
+        m_impl->thread = boost::thread(
+                boost::bind(&ThreadedQueue::process, m_impl));
+    }
 
     void post(T elem) {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        while (!m_empty) {
-            m_condition.wait(lock);
+        boost::unique_lock<boost::mutex> lock(m_impl->mutex);
+        while (!m_impl->empty) {
+            m_impl->condition.wait(lock);
         }
-        m_item = elem;
-        m_empty = false;
+        m_impl->item = elem;
+        m_impl->empty = false;
         lock.unlock();
-        m_condition.notify_one();
+        m_impl->condition.notify_one();
     }
 
     void terminate() {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        if (!m_terminated) {
-            m_terminated = true;
-            while (!m_empty) {
-                m_condition.wait(lock);
+        if (boost::this_thread::get_id() == m_impl->thread.get_id()) {
+            m_impl->terminated = true;
+            return;
+        }
+        boost::unique_lock<boost::mutex> lock(m_impl->mutex);
+        if (!m_impl->terminated) {
+            m_impl->terminated = true;
+            while (!m_impl->empty) {
+                m_impl->condition.wait(lock);
             }
-            m_empty = false;
+            m_impl->empty = false;
             lock.unlock();
-            m_condition.notify_one();
-            m_thread.join();
+            m_impl->condition.notify_one();
+            m_impl->thread.join();
         }
     }
 
@@ -77,30 +82,39 @@ public:
         terminate();
     }
 
+    struct ThreadedQueueImpl {
+        boost::mutex mutex;
+        boost::condition_variable condition;
+        bool terminated;
+        bool empty;
+        DELEGATE delegate;
+        T item;
+        boost::thread thread;
+
+        ThreadedQueueImpl(DELEGATE delegate):
+                delegate(delegate),
+                empty(true),
+                terminated(false) { }
+    };
+
 private:
 
-    void process() {
-        boost::unique_lock<boost::mutex> lock(m_mutex);
-        while (true) {
-            while (m_empty) {
-                m_condition.wait(lock);
+    static void process(boost::shared_ptr<ThreadedQueueImpl> impl) {
+        boost::unique_lock<boost::mutex> lock(impl->mutex);
+        while (!impl->terminated) {
+            while (impl->empty) {
+                impl->condition.wait(lock);
             }
-            if (m_terminated) {
+            if (impl->terminated) {
                 return;
             }
-            m_delegate(m_item);
-            m_empty = true;
-            m_condition.notify_one();
+            impl->delegate(impl->item);
+            impl->empty = true;
+            impl->condition.notify_one();
         }
     }
 
-    bool m_terminated;
-    bool m_empty;
-    DELEGATE m_delegate;
-    T m_item;
-    boost::mutex m_mutex;
-    boost::condition_variable m_condition;
-    boost::thread m_thread;
+    boost::shared_ptr<ThreadedQueueImpl> m_impl;
 };
 
 }} // namespace shoddybattle::network

@@ -26,6 +26,7 @@
 #include <cmath>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "NetworkBattle.h"
 #include "ThreadedQueue.h"
@@ -70,7 +71,7 @@ public:
         BattleChannelPtr p(new BattleChannel(server, field,
                 string(), string(),
                 CHANNEL_FLAGS()));
-        server->addChannel(p);
+        p->setName(boost::lexical_cast<string>(p->getId()));
         return p;
     }
 
@@ -129,8 +130,7 @@ struct NetworkBattleImpl {
     int turnCount;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p):
-            queue(boost::bind(&NetworkBattleImpl::executeTurn,
-                    this, _1)),
+            queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
             replacement(false),
             victory(false),
             field(p),
@@ -139,12 +139,6 @@ struct NetworkBattleImpl {
             channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))) { }
 
-    ~NetworkBattleImpl() {
-        // we need to make sure the queue gets deconstructed first, since
-        // its thread can reference this object
-        queue.terminate();
-    }
-
     void beginTurn() {
         ++turnCount;
         informBeginTurn();
@@ -152,6 +146,7 @@ struct NetworkBattleImpl {
     }
     
     void executeTurn(TURN_PTR &ptr) {
+        NetworkBattle::PTR p = field->shared_from_this();
         if (replacement) {
             field->processReplacements(*ptr);
         } else {
@@ -439,6 +434,13 @@ NetworkBattle::NetworkBattle(Server *server,
         m_impl->clients.push_back(client);
         client->joinChannel(m_impl->channel);
     }
+
+    // Encode some metadata into the channel topic.
+    // TODO: Add ladder etc.
+    const string topic = trainer[0] + "," + trainer[1];
+    m_impl->channel->setTopic(topic);
+
+    server->addChannel(m_impl->channel);
     initialise(&m_impl->mech,
             generation, server->getMachine(), teams, trainer, partySize);
 }
@@ -691,11 +693,8 @@ void NetworkBattle::informSetPp(Pokemon *pokemon,
     msg << (unsigned char)pp;
     msg.finalise();
 
-    boost::lock_guard<boost::mutex> lock(m_impl->mutex);
-    ClientPtr client = m_impl->getClient(pokemon->getParty());
-    if (client) {
-        client->sendMessage(msg);
-    }
+    ClientPtr client = m_impl->clients[pokemon->getParty()];
+    client->sendMessage(msg);
 }
 
 /**

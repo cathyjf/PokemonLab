@@ -97,7 +97,11 @@ public:
 
     CLIENT_MAP::value_type getClient(const std::string &name);
 
+    void setName(const std::string &);
+
     std::string getName();
+
+    void setTopic(const std::string &);
 
     std::string getTopic();
 

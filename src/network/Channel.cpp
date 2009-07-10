@@ -156,9 +156,19 @@ Channel::CLIENT_MAP::value_type Channel::getClient(const string &name) {
     return CLIENT_MAP::value_type();
 }
 
+void Channel::setName(const string &name) {
+    unique_lock<shared_mutex> lock(m_impl->mutex);
+    m_impl->name = name;
+}
+
 string Channel::getName() {
     shared_lock<shared_mutex> lock(m_impl->mutex);
     return m_impl->name;
+}
+
+void Channel::setTopic(const string &topic) {
+    unique_lock<shared_mutex> lock(m_impl->mutex);
+    m_impl->topic = topic;
 }
 
 string Channel::getTopic() {
@@ -173,7 +183,7 @@ int32_t Channel::getId() const {
 }
 
 bool Channel::join(ClientPtr client) {
-    shared_lock<shared_mutex> lock(m_impl->mutex, boost::defer_lock_t());
+    upgrade_lock<shared_mutex> lock(m_impl->mutex, boost::defer_lock_t());
     lock.lock();
     if (m_impl->clients.find(client) != m_impl->clients.end()) {
         // already in channel
@@ -187,8 +197,12 @@ bool Channel::join(ClientPtr client) {
     }
     // tell the client all about the channel
     client->sendMessage(ChannelInfo(shared_from_this()));
-    // add the client to the channel
-    m_impl->clients.insert(Channel::CLIENT_MAP::value_type(client, flags));
+    // upgrade to exclusive ownership of the mutex
+    {
+        upgrade_to_unique_lock<shared_mutex> exclusive(lock);
+        // add the client to the channel
+        m_impl->clients.insert(Channel::CLIENT_MAP::value_type(client, flags));
+    }
     lock.unlock();
     // inform the channel
     broadcast(ChannelJoinPart(shared_from_this(), client, true));
@@ -198,11 +212,15 @@ bool Channel::join(ClientPtr client) {
 }
 
 void Channel::part(ClientPtr client) {
-    shared_lock<shared_mutex> lock(m_impl->mutex, boost::defer_lock_t());
+    upgrade_lock<shared_mutex> lock(m_impl->mutex, boost::defer_lock_t());
     lock.lock();
     if (m_impl->clients.find(client) == m_impl->clients.end())
         return;
-    m_impl->clients.erase(client);
+    // upgrade to exclusive ownership
+    {
+        upgrade_to_unique_lock<shared_mutex> exclusive(lock);
+        m_impl->clients.erase(client);
+    }
     handlePart(client);
     lock.unlock();
     broadcast(ChannelJoinPart(shared_from_this(), client, false));
