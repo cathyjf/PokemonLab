@@ -294,6 +294,9 @@ public:
 
     bool isBusy() const { return m_busy; }
 
+    void setContextThread();
+    void clearContextThread();
+
 private:
     friend class ScriptMachine;
     friend class ScriptMachineImpl;

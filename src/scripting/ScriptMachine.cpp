@@ -107,6 +107,7 @@ struct ScriptMachineImpl {
         // Need external synchronisation for cx->m_busy.
         lock_guard<mutex> guard(lock);
         cx->m_busy = false;
+        cx->clearContextThread();
     }
 
     StatusObject getSpecialStatus(JSContext *cx,
@@ -542,6 +543,7 @@ ScriptContextPtr ScriptMachine::acquireContext() {
     if (i != contexts.end()) {
         ScriptContext *cx = *i;
         cx->m_busy = true;
+        cx->setContextThread();
         return ScriptContextPtr(cx,
                 boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
     }
@@ -552,6 +554,14 @@ ScriptContextPtr ScriptMachine::acquireContext() {
     contexts.insert(context);
     return ScriptContextPtr(context,
             boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
+}
+
+void ScriptContext::clearContextThread() {
+    JS_ClearContextThread((JSContext *)m_p);
+}
+
+void ScriptContext::setContextThread() {
+    JS_SetContextThread((JSContext *)m_p);
 }
 
 static JSFunctionSpec globalFunctions[] = {

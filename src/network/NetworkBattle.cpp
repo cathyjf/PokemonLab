@@ -157,6 +157,8 @@ struct NetworkBattleImpl {
         NetworkBattle::PTR p = field->shared_from_this();
 
         boost::unique_lock<boost::recursive_mutex> lock(mutex);
+        ScriptContextPtr cx = field->getContext()->shared_from_this();
+        cx->setContextThread();
         if (replacement) {
             field->processReplacements(*ptr);
         } else {
@@ -165,6 +167,7 @@ struct NetworkBattleImpl {
         if (!victory && !requestReplacements()) {
             beginTurn();
         }
+        cx->clearContextThread();
     }
     
     void informBeginTurn() {
@@ -429,6 +432,15 @@ struct NetworkBattleImpl {
         }
     }
 
+    void handleForfeit(const int party) {
+        boost::lock_guard<boost::recursive_mutex> lock(mutex);
+
+        ScriptContextPtr cx = field->getContext()->shared_from_this();
+        cx->setContextThread();
+        field->informVictory(1 - party);
+        cx->clearContextThread();
+    }
+
     void maybeExecuteTurn() {
         const int count = requests.size();
         for (int i = 0; i < count; ++i) {
@@ -488,8 +500,9 @@ void BattleChannel::handlePart(ClientPtr client) {
     
     int party = -1;
     if (m_field && ((party = m_field->field->getParty(client)) != -1)) {
+        NetworkBattle::PTR p = m_field->field->shared_from_this();
         // user was a participant in the battle, so we need to end the battle
-        m_field->field->informVictory(1 - party);
+        m_field->handleForfeit(party);
     }
 }
 
@@ -548,6 +561,7 @@ void NetworkBattle::beginBattle() {
     BattleField::beginBattle();
     m_impl->beginTurn();
     m_impl->server->addChannel(m_impl->channel);
+    getContext()->clearContextThread();
 }
 
 int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
