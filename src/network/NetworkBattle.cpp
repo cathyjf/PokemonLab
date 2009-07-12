@@ -557,7 +557,6 @@ void NetworkBattle::beginBattle() {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         m_impl->sendBattleBegin(i);
     }
-    lock.unlock();
     BattleField::beginBattle();
     m_impl->beginTurn();
     m_impl->server->addChannel(m_impl->channel);
