@@ -488,14 +488,20 @@ public:
     void setAuthenticated(bool auth) {
         m_authenticated = auth;
     }
+    /**
+     * This method frees a battle by simultaneously removing the battle field
+     * from both of the participants' battle lists.
+     */
     void terminateBattle(boost::shared_ptr<NetworkBattle> p, ClientPtr client) {
         // dynamic downcast...
         ClientImpl *impl = dynamic_cast<ClientImpl *>(client.get());
         if (impl) {
-            lock_guard<mutex> lock(m_battleMutex);
-            lock_guard<mutex> lock2(impl->m_battleMutex);
-            m_battles.erase(p);
+            lock_guard<mutex> lock(impl->m_battleMutex);
             impl->m_battles.erase(p);
+        }
+        {
+            lock_guard<mutex> lock(m_battleMutex);
+            m_battles.erase(p);
         }
     }
     void disconnect();

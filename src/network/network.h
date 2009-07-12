@@ -114,6 +114,7 @@ public:
         BATTLE_SET_PP = 21,
         BATTLE_FAINTED = 22,
         BATTLE_BEGIN_TURN = 23,
+        SPECTATOR_BEGIN = 24
     };
 
     // variable size message

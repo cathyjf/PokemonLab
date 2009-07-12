@@ -46,8 +46,8 @@ typedef boost::shared_ptr<BattleChannel> BattleChannelPtr;
 
 /**
  * In Shoddy Battle 2, every battle is also a channel. The participants in
- * the battle are initially granted +ao. Anybody with +o or higher on the main
- * chat is granted +q in every battle.
+ * the battle are initially granted +o. Anybody with +o or higher on the main
+ * chat is granted +ao in every battle.
  *
  * The initial participants of a battle join the battle directly, but all
  * spectators join the channel rather than the underlying battle. When the
@@ -60,8 +60,7 @@ typedef boost::shared_ptr<BattleChannel> BattleChannelPtr;
  * possibly other metadata.
  *
  * When the channel becomes completely empty, or if a set amount of time
- * passes without another message being posted, the channel -- and hence the
- * associated NetworkBattle -- is destroyed.
+ * passes without another message being posted, the channel is destroyed.
  */
 class BattleChannel : public Channel {
 public:
@@ -82,6 +81,8 @@ public:
     void commitStatusFlags(ClientPtr client, FLAGS flags) {
         // does nothing in a BattleChannel
     }
+
+    bool join(ClientPtr client);
 
     FLAGS handleJoin(ClientPtr client);
 
@@ -124,6 +125,7 @@ struct NetworkBattleImpl {
     JewelMechanics mech;
     NetworkBattle *field;
     BattleChannelPtr channel;
+    vector<string> trainer;
     vector<ClientPtr> clients;
     vector<PARTY_TURN> turns;
     vector<PARTY_REQUEST> requests;
@@ -196,6 +198,69 @@ struct NetworkBattleImpl {
     }
 
     /**
+     * SPECTATOR_BEGIN
+     *
+     * int32  : field id
+     * string : first player
+     * string : second player
+     * byte   : active party size
+     * byte   : maximum party size
+     *
+     * for 0...1:
+     *     byte : party size
+     *     for 0...party size:
+     *         int16 : slot the pokemon is in or -1 if no slot
+     *         if slot != -1:
+     *             string : the nickname of the pokemon
+     *             int16  : species id
+     *             if species != -1:
+     *                 byte : gender
+     *                 byte : whether the pokemon is shiny
+     *         byte : whether the pokemon is fainted
+     *         if not fainted:
+     *             byte : present hp in [0, 48]
+     *             // TODO: statuses, stat levels, etc.
+     *
+     */
+    void prepareSpectator(ClientPtr client) {
+        boost::unique_lock<boost::recursive_mutex> lock(mutex);
+
+        OutMessage msg(OutMessage::SPECTATOR_BEGIN);
+        msg << field->getId();
+        msg << trainer[0] << trainer[1];
+        msg << (unsigned char)field->getPartySize();
+        msg << (unsigned char)6; // TODO: Do not hardcode the maximum team length.
+
+        for (int i = 0; i < TEAM_COUNT; ++i) {
+            const Pokemon::ARRAY &team = field->getTeam(i);
+            const int size = team.size();
+            msg << (unsigned char)size;
+            for (int j = 0; j < size; ++j) {
+                Pokemon::PTR p = team[j];
+                const int slot = p->getSlot();
+                msg << (int16_t)slot;
+                if (slot != -1) {
+                    msg << p->getName();
+                    writeVisualData(msg, p);
+                }
+                const bool fainted = p->isFainted();
+                msg << (unsigned char)fainted;
+                if (!fainted) {
+                    const int hp = p->getRawStat(S_HP);
+                    const int present = p->getHp();
+                    const int total =
+                            floor(48.0 * (double)present / (double)hp + 0.5);
+                    msg << (unsigned char)total;
+                    // TODO: statuses, stat levels, etc.
+                }
+            }
+        }
+
+        msg.finalise();
+        client->sendMessage(msg);
+    }
+
+    /**
      * BATTLE_BEGIN
      *
      * int32  : field id
@@ -210,6 +275,17 @@ struct NetworkBattleImpl {
         msg << id << opponent << ((unsigned char)party);
         msg.finalise();
         clients[party]->sendMessage(msg);
+    }
+
+    void writeVisualData(OutMessage &msg, Pokemon::PTR p) {
+        if (p && !p->isFainted()) {
+            int16_t species = (int16_t)p->getSpeciesId();
+            msg << species;
+            msg << (unsigned char)p->getGender();
+            msg << (unsigned char)p->isShiny();
+        } else {
+            msg << ((int16_t)-1);
+        }
     }
 
     /**
@@ -233,14 +309,7 @@ struct NetworkBattleImpl {
             PokemonParty &party = *active[i];
             for (int j = 0; j < size; ++j) {
                 Pokemon::PTR p = party[j].pokemon;
-                if (p && !p->isFainted()) {
-                    int16_t species = (int16_t)p->getSpeciesId();
-                    msg << species;
-                    msg << (unsigned char)p->getGender();
-                    msg << (unsigned char)p->isShiny();
-                } else {
-                    msg << ((int16_t)-1);
-                }
+                writeVisualData(msg, p);
             }
         }
         msg.finalise();
@@ -398,6 +467,21 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     return ret;
 }
 
+bool BattleChannel::join(ClientPtr client) {
+    boost::lock_guard<boost::mutex> lock(m_mutex);
+
+    // If the battle has ended then more clients may not join.
+    if (!m_field)
+        return false;
+
+    if (!Channel::join(client))
+        return false;
+    if (m_field->field->getParty(client) == -1) {
+        m_field->prepareSpectator(client);
+    }
+    return true;
+}
+
 void BattleChannel::handlePart(ClientPtr client) {
     boost::lock_guard<boost::mutex> lock(m_mutex);
     
@@ -433,24 +517,23 @@ NetworkBattle::NetworkBattle(Server *server,
             new NetworkBattleImpl(server, this));
     m_impl->turns.resize(TEAM_COUNT);
     m_impl->requests.resize(TEAM_COUNT);
-    string trainer[TEAM_COUNT];
     for (int i = 0; i < TEAM_COUNT; ++i) {
         ClientPtr client = clients[i];
-        trainer[i] = client->getName();
+        m_impl->trainer.push_back(client->getName());
         m_impl->clients.push_back(client);
         client->joinChannel(m_impl->channel);
     }
 
     // Encode some metadata into the channel topic.
     // TODO: Add ladder etc.
-    const string topic = trainer[0] + ","
-            + trainer[1] + ","
+    const string topic = m_impl->trainer[0] + ","
+            + m_impl->trainer[1] + ","
             + boost::lexical_cast<string>(generation) + ","
             + boost::lexical_cast<string>(partySize);
     m_impl->channel->setTopic(topic);
 
-    initialise(&m_impl->mech,
-            generation, server->getMachine(), teams, trainer, partySize);
+    initialise(&m_impl->mech, generation, server->getMachine(),
+            teams, &m_impl->trainer[0], partySize);
 }
 
 int32_t NetworkBattle::getId() const {
