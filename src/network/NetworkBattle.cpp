@@ -229,7 +229,8 @@ struct NetworkBattleImpl {
         msg << field->getId();
         msg << trainer[0] << trainer[1];
         msg << (unsigned char)field->getPartySize();
-        msg << (unsigned char)6; // TODO: Do not hardcode the maximum team length.
+        // TODO: Do not hardcode the maximum team length.
+        msg << (unsigned char)6;
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
             const Pokemon::ARRAY &team = field->getTeam(i);
@@ -490,8 +491,6 @@ void BattleChannel::handlePart(ClientPtr client) {
         // user was a participant in the battle, so we need to end the battle
         m_field->field->informVictory(1 - party);
     }
-
-    // TODO: destroy the channel if this is the last user
 }
 
 void NetworkBattle::terminate() {
