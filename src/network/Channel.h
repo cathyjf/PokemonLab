@@ -121,6 +121,8 @@ public:
 
     virtual bool handleBan() const { return false; }
 
+    virtual void handleFinalise() { }
+
     virtual int32_t getId() const;
 
     virtual bool join(ClientPtr client);

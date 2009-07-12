@@ -141,7 +141,8 @@ public:
         CHALLENGE_TEAM = 8,
         WITHDRAW_CHALLENGE = 9,
         BATTLE_ACTION = 10,
-        PART_CHANNEL = 11
+        PART_CHANNEL = 11,
+        REQUEST_CHANNEL_LIST = 12
     };
 
     InMessage() {
@@ -634,8 +635,6 @@ private:
         sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
 
         m_id = auth.second;
-        m_server->sendChannelList(shared_from_this());
-        // todo: send list of battles...
     }
 
     /**
@@ -849,6 +848,10 @@ private:
         }
     }
 
+    void handleRequestChannelList(InMessage &msg) {
+        m_server->sendChannelList(shared_from_this());
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -887,6 +890,7 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleWithdrawChallenge,
     &ClientImpl::handleBattleAction,
     &ClientImpl::handlePartChannel,
+    &ClientImpl::handleRequestChannelList
 };
 
 /**

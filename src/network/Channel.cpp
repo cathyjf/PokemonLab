@@ -224,6 +224,9 @@ void Channel::part(ClientPtr client) {
     handlePart(client);
     lock.unlock();
     broadcast(ChannelJoinPart(shared_from_this(), client, false));
+    if (getPopulation() == 0) {
+        handleFinalise();
+    }
 }
 
 void Channel::commitStatusFlags(ClientPtr client, FLAGS flags) {
