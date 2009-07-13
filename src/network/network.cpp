@@ -881,6 +881,7 @@ private:
 
     typedef void (ClientImpl::*MESSAGE_HANDLER)(InMessage &msg);
     static const MESSAGE_HANDLER m_handlers[];
+    static const int MESSAGE_COUNT;
 };
 
 const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
@@ -899,6 +900,9 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleRequestChannelList
 };
 
+const int ClientImpl::MESSAGE_COUNT =
+        sizeof(m_handlers) / sizeof(m_handlers[0]);
+
 /**
  * Handle reading in the body of a message.
  */
@@ -908,13 +912,12 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
         return;
     }
 
-    const int count = sizeof(m_handlers) / sizeof(m_handlers[0]);
     const int type = (int)m_msg.getType();
     if ((type > 2) && !m_authenticated) {
         m_server->removeClient(shared_from_this());
         return;
     }
-    if (type < count) {
+    if (type < MESSAGE_COUNT) {
         try {
             // Call the handler for this type of message.
             (this->*m_handlers[type])(m_msg);
