@@ -315,6 +315,29 @@ JSBool getPp(JSContext *cx,
 }
 
 /**
+ * pokemon.setPp(move, pp)
+ */
+JSBool setPp(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    const int pp = JSVAL_TO_INT(argv[1]);
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    const string move = MoveObject(JSVAL_TO_OBJECT(v)).getName(scx);
+    const int id = p->getMove(move);
+    if (id != -1) {
+        p->setPp(id, pp);
+    }
+
+    return JS_TRUE;
+}
+
+/**
  * pokemon.getSelectable(move)
  *
  * Return whether the pokemon can legally select the move. The argument is a
@@ -697,6 +720,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("clearForcedMove", clearForcedMove, 0, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
     JS_FS("getPp", getPp, 1, 0, 0),
+    JS_FS("setPp", setPp, 2, 0, 0),
     JS_FS("isSelectable", isSelectable, 1, 0, 0),
     JS_FS_END
 };

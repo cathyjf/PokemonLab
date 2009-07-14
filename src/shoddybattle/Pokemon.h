@@ -169,6 +169,7 @@ public:
 
     bool isMoveUsed(const int i) const { return m_moveUsed[i]; }
     int getPp(const int i) const { return m_pp[i]; }
+    void setPp(const int i, const int pp);
     void deductPp(const int i);
     void deductPp(boost::shared_ptr<MoveObject>);
 

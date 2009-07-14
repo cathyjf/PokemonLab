@@ -7779,11 +7779,18 @@ user.removeStatus(effect);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var move = target.lastMove;
+var pp = -1;
+if (!move || ((pp = target.getPp(move)) == 0)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+const PP_LOSS = 4;
+target.setPp(move, pp - PP_LOSS);
+field.print(Text.battle_messages_unique(60, target, move, PP_LOSS));
 ]]>
 </use>
 </move>

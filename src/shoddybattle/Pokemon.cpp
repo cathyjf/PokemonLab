@@ -885,15 +885,22 @@ void Pokemon::deductPp(MoveObjectPtr move) {
 }
 
 /**
- * Deduct PP from a move slot.
+ * Set a move's remaining PP to an arbitrary value.
  */
-void Pokemon::deductPp(const int i) {
-    --m_pp[i];
+void Pokemon::setPp(const int i, const int pp) {
+    m_pp[i] = pp;
     if (m_pp[i] < 0) {
         m_pp[i] = 0;
     }
-    m_moveUsed[i] = true;
     m_field->informSetPp(this, i, m_pp[i]);
+}
+
+/**
+ * Deduct PP from a move slot.
+ */
+void Pokemon::deductPp(const int i) {
+    setPp(i, m_pp[i] - 1);
+    m_moveUsed[i] = true;
 }
 
 void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
