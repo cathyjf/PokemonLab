@@ -112,7 +112,7 @@ function makeStatusCureMove(move) {
 
 /**
  * Make a move that doubles in power if the target was the last non-user to
- * hit to the target with an attack (other than Pain Split).
+ * hit to the user with an attack (other than Pain Split).
  */
 function makeRevengeMove(move) {
     var power_ = move.power;
@@ -400,7 +400,7 @@ function makeTargetHealthMove(move) {
 }
 
 /**
- * Make a move into an explosion move. For the purpose of an exlosion move,
+ * Make a move into an explosion move. For the purpose of an explosion move,
  * the target's defence stat is temporarily halved.
  */
 function makeExplosionMove(move) {
