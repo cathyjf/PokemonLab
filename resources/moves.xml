@@ -9270,13 +9270,31 @@ makeStatusMove(this, [[FlinchEffect, 0.2]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+var power_ = this.power;
+var type_ = this.type;
+this.prepareSelf = function(field, user) {
+    // TODO (NOTE): More mechanics made up by me.
+    this.type = type_;
+    this.power = power_;
+    var flags = getGlobalController(user).flags;
+    if (flags[GlobalEffect.SUN]) {
+        this.type = Type.FIRE;
+    } else if (flags[GlobalEffect.RAIN]) {
+        this.type = Type.WATER;
+    } else if (flags[GlobalEffect.SAND]) {
+        this.type = Type.ROCK;
+    } else if (flags[GlobalEffect.HAIL]) {
+        this.type = Type.ICE;
+    }
+    if ((this.type != type_) || flags[GlobalEffect.FOG]) {
+        this.power *= 2;
+    }
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Whirlpool" id="453">
