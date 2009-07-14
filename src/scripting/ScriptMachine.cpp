@@ -625,6 +625,7 @@ ScriptMachine::~ScriptMachine() {
         JS_DestroyContext((JSContext *)cx->m_p);
         delete cx;
     }
+    JS_ClearContextThread(m_impl->cx);
     JS_DestroyContext(m_impl->cx);
     JS_DestroyRuntime(m_impl->runtime);
     delete m_impl;
