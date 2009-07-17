@@ -3357,13 +3357,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatLevelSwapMove(this, [Stat.DEFENCE, Stat.SPDEFENCE]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Guillotine" id="165">
@@ -3707,13 +3706,14 @@ makeRecoveryMove(this);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatLevelSwapMove(this, [Stat.ATTACK, Stat.DEFENCE, Stat.SPEED,
+                             Stat.SPATTACK, Stat.SPDEFENCE, Stat.ACCURACY,
+                             Stat.EVASION]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Heat Wave" id="180">
@@ -5934,13 +5934,12 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeStatLevelSwapMove(this, [Stat.ATTACK, Stat.SPATTACK]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Power Trick" id="292">

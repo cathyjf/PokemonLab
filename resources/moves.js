@@ -23,6 +23,30 @@
  */
 
 /**
+ * Make a move that causes the user and target to simultaneously adopt each
+ * other's stat levels for the specified stats.
+ */
+function makeStatLevelSwapMove(move, stats) {
+    move.use = function(field, user, target, targets) {
+        stats.forEach(function(stat) {
+            var delta = target.getStatLevel(stat) - user.getStatLevel(stat);
+            // target takes -delta, user takes +delta
+            if (delta == 0)
+                return;
+            var effect = new StatChangeEffect(stat, -delta);
+            effect.silent = true;
+            target.applyStatus(user, effect);
+
+            effect = new StatChangeEffect(stat, delta);
+            effect.silent = true;
+            user.applyStatus(user, effect);
+        });
+        // TODO: Perhaps this message should specify the target.
+        field.print(Text.battle_messages_unique(6));
+    };
+}
+
+/**
  * Make a move that heals a different amount depending on the weather.
  *
  * TODO: WARNING! The mechanics of this move were MADE UP by me! It is unknown
