@@ -1732,11 +1732,11 @@ makeStatusMove(this, [
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
+user.applyStatus(user, new StatusEffect("DefenseCurlEffect"));
 ]]>
 </use>
 </move>
