@@ -1610,15 +1610,46 @@ makeTargetHealthMove(this);
 <power>0</power>
 <accuracy>0</accuracy>
 <pp>10</pp>
+<!--
+    Note: Curse always has single non-user target for the purpose of failure
+          due to lack of a target. However, when selecting a move, Curse
+          appears to be user target if the user's type does not include Ghost;
+          in fact, a random target is silently chosen from among the available
+          enemies.
+-->
 <target>Non-user</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 1.0, true],
+                      [new StatChangeEffect(Stat.DEFENCE, 1), 1.0, true],
+                      [new StatChangeEffect(Stat.SPEED, -1), 1.0, true]]);
+var parent = this.use;
+this.use = function(field, user, target, targets) {
+    if (!user.isType(Type.GHOST)) {
+        parent.call(this, field, user, target, targets);
+        return;
+    }
+    if (target.getStatus("CurseEffect")) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    var effect = new StatusEffect("CurseEffect");
+    effect.name = Text.battle_messages_unique(88);
+    effect.tier = 6;
+    effect.subtier = 6;
+    effect.tick = function() {
+        field.print(Text.battle_messages_unique(90, this.subject));
+        this.subject.hp -= Math.floor(this.subject.getStat(Stat.HP) / 4);
+    };
+    target.applyStatus(user, effect);
+    field.print(Text.battle_messages_unique(89, user, target));
+    user.hp -= Math.floor(user.getStat(Stat.HP) / 2);
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Cut" id="78">
@@ -8448,7 +8479,7 @@ this.prepareSelf = function(field, user) {
             return null;
         // doubles speed, priority of 4
         return [2, 4];
-    }
+    };
     field.print(Text.battle_messages_unique(138, user));
     field.applyStatus(effect);
 };
