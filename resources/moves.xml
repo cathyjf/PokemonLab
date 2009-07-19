@@ -1768,11 +1768,30 @@ user.applyStatus(user, new StatusEffect("MomentumBoostEffect"));
 <pp>5</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("DestinyBondEffect");
+if (effect) {
+    user.removeStatus(effect);
+}
+effect = new StatusEffect("DestinyBondEffect");
+effect.turns_ = 2;
+effect.informDamaged = function(user, move, damage) {
+    var subject = this.subject;
+    if ((subject.hp <= 0) && (damage > 0) && (user.party != subject.party)) {
+        field.print(Text.battle_messages_unique(62, subject, user));
+        user.faint();
+    }
+};
+effect.informFinishedExecution = function() {
+    if (--this.turns_ == 0) {
+        this.subject.removeStatus(this);
+    }
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(61, user));
 ]]>
 </use>
 </move>
@@ -3369,11 +3388,35 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 1));
 <pp>5</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("GrudgeEffect");
+if (effect) {
+    user.removeStatus(effect);
+}
+effect = new StatusEffect("GrudgeEffect");
+effect.name = Text.battle_messages_unique(98);
+effect.turns_ = 2;
+effect.informDamaged = function(user, move, damage) {
+    var subject = this.subject;
+    if ((subject.hp <= 0) && (damage > 0) && (user.party != subject.party)) {
+        var turn = user.turn;
+        if (turn) {
+            move = user.getMove(turn.move);
+            user.setPp(move, 0);
+            field.print(Text.battle_messages_unique(100, move));
+        }
+    }
+};
+effect.informFinishedExecution = function() {
+    if (--this.turns_ == 0) {
+        this.subject.removeStatus(this);
+    }
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(99, user));
 ]]>
 </use>
 </move>
