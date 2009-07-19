@@ -453,6 +453,59 @@ function makeExplosionMove(move) {
 }
 
 /**
+ * Make a move into a momentum move.
+ */
+function makeMomentumMove(move) {
+    move.prepareSelf = function(field, user) {
+        if (user.getStatus("SleepEffect"))
+            return;
+
+        user.setForcedMove(this, null);
+
+        if (user.getStatus("MomentumEffect"))
+            return;
+
+        var effect = new StatusEffect("MomentumEffect");
+        effect.multiplier = 0;
+        effect.vetoSwitch = function(subject) {
+            return (subject == this.subject);
+        };
+        effect.unapplyEffect = function() {
+            this.subject.clearForcedMove();
+        };
+        effect.informFreeze = effect.informSleep = function() {
+            this.subject.removeStatus(this);
+        };
+        effect.informFinishedExecution = function() {
+            if (!this.subject.lastMove || (++this.multiplier == 5)) {
+                this.subject.removeStatus(this);
+            }
+        };
+        user.applyStatus(user, effect);
+    };
+    var power_ = move.power;
+    move.use = function(field, user, target, targets) {
+        this.power = power_;
+        var effect = user.getStatus("MomentumEffect");
+        if (effect) {
+            // Note that this is the same as this.power *= pow(2, multiplier).
+            this.power <<= effect.multiplier;
+        }
+        if (user.getStatus("MomentumBoostEffect")) {
+            this.power *= 2;
+        }
+        var damage = field.calculate(this, user, target, targets);
+        if (damage == 0) {
+            if (effect) {
+                user.removeStatus(effect);
+            }
+            return;
+        }
+        target.hp -= damage;
+    };
+}
+
+/**
  * Make a move into a rampage move.
  */
 function makeRampageMove(move) {

@@ -1736,7 +1736,7 @@ makeStatusMove(this, [
 <use>
 <![CDATA[
 user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 1));
-user.applyStatus(user, new StatusEffect("DefenseCurlEffect"));
+user.applyStatus(user, new StatusEffect("MomentumBoostEffect"));
 ]]>
 </use>
 </move>
@@ -4004,11 +4004,10 @@ makeStatusMove(this, [[SleepEffect]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <init>
 <![CDATA[
-
+makeMomentumMove(this);
 ]]>
 </init>
 </move>
@@ -6781,13 +6780,12 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeMomentumMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Roost" id="332">
