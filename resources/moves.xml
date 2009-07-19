@@ -6962,13 +6962,13 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -2)]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+// Secret Power's secondary effect is always paralysis in a link battle.
+makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Seed Bomb" id="342">
