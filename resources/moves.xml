@@ -5427,11 +5427,12 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 <pp>20</pp>
 <target>None</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+// Nature Power always uses Tri Attack in link battles.
+user.execute(field.getMove("Tri Attack"));
 ]]>
 </use>
 </move>
