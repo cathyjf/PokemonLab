@@ -5505,11 +5505,26 @@ target.hp -= user.level;
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (!target.getStatus("SleepEffect") || target.getStatus("NightmareEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("NightmareEffect");
+effect.name = Text.battle_messages_unique(85);
+effect.tier = 6;
+effect.subtier = 4;
+effect.tick = function() {
+    field.print(Text.battle_messages_unique(87, this.subject));
+    this.subject.hp -= Math.floor(this.subject.getStat(Stat.HP) / 4);
+};
+effect.informWakeUp = function() {
+    this.subject.removeStatus(this);
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(86, target));
 ]]>
 </use>
 </move>

@@ -409,6 +409,9 @@ makeEffect(StatusEffect, {
         this.subject.sendMessage("informSleep");
         return true;
     },
+    unapplyEffect : function() {
+        this.subject.sendMessage("informWakeUp");
+    },
     informBeginTurn : function() {
         return true;
     },
