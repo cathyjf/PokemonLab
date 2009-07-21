@@ -51,6 +51,7 @@ Pokemon::PTR getPokemon(const SpeciesDatabase *data, POKEMON &p) {
             p.iv, p.ev,
             p.level,
             p.gender,
+            255, // happiness
             p.shiny,
             moves, ppUps));
 }

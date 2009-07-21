@@ -82,6 +82,7 @@ public:
             const int *ev,
             const int level,
             const int gender,
+            const unsigned char happiness,
             const bool shiny,
             const std::vector<std::string> &moves,
             const std::vector<int> &ppUps);
@@ -250,6 +251,10 @@ public:
             std::set<const PokemonType *> &immunities,
             std::set<const PokemonType *> &vulnerabilities);
 
+    unsigned char getHappiness() const {
+        return m_happiness;
+    }
+
     struct RECENT_MOVE {
         Pokemon *user;
         boost::shared_ptr<MoveObject> move;
@@ -268,6 +273,7 @@ private:
     unsigned int m_ev[STAT_COUNT];
     int m_statLevel[TOTAL_STAT_COUNT];  // Level of stat boost.
     unsigned int m_gender;    // This pokemon's gender.
+    unsigned char m_happiness;
     bool m_shiny;
     const PokemonNature *m_nature;
     TYPE_ARRAY m_types; // Current effective type.

@@ -58,6 +58,7 @@ enum POKEMON_TINYID {
     PTI_TYPES,
     PTI_PPUPS,
     PTI_GENDER,
+    PTI_HAPPINESS,
     PTI_MEMORY,
     PTI_FIELD,
     PTI_PARTY,
@@ -589,6 +590,10 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             *vp = INT_TO_JSVAL(p->getGender());
         } break;
 
+        case PTI_HAPPINESS: {
+            *vp = INT_TO_JSVAL(int(p->getHappiness()));
+        } break;
+
         case PTI_HP: {
             *vp = INT_TO_JSVAL(p->getHp());
         } break;
@@ -685,6 +690,7 @@ JSPropertySpec pokemonProperties[] = {
     { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "gender", PTI_GENDER, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "happiness", PTI_HAPPINESS, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "memory", PTI_MEMORY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "field", PTI_FIELD, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "party", PTI_PARTY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },

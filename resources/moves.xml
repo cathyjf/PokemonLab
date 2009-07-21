@@ -3128,9 +3128,14 @@ makeRechargeMove(this);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<!-- TODO -->
+<init>
+<![CDATA[
+this.prepareSelf = function(field, user) {
+    this.power = Math.floor((255 - user.happiness) * 2 / 5);
+};
+]]>
+</init>
 </move>
 
 <move name="Fury Attack" id="150">
@@ -6593,9 +6598,14 @@ user.removeStatus(effect);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<!-- TODO -->
+<init>
+<![CDATA[
+this.prepareSelf = function(field, user) {
+    this.power = Math.floor(user.happiness * 2 / 5);
+};
+]]>
+</init>
 </move>
 
 <move name="Revenge" id="317">

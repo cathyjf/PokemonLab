@@ -326,6 +326,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
             evs,
             level,
             gender,
+            255, // TODO: happiness
             shiny,
             moves,
             ppUp));

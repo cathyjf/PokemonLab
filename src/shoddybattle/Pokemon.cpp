@@ -51,6 +51,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
         const int *ev,
         const int level,
         const int gender,
+        const unsigned char happiness,
         const bool shiny,
         const vector<string> &moves,
         const vector<int> &ppUps) {
@@ -68,6 +69,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_types = species->getTypes();
     m_level = level;
     m_gender = gender;
+    m_happiness = happiness;
     m_ppUps = ppUps;
     m_abilityName = ability;
     m_itemName = item;
