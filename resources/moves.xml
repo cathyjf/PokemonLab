@@ -3872,13 +3872,47 @@ field.print(Text.battle_messages_unique(93, user, target));
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+var types_ = [
+        Type.FIGHTING,
+        Type.FLYING,
+        Type.POISON,
+        Type.GROUND,
+        Type.ROCK,
+        Type.BUG,
+        Type.GHOST,
+        Type.STEEL,
+        Type.FIRE,
+        Type.WATER,
+        Type.GRASS,
+        Type.ELECTRIC,
+        Type.PSYCHIC,
+        Type.ICE,
+        Type.DRAGON,
+        Type.DARK
+    ];
+this.prepareSelf = function(field, user) {
+    var power = 0;
+    var type = 0;
+    var ivs = user.iv;
+    for (var i = 0; i < 6; ++i) {
+        var iv = ivs[i];
+        var increment = 1 << i;
+        if (iv % 2) {
+            type += increment;
+        }
+        if (((iv % 4) == 2) || ((iv % 4) == 3)) {
+            power += increment;
+        }
+    }
+    this.power = Math.floor(power * 40.0 / 63.0 + 30.0);
+    type = Math.floor(type * 15 / 63);
+    this.type = types_[type];
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Horn Attack" id="184">
