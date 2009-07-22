@@ -23,6 +23,36 @@
  */
 
 /**
+ * Make a move that causes the target to be replaced by a random inactive
+ * pokemon from the target's team, if such a pokemon exists.
+ */
+function makeRandomSwitchMove(move) {
+    move.use = function(field, user, target, targets) {
+        if (target.sendMessage("informRandomSwitch")) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var choices = [];
+        var size = field.getPartySize(target.party);
+        for (var i = 0; i < size; ++i) {
+            var p = field.getPokemon(target.party, i);
+            if (!p.fainted && (p.position == -1)) {
+                choices.push(p);
+            }
+        }
+        var length = choices.length;
+        if (length == 0) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        var choice = choices[field.random(0, length - 1)];
+        var slot = target.position;
+        target.switchOut(); // note: sets target.position to -1.
+        choice.sendOut(slot);
+    };
+}
+
+/**
  * Make a move that causes the user and target to simultaneously adopt each
  * other's stat levels for the specified stats.
  */

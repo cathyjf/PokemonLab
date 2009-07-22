@@ -4259,6 +4259,10 @@ effect.vulnerability = function(user, target) {
 effect.vetoSwitch = function(subject) {
     return (subject == this.subject);
 };
+effect.informRandomSwitch = function() {
+    // Block Roar and Whirlwind.
+    return true;
+};
 user.applyStatus(user, effect);
 field.print(Text.battle_messages_unique(143, user));
 ]]>
@@ -6661,13 +6665,12 @@ makeUserLowHealthMove(this);
     <protect/>
     <memorable/>
     <sound/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRandomSwitchMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Roar Of Time" id="320">
@@ -9489,13 +9492,12 @@ makeTemporaryTrappingMove(this, Text.battle_messages_unique.wrap(74));
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeRandomSwitchMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Will-o-wisp" id="455">

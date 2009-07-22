@@ -358,6 +358,40 @@ JSBool isSelectable(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.switchOut()
+ *
+ * Perform the actions associated with withdrawing a pokemon from the field,
+ * such as removing temporary effects and stat level changes.
+ */
+JSBool switchOut(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->switchOut();
+    return JS_TRUE;
+}
+
+/**
+ * pokemon.sendOut(slot)
+ *
+ * Send this pokemon out into the given slot, replacing whatever pokemon is
+ * presently in the slot in the process.
+ */
+JSBool sendOut(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int slot = JSVAL_TO_INT(v);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    BattleField *field = p->getField();
+    field->sendOutPokemon(p->getParty(), slot, p->getPosition());
+
+    return JS_TRUE;
+}
+
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -728,6 +762,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getPp", getPp, 1, 0, 0),
     JS_FS("setPp", setPp, 2, 0, 0),
     JS_FS("isSelectable", isSelectable, 1, 0, 0),
+    JS_FS("switchOut", switchOut, 0, 0, 0),
+    JS_FS("sendOut", sendOut, 1, 0, 0),
     JS_FS_END
 };
 
