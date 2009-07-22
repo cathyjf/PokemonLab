@@ -1020,8 +1020,8 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         const PokemonTurn *turn = ordered[i];
         const int id = turn->id;
 
-        if (p->isFainted()) {
-            // Can't execute anything if we've fainted.
+        if (p->isFainted() || !p->isActive()) {
+            // Can't execute anything if we've fainted or become inactive.
             continue;
         }
         
