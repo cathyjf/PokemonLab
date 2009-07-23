@@ -382,6 +382,8 @@
 143: $1 planted its roots!
 144: $1 absorbed nutrients with its roots!
 
+145: $1 protected itself!
+
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind

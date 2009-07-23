@@ -23,6 +23,67 @@
  */
 
 /**
+ * Make a move that grants the user immunity to particular moves for the
+ * duration of the present turn. The move has a 50% chance of failure if the
+ * user's last action was a successful execution of Protect, Detect, or Endure.
+ * The move also fails if the user is the last pokemon to move this turn.
+ */
+function makeProtectMove(move) {
+    move.use = function(field, user, target, targets) {
+        // Check if every other pokemon has already moved.
+        var failure = true;
+        for (var i = 0; i < 2; ++i) {
+            for (var j = 0; j < field.partySize; ++j) {
+                var p = field.getActivePokemon(i, j);
+                if (p && p.turn) {
+                    failure = false;
+                    break;
+                }
+            }
+            if (!failure) break;
+        }
+        if (!failure) {
+            // If the user has the protect flag set then the move has a 50%
+            // chance to fail this turn.
+            var effect = user.getStatus("ProtectFlagEffect");
+            if (effect) {
+                failure = field.random(0.5);
+                user.removeStatus(effect);
+            }
+        }
+        if (failure) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        // Set the protect flag for the user.
+        var effect = new StatusEffect("ProtectFlagEffect");
+        effect.turns_ = 2;
+        effect.informFinishedExecution = function() {
+            if (--this.turns_ == 0) {
+                this.subject.removeStatus(this);
+            }
+        };
+        user.applyStatus(user, effect);
+        // Apply the protect effect to the user.
+        effect = new StatusEffect("ProtectEffect");
+        effect.tier = 0;
+        effect.tick = function() {
+            this.subject.removeStatus(this);
+        };
+        effect.vetoExecution = function(field, user, target, move) {
+            if (target != this.subject)
+                return false;
+            if (!move.flags[Flag.PROTECT])
+                return false;
+            field.print(Text.battle_messages_unique(145, this.subject));
+            return true;
+        };
+        user.applyStatus(user, effect);
+        field.print(Text.battle_messages_unique(145, user));
+    };
+}
+
+/**
  * Make a move that causes the target to be replaced by a random inactive
  * pokemon from the target's team, if such a pokemon exists.
  */

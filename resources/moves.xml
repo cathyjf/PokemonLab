@@ -1805,13 +1805,13 @@ field.print(Text.battle_messages_unique(61, user));
 <pp>5</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeProtectMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Dig" id="86">
@@ -4823,6 +4823,7 @@ if (user.getStatus("MagnetRiseEffect")
 }
 var effect = new StatusEffect("MagnetRiseEffect");
 effect.name = Text.battle_messages_unique(130);
+effect.tier = 0;
 effect.turns = 5;
 effect.immunity = function(user, target) {
     if (target != this.subject)
@@ -6145,13 +6146,13 @@ if (rand < 52) {
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeProtectMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Psybeam" id="296">
