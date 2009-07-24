@@ -67,11 +67,11 @@ EntryHazard[EntryHazard.TOXIC_SPIKES] = {
             return;
         }
         if (layers == 1) {
-            if (subject.applyStatus(subject, new PoisonEffect())) {
+            if (subject.applyStatus(null, new PoisonEffect())) {
                 field.print(Text.field_effects_spikes(5, subject));
             }
         } else {
-            if (subject.applyStatus(subject, new ToxicEffect())) {
+            if (subject.applyStatus(null, new ToxicEffect())) {
                 field.print(Text.field_effects_spikes(6, subject));
             }
         }

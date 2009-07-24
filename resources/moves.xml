@@ -6940,13 +6940,54 @@ makeStatusMove(this, [[BurnEffect, 0.5]]);
 <target>Allies</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+this.prepareSelf = function(field, user) {
+    if (user.getStatus("SafeguardEffect")) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    var effect = new StatusEffect("SafeguardEffect");
+    effect.name = Text.battle_messages_unique(109);
+    effect.turns = 5;
+    var party_ = user.party;
+    effect.applyEffect = function() {
+        return (this.subject.party == party_);
+    };
+    effect.beginTick = function() {
+        if (--this.turns != 0)
+            return;
+        // TODO: Reference trainer name in the message.
+        field.print(Text.battle_messages_unique(111, this.subject));
+        field.removeStatus(this);
+    };
+    effect.transformStatus = function(subject, status) {
+        if (subject.party != party_)
+            return status;
+        if (status.inducer == subject)
+            return status;
+        if ((status.lock != StatusEffect.SPECIAL_EFFECT)
+                && (status.id != "ConfusionEffect"))
+            return status;
+        return null;
+    };
+    effect.vetoExecution = function(field, user, target, move) {
+        if (!target || (target.party != party_))
+            return false;
+        if (move.name != "Yawn")
+            return false;
+        field.print(Text.battle_messages(0));
+        return true;
+    };
+    field.print(Text.battle_messages_unique(110, user));
+    field.applyStatus(effect);
+};
+this.use = function() {
+    // Does nothing.
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Sand Tomb" id="335">

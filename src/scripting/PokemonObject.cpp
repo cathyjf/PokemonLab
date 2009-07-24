@@ -89,7 +89,7 @@ JSBool applyStatus(JSContext *cx,
     if (JSVAL_IS_OBJECT(argv[1])) {
         StatusObject status(JSVAL_TO_OBJECT(argv[1]));
         Pokemon *inducer = NULL;
-        if (JSVAL_IS_OBJECT(argv[0])) {
+        if (!JSVAL_IS_NULL(argv[0]) && JSVAL_IS_OBJECT(argv[0])) {
             inducer = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[0]));
         }
         StatusObjectPtr objret = p->applyStatus(inducer, &status);
