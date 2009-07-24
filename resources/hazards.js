@@ -107,6 +107,9 @@ makeEffect(StatusEffect, {
     unapplyHazard : function(hazard, party) {
         this.effects_[party][hazard] = 0;
     },
+    clearHazards : function(party) {
+        this.effects_[party] = [];
+    },
     switchIn : function() {
         var effects = this.effects_[this.subject.party];
         for (var i in effects) {

@@ -1751,11 +1751,25 @@ user.applyStatus(user, new StatusEffect("MomentumBoostEffect"));
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.effects_ = ["BuffEffect0",     // Reflect
+                 "BuffEffect1",     // Light Screen
+                 "SafeguardEffect",
+                 "MistEffect"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+target.applyStatus(user, new StatChangeEffect(Stat.EVASION, -1));
+this.effects_.forEach(function(id) {
+    var effect = target.getStatus(id);
+    if (effect) {
+        field.removeStatus(effect);
+    }
+});
+getHazardController(target).clearHazards();
 ]]>
 </use>
 </move>
