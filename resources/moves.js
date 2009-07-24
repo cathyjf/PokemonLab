@@ -23,6 +23,22 @@
  */
 
 /**
+ * Make a move that applies an entry hazard to the opposing party's side of
+ * the field.
+ */
+function makeEntryHazardMove(move, hazard) {
+    move.prepareSelf = function(field, user) {
+        var effect = getHazardController(user);
+        if (!effect.applyHazard(field, hazard, 1 - user.party)) {
+            field.print(Text.battle_messages(0));
+        }
+    };
+    move.use = function() {
+        // Does nothing.
+    };
+}
+
+/**
  * Make a move that grants the user immunity to particular moves for the
  * duration of the present turn. The move has a 50% chance of failure if the
  * user's last action was a successful execution of Protect, Detect, or Endure.

@@ -14,5 +14,6 @@ include("resources/constants.js");
 include("resources/StatusEffect.js");
 include("resources/statuses.js");
 include("resources/GlobalEffect.js");
+include("resources/hazards.js");
 include("resources/abilities.js");
 include("resources/items.js");

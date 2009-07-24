@@ -255,6 +255,7 @@ void Pokemon::switchIn() {
         if (!(*i)->isActive(m_cx))
             continue;
 
+        (*i)->setSubject(m_cx, this);
         (*i)->switchIn(m_cx);
     }
 }
@@ -476,7 +477,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
     }
 
     int targetCount = targets.size();
-    if (targetCount == 0) {
+    if ((targetCount == 0) && (tc != T_ENEMY_FIELD)) {
         m_field->print(TextMessage(4, 3)); // no target
         m_acted = true;
         return true;

@@ -7858,13 +7858,13 @@ makeMultipleHitMove(this);
 <pp>20</pp>
 <target>Enemyfield</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeEntryHazardMove(this, EntryHazard.SPIKES);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Spit Up" id="382">
@@ -7972,13 +7972,13 @@ makeStatusMove(this, [[SleepEffect]]);
 <pp>20</pp>
 <target>Enemyfield</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeEntryHazardMove(this, EntryHazard.STEALTH_ROCK);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Steel Wing" id="387">
@@ -8957,13 +8957,13 @@ makeStatusMove(this, [[ToxicEffect]]);
 <pp>20</pp>
 <target>Enemyfield</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeEntryHazardMove(this, EntryHazard.TOXIC_SPIKES);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Transform" id="431">

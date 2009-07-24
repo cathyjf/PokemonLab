@@ -92,6 +92,16 @@ struct BattleFieldImpl {
         }
     }
 
+    void applyEffects(Pokemon::PTR pokemon) {
+        for (STATUSES::const_iterator i = effects.begin();
+                i != effects.end(); ++i) {
+            if (!(*i)->isActive(context))
+                continue;
+
+            pokemon->applyStatus(NULL, i->get());
+        }
+    }
+
     void initialise(BattleField *field,
         const BattleMechanics *mech,
         GENERATION generation,
@@ -543,17 +553,8 @@ void BattleField::sendOutPokemon(const int party,
     (*m_impl->active[party])[slot].pokemon = replacement;
     replacement->setSlot(slot);
     informSendOut(replacement.get());
+    m_impl->applyEffects(replacement);
     replacement->switchIn();
-
-    // Apply field effects to the new pokemon.
-    STATUSES &effects = m_impl->effects;
-    for (STATUSES::const_iterator i = effects.begin();
-            i != effects.end(); ++i) {
-        if (!(*i)->isActive(m_impl->context))
-            continue;
-
-        replacement->applyStatus(NULL, i->get());
-    }
 }
 
 /**
@@ -728,6 +729,7 @@ void BattleField::beginBattle(const int party) {
         if (p) {
             p->setSlot(i);
             informSendOut(p.get());
+            m_impl->applyEffects(p);
             p->switchIn();
         }
     }

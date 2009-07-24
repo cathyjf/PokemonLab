@@ -29,6 +29,7 @@
 #include "ScriptMachine.h"
 #include "../shoddybattle/BattleField.h"
 #include "../mechanics/BattleMechanics.h"
+#include "../mechanics/PokemonType.h"
 
 #include <iostream>
 
@@ -104,6 +105,27 @@ JSBool getActivePokemon(JSContext *cx,
     } else {
         *ret = OBJECT_TO_JSVAL(pokemon->getObject()->getObject());
     }
+    return JS_TRUE;
+}
+
+/**
+ * field.getEffectiveness(type, pokemon)
+ *
+ * Get the effectiveness of a particular type against an arbitrary pokemon.
+ */
+JSBool getEffectiveness(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_OBJECT(argv[1])) {
+        return JS_FALSE;
+    }
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    const BattleMechanics *mech = p->getMechanics();
+    const int type = JSVAL_TO_INT(argv[0]);
+    JSObject *objPokemon = JSVAL_TO_OBJECT(argv[1]);
+    Pokemon *defender = (Pokemon *)JS_GetPrivate(cx, objPokemon);
+    const double effectiveness = mech->getEffectiveness(*p,
+            PokemonType::getByValue(type), NULL, defender, NULL);
+    JS_NewNumberValue(cx, effectiveness, ret);
     return JS_TRUE;
 }
 
@@ -389,6 +411,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS("getPartySize", getPartySize, 1, 0, 0),
     JS_FS("getPokemon", getPokemon, 2, 0, 0),
+    JS_FS("getEffectiveness", getEffectiveness, 2, 0, 0),
     JS_FS_END
 };
 
