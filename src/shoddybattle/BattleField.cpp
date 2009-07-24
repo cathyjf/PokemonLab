@@ -246,7 +246,7 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
         return false;
 
     MoveObjectPtr move = pokemon->getMove(turn->id);
-    TARGET tc = move->getTargetClass(m_impl->context);
+    TARGET tc = move->getTemplate(m_impl->context)->getTargetClass();
     if (!isTargeted(tc))
         return true;
 
