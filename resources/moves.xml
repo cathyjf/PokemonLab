@@ -5360,7 +5360,7 @@ this.prepareSelf = function(field, user) {
             return status;
         if (status.id != "StatChangeEffect")
             return status;
-        if (status.delta > 0)
+        if (status.delta_ > 0)
             return status;
         return null;
     };
