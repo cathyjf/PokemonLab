@@ -340,8 +340,9 @@ makeEffect(StatusEffect, {
 makeEffect(StatusEffect, {
     id : "StatChangeEffect",
     ctor : function(stat, delta) {
+        this.stat = stat;
+        this.delta_ = delta;
         this.applyEffect = function() {
-            this.stat = stat;
             var present = this.subject.getStatLevel(stat);
             var result = present + delta;
             if (result < -6) {

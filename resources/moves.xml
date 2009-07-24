@@ -5331,13 +5331,47 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.3]]);
 <target>Allies</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+this.prepareSelf = function(field, user) {
+    if (user.getStatus("MistEffect")) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    var effect = new StatusEffect("MistEffect");
+    effect.name = Text.battle_messages_unique(106);
+    effect.turns = 5;
+    var party_ = user.party;
+    effect.applyEffect = function() {
+        return (this.subject.party == party_);
+    };
+    effect.beginTick = function() {
+        if (--this.turns != 0)
+            return;
+        // TODO: Reference trainer name in the message.
+        field.print(Text.battle_messages_unique(108, this.subject));
+        field.removeStatus(this);
+    };
+    effect.transformStatus = function(subject, status) {
+        if (subject.party != party_)
+            return status;
+        if (status.inducer == subject)
+            return status;
+        if (status.id != "StatChangeEffect")
+            return status;
+        if (status.delta > 0)
+            return status;
+        return null;
+    };
+    field.print(Text.battle_messages_unique(107, user));
+    field.applyStatus(effect);
+};
+this.use = function() {
+    // Does nothing.
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Mist Ball" id="254">
