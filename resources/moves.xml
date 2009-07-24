@@ -1769,7 +1769,7 @@ this.effects_.forEach(function(id) {
         field.removeStatus(effect);
     }
 });
-getHazardController(target).clearHazards();
+getHazardController(target).clearHazards(target.party);
 ]]>
 </use>
 </move>
