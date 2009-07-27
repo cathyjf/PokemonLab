@@ -4565,11 +4565,32 @@ makeRecoilMove(this, -2);
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("LeechSeedEffect") || target.isType(Type.GRASS)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var party_ = user.party;
+var position_ = user.position;
+var effect = new StatusEffect("LeechSeedEffect");
+effect.name = Text.status_effects_leech_seed(0);
+effect.tier = 6;
+effect.subtier = 3;
+effect.tick = function() {
+    var p = field.getActivePokemon(party_, position_);
+    if (!p) return;
+    field.print(Text.status_effects_leech_seed(2, this.subject));
+    var damage = Math.floor(this.subject.getStat(Stat.HP) / 8);
+    if (damage < 1) damage = 1;
+    this.subject.hp -= damage;
+    if (target.sendMessage("informDrainHealth", p, damage))
+        return;
+    p.hp += damage;
+};
+target.applyStatus(user, effect);
+field.print(Text.status_effects_leech_seed(1, target));
 ]]>
 </use>
 </move>
