@@ -29,6 +29,7 @@ const EntryHazard = {
 };
 
 EntryHazard[EntryHazard.SPIKES] = {
+    name : Text.field_effects_spikes(9),
     factors_ : [0.125, 0.1875, 0.25],
     addLayer : function(layers, field) {
         if (layers == 3)
@@ -48,6 +49,7 @@ EntryHazard[EntryHazard.SPIKES] = {
 };
 
 EntryHazard[EntryHazard.TOXIC_SPIKES] = {
+    name : Text.field_effects_spikes(8),
     addLayer : function(layers, field) {
         if (layers == 2)
             return false;
@@ -79,6 +81,7 @@ EntryHazard[EntryHazard.TOXIC_SPIKES] = {
 };
 
 EntryHazard[EntryHazard.STEALTH_ROCK] = {
+    name : Text.field_effects_spikes(10),
     addLayer : function(layers, field) {
         if (layers == 1)
             return false;

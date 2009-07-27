@@ -184,6 +184,9 @@
 5: $1 was poisoned by the Toxic Spikes!
 6: $1 was badly poisoned by the Toxic Spikes!
 7: Pointed stones dug into $1!
+8: Toxic Spikes
+9: Spikes
+10: Stealth Rock
 
 [weather-hail]
 0: Hail
@@ -232,7 +235,7 @@
 16: $1 copied its opponent's ability!
 17: $1 copied the opponent's stat changes!
 18: $1 was released!
-19: $1 blew away the spikes!
+19: $1 blew away the $2!
 20: The wall shattered!
 21: $1 became the centre of attention!
 

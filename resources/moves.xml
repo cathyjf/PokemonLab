@@ -6525,11 +6525,33 @@ makeWeatherMove(this, GlobalEffect.RAIN);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (damage == 0)
+    return;
+target.hp -= damage;
+var released = false;
+["LeechSeedEffect", "TemporaryTrappingEffect"].forEach(function(id) {
+    var effect = user.getStatus(id);
+    if (effect) {
+        released = true;
+        user.removeStatus(effect);
+    }
+});
+if (released) {
+    field.print(Text.battle_messages_unique(18, user));
+}
+var hazards = getHazardController(user);
+var effects = hazards.effects_[user.party];
+for (var i in effects) {
+    var layers = effects[i];
+    if (layers > 0) {
+        field.print(Text.battle_messages_unique(19, user, EntryHazard[i].name));
+    }
+}
+hazards.clearHazards(user.party);
 ]]>
 </use>
 </move>
