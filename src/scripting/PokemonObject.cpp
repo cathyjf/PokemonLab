@@ -259,6 +259,46 @@ JSBool setStatLevel(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool getTypes(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    JSObject *arr = JS_NewArrayObject(cx, 0, NULL);
+    *ret = OBJECT_TO_JSVAL(arr);
+    const TYPE_ARRAY &types = p->getTypes();
+    const int size = types.size();
+    for (int i = 0; i < size; ++i) {
+        jsval v = INT_TO_JSVAL(types[i]->getTypeValue());
+        JS_SetElement(cx, arr, i, &v);
+    }
+    return JS_TRUE;
+}
+
+JSBool setTypes(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    if (!JSVAL_IS_OBJECT(argv[0])) {
+        return JS_FALSE;
+    }
+    JSObject *arr = JSVAL_TO_OBJECT(argv[0]);
+    if (!JS_IsArrayObject(cx, arr)) {
+        return JS_FALSE;
+    }
+    jsuint length;
+    JS_GetArrayLength(cx, arr, &length);
+    TYPE_ARRAY types;
+    for (int i = 0; i < length; ++i) {
+        jsval v;
+        JS_GetElement(cx, arr, i, &v);
+        const int idx = JSVAL_TO_INT(v);
+        const PokemonType *type = PokemonType::getByValue(idx);
+        if (type) {
+            types.push_back(type);
+        }
+    }
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->setTypes(types);
+    return JS_TRUE;
+}
+
 JSBool getStat(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -764,6 +804,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("isSelectable", isSelectable, 1, 0, 0),
     JS_FS("switchOut", switchOut, 0, 0, 0),
     JS_FS("sendOut", sendOut, 1, 0, 0),
+    JS_FS("getTypes", getTypes, 0, 0, 0),
+    JS_FS("setTypes", setTypes, 1, 0, 0),
     JS_FS_END
 };
 

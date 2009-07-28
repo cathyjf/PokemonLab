@@ -281,6 +281,8 @@ void Pokemon::switchOut() {
     removeStatuses(m_effects, boost::bind(switchOutPredicate, _1, m_cx));   
     // Restore original ability.
     setAbility(m_abilityName);
+    // Restore original type.
+    m_types = m_species->getTypes();
     // Indicate that the pokemon is no longer active.
     m_slot = -1;
     // Clear this pokemon's memory.

@@ -153,6 +153,9 @@ public:
     }
 
     const TYPE_ARRAY &getTypes() const { return m_types; }
+    void setTypes(TYPE_ARRAY &types) {
+        m_types = types;
+    }
     bool isType(const PokemonType *) const;
 
     unsigned int getLevel() const { return m_level; }

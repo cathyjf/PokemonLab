@@ -1361,11 +1361,26 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <pp>30</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var choices = [];
+for (var i = 0; i < user.moveCount; ++i) {
+    var move = user.getMove(i);
+    var type = move.type;
+    if ((type != Type.TYPELESS) && !user.isType(type)) {
+        choices.push(type);
+    }
+}
+var length = choices.length;
+if (length == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var choice = choices[field.random(0, length - 1)];
+user.setTypes([choice]);
+field.print(Text.battle_messages_unique(9, user, Text.types(choice)));
 ]]>
 </use>
 </move>
