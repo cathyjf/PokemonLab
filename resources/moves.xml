@@ -1101,11 +1101,17 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 1));
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+// Camouflage always changes the user to normal type in a link battle.
+const type = Type.NORMAL;
+if (user.isType(type)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.setTypes([type]);
+field.print(Text.battle_messages_unique(9, user, Text.types(type)));
 ]]>
 </use>
 </move>
