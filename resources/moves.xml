@@ -1399,11 +1399,30 @@ field.print(Text.battle_messages_unique(9, user, Text.types(choice)));
 <pp>30</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var move = user.memory;
+if (!move) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var type = move.type;
+var choices = [];
+for (var i = 0; i < 18; ++i) {
+    if (field.getTypeEffectiveness(type, i) < 1.0) {
+        choices.push(i);
+    }
+}
+var length = choices.length;
+if (length == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var choice = choices[field.random(0, length - 1)];
+user.setTypes([choice]);
+field.print(Text.battle_messages_unique(9, user, Text.types(choice)));
 ]]>
 </use>
 </move>

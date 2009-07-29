@@ -130,6 +130,27 @@ JSBool getEffectiveness(JSContext *cx,
 }
 
 /**
+ * field.getTypeEffectiveness(attackingType, defendingType)
+ *
+ * Get the effectiveness of a particular type against an arbitrary type.
+ */
+JSBool getTypeEffectiveness(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_INT(argv[1])) {
+        return JS_FALSE;
+    }
+    const PokemonType *type0 = PokemonType::getByValue(JSVAL_TO_INT(argv[0]));
+    const PokemonType *type1 = PokemonType::getByValue(JSVAL_TO_INT(argv[1]));
+    if (type0 && type1) {
+        const double effectiveness = type0->getMultiplier(*type1);
+        JS_NewNumberValue(cx, effectiveness, ret);
+    } else {
+        *ret = JSVAL_NULL;
+    }
+    return JS_TRUE;
+}
+
+/**
  * field.getMove(name)
  */
 JSBool getMove(JSContext *cx,
@@ -412,6 +433,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getPartySize", getPartySize, 1, 0, 0),
     JS_FS("getPokemon", getPokemon, 2, 0, 0),
     JS_FS("getEffectiveness", getEffectiveness, 2, 0, 0),
+    JS_FS("getTypeEffectiveness", getTypeEffectiveness, 2, 0, 0),
     JS_FS_END
 };
 
