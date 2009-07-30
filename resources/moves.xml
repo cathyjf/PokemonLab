@@ -6978,11 +6978,18 @@ makeRechargeMove(this);
 <pp>10</pp>
 <target>Non-user</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+if (!target.ability || target.hasAbility("Wonder Guard")
+        || target.hasAbility("Multitype")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.ability = target.ability;
+field.print(Text.battle_messages_unique(16, user));
+user.ability.switchIn();
 ]]>
 </use>
 </move>
