@@ -7036,11 +7036,33 @@ makeMomentumMove(this);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var max = user.getStat(Stat.HP);
+if (user.hp == max) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.hp += Math.floor(max / 2);
+var types = user.getTypes();
+var resultant = types.filter(function(type) {
+    return (type != Type.FLYING);
+});
+if (types.length == resultant.length) {
+    return;
+}
+// NOTE (TODO): There is a bug here with the extremely unlikely interaction
+//              of a Colour Change pokemon changing type in the same turn it
+//              uses Roost. This isn't worth dealing with right now.
+user.setTypes(resultant);
+var effect = new StatusEffect("RoostEffect");
+effect.tier = 0;
+effect.tick = function() {
+    this.subject.setTypes(types);
+    this.subject.removeStatus(this);
+};
+user.applyStatus(user, effect);
 ]]>
 </use>
 </move>
