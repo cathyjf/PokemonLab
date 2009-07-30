@@ -7571,11 +7571,22 @@ makeStatusMove(this, [[SleepEffect]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (!user.ability || !target.ability
+        || user.hasAbility("Wonder Guard")
+        || user.hasAbility("Multitype")
+        || target.hasAbility("Wonder Guard")
+        || target.hasAbility("Multitype")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+field.print(Text.battle_messages_unique(15, user));
+[user.ability, target.ability] = [target.ability, user.ability];
+// Note (TODO): The following two lines happen only in Platinum, not DP.
+user.ability.switchIn();
+target.ability.switchIn();
 ]]>
 </use>
 </move>
