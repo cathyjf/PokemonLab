@@ -8464,6 +8464,7 @@ effect.transformHealthChange = function(delta, user, indirect) {
     if (this.takeDamage(delta)) {
         var this_ = this;
         var effect_ = new StatusEffect("SubstituteUnapplyEffect");
+        effect_.singleton = false;
         effect_.informFinishedExecution = function() {
             this_.subject.removeStatus(this_);
             this.subject.removeStatus(this);
