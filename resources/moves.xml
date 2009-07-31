@@ -1672,7 +1672,8 @@ this.use = function(field, user, target, targets) {
         parent.call(this, field, user, target, targets);
         return;
     }
-    if (target.getStatus("CurseEffect")) {
+    if (target.getStatus("CurseEffect")
+            || target.getStatus("SubstituteEffect")) {
         field.print(Text.battle_messages(0));
         return;
     }
