@@ -241,13 +241,9 @@ public:
         return m_acted;
     }
 
-    boost::shared_ptr<StatusObject> getItem() const {
-        return m_item;
-    }
+    boost::shared_ptr<StatusObject> getItem() const;
 
-    boost::shared_ptr<StatusObject> getAbility() const {
-        return m_ability;
-    }
+    boost::shared_ptr<StatusObject> getAbility() const;
 
     void getImmunities(Pokemon *user, Pokemon *target,
             std::set<const PokemonType *> &immunities,

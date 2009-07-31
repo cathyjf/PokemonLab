@@ -99,7 +99,6 @@ struct PokemonTurn {
 
 struct PokemonSlot {
     Pokemon::PTR pokemon;
-    std::string item;
 };
 
 struct PokemonParty {

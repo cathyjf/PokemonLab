@@ -387,6 +387,8 @@
 
 145: $1 protected itself!
 
+146: $1 got a $2! // Recycle
+
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind
@@ -581,8 +583,9 @@
 54: $1 avoided damage with Wonder Guard!
 55: $1 sucked up liquid ooze!
 
-[items-messages]
+[item-messages]
 0: $1's leftovers restored its health a little!
+1: $1's $2 cured its $3!
 
 [client-messages]
 0: *** $1 sets mode $2 $3

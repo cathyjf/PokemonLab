@@ -31,6 +31,28 @@ HoldItem.prototype = new StatusEffect();
 HoldItem.prototype.switchOut = function() {
     return false;
 };
+HoldItem.prototype.use = function() { };
+HoldItem.prototype.consume = function() {
+    if (this.subject.fainted)
+        return;
+    this.use();
+    var effect = this.subject.getStatus("ConsumedItemEffect");
+    if (!effect) {
+        effect = new StatusEffect("ConsumedItemEffect");
+        var party_ = this.subject.party;
+        var position_ = this.subject.position;
+        effect.applyEffect = function() {
+            if (this.subject.party != party_)
+                return false;
+            if (this.subject.position != position_)
+                return false;
+            return true;
+        };
+        effect = this.subject.field.applyStatus(effect);
+    }
+    effect.item_ = this.id;
+    this.subject.removeStatus(this);
+};
 
 function makeItem(obj) {
     var item = new HoldItem(obj.name);
@@ -51,6 +73,46 @@ function makeEvadeItem(item) {
         }
     });
 }
+
+function makeStatusCureItem(item, ids) {
+    makeItem({
+        name : item,
+        use : function() {
+            ids.forEach(function(id) {
+                var effect = this.subject.getStatus(id);
+                if (effect) {
+                    this.subject.field.print(
+                            Text.item_messages(1, this.subject, this, effect));
+                    this.subject.removeStatus(effect);
+                }
+            }, this);
+        },
+        applyEffect : function() {
+            for (var i in ids) {
+                var id = ids[i];
+                if (this.subject.getStatus(id)) {
+                    this.consume();
+                    break;
+                }
+            }
+        },
+        informEffectApplied : function(effect) {
+            if (ids.indexOf(effect.id) != -1) {
+                this.consume();
+            }
+        }
+    });
+}
+
+makeStatusCureItem("Cheri Berry", ["ParalysisEffect"]);
+makeStatusCureItem("Chesto Berry", ["SleepEffect"]);
+makeStatusCureItem("Pecha Berryy", ["PoisonEffect", "ToxicEffect"]);
+makeStatusCureItem("Rawst Berry", ["BurnEffect"]);
+makeStatusCureItem("Aspear Berry", ["FreezeEffect"]);
+makeStatusCureItem("Persim Berry", ["ConfusionEffect"]);
+makeStatusCureItem("Lum Berry", ["ParalysisEffect", "SleepEffect",
+        "PoisonEffect", "ToxicEffect", "BurnEffect", "FreezeEffect",
+        "ConfusionEffect"]);
 
 makeEvadeItem("Brightpowder");
 makeEvadeItem("Lax Incense");
@@ -84,7 +146,7 @@ makeItem({
         var max = this.subject.getStat(Stat.HP);
         if (this.subject.hp == max)
             return;
-        this.subject.field.print(Text.items_messages(0, this.subject));
+        this.subject.field.print(Text.item_messages(0, this.subject));
         var delta = Math.floor(max / 16);
         this.subject.hp += delta;
     }

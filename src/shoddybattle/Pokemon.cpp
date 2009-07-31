@@ -114,6 +114,18 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
     return m_species->getBaseStat(i);
 }
 
+StatusObjectPtr Pokemon::getItem() const {
+    if (m_item->isRemovable(m_cx))
+        return StatusObjectPtr();
+    return m_item;
+}
+
+StatusObjectPtr Pokemon::getAbility() const {
+    if (!m_ability->isRemovable(m_cx))
+        return StatusObjectPtr();
+    return m_ability;
+}
+
 /**
  * Determine whether the pokemon has a particular type.
  */
@@ -622,6 +634,9 @@ StatusObjectPtr Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     }
 
     m_effects.push_back(applied);
+
+    ScriptValue val[] = { applied.get(), inducer };
+    sendMessage("informEffectApplied", 2, val);
     return applied;
 }
 

@@ -6656,11 +6656,17 @@ makeRecoveryMove(this);
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("ConsumedItemEffect");
+if (user.item || !effect) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.item = HoldItem[effect.item_];
+field.print(Text.battle_messages_unique(146, user, user.item));
 ]]>
 </use>
 </move>
