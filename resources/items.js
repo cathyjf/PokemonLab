@@ -35,7 +35,6 @@ HoldItem.prototype.use = function() { };
 HoldItem.prototype.consume = function() {
     if (this.subject.fainted)
         return;
-    this.use();
     var effect = this.subject.getStatus("ConsumedItemEffect");
     if (!effect) {
         effect = new StatusEffect("ConsumedItemEffect");
@@ -77,28 +76,29 @@ function makeEvadeItem(item) {
 function makeStatusCureItem(item, ids) {
     makeItem({
         name : item,
-        use : function() {
+        berry_ : true,
+        use : function(user) {
             ids.forEach(function(id) {
-                var effect = this.subject.getStatus(id);
+                var effect = user.getStatus(id);
                 if (effect) {
-                    this.subject.field.print(
-                            Text.item_messages(1, this.subject, this, effect));
-                    this.subject.removeStatus(effect);
+                    user.field.print(Text.item_messages(1, user, this, effect));
+                    user.removeStatus(effect);
                 }
             }, this);
+            this.consume();
         },
         applyEffect : function() {
             for (var i in ids) {
                 var id = ids[i];
                 if (this.subject.getStatus(id)) {
-                    this.consume();
+                    this.use(this.subject);
                     break;
                 }
             }
         },
         informEffectApplied : function(effect) {
             if (ids.indexOf(effect.id) != -1) {
-                this.consume();
+                this.use(this.subject);
             }
         }
     });

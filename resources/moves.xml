@@ -993,13 +993,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makePluckMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Bug Buzz" id="47">
@@ -5995,13 +5994,12 @@ makeMultipleHitMove(this);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makePluckMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Poison Fang" id="282">
@@ -7589,7 +7587,9 @@ if (!user.ability || !target.ability
     return;
 }
 field.print(Text.battle_messages_unique(15, user));
-[user.ability, target.ability] = [target.ability, user.ability];
+var id_ = user.ability.id;
+user.ability = target.ability;
+target.ability = Ability[id_];
 // Note (TODO): The following two lines happen only in Platinum, not DP.
 user.ability.switchIn();
 target.ability.switchIn();

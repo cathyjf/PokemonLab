@@ -23,6 +23,24 @@
  */
 
 /**
+ * Make a move that causes the user to use the target's berry if the attack
+ * is successful.
+ */
+function makePluckMove(move) {
+    move.use = function(field, user, target, targets) {
+        var damage = field.calculate(this, user, target, targets);
+        if (damage != 0) {
+            target.hp -= damage;
+            if (target.item && target.item.berry_) {
+                field.print(Text.battle_messages_unique(
+                        147, user, target, target.item));
+                target.item.use(user);
+            }
+        }
+    };
+}
+
+/**
  * Make a move that applies an entry hazard to the opposing party's side of
  * the field.
  */
@@ -347,7 +365,11 @@ function makeItemSwitchMove(move) {
             return;
         if (target.sendMessage("informRemoveItem"))
             return;
-        [user.item, target.item] = [target.item, user.item];
+        var id_ = user.item && user.item.id;
+        user.item = target.item;
+        if (id_) {
+            target.item = HoldItem[id_];
+        }
         if (user.item) {
             field.print(Text.battle_messages_unique(13, user, user.item));
         }

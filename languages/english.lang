@@ -388,6 +388,7 @@
 145: $1 protected itself!
 
 146: $1 got a $2! // Recycle
+147: $1 used $2's $3! // Pluck
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
