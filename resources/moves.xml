@@ -8431,7 +8431,8 @@ this.forbidden_ = ["Acupressure", "Block", "Dream Eater", "Embargo",
                    "Gastro Acid", "Grudge", "Heal Block", "Leech Seed",
                    "Lock-on", "Mean Look", "Mimic", "Mind Reader",
                    "Nightmare", "Pain Split", "Psycho Shift", "Spider Web",
-                   "Sketch", "Switcheroo", "Trick", "Worry Seed", "Yawn"];
+                   "Sketch", "Switcheroo", "Trick", "Worry Seed", "Yawn",
+                   "Swagger", "Flatter"];
 ]]>
 </init>
 <use>
