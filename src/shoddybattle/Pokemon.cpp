@@ -121,7 +121,7 @@ StatusObjectPtr Pokemon::getItem() const {
 }
 
 StatusObjectPtr Pokemon::getAbility() const {
-    if (!m_ability->isRemovable(m_cx))
+    if (m_ability->isRemovable(m_cx))
         return StatusObjectPtr();
     return m_ability;
 }
