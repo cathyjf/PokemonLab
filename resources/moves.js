@@ -31,7 +31,9 @@ function makePluckMove(move) {
         var damage = field.calculate(this, user, target, targets);
         if (damage != 0) {
             target.hp -= damage;
-            if (target.item && target.item.berry_) {
+            if (target.item && target.item.berry_
+                    && !target.sendMessage("informRemoveItem")) {
+                // TODO: Check for Embargo on the user (but not the target).
                 field.print(Text.battle_messages_unique(
                         147, user, target, target.item));
                 target.item.use(user);
@@ -361,8 +363,6 @@ function makeItemSwitchMove(move) {
             field.print(Text.battle_messages(0));
             return;
         }
-        if (user.sendMessage("informRemoveItem"))
-            return;
         if (target.sendMessage("informRemoveItem"))
             return;
         var id_ = user.item && user.item.id;
@@ -480,7 +480,14 @@ function makeDelayedAttackMove(move) {
                 return;
             field.print(Text.battle_messages_unique(95, this.subject));
             if (field.attemptHit(move, user, this.subject)) {
-                this.subject.hp -= damage;
+                var effect = this.subject.getStatus("SubstituteEffect");
+                if (effect) {
+                    if (effect.takeDamage(damage)) {
+                        this.subject.removeStatus(effect);
+                    }
+                } else {
+                    this.subject.hp -= damage;
+                }
             } else {
                 field.print(Text.battle_messages(2, user, this.subject));
             }
@@ -802,6 +809,8 @@ function makeTemporaryTrappingMove(move, text) {
             return;
         target.hp -= damage;
         if (target.getStatus("TemporaryTrappingEffect"))
+            return;
+        if (target.getStatus("SubstituteEffect"))
             return;
         var effect = new StatusEffect("TemporaryTrappingEffect");
         effect.tier = 6;

@@ -232,7 +232,7 @@ public:
             boost::shared_ptr<StatusObject> *);
     bool vetoSwitch(ScriptContext *, Pokemon *);
     bool transformEffectiveness(ScriptContext *, int, int, Pokemon *, double *);
-    bool transformHealthChange(ScriptContext *, int, bool, int *);
+    bool transformHealthChange(ScriptContext *, int, Pokemon *, bool, int *);
     void informTargeted(ScriptContext *, Pokemon *, MoveObject *);
     bool transformStatLevel(ScriptContext *, Pokemon *, Pokemon *, STAT, int *);
     const PokemonType *getVulnerability(ScriptContext *, Pokemon *, Pokemon *);

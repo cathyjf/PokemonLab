@@ -7821,6 +7821,9 @@ this.power_ = this.power;
 <![CDATA[
 this.power = this.power_;
 var effect = target.getStatus("ParalysisEffect");
+if (target.getStatus("SubstituteEffect")) {
+    effect = null;
+}
 if (effect) {
     this.power *= 2;
 }
@@ -8420,11 +8423,84 @@ makeRecoilMove(this, 4);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Acupressure", "Block", "Dream Eater", "Embargo",
+                   "Gastro Acid", "Grudge", "Heal Block", "Leech Seed",
+                   "Lock-on", "Mean Look", "Mimic", "Mind Reader",
+                   "Nightmare", "Pain Split", "Psycho Shift", "Spider Web",
+                   "Sketch", "Switcheroo", "Trick", "Worry Seed", "Yawn"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+var hp = Math.floor(user.getStat(Stat.HP) / 4);
+if (user.getStatus("SubstituteEffect") || (user.hp <= hp)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+user.hp -= hp;
+var effect = new StatusEffect("SubstituteEffect");
+effect.name = Text.battle_messages_unique(133);
+effect.hp_ = effect.max_ = hp;
+effect.getEffectiveHp = function() {
+    return [this.hp_, this.max_];
+};
+effect.takeDamage = function(delta) {
+    this.hp_ -= delta;
+    field.print(Text.battle_messages_unique(135, this.subject));
+    if (this.hp_ > 0)
+        return false;
+    this.hp_ = 0;
+    field.print(Text.battle_messages_unique(136, this.subject));
+    return true;
+};
+effect.transformHealthChange = function(delta, user, indirect) {
+    if ((this.hp_ == 0) || indirect || (delta < 0))
+        return delta;
+    if (this.takeDamage(delta)) {
+        var this_ = this;
+        var effect_ = new StatusEffect("SubstituteUnapplyEffect");
+        effect_.informFinishedExecution = function() {
+            this_.subject.removeStatus(this_);
+            this.subject.removeStatus(this);
+        };
+        user.applyStatus(user, effect_);
+    }
+    return 0;
+};
+var forbidden_ = this.forbidden_;
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != this.subject)
+        return false;
+    if (forbidden_.indexOf(move.name) == -1)
+        return false;
+    field.print(Text.battle_messages(0));
+    return true;
+};
+effect.transformStatus = function(subject, effect) {
+    if (subject != this.subject)
+        return effect;
+    if (effect.inducer == subject)
+        return effect;
+    if (effect.lock == StatusEffect.SPECIAL_EFFECT)
+        return null;
+    if (effect.id == "ConfusionEffect")
+        return null;
+    if (effect.id == "FlinchEffect")
+        return null;
+    if (effect.id != "StatChangeEffect")
+        return effect;
+    if (effect.delta_ > 0)
+        return effect;
+    return null;
+};
+effect.informRemoveItem = function() {
+    return true;
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(134, user));
 ]]>
 </use>
 </move>
@@ -9545,6 +9621,9 @@ this.power_ = this.power;
 <![CDATA[
 this.power = this.power_;
 var effect = target.getStatus("SleepEffect");
+if (target.getStatus("SubstituteEffect")) {
+    effect = null;
+}
 if (effect) {
     this.power *= 2;
 }

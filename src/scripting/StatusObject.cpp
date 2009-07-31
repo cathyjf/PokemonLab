@@ -133,13 +133,13 @@ bool StatusObject::transformStatLevel(ScriptContext *scx, Pokemon *user,
 }
 
 bool StatusObject::transformHealthChange(ScriptContext *scx, int hp,
-        bool indirect, int *pHp) {
+        Pokemon *user, bool indirect, int *pHp) {
     if (!scx->hasProperty(this, "transformHealthChange"))
         return false;
 
-    ScriptValue argv[] = { hp, indirect };
+    ScriptValue argv[] = { hp, user, indirect };
     ScriptValue v = scx->callFunctionByName(this,
-            "transformHealthChange", 2, argv);
+            "transformHealthChange", 3, argv);
     *pHp = v.getInt();
     return true;
 }

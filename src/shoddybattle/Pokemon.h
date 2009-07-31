@@ -126,7 +126,7 @@ public:
     bool hasAbility(const std::string &);
     bool transformStatus(Pokemon *, boost::shared_ptr<StatusObject> *);
 
-    int transformHealthChange(int, bool) const;
+    int transformHealthChange(int, Pokemon *, bool) const;
     
     int getHp() const { return m_hp; }
     void setHp(int hp);

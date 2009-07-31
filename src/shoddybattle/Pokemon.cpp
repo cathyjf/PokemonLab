@@ -684,13 +684,13 @@ int Pokemon::getCriticalModifier() const {
 /**
  * Transform a health change.
  */
-int Pokemon::transformHealthChange(int hp, bool indirect) const {
+int Pokemon::transformHealthChange(int hp, Pokemon *user, bool indirect) const {
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
 
-        (*i)->transformHealthChange(m_cx, hp, indirect, &hp);
+        (*i)->transformHealthChange(m_cx, hp, user, indirect, &hp);
     }
     return hp;
 }
@@ -776,7 +776,8 @@ void Pokemon::setHp(int hp) {
     }
     const BattleField::EXECUTION *move = m_field->topExecution();
     const bool indirect = !move || (move->user == this);
-    const int delta = transformHealthChange(m_hp - hp, indirect);
+    Pokemon *user = indirect ? NULL : move->user;
+    const int delta = transformHealthChange(m_hp - hp, user, indirect);
     if (delta == 0) {
         return;
     }
