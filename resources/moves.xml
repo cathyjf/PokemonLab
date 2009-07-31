@@ -2726,11 +2726,17 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <pp>10</pp>
 <target>Non-user</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var effect = target.getStatus("ProtectEffect");
+if (!effect) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+target.removeStatus(effect);
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
