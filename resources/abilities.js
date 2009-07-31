@@ -287,4 +287,12 @@ makeAbility({
     }
 });
 
-
+/*******************
+ * Shield Dust
+ *******************/
+makeAbility({
+    name : "Shield Dust",
+    informSecondaryEffect : function() {
+        return true;
+    }
+});

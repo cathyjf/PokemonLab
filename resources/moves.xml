@@ -1230,11 +1230,21 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -2)]]);
 <flags>
     <protect/>
     <sound/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (damage == 0) {
+    return;
+}
+target.hp -= damage;
+if (user.getStatus("TransformEffect")
+        || target.sendMessage("informSecondaryEffect")) {
+    return;
+}
+if (field.random(0.31)) {
+    target.applyStatus(user, new ConfusionEffect());
+}
 ]]>
 </use>
 </move>
