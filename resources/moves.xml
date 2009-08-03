@@ -622,6 +622,7 @@ for (var i = 0; i < size; ++i) {
     if (field.isCriticalHit(this, user, target)) {
         damage *= user.sendMessage("informCritical") || 2;
         field.print(Text.battle_messages(9));
+        target.sendMessage("informCriticalHit");
     }
     damage = Math.floor(damage * Math.floor(field.random(217, 255)
             * 100 / 255) / 100);
