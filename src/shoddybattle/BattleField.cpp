@@ -985,6 +985,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         
         p->setTurn(turn);
         ordered.push_back(turn);
+        p->clearDamagedFlag();
     }
 
     // Determine whether to sort speeds in ascending or descending order for

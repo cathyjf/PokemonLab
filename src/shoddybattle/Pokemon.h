@@ -253,6 +253,14 @@ public:
         return m_happiness;
     }
 
+    bool isDamaged() const {
+        return m_damaged;
+    }
+
+    void clearDamagedFlag() {
+        m_damaged = false;
+    }
+
     struct RECENT_MOVE {
         Pokemon *user;
         boost::shared_ptr<MoveObject> move;
@@ -294,6 +302,7 @@ private:
     boost::shared_ptr<MoveObject> m_lastMove;
 
     bool m_acted;   // Has this pokemon acted since it became active?
+    bool m_damaged; // Has this pokemon been damaged this turn?
 
     std::stack<RECENT_DAMAGE> m_recent;
 

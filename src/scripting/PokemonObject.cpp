@@ -70,7 +70,8 @@ enum POKEMON_TINYID {
     PTI_ACTED,
     PTI_ITEM,    // modifiable
     PTI_ABILITY, // modifiable
-    PTI_TURN
+    PTI_TURN,
+    PTI_DAMAGED
 };
 
 enum TURN_TINYID {
@@ -718,6 +719,10 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             *vp = BOOLEAN_TO_JSVAL(p->hasActed());
         } break;
 
+        case PTI_DAMAGED: {
+            *vp = BOOLEAN_TO_JSVAL(p->isDamaged());
+        } break;
+
         case PTI_ITEM: {
             StatusObjectPtr item = p->getItem();
             if (item) {
@@ -777,6 +782,7 @@ JSPropertySpec pokemonProperties[] = {
     { "item", PTI_ITEM, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "ability", PTI_ABILITY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "turn", PTI_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "damaged", PTI_DAMAGED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 

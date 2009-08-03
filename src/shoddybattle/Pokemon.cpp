@@ -303,6 +303,7 @@ void Pokemon::switchOut() {
     m_moveUsed.resize(m_moves.size(), false);
     m_lastMove.reset();
     m_acted = false;
+    m_damaged = false;
     // Adjust the memories other active pokemon.
     clearMemory();
 }
@@ -783,10 +784,13 @@ void Pokemon::setHp(int hp) {
     }
     m_hp -= delta;
     m_field->informHealthChange(this, delta);
-    if (move && (delta > 0)) {
-        ScriptValue argv[] = { move, this };
-        move->user->sendMessage("informDamaging", 2, argv);
-        informDamaged(move->user, move->move, delta);
+    if (delta > 0) {
+        m_damaged = true;
+        if (move) {
+            ScriptValue argv[] = { move, this };
+            move->user->sendMessage("informDamaging", 2, argv);
+            informDamaged(move->user, move->move, delta);
+        }
     }
     if (m_hp <= 0) {
         faint();

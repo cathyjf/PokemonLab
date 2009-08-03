@@ -383,11 +383,19 @@ user.execute(choice);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
 <use>
 <![CDATA[
-
+this.power = this.power_;
+if (target.damaged) {
+    this.power *= 2;
+}
+target.hp -= field.calculate(this, user, target, targets);
 ]]>
 </use>
 </move>
