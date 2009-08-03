@@ -150,11 +150,11 @@ void MoveObject::beginTurn(ScriptContext *scx, BattleField *field,
 }
 
 void MoveObject::prepareSelf(ScriptContext *scx, BattleField *field,
-        Pokemon *user) {
+        Pokemon *user, Pokemon *target) {
     if (!scx->hasProperty(this, "prepareSelf"))
         return;
-    ScriptValue val[] = { field, user };
-    scx->callFunctionByName(this, "prepareSelf", 2, val);
+    ScriptValue val[] = { field, user, target };
+    scx->callFunctionByName(this, "prepareSelf", 3, val);
 }
 
 void MoveObject::use(ScriptContext *scx, BattleField *field,

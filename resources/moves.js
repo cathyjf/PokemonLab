@@ -23,6 +23,46 @@
  */
 
 /**
+ * Make a move that returns to the user half the damage the attack would have
+ * done to the target, if the attack is unsuccessful.
+ */
+function makeJumpKickMove(move) {
+    move.prepareSelf = function(field, user, target) {
+        var effect = new StatusEffect("JumpKickEffect");
+        effect.calculating_ = false;
+        effect.informFinishedExecution = function() {
+            this.calculating_ = true;
+            field.narration = false;
+            var damage = field.calculate(move, user, target, 1);
+            field.narration = true;
+            if (damage > target.hp) {
+                damage = target.hp;
+            }
+            damage = Math.floor(damage / 2);
+            field.print(Text.battle_messages_unique(47, user));
+            user.hp -= damage;
+            user.removeStatus(this);
+        };
+        effect.vulnerability = function(user, target) {
+            if (!this.calculating_)
+                return -1;
+            return move.type;
+        };
+        user.applyStatus(user, effect);
+    };
+    move.use = function(field, user, target, targets) {
+        var damage = field.calculate(this, user, target, targets);
+        if (damage != 0) {
+            target.hp -= damage;
+            var effect = user.getStatus("JumpKickEffect");
+            if (effect) {
+                user.removeStatus(effect);
+            }
+        }
+    };
+}
+
+/**
  * Make a move that causes the user to use the target's berry if the attack
  * is successful.
  */

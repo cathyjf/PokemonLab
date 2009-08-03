@@ -3936,13 +3936,12 @@ field.print(Text.battle_messages_unique(93, user, target));
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeJumpKickMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Hidden Power" id="183">
@@ -4436,13 +4435,12 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+makeJumpKickMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Karate Chop" id="207">

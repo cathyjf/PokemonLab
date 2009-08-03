@@ -155,7 +155,7 @@ public:
     unsigned int getPower(ScriptContext *) const;
     int getPriority(ScriptContext *) const;
     void beginTurn(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
-    void prepareSelf(ScriptContext *, BattleField *, Pokemon *);
+    void prepareSelf(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
     void use(ScriptContext *, BattleField *, Pokemon *, Pokemon *, const int);
     bool attemptHit(ScriptContext *, BattleField *, Pokemon *, Pokemon *);
     unsigned int getPp(ScriptContext *) const;
