@@ -104,6 +104,60 @@ function makeStatusCureItem(item, ids) {
     });
 }
 
+function makeTypeBoostingItem(item, type) {
+    makeItem({
+        name : item,
+        type_ : type,
+        modifier : function(field, user, target, move, critical) {
+            if (user != this.subject)
+                return null;
+            if (move.type != type)
+                return null;
+            return [0, 1.2, 1];
+        }
+    });
+}
+
+function makePlateItem(item, type) {
+    makeTypeBoostingItem(item, type);
+    HoldItem[item].plate_ = true;
+}
+
+makeTypeBoostingItem("SilverPowder", Type.BUG);
+makeTypeBoostingItem("Metal Coat", Type.STEEL);
+makeTypeBoostingItem("Soft Sand", Type.GROUND);
+makeTypeBoostingItem("Hard Stone", Type.ROCK);
+makeTypeBoostingItem("Miracle Seed", Type.GRASS);
+makeTypeBoostingItem("BlackGlasses", Type.DARK);
+makeTypeBoostingItem("Black Belt", Type.FIGHTING);
+makeTypeBoostingItem("Magnet", Type.ELECTRIC);
+makeTypeBoostingItem("Mystic Water", Type.WATER);
+makeTypeBoostingItem("Sharp Beak", Type.FLYING);
+makeTypeBoostingItem("Poison Barb", Type.POISON);
+makeTypeBoostingItem("NeverMeltIce", Type.ICE);
+makeTypeBoostingItem("Spell Tag", Type.GHOST);
+makeTypeBoostingItem("TwistedSpoon", Type.PSYCHIC);
+makeTypeBoostingItem("Charcoal", Type.FIRE);
+makeTypeBoostingItem("Dragon Fang", Type.DRAGON);
+makeTypeBoostingItem("Silk Scarf", Type.NORMAL);
+
+makePlateItem("Flame Plate", Type.FIRE);
+makePlateItem("Splash Plate", Type.WATER);
+makePlateItem("Zap Plate", Type.ELECTRIC);
+makePlateItem("Meadow Plate", Type.GRASS);
+makePlateItem("Icicle Plate", Type.ICE);
+makePlateItem("Fist Plate", Type.FIGHTING);
+makePlateItem("Toxic Plate", Type.POISON);
+makePlateItem("Earth Plate", Type.GROUND);
+makePlateItem("Sky Plate", Type.FLYING);
+makePlateItem("Mind Plate", Type.PSYCHIC);
+makePlateItem("Insect Plate", Type.BUG);
+makePlateItem("Stone Plate", Type.ROCK);
+makePlateItem("Spooky Plate", Type.GHOST);
+makePlateItem("Draco Plate", Type.DRAGON);
+makePlateItem("Dread Plate", Type.DARK);
+makePlateItem("Iron Plate", Type.STEEL);
+
 makeStatusCureItem("Cheri Berry", ["ParalysisEffect"]);
 makeStatusCureItem("Chesto Berry", ["SleepEffect"]);
 makeStatusCureItem("Pecha Berryy", ["PoisonEffect", "ToxicEffect"]);

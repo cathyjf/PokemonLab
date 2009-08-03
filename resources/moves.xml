@@ -4441,13 +4441,15 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.DEFENCE, -1), 0.3]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+var type_ = this.type;
+this.prepareSelf = function(field, user) {
+    this.type = (user.item && user.item.plate_ && user.item.type_) || type_;
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Jump Kick" id="206">
