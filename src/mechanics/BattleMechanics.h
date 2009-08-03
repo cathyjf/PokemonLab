@@ -52,6 +52,8 @@ public:
     virtual double getEffectiveness(BattleField &field,
             const PokemonType *, Pokemon *, Pokemon *,
             std::vector<double> *) const = 0;
+    virtual bool isCriticalHit(BattleField &field, MoveObject &move,
+            Pokemon &user, Pokemon &target) const = 0;
     virtual ~BattleMechanics() { }
 protected:
     BattleMechanics() { }

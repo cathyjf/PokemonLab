@@ -266,6 +266,31 @@ JSBool attemptHit(JSContext *cx,
 }
 
 /**
+ * field.isCriticalHit(move, user, target)
+ */
+JSBool isCriticalHit(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    if (!JSVAL_IS_OBJECT(argv[0]))
+        return JS_FALSE;
+    if (!JSVAL_IS_OBJECT(argv[1]))
+        return JS_FALSE;
+    if (!JSVAL_IS_OBJECT(argv[2]))
+        return JS_FALSE;
+
+    JSObject *mobj = JSVAL_TO_OBJECT(argv[0]);
+    MoveObject move(mobj);
+
+    Pokemon *user = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
+    Pokemon *target = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[2]));
+
+    const BattleMechanics *mech = p->getMechanics();
+    const bool result = mech->isCriticalHit(*p, move, *user, *target);
+    *ret = BOOLEAN_TO_JSVAL(result);
+    return JS_TRUE;
+}
+
+/**
  * field.calculate(move, user, target, targets[, weight = true])
  */
 JSBool calculate(JSContext *cx,
@@ -434,6 +459,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getPokemon", getPokemon, 2, 0, 0),
     JS_FS("getEffectiveness", getEffectiveness, 2, 0, 0),
     JS_FS("getTypeEffectiveness", getTypeEffectiveness, 2, 0, 0),
+    JS_FS("isCriticalHit", isCriticalHit, 3, 0, 0),
     JS_FS_END
 };
 
