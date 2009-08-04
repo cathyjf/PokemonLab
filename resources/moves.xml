@@ -4805,13 +4805,39 @@ makeMassBasedMove(this);
 <pp>30</pp>
 <target>Allies</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+this.prepareSelf = function(field, user) {
+    if (user.getStatus("LuckyChantEffect")) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    var effect = new StatusEffect("LuckyChantEffect");
+    effect.name = Text.battle_messages_unique(123);
+    effect.turns = 5;
+    var party_ = user.party;
+    effect.applyEffect = function() {
+        return (this.subject.party == party_);
+    };
+    effect.beginTick = function() {
+        if (--this.turns != 0)
+            return;
+        field.print(Text.battle_messages_unique(125));
+        field.removeStatus(this);
+    };
+    effect.informAttemptCritical = function() {
+        return true;
+    };
+    field.print(Text.battle_messages_unique(124, user));
+    field.applyStatus(effect);
+};
+this.use = function() {
+    // Does nothing.
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Lunar Dance" id="223">
