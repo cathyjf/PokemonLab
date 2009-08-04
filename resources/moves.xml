@@ -608,7 +608,7 @@ this.power = this.power_;
 if (user.getStatus("HelpingHandEffect")) {
     this.power *= 1.5;
 }
-var defence = target.getStat(Stat.DEFENCE);
+var defence = target.base[Stat.DEFENCE];
 var size = field.getPartySize(user.party);
 for (var i = 0; i < size; ++i) {
     var p = field.getPokemon(user.party, i);
@@ -618,7 +618,7 @@ for (var i = 0; i < size; ++i) {
     //       pokemon in the user of Beat Up's party.
     field.print(Text.battle_messages_unique(7, p)); // TODO (!)
     var damage = Math.floor(Math.floor((Math.floor(p.level * 2 / 5) + 2)
-            * this.power * p.getStat(Stat.ATTACK) / 50) / defence) + 2;
+            * this.power * p.base[Stat.ATTACK] / 50) / defence) + 2;
     if (field.isCriticalHit(this, user, target)) {
         damage *= user.sendMessage("informCritical") || 2;
         field.print(Text.battle_messages(9));
