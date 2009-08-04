@@ -195,6 +195,38 @@ makeAbility({
 });
 
 /*******************
+ * Flash Fire
+ *******************/
+makeAbility({
+    name : "Flash Fire",
+    vetoExecution : function(field, user, target, move) {
+        if (user == this.subject)
+            return false;
+        if (target != this.subject)
+            return false;
+        if (move.type != Type.FIRE)
+            return false;
+        if ((move.power == 0) && (move.name != "Will-o-wisp"))
+            return false;
+        if (target.getStatus("FreezeEffect"))
+            return false;
+        field.print(Text.ability_messages(15, target));
+        if (!target.getStatus("FlashFireEffect")) {
+            var effect = new StatusEffect("FlashFireEffect");
+            effect.modifier = function(field, user, target, move, critical) {
+                if (user != this.subject)
+                    return null;
+                if (move.type != Type.FIRE)
+                    return null;
+                return [1, 1.5, 5];
+            };
+            target.applyStatus(target, effect);
+        }
+        return true;
+    }
+});
+
+/*******************
  * Drizzle
  *******************/
 makeWeatherAbility("Drizzle",
@@ -683,6 +715,25 @@ makeAbility({
 });
 
 /*******************
+ * Solar Power
+ *******************/
+makeAbility({
+    name : "Solar Power",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPATTACK)
+            return null;
+        if (!isWeatherActive(subject, GlobalEffect.SUN))
+            return null;
+        return [1.5, 1];
+    },
+    informSunDamage : function() {
+        return true;
+    }
+});
+
+/*******************
  * Plus
  *******************/
 makeAbility({
@@ -1057,6 +1108,49 @@ makeAbility({
             return null;
         // 50% base power mod; 6th (target ability) position.
         return [0, 0.5, 6];
+    }
+});
+
+/*******************
+ * Dry Skin
+ *******************/
+makeAbility({
+    name : "Dry Skin",
+    informWeatherHealing : function(flags) {
+        if (!flags[GlobalEffect.RAIN])
+            return false;
+        var max = this.subject.getStat(Stat.HP);
+        if (this.subject.hp == max)
+            return false;
+        this.subject.field.print(Text.ability_messages(57, this.subject));
+        var delta = Math.floor(max / 8);
+        this.subject.hp += delta;
+        return true;
+    },
+    informSunDamage : function() {
+        return true;
+    },
+    modifier : function(field, user, target, move, critical) {
+        if (target != this.subject)
+            return null;
+        if (move.type != Type.FIRE)
+            return null;
+        return [0, 1.25, 6];
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (user == this.subject)
+            return false;
+        if (target != this.subject)
+            return false;
+        if (move.type != Type.WATER)
+            return false;
+        var max = target.getStat(Stat.HP);
+        if (target.hp != max) {
+            field.print(Text.ability_messages(12, target, this));
+            var delta = Math.floor(max / 4);
+            target.hp += delta;
+        }
+        return true;
     }
 });
 

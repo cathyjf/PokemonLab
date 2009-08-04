@@ -77,13 +77,16 @@ makeEffect(GlobalEffect, {
             return;
         if (flags[GlobalEffect.SAND] ||
                 flags[GlobalEffect.HAIL] ||
-                        (flags[GlobalEffect.SUN] &&
-                        (subject.hasAbility("Dry Skin") ||
-                                subject.hasAbility("Solarpower")))) {
+                        (flags[GlobalEffect.SUN]
+                        && subject.sendMessage("informSunDamage"))) {
+            var denominator = 16;
             var field = subject.field;
             if (flags[GlobalEffect.SUN]) {
                 // damaged by ability
                 field.print(Text.weather_sun(3, subject, subject.ability));
+                if (subject.sendMessage("informSunDamage")) {
+                    denominator = 8;
+                }
             } else if (flags[GlobalEffect.SAND]) {
                 if (subject.sendMessage("informSandDamage"))
                     return;
@@ -100,7 +103,7 @@ makeEffect(GlobalEffect, {
                 field.print(Text.weather_hail(3, subject));
             }
 
-            subject.hp -= Math.floor(subject.getStat(Stat.HP) / 16);
+            subject.hp -= Math.floor(subject.getStat(Stat.HP) / denominator);
         }
     }
 });
