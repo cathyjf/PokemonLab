@@ -803,6 +803,8 @@ function makeOneHitKillMove(move) {
             field.print(Text.battle_messages(0));
             return;
         }
+        if (target.sendMessage("informOHKO"))
+            return;
         if (target.isImmune(this)) {
             field.print(Text.battle_messages(1, target));
             return;

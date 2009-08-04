@@ -92,7 +92,7 @@ function makeCriticalTypeAbility(ability, type) {
 }
 
 /*******************
- * Levitate
+ * Overgrow
  *******************/
 makeCriticalTypeAbility("Overgrow", Type.GRASS);
 
@@ -139,7 +139,7 @@ makeAbility({
             user.setPp(move, pp - 1);
         }
     }
-})
+});
 
 /*******************
  * Intimidate
@@ -157,7 +157,30 @@ makeAbility({
             }
         }
     },
-})
+});
+
+/*******************
+ * Frisk
+ *******************/
+ makeAbility({
+     name : "Frisk",
+     informActivate : function() {
+        var field = this.subject.field;
+        var party_ = 1 - this.subject.party;
+        var choices = [];
+        for (var i = 0; i < field.partySize; ++i) {
+            var p = field.getActivePokemon(party_, i);
+            if (p && p.item) {
+                choices.push(p);
+            }
+        }
+        var length = choices.length;
+        if (length == 0)
+            return;
+        var p = choices[field.random(0, length - 1)];
+        field.print(Text.ability_messages(18, this.subject, p, p.item));
+     }
+ });
 
 /*******************
  * Aftermath
@@ -173,6 +196,17 @@ makeAbility({
             if (delta < 1) delta = 1;
             user.hp -= delta;
         }
+    }
+});
+
+/*******************
+ * Sturdy
+ *******************/
+makeAbility({
+    name : "Sturdy",
+    informOHKO : function() {
+        this.subject.field.print(Text.ability_messages(47, this.subject));
+        return true;
     }
 });
 
@@ -391,6 +425,95 @@ makeAbility({
         return [2, 1];
     }
 });
+
+/*******************
+ * Sand Veil
+ *******************/
+makeAbility({
+    name : "Sand Veil",
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        if (target != this.subject)
+            return null;
+        if (!isWeatherActive(subject, GlobalEffect.SAND))
+            return null;
+        return [0.8, 3];
+    },
+    informSandDamage : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Snow Cloak
+ *******************/
+makeAbility({
+    name : "Snow Cloak",
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        if (target != this.subject)
+            return null;
+        if (!isWeatherActive(subject, GlobalEffect.HAIL))
+            return null;
+        return [0.8, 4];
+    },
+    informHailDamage : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Compoundeyes
+ *******************/
+makeAbility({
+    name : "Compoundeyes",
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        if (subject != this.subject)
+            return null;
+        return [1.3, 2];
+    },
+});
+
+/*******************
+ * Tangled Feet
+ *******************/
+makeAbility({
+    name : "Tangled Feet",
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        if (target != this.subject)
+            return null;
+        if (!target.getStatus("ConfusionEffect"))
+            return null;
+        return [0.5, 7];
+    },
+});
+
+/*******************
+ * Hustle
+ *******************/
+makeAbility({
+    name : "Hustle",
+    statModifier : function(field, stat, subject, target) {
+        if (subject != this.subject)
+            return null;
+        if (stat == Stat.ACCURACY) {
+            if (!field.execution)
+                return null;
+            if (field.execution.moveClass != MoveClass.PHYSICAL)
+                return null;
+            return [0.8, 6];
+        }
+        if (stat != Stat.ATTACK)
+            return null;
+        return [1.5, 1];
+    }
+})
 
 /*******************
  * Rain Dish

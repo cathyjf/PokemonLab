@@ -45,7 +45,8 @@ enum FIELD_TINYID {
     FTI_LAST_MOVE,
     FTI_PARTY_SIZE,
     FTI_NARRATION,
-    FTI_HOST
+    FTI_HOST,
+    FTI_EXECUTION
 };
 
 /**
@@ -431,6 +432,14 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case FTI_HOST: {
             *vp = INT_TO_JSVAL(p->getHost());
         } break;
+        case FTI_EXECUTION: {
+            const BattleField::EXECUTION *execution = p->topExecution();
+            if (execution) {
+                *vp = OBJECT_TO_JSVAL(execution->move->getObject());
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        }
     }
     return JS_TRUE;
 }
@@ -442,6 +451,7 @@ JSPropertySpec fieldProperties[] = {
     { "partySize", FTI_PARTY_SIZE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "narration", FTI_NARRATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, fieldSet },
     { "host", FTI_HOST, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
+    { "execution", FTI_EXECUTION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
