@@ -33,6 +33,16 @@ function Ability(name) {
 }
 
 Ability.prototype = new StatusEffect();
+Ability.prototype.switchIn = function() {
+    if (!this.informActivate)
+        return;
+    var id_ = "Ability" + this.id + "ActivatedEffect";
+    if (this.subject.getStatus(id_))
+        return;
+    this.informActivate();
+    var effect = new StatusEffect(id_);
+    this.subject.applyStatus(this.subject, effect);
+};
 
 /**
  * Allows for a nicer syntax for making an ability.
@@ -65,6 +75,42 @@ function makeStatusImmuneAbility(ability, immune) {
     });
 }
 
+function makeCriticalTypeAbility(ability, type) {
+    makeAbility({
+        name : ability,
+        modifier : function(field, user, target, move, critical) {
+            if (user != this.subject)
+                return null;
+            if (move.type != type)
+                return null;
+            if (user.hp > Math.floor(user.getStat(Stat.HP) / 3))
+                return null;
+            // 150% base power mod; 5th (user ability) position.
+            return [0, 1.5, 5];
+        }
+    });
+}
+
+/*******************
+ * Levitate
+ *******************/
+makeCriticalTypeAbility("Overgrow", Type.GRASS);
+
+/*******************
+ * Blaze
+ *******************/
+makeCriticalTypeAbility("Blaze", Type.FIRE);
+
+/*******************
+ * Torrent
+ *******************/
+makeCriticalTypeAbility("Torrent", Type.WATER);
+
+/*******************
+ * Swarm
+ *******************/
+makeCriticalTypeAbility("Swarm", Type.BUG);
+
 /*******************
  * Levitate
  *******************/
@@ -78,6 +124,160 @@ makeAbility({
 });
 
 /*******************
+ * Pressure
+ *******************/
+makeAbility({
+    name : "Pressure",
+    informActivate : function() {
+        this.subject.field.print(Text.ability_messages(34, this.subject));
+    },
+    informTargeted : function(user, move) {
+        if (user == this.subject)
+            return;
+        var pp = user.getPp(move);
+        if (pp > 0) {
+            user.setPp(move, pp - 1);
+        }
+    }
+})
+
+/*******************
+ * Intimidate
+ *******************/
+makeAbility({
+    name : "Intimidate",
+    informActivate : function() {
+        var field = this.subject.field;
+        var party_ = 1 - this.subject.party;
+        for (var i = 0; i < field.partySize; ++i) {
+            var p = field.getActivePokemon(party_, i);
+            if (p) {
+                field.print(Text.ability_messages(23, this.subject, p));
+                p.applyStatus(null, new StatChangeEffect(Stat.ATTACK, -1));
+            }
+        }
+    },
+})
+
+/*******************
+ * Aftermath
+ *******************/
+makeAbility({
+    name : "Aftermath",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((subject.hp <= 0) && (damage > 0)
+                && move.flags[Flag.CONTACT]) {
+            subject.field.print(Text.ability_messages(0, user, subject));
+            var delta = Math.floor(user.getStat(Stat.HP) / 4);
+            if (delta < 1) delta = 1;
+            user.hp -= delta;
+        }
+    }
+});
+
+/*******************
+ * Arena Trap
+ *******************/
+makeAbility({
+    name : "Arena Trap",
+    vetoSwitch : function(subject) {
+        if (subject.party == this.subject.party)
+            return false;
+        if (subject.sendMessage("informBlockSwitch"))
+            return false;
+        var factor = subject.field.getEffectiveness(Type.GROUND, subject);
+        return (factor > 0);
+    }
+});
+
+/*******************
+ * Shadow Tag
+ *******************/
+makeAbility({
+    name : "Shadow Tag",
+    vetoSwitch : function(subject) {
+        if (subject.party == this.subject.party)
+            return false;
+        if (subject.sendMessage("informBlockSwitch"))
+            return false;
+        return !subject.hasAbility(this.id);
+    }
+});
+
+/*******************
+ * Magnet Pull
+ *******************/
+makeAbility({
+    name : "Magnet Pull",
+    vetoSwitch : function(subject) {
+        if (subject.party == this.subject.party)
+            return false;
+        if (subject.sendMessage("informBlockSwitch"))
+            return false;
+        return subject.isType(Type.STEEL);
+    }
+});
+
+/*******************
+ * Suction Cups
+ *******************/
+makeAbility({
+    name : "Suction Cups",
+    informRandomSwitch : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Bad Dreams
+ *******************/
+makeAbility({
+    name : "Bad Dreams",
+    informSleepTick : function(effect) {
+        // TODO: Research question: Does Bad Dreams affect allies? For now,
+        //       I assume it does.
+        if (effect.subject == this.subject)
+            return;
+        this.subject.field.print(Text.ability_messages(3,
+                effect.subject, this.subject));
+        var delta = Math.floor(effect.subject.getStat(Stat.HP) / 8);
+        if (delta < 1) delta = 1;
+        effect.subject.hp -= delta;
+    }
+});
+
+/*******************
+ * Air Lock
+ *******************/
+makeAbility({
+    name : "Air Lock",
+    informWeatherEffects : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Cloud Nine
+ *******************/
+makeAbility({
+    name : "Cloud Nine",
+    informWeatherEffects : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Super Luck
+ *******************/
+makeAbility({
+    name : "Super Luck",
+    criticalModifier : function() {
+        return 1;
+    }
+});
+
+/*******************
  * Insomnia
  *******************/
 makeStatusImmuneAbility("Insomnia", "SleepEffect");
@@ -86,6 +286,16 @@ makeStatusImmuneAbility("Insomnia", "SleepEffect");
  * Vital Spirit
  *******************/
 makeStatusImmuneAbility("Vital Spirit", "SleepEffect");
+
+/*******************
+ * Water Veil
+ *******************/
+makeStatusImmuneAbility("Water Veil", "BurnEffect");
+
+/*******************
+ * Magma Armor
+ *******************/
+makeStatusImmuneAbility("Magma Armor", "FreezeEffect");
 
 /*******************
  * Early Bird
@@ -123,6 +333,132 @@ makeAbility({
 });
 
 /*******************
+ * Huge Power
+ *******************/
+makeAbility({
+    name : "Huge Power",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.ATTACK)
+            return null;
+        return [2, 1];
+    }
+});
+
+/*******************
+ * Pure Power
+ *******************/
+makeAbility({
+    name : "Pure Power",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.ATTACK)
+            return null;
+        return [2, 1];
+    }
+});
+
+/*******************
+ * Chlorophyll
+ *******************/
+makeAbility({
+    name : "Chlorophyll",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+        if (!isWeatherActive(subject, GlobalEffect.SUN))
+            return null;
+        return [2, 1];
+    }
+});
+
+/*******************
+ * Swift Swim
+ *******************/
+makeAbility({
+    name : "Swift Swim",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+        if (!isWeatherActive(subject, GlobalEffect.RAIN))
+            return null;
+        return [2, 1];
+    }
+});
+
+/*******************
+ * Rain Dish
+ *******************/
+makeAbility({
+    name : "Rain Dish",
+    informRainHealing : function() {
+        var max = this.subject.getStat(Stat.HP);
+        if (this.subject.hp == max)
+            return;
+        this.subject.field.print(Text.ability_messages(36, this.subject));
+        var delta = Math.floor(max / 16);
+        this.subject.hp += delta;
+    }
+})
+
+/*******************
+ * Ice Body
+ *******************/
+makeAbility({
+    name : "Ice Body",
+    informHailDamage : function() {
+        return true;
+    },
+    informWeatherHealing : function(flags) {
+        if (!flags[GlobalEffect.HAIL])
+            return false;
+        var max = this.subject.getStat(Stat.HP);
+        if (this.subject.hp == max)
+            return false;
+        this.subject.field.print(Text.ability_messages(56, this.subject));
+        var delta = Math.floor(max / 16);
+        this.subject.hp += delta;
+        return true;
+    }
+});
+
+/*******************
+ * Shed Skin
+ *******************/
+makeAbility({
+    name : "Shed Skin",
+    tier : 6,
+    subtier : 0,
+    tick : function() {
+        var effect = this.subject.getStatus(StatusEffect.SPECIAL_EFFECT);
+        if (effect && this.subject.field.random(0.3)) {
+            this.subject.field.print(Text.ability_messages(39, this.subject));
+            this.subject.removeStatus(effect);
+        }
+    }
+});
+
+/*******************
+ * Natural Cure
+ *******************/
+makeAbility({
+    name : "Natural Cure",
+    switchOut : function() {
+        var effect = this.subject.getStatus(StatusEffect.SPECIAL_EFFECT);
+        if (effect) {
+            this.subject.removeStatus(effect);
+        }
+        return true;
+    }
+});
+
+/*******************
  * Quick Feet
  *******************/
 makeAbility({
@@ -140,6 +476,28 @@ makeAbility({
             return null;
 
         // 50% speed increase; priority of 1 (ability modifier)
+        return [1.5, 1];
+    }
+});
+
+/*******************
+ * Guts
+ *******************/
+makeAbility({
+    name : "Guts",
+    informBurnMod : function() {
+        // nullify the burn attack mod
+        return true;
+    },
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.ATTACK)
+            return null;
+        if (subject.getStatus(StatusEffect.SPECIAL_EFFECT) == null)
+            return null;
+
+        // 50% attack increase; priority of 1 (ability modifier)
         return [1.5, 1];
     }
 });
@@ -288,6 +646,13 @@ makeAbility({
 });
 
 /*******************
+ * Serene Grace
+ *******************/
+makeAbility({
+    name : "Serene Grace"
+});
+
+/*******************
  * Shield Dust
  *******************/
 makeAbility({
@@ -295,4 +660,36 @@ makeAbility({
     informSecondaryEffect : function() {
         return true;
     }
+});
+
+/*******************
+ * Stench
+ *******************/
+makeAbility({
+    name : "Stench"
+    // Has no effect in battle.
+});
+
+/*******************
+ * Honey Gather
+ *******************/
+makeAbility({
+    name : "Honey Gather"
+    // Has no effect in battle.
+});
+
+/*******************
+ * Run Away
+ *******************/
+makeAbility({
+    name : "Run Away"
+    // Has no effect in battle.
+});
+
+/*******************
+ * Pickup
+ *******************/
+makeAbility({
+    name : "Pickup"
+    // Has no effect in battle.
 });

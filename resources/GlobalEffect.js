@@ -69,6 +69,8 @@ makeEffect(GlobalEffect, {
         field.print(this.text_(4));
     },
     tickPokemon : function() {
+        if (this.subject.field.sendMessage("informWeatherEffects"))
+            return;
         var flags = getGlobalController(this.subject).flags;
         var subject = this.subject;
         if (subject.sendMessage("informWeatherHealing", flags))
@@ -122,10 +124,14 @@ makeEffect(WeatherEffect, {
     text_ : Text.weather_rain,
     idx_ : GlobalEffect.RAIN,
     tickPokemon : function() {
-        this.subject.sendMessage("informRainHealing");
+        if (!this.subject.field.sendMessage("informWeatherEffects")) {
+            this.subject.sendMessage("informRainHealing");
+        }
         WeatherEffect.prototype.tickPokemon.call(this);
     },
     modifier : function(field, user, target, move, critical) {
+        if (field.sendMessage("informWeatherEffects"))
+            return null;
         var type = move.type;
         if (type == Type.FIRE)
             return [1, 0.5, 3];
@@ -141,6 +147,8 @@ makeEffect(WeatherEffect, {
     text_ : Text.weather_sandstorm,
     idx_ : GlobalEffect.SAND,
     statModifier : function(field, stat, subject) {
+        if (field.sendMessage("informWeatherEffects"))
+            return null;
         if (stat != Stat.SPDEFENCE)
             return null;
         if (!subject.isType(Type.ROCK))
@@ -155,6 +163,8 @@ makeEffect(WeatherEffect, {
     text_ : Text.weather_sun,
     idx_ : GlobalEffect.SUN,
     modifier : function(field, user, target, move, critical) {
+        if (field.sendMessage("informWeatherEffects"))
+            return null;
         var type = move.type;
         if (type == Type.FIRE)
             return [1, 1.5, 4];
@@ -238,6 +248,15 @@ makeEffect(StatusEffect, {
             var effect = this.applyGlobalEffect(this.subject, i);
             effect.turns_ = -1; // indefinite duration
         }
+    },
+    getFlags : function() {
+        if (!this.subject.field.sendMessage("informWeatherEffects"))
+            return this.flags;
+        var flags = this.flags.concat();
+        for (var i = GlobalEffect.RAIN; i <= GlobalEffect.FOG; ++i) {
+            flags[i] = false;
+        }
+        return flags;
     }
 });
 
@@ -250,4 +269,10 @@ function getGlobalController(user) {
     if (effect)
         return effect;
     return user.field.applyStatus(new GlobalEffectController());
+}
+
+function isWeatherActive(user, idx) {
+    if (user.field.sendMessage("informWeatherEffects"))
+        return false;
+    return getGlobalController(user).flags[idx];
 }

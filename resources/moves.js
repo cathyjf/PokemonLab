@@ -228,7 +228,7 @@ function makeWeatherBasedHealingMove(move) {
             field.print(Text.battle_messages(0));
             return;
         }
-        var flags = getGlobalController(user).flags;
+        var flags = getGlobalController(user).getFlags();
         var delta = 0;
         if (flags[GlobalEffect.SUN]) {
             delta = Math.floor(max * 2 / 3);

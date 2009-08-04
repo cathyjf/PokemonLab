@@ -773,7 +773,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 var accuracy_ = this.accuracy;
 this.attemptHit = function(field, user, target) {
     this.accuracy = accuracy_;
-    var flags = getGlobalController(user).flags;
+    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.HAIL]) {
         this.accuracy = 0;
         // TODO: maybe apply effect for x0 instead...
@@ -8012,7 +8012,7 @@ var parent = this.use;
 var power_ = this.power;
 this.use = function(field, user, target, targets) {
     this.power = power_;
-    var flags = getGlobalController(user).flags;
+    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.SUN]) {
         target.hp -= field.calculate(this, user, target, targets);
         return;
@@ -9110,7 +9110,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 var accuracy_ = this.accuracy;
 this.attemptHit = function(field, user, target) {
     this.accuracy = accuracy_;
-    var flags = getGlobalController(user).flags;
+    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.RAIN]) {
         this.accuracy = 0;
         // TODO: maybe apply effect for x0 instead...
@@ -9797,7 +9797,7 @@ this.prepareSelf = function(field, user) {
     // TODO (NOTE): More mechanics made up by me.
     this.type = type_;
     this.power = power_;
-    var flags = getGlobalController(user).flags;
+    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.SUN]) {
         this.type = Type.FIRE;
     } else if (flags[GlobalEffect.RAIN]) {

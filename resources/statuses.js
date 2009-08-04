@@ -401,6 +401,8 @@ makeEffect(StatusEffect, {
     id : "SleepEffect",
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_sleep(0),
+    tier : 6,
+    subtier : 12, // TODO: Research to get the correct tier/subtier.
     vetoTier : 0,
     switchOut : function() { return false; },
     applyEffect : function() {
@@ -415,6 +417,9 @@ makeEffect(StatusEffect, {
     },
     informBeginTurn : function() {
         return true;
+    },
+    tick : function() {
+        this.subject.field.sendMessage("informSleepTick", this);
     },
     vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
