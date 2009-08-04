@@ -429,7 +429,9 @@ unsigned int Pokemon::getStat(const STAT stat) {
         return m_stat[stat];
     PRIORITY_MAP mods;
     m_field->getStatModifiers(stat, this, NULL, mods);
-    mods[0] = getStatMultiplier(stat, m_statLevel[stat]);
+    int level = m_statLevel[stat];
+    getTransformedStatLevel(this, NULL, stat, &level);
+    mods[0] = getStatMultiplier(stat, level);
     int value = getRawStat(stat);
     PRIORITY_MAP::const_iterator i = mods.begin();
     for (; i != mods.end(); ++i) {

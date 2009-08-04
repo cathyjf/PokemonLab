@@ -125,6 +125,35 @@ makeEffect(StatusEffect, {
 
 
 /**
+ * Infatuation (Attract)
+ *
+ * The afflicted pokemon has a 50% chance of failing to attack on its turn.
+ * The effect ends when the inducer leaves the field.
+ */
+makeEffect(StatusEffect, {
+    id : "AttractEffect",
+    name : Text.status_effects_attract(0),
+    vetoTier : 9,
+    informWithdraw : function(subject) {
+        if (subject == this.inducer) {
+            this.subject.removeStatus(this);
+        }
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (target != null)
+            return false;
+        if (user != this.subject)
+            return false;
+        field.print(Text.status_effects_attract(1, this.subject, this.inducer));
+        if (field.random(0.5))
+            return false;
+        field.print(Text.status_effects_attract(2, this.subject));
+        return true;
+    }
+});
+
+
+/**
  * Confusion
  *
  * For 2-5 turns, the afflicted pokemon has a 50% chance of attacking itself

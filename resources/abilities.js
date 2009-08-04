@@ -172,6 +172,29 @@ makeAbsorbMove("Volt Absorb", Type.ELECTRIC);
 makeAbsorbMove("Water Absorb", Type.WATER);
 
 /*******************
+ * Motor Drive
+ *******************/
+makeAbility({
+    name : "Motor Drive",
+    vetoExecution : function(field, user, target, move) {
+        if (user == this.subject)
+            return false;
+        if (target != this.subject)
+            return false;
+        if (move.type != Type.ELECTRIC)
+            return false;
+        if (target.isType(Type.GROUND))
+            return false;
+        var effect = new StatChangeEffect(Stat.SPEED, 1);
+        effect.silent = true;
+        if (target.applyStatus(target, effect)) {
+            field.print(Text.ability_messages(29, target));
+        }
+        return true;
+    }
+});
+
+/*******************
  * Drizzle
  *******************/
 makeWeatherAbility("Drizzle",
@@ -438,6 +461,23 @@ makeAbility({
 });
 
 /*******************
+ * Cute Charm
+ *******************/
+makeAbility({
+    name : "Cute Charm",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]
+                && subject.field.random(0.3)
+                && isOppositeGender(subject, user)) {
+            if (user.applyStatus(user, new AttractEffect())) {
+                subject.field.print(Text.ability_messages(5, subject, user));
+            }
+        }
+    }
+});
+
+/*******************
  * Color Change
  *******************/
 makeAbility({
@@ -626,6 +666,56 @@ makeAbility({
         this.subject.field.print(Text.ability_messages(32, this.subject));
         var damage = Math.floor(max / 8);
         this.subject.hp += damage;
+        return true;
+    }
+});
+
+/*******************
+ * Liquid Ooze
+ *******************/
+makeAbility({
+    name : "Liquid Ooze",
+    informDrainHealth : function(user, damage) {
+        this.subject.field.print(Text.ability_messages(55, user));
+        user.hp -= damage;
+        return true;
+    }
+});
+
+/*******************
+ * Plus
+ *******************/
+makeAbility({
+    name : "Plus",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPATTACK)
+            return null;
+        if (!field.sendMessage("informMinus"))
+            return null;
+        return [1.5, 1];
+    },
+    informPlus : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Minus
+ *******************/
+makeAbility({
+    name : "Minus",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPATTACK)
+            return null;
+        if (!field.sendMessage("informPlus"))
+            return null;
+        return [1.5, 1];
+    },
+    informMinus : function() {
         return true;
     }
 });
@@ -1016,6 +1106,95 @@ makeAbility({
         if (this.moves_.indexOf(move.name) == -1)
             return null;
         return [0, 1.2, 5];
+    }
+});
+
+/*******************
+ * Reckless
+ *******************/
+makeAbility({
+    name : "Reckless",
+    moves_ : ["Brave Bird", "Double-edge", "Flare Blitz", "Head Smash",
+              "Submission", "Take Down", "Volt Tackle", "Wood Hammer",
+              "Jump Kick", "Hi Jump Kick"],
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (this.moves_.indexOf(move.name) == -1)
+            return null;
+        return [0, 1.2, 5];
+    }
+});
+
+/*******************
+ * Rivalry
+ *******************/
+makeAbility({
+    name : "Rivalry",
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if ((user.gender == Gender.NONE) || (target.gender == Gender.NONE))
+            return null;
+        if (user.gender == target.gender)
+            return [0, 1.25, 5];
+        return [0, 0.75, 5];
+    }
+});
+
+/*******************
+ * Simple
+ *******************/
+makeAbility({
+    name : "Simple",
+    transform_ : function(level) {
+        level *= 2;
+        if (level > 6) {
+            level = 6;
+        } else if (level < -6) {
+            level = -6;
+        }
+        return level;
+    },
+    transformStatLevel : function(user, target, stat, level) {
+        if (user == this.subject) {
+            if ((stat == Stat.ACCURACY)
+                    || (stat == Stat.ATTACK)
+                    || (stat == Stat.SPATTACK)
+                    || (stat == Stat.SPEED)) {
+                return [this.transform_(level), false];
+            }
+        }
+        if (target != this.subject)
+            return null;
+        if ((stat != Stat.EVASION)
+                && (stat != Stat.DEFENCE)
+                && (stat != Stat.SPDEFENCE))
+            return null;
+        return [this.transform_(level), false];
+    }
+});
+
+/*******************
+ * Unaware
+ *******************/
+makeAbility({
+    name : "Unaware",
+    transformStatLevel : function(user, target, stat, level) {
+        if (target == this.subject) {
+            if ((stat == Stat.ACCURACY)
+                    || (stat == Stat.ATTACK)
+                    || (stat == Stat.SPATTACK)) {
+                return [0, true];
+            }
+        }
+        if (user != this.subject)
+            return null;
+        if ((stat != Stat.EVASION)
+                && (stat != Stat.DEFENCE)
+                && (stat != Stat.SPDEFENCE))
+            return null;
+        return [0, true];
     }
 });
 

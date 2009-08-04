@@ -1025,6 +1025,8 @@ function makeRecoilMove(move, divisor) {
         if (recoil > 0) {
             field.print(Text.battle_messages_unique(58, user));
         } else if (recoil < 0) {
+            if (target.sendMessage("informDrainHealth", user, -recoil))
+                return;
             field.print(Text.battle_messages_unique(59, user));
         }
         user.hp -= recoil;
