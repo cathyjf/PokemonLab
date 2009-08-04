@@ -39,9 +39,9 @@ Ability.prototype.switchIn = function() {
     var id_ = "Ability" + this.id + "ActivatedEffect";
     if (this.subject.getStatus(id_))
         return;
-    this.informActivate();
     var effect = new StatusEffect(id_);
     this.subject.applyStatus(this.subject, effect);
+    this.informActivate();
 };
 
 /**
@@ -139,6 +139,37 @@ function makeWeatherAbility(ability, idx, text) {
         }
     });
 }
+
+function makeAbsorbMove(ability, type) {
+    makeAbility({
+        name : ability,
+        vetoExecution : function(field, user, target, move) {
+            if (user == this.subject)
+                return false;
+            if (target != this.subject)
+                return false;
+            if (move.type != type)
+                return false;
+            var max = target.getStat(Stat.HP);
+            if (target.hp != max) {
+                field.print(Text.ability_messages(12, target, this));
+                var delta = Math.floor(max / 4);
+                target.hp += delta;
+            }
+            return true;
+        }
+    });
+}
+
+/*******************
+ * Volt Absorb
+ *******************/
+makeAbsorbMove("Volt Absorb", Type.ELECTRIC);
+
+/*******************
+ * Water Absorb
+ *******************/
+makeAbsorbMove("Water Absorb", Type.WATER);
 
 /*******************
  * Drizzle
@@ -301,6 +332,31 @@ makeAbility({
  });
 
 /*******************
+ * Trace
+ *******************/
+ makeAbility({
+     name : "Trace",
+     informActivate : function() {
+        var field = this.subject.field;
+        var party_ = 1 - this.subject.party;
+        var choices = [];
+        for (var i = 0; i < field.partySize; ++i) {
+            var p = field.getActivePokemon(party_, i);
+            if (p && p.ability && (p.ability.id != "Multitype")) {
+                choices.push(p);
+            }
+        }
+        var length = choices.length;
+        if (length == 0)
+            return;
+        var p = choices[field.random(0, length - 1)];
+        field.print(Text.ability_messages(50, this.subject, p, p.ability));
+        this.subject.ability = p.ability;
+        this.subject.ability.switchIn();
+     }
+ });
+
+/*******************
  * Aftermath
  *******************/
 makeAbility({
@@ -313,6 +369,86 @@ makeAbility({
             var delta = Math.floor(user.getStat(Stat.HP) / 4);
             if (delta < 1) delta = 1;
             user.hp -= delta;
+        }
+    }
+});
+
+/*******************
+ * Rough Skin
+ *******************/
+makeAbility({
+    name : "Rough Skin",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]) {
+            subject.field.print(Text.ability_messages(37, user, subject));
+            var delta = Math.floor(user.getStat(Stat.HP) / 8);
+            if (delta < 1) delta = 1;
+            user.hp -= delta;
+        }
+    }
+});
+
+/*******************
+ * Flame Body
+ *******************/
+makeAbility({
+    name : "Flame Body",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]
+                && subject.field.random(0.3)) {
+            if (user.applyStatus(user, new BurnEffect())) {
+                subject.field.print(Text.ability_messages(14, subject, user));
+            }
+        }
+    }
+});
+
+/*******************
+ * Static
+ *******************/
+makeAbility({
+    name : "Static",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]
+                && subject.field.random(0.3)) {
+            if (user.applyStatus(user, new ParalysisEffect())) {
+                subject.field.print(Text.ability_messages(44, subject, user));
+            }
+        }
+    }
+});
+
+/*******************
+ * Poison Point
+ *******************/
+makeAbility({
+    name : "Poison Point",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]
+                && subject.field.random(0.3)) {
+            if (user.applyStatus(user, new PoisonEffect())) {
+                subject.field.print(Text.ability_messages(33, subject, user));
+            }
+        }
+    }
+});
+
+/*******************
+ * Color Change
+ *******************/
+makeAbility({
+    name : "Color Change",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && (move.name != "Pain Split")
+                && !subject.isType(move.type)) {
+            subject.setTypes([move.type]);
+            subject.field.print(Text.battle_messages_unique(9, subject,
+                    Text.types(move.type)));
         }
     }
 });
@@ -519,6 +655,24 @@ makeAbility({
         if (stat != Stat.ATTACK)
             return null;
         return [2, 1];
+    }
+});
+
+/*******************
+ * Leaf Guard
+ *******************/
+makeAbility({
+    name : "Leaf Guard",
+    transformStatus : function(subject, status) {
+        if (subject != this.subject)
+            return status;
+        if (status.inducer == this.subject)
+            return status;
+        if (status.lock != StatusEffect.SPECIAL_EFFECT)
+            return status;
+        if (!isWeatherActive(subject, GlobalEffect.SUN))
+            return status;
+        return null;
     }
 });
 
@@ -844,6 +998,24 @@ makeAbility({
         if (move.name == "Struggle")
             return null;
         return [0, 1.5, 5];
+    }
+});
+
+/*******************
+ * Iron Fist
+ *******************/
+makeAbility({
+    name : "Iron Fist",
+    moves_ : ["Ice Punch", "Fire Punch", "Thunderpunch", "Mach Punch",
+              "Focus Punch", "Dizzy Punch", "Dynamicpunch", "Hammer Arm",
+              "Mega Punch", "Comet Punch", "Meteor Mash", "Shadow Punch",
+              "Drain Punch", "Bullet Punch", "Sky Uppercut"],
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (this.moves_.indexOf(move.name) == -1)
+            return null;
+        return [0, 1.2, 5];
     }
 });
 
