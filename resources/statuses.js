@@ -112,6 +112,8 @@ makeEffect(StatusEffect, {
             return false;
         if (target != null)
             return false;
+        if (user.sendMessage("informMaybeFlinch"))
+            return false;
         field.print(Text.status_effects_flinch(1, user));
         user.sendMessage("informFlinched");
         return true;

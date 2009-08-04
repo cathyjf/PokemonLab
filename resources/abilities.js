@@ -91,6 +91,123 @@ function makeCriticalTypeAbility(ability, type) {
     });
 }
 
+function makeStatLevelProtectionAbility(ability, predicate) {
+    makeAbility({
+        name : ability,
+        transformStatus : function(subject, status) {
+            if (subject != this.subject)
+                return status;
+            if (status.inducer == this.subject)
+                return status;
+            if (status.id != "StatChangeEffect")
+                return status;
+            if (status.delta_ > 0)
+                return status;
+            if (!predicate(status.stat))
+                return status;
+            return null;
+        }
+    });
+}
+
+function makeFilterAbility(ability) {
+    makeAbility({
+        name : ability,
+        modifier : function(field, user, target, move, critical) {
+            if (target != this.subject)
+                return null;
+            if (field.getEffectiveness(move.type, target) < 2.0)
+                return null;
+            return [3, 0.75, 0];
+        }
+    });
+}
+
+function makeWeatherAbility(ability, idx, text) {
+    makeAbility({
+        name : ability,
+        informActivate : function() {
+            this.subject.field.print(text(this.subject));
+            var controller = getGlobalController(this.subject);
+            var effect = controller.applyWeather(this.subject, idx);
+            if (!effect) {
+                effect = this.subject.getStatus(GlobalEffect.EFFECTS[idx]);
+            }
+            if (effect) {
+                effect.turns_ = -1;
+            }
+        }
+    });
+}
+
+/*******************
+ * Drizzle
+ *******************/
+makeWeatherAbility("Drizzle",
+        GlobalEffect.RAIN, Text.ability_messages.wrap(8));
+
+/*******************
+ * Drought
+ *******************/
+makeWeatherAbility("Drought",
+        GlobalEffect.SUN, Text.ability_messages.wrap(9));
+
+/*******************
+ * Snow Warning
+ *******************/
+makeWeatherAbility("Snow Warning",
+        GlobalEffect.HAIL, Text.ability_messages.wrap(41));
+
+/*******************
+ * Sand Stream
+ *******************/
+makeWeatherAbility("Sand Stream",
+        GlobalEffect.SAND, Text.ability_messages.wrap(38));
+
+/*******************
+ * Tinted Lens
+ *******************/
+makeAbility({
+    name : "Tinted Lens",
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (field.getEffectiveness(move.type, target) >= 1.0)
+            return null;
+        return [3, 2, 2];
+    }
+});
+
+/*******************
+ * Battle Armor
+ *******************/
+makeAbility({
+    name : "Battle Armor",
+    informAttemptCritical : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Shell Armor
+ *******************/
+makeAbility({
+    name : "Shell Armor",
+    informAttemptCritical : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Filter
+ *******************/
+makeFilterAbility("Filter");
+
+/*******************
+ * Solid Rock
+ *******************/
+makeFilterAbility("Solid Rock");
+
 /*******************
  * Overgrow
  *******************/
@@ -149,11 +266,12 @@ makeAbility({
     informActivate : function() {
         var field = this.subject.field;
         var party_ = 1 - this.subject.party;
+        var effect = new StatChangeEffect(Stat.ATTACK, -1);
+        effect.silent = true;
         for (var i = 0; i < field.partySize; ++i) {
             var p = field.getActivePokemon(party_, i);
-            if (p) {
+            if (p && p.applyStatus(null, effect)) {
                 field.print(Text.ability_messages(23, this.subject, p));
-                p.applyStatus(null, new StatChangeEffect(Stat.ATTACK, -1));
             }
         }
     },
@@ -330,6 +448,16 @@ makeStatusImmuneAbility("Water Veil", "BurnEffect");
  * Magma Armor
  *******************/
 makeStatusImmuneAbility("Magma Armor", "FreezeEffect");
+
+/*******************
+ * Limber
+ *******************/
+makeStatusImmuneAbility("Limber", "ParalysisEffect");
+
+/*******************
+ * Own Tempo
+ *******************/
+makeStatusImmuneAbility("Own Tempo", "ConfusionEffect");
 
 /*******************
  * Early Bird
@@ -582,6 +710,30 @@ makeAbility({
 });
 
 /*******************
+ * White Smoke
+ *******************/
+makeStatLevelProtectionAbility("White Smoke", function() { return true; });
+
+/*******************
+ * Clear Body
+ *******************/
+makeStatLevelProtectionAbility("Clear Body", function() { return true; });
+
+/*******************
+ * Hyper Cutter
+ *******************/
+makeStatLevelProtectionAbility("Hyper Cutter", function(stat) {
+    return (stat == Stat.ATTACK);
+});
+
+/*******************
+ * Keen Eye
+ *******************/
+makeStatLevelProtectionAbility("Keen Eye", function(stat) {
+    return (stat == Stat.ACCURACY);
+});
+
+/*******************
  * Quick Feet
  *******************/
 makeAbility({
@@ -626,6 +778,22 @@ makeAbility({
 });
 
 /*******************
+ * Marvel Scale
+ *******************/
+makeAbility({
+    name : "Marvel Scale",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.DEFENCE)
+            return null;
+        if (subject.getStatus(StatusEffect.SPECIAL_EFFECT) == null)
+            return null;
+        return [1.5, 1];
+    }
+});
+
+/*******************
  * Heatproof
  *******************/
 makeAbility({
@@ -649,6 +817,37 @@ makeAbility({
 });
 
 /*******************
+ * Thick Fat
+ *******************/
+makeAbility({
+    name : "Thick Fat",
+    modifier : function(field, user, target, move, critical) {
+        if (target != this.subject)
+            return null;
+        if ((move.type != Type.FIRE) && (move.type != Type.ICE))
+            return null;
+        // 50% base power mod; 6th (target ability) position.
+        return [0, 0.5, 6];
+    }
+});
+
+/*******************
+ * Technician
+ *******************/
+makeAbility({
+    name : "Technician",
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (move.power > 60)
+            return null;
+        if (move.name == "Struggle")
+            return null;
+        return [0, 1.5, 5];
+    }
+});
+
+/*******************
  * Steadfast
  *******************/
 makeAbility({
@@ -658,6 +857,34 @@ makeAbility({
         var subject = this.subject;
         subject.applyStatus(subject, new StatChangeEffect(Stat.SPEED, 1));
         return false;
+    }
+});
+
+/*******************
+ * Inner Focus
+ *******************/
+makeAbility({
+    name : "Inner Focus",
+    informMaybeFlinch : function() {
+        return true;
+    }
+});
+
+/*******************
+ * Hydration
+ *******************/
+makeAbility({
+    name : "Hydration",
+    tier : 4,
+    subtier : 0,
+    tick : function() {
+        if (!isWeatherActive(this.subject, GlobalEffect.RAIN))
+            return;
+        var effect = this.subject.getStatus(StatusEffect.SPECIAL_EFFECT);
+        if (effect) {
+            this.subject.field.print(Text.ability_messages(19, this.subject));
+            this.subject.removeStatus(effect);
+        }
     }
 });
 
@@ -814,5 +1041,13 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Pickup"
+    // Has no effect in battle.
+});
+
+/*******************
+ * Illuminate
+ *******************/
+makeAbility({
+    name : "Illuminate"
     // Has no effect in battle.
 });

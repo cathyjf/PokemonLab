@@ -134,11 +134,15 @@ bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
 
 bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
-    int term = 0;
     ScriptContext *cx = field.getContext();
+    ScriptValue v = target.sendMessage("informAttemptCritical", 0, NULL);
+    if (!v.failed() && v.getBool()) {
+        return false;
+    }
     if (move.getFlag(cx, F_NO_CRITICAL)) {
         return false;
     }
+    int term = 0;
     if (move.getFlag(cx, F_HIGH_CRITICAL)) {
         term += 1;
     }
