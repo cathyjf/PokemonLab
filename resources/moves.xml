@@ -9562,11 +9562,18 @@ makeStatusMove(this, [[FlinchEffect, 0.20]]);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (!damage)
+    return;
+target.hp -= damage;
+var selection = field.requestInactivePokemon(user);
+if (selection) {
+    user.replaceBy(selection);
+    field.print(Text.battle_messages_unique(96, user, selection));
+}
 ]]>
 </use>
 </move>

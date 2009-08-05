@@ -433,6 +433,27 @@ JSBool sendOut(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * pokemon.replaceBy(target)
+ *
+ * Replace this pokemon by a target pokemon.
+ */
+JSBool replaceBy(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    if (!p->isActive()) {
+        return JS_TRUE;
+    }
+    Pokemon *target = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(v));
+    BattleField *field = p->getField();
+    field->switchPokemon(p, target->getPosition());
+    return JS_TRUE;
+}
+
 JSBool getStatus(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -810,6 +831,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("isSelectable", isSelectable, 1, 0, 0),
     JS_FS("switchOut", switchOut, 0, 0, 0),
     JS_FS("sendOut", sendOut, 1, 0, 0),
+    JS_FS("replaceBy", replaceBy, 1, 0, 0),
     JS_FS("getTypes", getTypes, 0, 0, 0),
     JS_FS("setTypes", setTypes, 1, 0, 0),
     JS_FS_END

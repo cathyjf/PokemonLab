@@ -344,6 +344,30 @@ JSBool calculate(JSContext *cx,
 }
 
 /**
+ * field.requestInactivePokemon(pokemon)
+ *
+ * Request an inactive pokemon be selected from the party of the pokemon
+ * provided as the argument. Returns the selected inactive pokemon. Returns
+ * null if no inactive pokemon exist.
+ */
+JSBool requestInactivePokemon(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    const jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    Pokemon *user = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(v));
+    Pokemon *pokemon = field->requestInactivePokemon(user);
+    if (pokemon) {
+        *ret = OBJECT_TO_JSVAL((JSObject *)pokemon->getObject()->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+    return JS_TRUE;
+}
+
+/**
  * field.getPartySize(party)
  *
  * Get the length of a particular party.
@@ -491,6 +515,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getTypeEffectiveness", getTypeEffectiveness, 2, 0, 0),
     JS_FS("isCriticalHit", isCriticalHit, 3, 0, 0),
     JS_FS("getMoveCount", getMoveCount, 0, 0, 0),
+    JS_FS("requestInactivePokemon", requestInactivePokemon, 1, 0, 0),
     JS_FS_END
 };
 

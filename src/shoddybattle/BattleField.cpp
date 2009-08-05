@@ -288,6 +288,28 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
 }
 
 /**
+ * Request a player to choose an inactive pokemon immediately. The default
+ * implementation of this method selects a random inactive pokemon.
+ */
+Pokemon *BattleField::requestInactivePokemon(Pokemon *pokemon) {
+    vector<bool> switches;
+    getLegalSwitches(pokemon, switches);
+    if (find(switches.begin(), switches.end(), true) == switches.end()) {
+        // No inactive pokemon available.
+        return NULL;
+    }
+    const BattleMechanics *mech = m_impl->mech;
+    const int party = pokemon->getParty();
+    const int length = switches.size();
+    while (true) {
+        const int idx = mech->getRandomInt(0, length - 1);
+        if (switches[idx]) {
+            return m_impl->teams[party][idx].get();
+        }
+    }
+}
+
+/**
  * Get a list of legal switches.
  */
 void BattleField::getLegalSwitches(Pokemon *pokemon, vector<bool> &switches) {
