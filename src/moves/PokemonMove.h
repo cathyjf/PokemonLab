@@ -113,6 +113,13 @@ public:
     }
 
     /**
+     * Get the number of moves.
+     */
+    int getMoveCount() const {
+        return m_intData.size();
+    }
+
+    /**
      * Get a move by name.
      */
     const MoveTemplate *getMove(const std::string name) const {

@@ -152,19 +152,39 @@ JSBool getTypeEffectiveness(JSContext *cx,
 }
 
 /**
+ * field.getMoveCount()
+ *
+ * Return the number of moves that exist.
+ */
+JSBool getMoveCount(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    const int count = scx->getMachine()->getMoveDatabase()->getMoveCount();
+    *ret = INT_TO_JSVAL(count);
+    return JS_TRUE;
+}
+
+/**
  * field.getMove(name)
+ * field.getMove(idx)
  */
 JSBool getMove(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
-    if (!JSVAL_IS_STRING(v)) {
-        return JS_FALSE;
-    }
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
 
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
     MoveDatabase *moves = p->getScriptMachine()->getMoveDatabase();
+
+    string str;
+    if (JSVAL_IS_STRING(v)) {
+        str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    } else if (JSVAL_IS_INT(v)) {
+        str = moves->getMove(JSVAL_TO_INT(v));
+    } else {
+        return JS_FALSE;
+    }
+
     const MoveTemplate *tpl = moves->getMove(str);
     if (tpl) {
         MoveObjectPtr move = scx->newMoveObject(tpl);
@@ -470,6 +490,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getEffectiveness", getEffectiveness, 2, 0, 0),
     JS_FS("getTypeEffectiveness", getTypeEffectiveness, 2, 0, 0),
     JS_FS("isCriticalHit", isCriticalHit, 3, 0, 0),
+    JS_FS("getMoveCount", getMoveCount, 0, 0, 0),
     JS_FS_END
 };
 

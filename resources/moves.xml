@@ -5280,11 +5280,27 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, 1), 0.2, true]]);
 <pp>10</pp>
 <target>None</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var forbidden = ["Metronome", "Struggle", "Sketch", "Mimic", "Chatter",
+                 "Sleep Talk", "Assist", "Mirror Move", "Counter",
+                 "Mirror Coat", "Protect", "Detect", "Endure", "Destiny Bond",
+                 "Thief", "Follow Me", "Snatch", "Helping Hand", "Covet",
+                 "Trick", "Focus Punch", "Feint", "Copycat", "Me First",
+                 "Switcheroo"];
+for (var i = 0; i < user.moveCount; ++i) {
+    var move = user.getMove(i);
+    forbidden.push(move.name);
+}
+var length = field.getMoveCount();
+var move = null;
+while (!move || (forbidden.indexOf(move.name) != -1)
+        || move.flags[Flag.INTERNAL]) {
+    move = field.getMove(field.random(0, length - 1));
+}
+user.execute(move);
 ]]>
 </use>
 </move>
