@@ -288,10 +288,9 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
 }
 
 /**
- * Request a player to choose an inactive pokemon immediately. The default
- * implementation of this method selects a random inactive pokemon.
+ * Get a random inactive pokemon from the same party as the provided pokemon.
  */
-Pokemon *BattleField::requestInactivePokemon(Pokemon *pokemon) {
+Pokemon *BattleField::getRandomInactivePokemon(Pokemon *pokemon) {
     vector<bool> switches;
     getLegalSwitches(pokemon, switches);
     if (find(switches.begin(), switches.end(), true) == switches.end()) {

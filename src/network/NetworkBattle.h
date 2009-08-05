@@ -26,6 +26,10 @@
 #include <boost/shared_ptr.hpp>
 #include "../shoddybattle/BattleField.h"
 
+namespace shoddybattle {
+    class Pokemon;
+} // namespace shoddybattle
+
 namespace shoddybattle { namespace network {
 
 class Server;
@@ -52,6 +56,7 @@ public:
     void handleTurn(const int party, const PokemonTurn &turn);
     void handleCancelTurn(const int party);
 
+    Pokemon *requestInactivePokemon(Pokemon *);
     void print(const TextMessage &msg);
     void informVictory(const int);
     void informUseMove(Pokemon *, MoveObject *);
@@ -68,4 +73,3 @@ private:
 };
 
 }} // namespace shoddybattle::network
-

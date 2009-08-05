@@ -335,11 +335,15 @@ public:
      */
     virtual void print(const TextMessage &msg);
 
+    Pokemon *getRandomInactivePokemon(Pokemon *);
+
     /**
      * Request a player to choose an inactive pokemon immediately. The default
      * implementation of this method selects a random inactive pokemon.
      */
-    virtual Pokemon *requestInactivePokemon(Pokemon *);
+    virtual Pokemon *requestInactivePokemon(Pokemon *pokemon) {
+        return getRandomInactivePokemon(pokemon);
+    }
 
     virtual void informVictory(const int);
     virtual void informUseMove(Pokemon *, MoveObject *);

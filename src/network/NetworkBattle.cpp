@@ -121,32 +121,37 @@ typedef vector<int> PARTY_REQUEST;
 typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 
 struct NetworkBattleImpl {
-    Server *server;
-    JewelMechanics mech;
-    NetworkBattle *field;
-    BattleChannelPtr channel;
-    vector<string> trainer;
-    vector<ClientPtr> clients;
-    vector<PARTY_TURN> turns;
-    vector<PARTY_REQUEST> requests;
-    ThreadedQueue<TURN_PTR> queue;
-    boost::recursive_mutex mutex;
-    bool replacement;
-    bool victory;
-    int turnCount;
+    Server *m_server;
+    JewelMechanics m_mech;
+    NetworkBattle *m_field;
+    BattleChannelPtr m_channel;
+    vector<string> m_trainer;
+    vector<ClientPtr> m_clients;
+    vector<PARTY_TURN> m_turns;
+    vector<PARTY_REQUEST> m_requests;
+    ThreadedQueue<TURN_PTR> m_queue;
+    boost::recursive_mutex m_mutex;
+    bool m_replacement;
+    bool m_victory;
+    int m_turnCount;
+    boost::unique_lock<boost::recursive_mutex> *m_lock;
+    bool m_waiting;
+    Pokemon *m_selection;
+    boost::condition_variable_any m_condition;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p):
-            queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
-            replacement(false),
-            victory(false),
-            field(p),
-            turnCount(0),
-            server(server),
-            channel(BattleChannelPtr(
+            m_queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
+            m_replacement(false),
+            m_victory(false),
+            m_field(p),
+            m_turnCount(0),
+            m_waiting(false),
+            m_server(server),
+            m_channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))) { }
 
     void beginTurn() {
-        ++turnCount;
+        ++m_turnCount;
         informBeginTurn();
         requestMoves();
     }
@@ -154,34 +159,57 @@ struct NetworkBattleImpl {
     void executeTurn(TURN_PTR &ptr) {
         // NOTE: This variable 'p' ensures that 'this' object lives at least
         //       until the end of this function.
-        NetworkBattle::PTR p = field->shared_from_this();
+        NetworkBattle::PTR p = m_field->shared_from_this();
 
-        boost::unique_lock<boost::recursive_mutex> lock(mutex);
-        ScriptContextPtr cx = field->getContext()->shared_from_this();
+        boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
+        m_lock = &lock;
+        ScriptContextPtr cx = m_field->getContext()->shared_from_this();
         cx->setContextThread();
-        if (replacement) {
-            field->processReplacements(*ptr);
+        if (m_replacement) {
+            m_field->processReplacements(*ptr);
         } else {
-            field->processTurn(*ptr);
+            m_field->processTurn(*ptr);
         }
-        if (!victory && !requestReplacements()) {
+        if (!m_victory && !requestReplacements()) {
             beginTurn();
         }
         cx->clearContextThread();
     }
-    
+
+    Pokemon *requestInactivePokemon(Pokemon *user) {
+        const int party = user->getParty();
+        if (m_field->getAliveCount(party, true) == 0)
+            return NULL;
+        m_selection = user;
+        m_waiting = m_replacement = true;
+        m_requests[party].push_back(user->getSlot());
+        requestAction(party);
+
+        ScriptContextPtr cx = m_field->getContext()->shared_from_this();
+        cx->clearContextThread();
+        while (m_waiting) {
+            m_condition.wait(*m_lock);
+        }
+        cx->setContextThread();
+
+        Pokemon *ret = m_selection;
+        m_selection = NULL;
+        m_condition.notify_one();
+        return ret;
+    }
+
     void informBeginTurn() {
         OutMessage msg(OutMessage::BATTLE_BEGIN_TURN);
-        msg << field->getId();
-        msg << (int16_t)turnCount;
+        msg << m_field->getId();
+        msg << (int16_t)m_turnCount;
         msg.finalise();
 
         broadcast(msg);
     }
 
     void cancelAction(const int party) {
-        PARTY_TURN &turn = turns[party];
-        if (requests[party].size() == turn.size()) {
+        PARTY_TURN &turn = m_turns[party];
+        if (m_requests[party].size() == turn.size()) {
             // too late to cancel
             return;
         }
@@ -191,13 +219,13 @@ struct NetworkBattleImpl {
     }
 
     void broadcast(OutMessage &msg, ClientPtr client = ClientPtr()) {
-        channel->broadcast(msg, client);
+        m_channel->broadcast(msg, client);
     }
 
     ClientPtr getClient(const int idx) const {
-        if (clients.size() <= idx)
+        if (m_clients.size() <= idx)
             return ClientPtr();
-        return clients[idx];
+        return m_clients[idx];
     }
 
     /**
@@ -226,17 +254,17 @@ struct NetworkBattleImpl {
      *
      */
     void prepareSpectator(ClientPtr client) {
-        boost::unique_lock<boost::recursive_mutex> lock(mutex);
+        boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
 
         OutMessage msg(OutMessage::SPECTATOR_BEGIN);
-        msg << field->getId();
-        msg << trainer[0] << trainer[1];
-        msg << (unsigned char)field->getPartySize();
+        msg << m_field->getId();
+        msg << m_trainer[0] << m_trainer[1];
+        msg << (unsigned char)m_field->getPartySize();
         // TODO: Do not hardcode the maximum team length.
         msg << (unsigned char)6;
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
-            const Pokemon::ARRAY &team = field->getTeam(i);
+            const Pokemon::ARRAY &team = m_field->getTeam(i);
             const int size = team.size();
             msg << (unsigned char)size;
             for (int j = 0; j < size; ++j) {
@@ -272,13 +300,13 @@ struct NetworkBattleImpl {
      * byte   : party
      */
     void sendBattleBegin(const int party) {
-        const int32_t id = field->getId();
-        const string opponent = clients[1 - party]->getName();
+        const int32_t id = m_field->getId();
+        const string opponent = m_clients[1 - party]->getName();
 
         OutMessage msg(OutMessage::BATTLE_BEGIN);
         msg << id << opponent << ((unsigned char)party);
         msg.finalise();
-        clients[party]->sendMessage(msg);
+        m_clients[party]->sendMessage(msg);
     }
 
     void writeVisualData(OutMessage &msg, Pokemon::PTR p) {
@@ -305,10 +333,10 @@ struct NetworkBattleImpl {
      */
     void updateBattlePokemon() {
         OutMessage msg(OutMessage::BATTLE_POKEMON);
-        msg << (int32_t)field->getId();
+        msg << (int32_t)m_field->getId();
 
-        const int size = field->getPartySize();
-        boost::shared_ptr<PokemonParty> *active = field->getActivePokemon();
+        const int size = m_field->getPartySize();
+        boost::shared_ptr<PokemonParty> *active = m_field->getActivePokemon();
         for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i];
             for (int j = 0; j < size; ++j) {
@@ -340,19 +368,19 @@ struct NetworkBattleImpl {
      *              byte : whether the move is legal
      */
     void requestAction(const int party) {
-        PARTY_TURN &turn = turns[party];
+        PARTY_TURN &turn = m_turns[party];
         const int size = turn.size();
-        const int slot = requests[party][size];
-        Pokemon::PTR p = field->getActivePokemon(party, slot);
+        const int slot = m_requests[party][size];
+        Pokemon::PTR p = m_field->getActivePokemon(party, slot);
         
         OutMessage msg(OutMessage::REQUEST_ACTION);
-        msg << field->getId();
+        msg << m_field->getId();
         msg << (unsigned char)(p->getSlot());
         msg << (unsigned char)(p->getPosition());
-        msg << (unsigned char)replacement;
+        msg << (unsigned char)m_replacement;
 
         vector<bool> switches;
-        field->getLegalSwitches(p.get(), switches);
+        m_field->getLegalSwitches(p.get(), switches);
 
         for (int i = 0; i < size; ++i) {
             PokemonTurn &t = turn[i];
@@ -367,7 +395,7 @@ struct NetworkBattleImpl {
             msg << ((unsigned char)switches[i]);
         }
 
-        if (!replacement) {
+        if (!m_replacement) {
             msg << (unsigned char)p->isSwitchLegal();
 
             const bool forced = (p->getForcedTurn() != NULL);
@@ -390,24 +418,24 @@ struct NetworkBattleImpl {
     }
 
     bool requestReplacements() {
-        boost::lock_guard<boost::recursive_mutex> lock(mutex);
+        boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
 
         Pokemon::ARRAY pokemon;
-        field->getFaintedPokemon(pokemon);
+        m_field->getFaintedPokemon(pokemon);
         if (pokemon.empty()) {
             return false;
         }
 
-        replacement = true;
+        m_replacement = true;
         for (Pokemon::ARRAY::const_iterator i = pokemon.begin();
                 i != pokemon.end(); ++i) {
             const int party = (*i)->getParty();
             const int slot = (*i)->getSlot();
-            requests[party].push_back(slot);
+            m_requests[party].push_back(slot);
         }
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
-            if (!requests[i].empty()) {
+            if (!m_requests[i].empty()) {
                 requestAction(i);
             }
         }
@@ -415,17 +443,17 @@ struct NetworkBattleImpl {
     }
 
     void requestMoves() {
-        boost::lock_guard<boost::recursive_mutex> lock(mutex);
+        boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
 
-        replacement = false;
+        m_replacement = false;
         Pokemon::ARRAY pokemon;
-        field->getActivePokemon(pokemon);
+        m_field->getActivePokemon(pokemon);
         for (Pokemon::ARRAY::const_iterator i = pokemon.begin();
                 i != pokemon.end(); ++i) {
             const int party = (*i)->getParty();
             const int slot = (*i)->getSlot();
             (*i)->determineLegalActions();
-            requests[party].push_back(slot);
+            m_requests[party].push_back(slot);
         }
         for (int i = 0; i < TEAM_COUNT; ++i) {
             requestAction(i);
@@ -433,31 +461,46 @@ struct NetworkBattleImpl {
     }
 
     void handleForfeit(const int party) {
-        boost::lock_guard<boost::recursive_mutex> lock(mutex);
+        boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
 
-        ScriptContextPtr cx = field->getContext()->shared_from_this();
+        if (m_waiting) {
+            // One client is in the middle of selecting a pokemon for a move
+            // like U-turn or Baton Pass. To allow the battle to exit nicely,
+            // we have to pick a pokemon for him.
+            const int party = m_selection->getParty();
+            m_selection = m_field->getRandomInactivePokemon(m_selection);
+            m_waiting = false;
+            m_requests[party].clear();
+            m_turns[party].clear();
+            m_condition.notify_one();
+            while (m_selection) {
+                m_condition.wait(lock);
+            }
+        }
+
+        ScriptContextPtr cx = m_field->getContext()->shared_from_this();
         cx->setContextThread();
-        field->informVictory(1 - party);
+        m_field->informVictory(1 - party);
         cx->clearContextThread();
     }
 
     void maybeExecuteTurn() {
-        const int count = requests.size();
+        const int count = m_requests.size();
         for (int i = 0; i < count; ++i) {
-            if (requests[i].size() != turns[i].size()) {
+            if (m_requests[i].size() != m_turns[i].size()) {
                 return;
             }
         }
 
         TURN_PTR turn(new PARTY_TURN());
         for (int i = 0; i < count; ++i) {
-            PARTY_TURN &v = turns[i];
+            PARTY_TURN &v = m_turns[i];
             turn->insert(turn->end(), v.begin(), v.end());
             v.clear();
-            requests[i].clear();
+            m_requests[i].clear();
         }
         
-        queue.post(turn);
+        m_queue.post(turn);
     }
 };
 
@@ -472,7 +515,7 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
             ret[OP] = true;
         }
     }
-    if (m_field && (m_field->field->getParty(client) != -1)) {
+    if (m_field && (m_field->m_field->getParty(client) != -1)) {
         // This user is a participant in the battle, so he gets +o.
         ret[OP] = true;
     }
@@ -489,7 +532,7 @@ bool BattleChannel::join(ClientPtr client) {
 
     if (!Channel::join(client))
         return false;
-    if (m_field->field->getParty(client) == -1) {
+    if (m_field->m_field->getParty(client) == -1) {
         m_field->prepareSpectator(client);
     }
     return true;
@@ -499,8 +542,8 @@ void BattleChannel::handlePart(ClientPtr client) {
     boost::lock_guard<boost::mutex> lock(m_mutex);
     
     int party = -1;
-    if (m_field && ((party = m_field->field->getParty(client)) != -1)) {
-        NetworkBattle::PTR p = m_field->field->shared_from_this();
+    if (m_field && ((party = m_field->m_field->getParty(client)) != -1)) {
+        NetworkBattle::PTR p = m_field->m_field->shared_from_this();
         // user was a participant in the battle, so we need to end the battle
         m_field->handleForfeit(party);
     }
@@ -509,15 +552,15 @@ void BattleChannel::handlePart(ClientPtr client) {
 void NetworkBattle::terminate() {
     NetworkBattle::PTR p = shared_from_this();
 
-    boost::lock_guard<boost::recursive_mutex> lock(m_impl->mutex);
+    boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
 
     // There will always be two clients in the vector at this point.
-    m_impl->clients[0]->terminateBattle(p, m_impl->clients[1]);
+    m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
     
     BattleField::terminate();
     // TODO: Maybe a better way to collect garbage here.
-    m_impl->server->getMachine()->acquireContext()->maybeGc();
-    m_impl->channel->informBattleTerminated();
+    m_impl->m_server->getMachine()->acquireContext()->maybeGc();
+    m_impl->m_channel->informBattleTerminated();
 }
 
 NetworkBattle::NetworkBattle(Server *server,
@@ -527,65 +570,65 @@ NetworkBattle::NetworkBattle(Server *server,
         const int partySize) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(
             new NetworkBattleImpl(server, this));
-    m_impl->turns.resize(TEAM_COUNT);
-    m_impl->requests.resize(TEAM_COUNT);
+    m_impl->m_turns.resize(TEAM_COUNT);
+    m_impl->m_requests.resize(TEAM_COUNT);
     for (int i = 0; i < TEAM_COUNT; ++i) {
         ClientPtr client = clients[i];
-        m_impl->trainer.push_back(client->getName());
-        m_impl->clients.push_back(client);
-        client->joinChannel(m_impl->channel);
+        m_impl->m_trainer.push_back(client->getName());
+        m_impl->m_clients.push_back(client);
+        client->joinChannel(m_impl->m_channel);
     }
 
     // Encode some metadata into the channel topic.
     // TODO: Add ladder etc.
-    const string topic = m_impl->trainer[0] + ","
-            + m_impl->trainer[1] + ","
+    const string topic = m_impl->m_trainer[0] + ","
+            + m_impl->m_trainer[1] + ","
             + boost::lexical_cast<string>(generation) + ","
             + boost::lexical_cast<string>(partySize);
-    m_impl->channel->setTopic(topic);
+    m_impl->m_channel->setTopic(topic);
 
-    initialise(&m_impl->mech, generation, server->getMachine(),
-            teams, &m_impl->trainer[0], partySize);
+    initialise(&m_impl->m_mech, generation, server->getMachine(),
+            teams, &m_impl->m_trainer[0], partySize);
 }
 
 int32_t NetworkBattle::getId() const {
-    return m_impl->channel->getId();
+    return m_impl->m_channel->getId();
 }
 
 void NetworkBattle::beginBattle() {
-    boost::unique_lock<boost::recursive_mutex> lock(m_impl->mutex);
+    boost::unique_lock<boost::recursive_mutex> lock(m_impl->m_mutex);
     for (int i = 0; i < TEAM_COUNT; ++i) {
         m_impl->sendBattleBegin(i);
     }
     BattleField::beginBattle();
     m_impl->beginTurn();
-    m_impl->server->addChannel(m_impl->channel);
+    m_impl->m_server->addChannel(m_impl->m_channel);
     getContext()->clearContextThread();
 }
 
 int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
-    boost::lock_guard<boost::recursive_mutex> lock(m_impl->mutex);
-    int count = m_impl->clients.size();
+    boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
+    int count = m_impl->m_clients.size();
     if (count > 2) {
         count = 2;
     }
     for (int i =  0; i < count; ++i) {
-        if (m_impl->clients[i] == client)
+        if (m_impl->m_clients[i] == client)
             return i;
     }
     return -1;
 }
 
 void NetworkBattle::handleCancelTurn(const int party) {
-    boost::lock_guard<boost::recursive_mutex> lock(m_impl->mutex);
+    boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
     m_impl->cancelAction(party);
 }
 
 void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
-    boost::lock_guard<boost::recursive_mutex> lock(m_impl->mutex);
+    boost::unique_lock<boost::recursive_mutex> lock(m_impl->m_mutex);
 
-    PARTY_REQUEST &req = m_impl->requests[party];
-    PARTY_TURN &pturn = m_impl->turns[party];
+    PARTY_REQUEST &req = m_impl->m_requests[party];
+    PARTY_TURN &pturn = m_impl->m_turns[party];
     const int max = req.size();
     const int present = pturn.size();
     if (present == max) {
@@ -593,7 +636,7 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     }
     const int slot = req[present];
     Pokemon *pokemon = getActivePokemon(party, slot).get();
-    if (!isTurnLegal(pokemon, &turn, m_impl->replacement)) {
+    if (!isTurnLegal(pokemon, &turn, m_impl->m_replacement)) {
         // todo: inform illegal move?
         m_impl->requestAction(party);
         return;
@@ -611,9 +654,21 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     pturn.push_back(turn);
     if (pturn.size() < max) {
         m_impl->requestAction(party);
+    } else if (m_impl->m_waiting) {
+        // Client has sent in an inactive pokemon for U-turn and friends.
+        m_impl->m_waiting = false;
+        m_impl->m_selection = getTeam(party)[turn.id].get();
+        req.clear();
+        pturn.clear();
+        lock.unlock();
+        m_impl->m_condition.notify_one();
     } else {
         m_impl->maybeExecuteTurn();
     }
+}
+
+Pokemon *NetworkBattle::requestInactivePokemon(Pokemon *pokemon) {
+    return m_impl->requestInactivePokemon(pokemon);
 }
 
 /**
@@ -652,7 +707,7 @@ void NetworkBattle::print(const TextMessage &text) {
  * int16 : party id (or -1 for a draw)
  */
 void NetworkBattle::informVictory(const int party) {
-    m_impl->victory = true;
+    m_impl->m_victory = true;
 
     OutMessage msg(OutMessage::BATTLE_VICTORY);
     msg << getId();
@@ -768,7 +823,7 @@ void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
     const int party = pokemon->getParty();
     const int slot = pokemon->getSlot();
 
-    ClientPtr client = m_impl->clients[party];
+    ClientPtr client = m_impl->m_clients[party];
 
     // Send the approximate health change to everybody except the person who
     // controls the pokemon.
@@ -797,7 +852,7 @@ void NetworkBattle::informSetPp(Pokemon *pokemon,
     msg << (unsigned char)pp;
     msg.finalise();
 
-    ClientPtr client = m_impl->clients[pokemon->getParty()];
+    ClientPtr client = m_impl->m_clients[pokemon->getParty()];
     client->sendMessage(msg);
 }
 
