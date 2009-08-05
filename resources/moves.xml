@@ -10070,11 +10070,27 @@ makeTargetHealthMove(this);
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("YawnEffect")
+        || target.getStatus(StatusEffect.SPECIAL_EFFECT)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("YawnEffect");
+effect.name = Text.battle_messages_unique(91);
+effect.tier = 6;
+effect.subtier = 10;
+effect.turns_ = 2;
+effect.tick = function() {
+    if (--this.turns_ > 0)
+        return;
+    this.subject.applyStatus(user, new SleepEffect());
+    this.subject.removeStatus(this);
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(92, target));
 ]]>
 </use>
 </move>
