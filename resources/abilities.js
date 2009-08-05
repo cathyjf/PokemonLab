@@ -327,6 +327,65 @@ makeAbility({
 });
 
 /*******************
+ * Synchronize
+ *******************/
+makeAbility({
+    name : "Synchronize",
+    informEffectApplied : function(effect) {
+        var subject = effect.inducer;
+        if (subject == this.subject)
+            return;
+        if (effect.lock != StatusEffect.SPECIAL_EFFECT)
+            return;
+        if ((effect.id != "PoisonEffect") && (effect.id != "ToxicEffect")
+                && (effect.id != "BurnEffect")
+                && (effect.id != "ParalysisEffect"))
+            return;
+        if (effect.id == "ToxicEffect") {
+            effect = new PoisonEffect();
+        }
+        if (subject.applyStatus(subject, effect)) {
+            subject.field.print(Text.ability_messages(48, this.subject));
+        }
+    }
+});
+
+/*******************
+ * Slow Start
+ *******************/
+makeAbility({
+    name : "Slow Start",
+    tier : 0,
+    informActivate : function() {
+        if (this.message_)
+            return;
+        this.message_ = true;
+        this.subject.field.print(Text.ability_messages(40, this.subject));
+        this.turns_ = 5;
+    },
+    applyEffect : function() {
+        this.message_ = false;
+        if (this.subject.position != -1) {
+            this.informActivate();
+        }
+    },
+    tick : function() {
+        if (--this.turns_ > 0)
+            return;
+        this.subject.field.print(Text.ability_messages(58, this.subject));
+    },
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (this.turns_ <= 0)
+            return null;
+        if ((stat != Stat.ATTACK) && (stat != Stat.SPEED))
+            return null;
+        return [0.5, 1];
+    }
+});
+
+/*******************
  * Pressure
  *******************/
 makeAbility({

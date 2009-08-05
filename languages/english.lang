@@ -575,7 +575,7 @@
 45: TODO: Steadfast
 46: $1 held on with its Sticky Hold!
 47: $1 held Sturdy!
-48: $1's Synchronize $2 $3!
+48: $1's Synchronize activated!
 49: $1's Tangled Feet raised its evasion!
 50: $1 traced $2's $3!
 51: $1 is loafing around!
@@ -585,6 +585,7 @@
 55: $1 sucked up liquid ooze!
 56: $1's Ice Body restored its health a little!
 57: $1's Dry Skin restored its health a little!
+58: $1 finally got its act together!
 
 [item-messages]
 0: $1's leftovers restored its health a little!
