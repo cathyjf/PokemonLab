@@ -4947,6 +4947,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <use>
 <![CDATA[
 var effect = new StatusEffect("MagicCoatEffect");
+effect.tier = 0;
 effect.vetoExecution = function(field, user, target, move) {
     if (target != this.subject)
         return false;
@@ -4959,6 +4960,9 @@ effect.vetoExecution = function(field, user, target, move) {
         move.use(field, target, user, 1);
     }
     return true;
+};
+effect.tick = function() {
+    this.subject.removeStatus(this);
 };
 user.applyStatus(user, effect);
 field.print(Text.battle_messages_unique(43, user));
