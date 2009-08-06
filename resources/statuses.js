@@ -439,7 +439,11 @@ makeEffect(StatusEffect, {
     applyEffect : function() {
         var field = this.subject.field;
         this.turns = field.random(1, 4); // random duration
-        field.print(Text.status_effects_sleep(1, this.subject));
+        if (this.text_) {
+            field.print(this.text_(this.subject));
+        } else {
+            field.print(Text.status_effects_sleep(1, this.subject));
+        }
         this.subject.sendMessage("informSleep");
         return true;
     },

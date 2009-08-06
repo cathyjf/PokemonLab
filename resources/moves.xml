@@ -6809,11 +6809,31 @@ user.removeStatus(effect);
 <target>User</target>
 <flags>
     <snatch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var max = user.getStat(Stat.HP);
+if (user.getStatus("SleepEffect") || (user.hp == max)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var status = user.getStatus(StatusEffect.SPECIAL_EFFECT);
+var effect = new SleepEffect();
+effect.lock = 0;
+if (status) {
+    effect.text_ = Text.battle_messages_unique.wrap(5);
+}
+effect = user.applyStatus(user, effect);
+if (!effect) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+effect.lock = StatusEffect.SPECIAL_EFFECT;
+effect.turns = 2;
+if (status) {
+    user.removeStatus(status);
+}
+user.hp = max;
 ]]>
 </use>
 </move>
