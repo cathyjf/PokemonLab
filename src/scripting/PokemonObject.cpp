@@ -357,6 +357,29 @@ JSBool getPp(JSContext *cx,
 }
 
 /**
+ * pokemon.getMaxPp(move)
+ *
+ * Get the max PP of one of the pokemon's move. The argument is a move object.
+ * Returns -1 if the pokemon does not know the move.
+ */
+JSBool getMaxPp(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    const string move = MoveObject(JSVAL_TO_OBJECT(v)).getName(scx);
+    const int id = p->getMove(move);
+    const int pp = (id == -1) ? -1 : p->getMaxPp(id);
+    *ret = INT_TO_JSVAL(pp);
+
+    return JS_TRUE;
+}
+
+/**
  * pokemon.setPp(move, pp)
  */
 JSBool setPp(JSContext *cx,
@@ -827,6 +850,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("clearForcedMove", clearForcedMove, 0, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
     JS_FS("getPp", getPp, 1, 0, 0),
+    JS_FS("getMaxPp", getMaxPp, 1, 0, 0),
     JS_FS("setPp", setPp, 2, 0, 0),
     JS_FS("isSelectable", isSelectable, 1, 0, 0),
     JS_FS("switchOut", switchOut, 0, 0, 0),

@@ -23,6 +23,35 @@
  */
 
 /**
+ * Make a move that sacrifices the user in exchange for healing the next
+ * pokemon sent in.
+ */
+function makeSacrificeMove(move, func) {
+    move.use = function(field, user, target, targets) {
+        var selection = field.requestInactivePokemon(user);
+        if (!selection) {
+            field.print(Text.battle_messages(0));
+            return;
+        }
+        user.faint();
+        var slot = user.position;
+        while (true) {
+            user.switchOut();
+            selection.sendOut(slot);
+            if (!selection.fainted)
+                break;
+            user = selection;
+            selection = field.requestInactivePokemon(user);
+            if (!selection) {
+                // The user has lost.
+                return;
+            }
+        }
+        func(field, selection);
+    };
+}
+
+/**
  * Make a move that returns to the user half the damage the attack would have
  * done to the target, if the attack is unsuccessful.
  */

@@ -3851,13 +3851,20 @@ makeRecoveryMove(this);
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeSacrificeMove(this, function(field, p) {
+    p.hp = p.getStat(Stat.HP);
+    var effect = p.getStatus(StatusEffect.SPECIAL_EFFECT);
+    if (effect) {
+        field.print(Text.battle_messages_unique(1, p, effect));
+        p.removeStatus(effect);
+    }
+});
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Heart Swap" id="179">
@@ -4827,13 +4834,24 @@ this.use = function() {
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeSacrificeMove(this, function(field, p) {
+    p.hp = p.getStat(Stat.HP);
+    var effect = p.getStatus(StatusEffect.SPECIAL_EFFECT);
+    if (effect) {
+        field.print(Text.battle_messages_unique(1, p, effect));
+        p.removeStatus(effect);
+    }
+    for (var i = 0; i < p.moveCount; ++i) {
+        var move = p.getMove(i);
+        p.setPp(move, p.getMaxPp(move));
+    }
+});
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Luster Purge" id="224">

@@ -82,6 +82,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
         }
     }
     m_pp.resize(m_moveProto.size());
+    m_maxPp.resize(m_pp.size());
     m_moveUsed.resize(m_moveProto.size(), false);
     m_machine = NULL;
     m_cx = NULL;
@@ -554,10 +555,11 @@ void Pokemon::setMove(const int i, MoveObjectPtr move, const int pp) {
     if (m_moves.size() <= i) {
         m_moves.resize(i + 1, MoveObjectPtr());
         m_pp.resize(i + 1, 0);
+        m_maxPp.resize(i + 1, 0);
         m_moveUsed.resize(i + 1, false);
     }
     m_moves[i] = move;
-    m_pp[i] = pp;
+    m_maxPp[i] = m_pp[i] = pp;
 }
 
 /**
@@ -961,7 +963,7 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
     for (; i != m_moveProto.end(); ++i) {
         MoveObjectPtr obj = m_cx->newMoveObject(*i);
         m_moves.push_back(obj);
-        m_pp[j] = obj->getPp(m_cx) * (5 + m_ppUps[j]) / 5;
+        m_maxPp[j] = m_pp[j] = obj->getPp(m_cx) * (5 + m_ppUps[j]) / 5;
         ++j;
     }
 

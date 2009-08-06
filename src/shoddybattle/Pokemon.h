@@ -173,6 +173,7 @@ public:
 
     bool isMoveUsed(const int i) const { return m_moveUsed[i]; }
     int getPp(const int i) const { return m_pp[i]; }
+    int getMaxPp(const int i) const { return m_maxPp[i]; }
     void setPp(const int i, const int pp);
     void deductPp(const int i);
     void deductPp(boost::shared_ptr<MoveObject>);
@@ -289,6 +290,7 @@ private:
     std::vector<const MoveTemplate *> m_moveProto;
     std::vector<boost::shared_ptr<MoveObject> > m_moves;
     std::vector<int> m_pp;
+    std::vector<int> m_maxPp;
     std::vector<bool> m_moveUsed;
     std::vector<bool> m_legalMove;
     bool m_legalSwitch;
