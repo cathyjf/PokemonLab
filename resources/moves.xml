@@ -4302,11 +4302,56 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+if (user.getStatus("ImprisonEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var moves = [];
+for (var i = 0; i < user.moveCount; ++i) {
+    moves.push(user.getMove(i));
+}
+var success = false;
+var party = 1 - user.party;
+for (var i = 0; i < field.partySize; ++i) {
+    var p = field.getActivePokemon(party, i);
+    if (p) {
+        moves.forEach(function(move) {
+            if (p.getPp(move) != -1) {
+                success = true;
+            }
+        });
+    }
+}
+if (!success) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("ImprisonEffect");
+effect.name = Text.battle_messages_unique(101);
+effect.vetoTier = 3;
+effect.vetoExecution = function(field, user, target, move) {
+    if (user.party == this.subject.party)
+        return false;
+    if (target != null)
+        return false;
+    if (this.subject.getPp(move) == -1)
+        return false;
+    field.print(Text.battle_messages_unique(148, user, move));
+    return true;
+};
+effect.vetoSelection = function(user, move) {
+    if (user.party == this.subject.party)
+        return false;
+    if (this.subject.getPp(move) == -1)
+        return false;
+    return true;
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(102, user));
 ]]>
 </use>
 </move>

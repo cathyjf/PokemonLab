@@ -390,6 +390,8 @@
 146: $1 got a $2! // Recycle
 147: $1 used $2's $3! // Pluck
 
+148: $1 can't use $2 after Imprison!
+
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind
