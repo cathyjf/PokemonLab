@@ -4942,11 +4942,26 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.5]]);
 <pp>15</pp>
 <target>None</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+var effect = new StatusEffect("MagicCoatEffect");
+effect.vetoExecution = function(field, user, target, move) {
+    if (target != this.subject)
+        return false;
+    if (!move.flags[Flag.REFLECT])
+        return false;
+    if (move.prepareSelf) {
+        move.prepareSelf(field, target, user);
+    }
+    if (move.use) {
+        move.use(field, target, user, 1);
+    }
+    return true;
+};
+user.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(43, user));
 ]]>
 </use>
 </move>
