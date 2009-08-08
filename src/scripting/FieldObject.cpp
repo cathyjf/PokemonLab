@@ -389,6 +389,33 @@ JSBool getPartySize(JSContext *cx,
 }
 
 /**
+ * field.getRandomTarget(party)
+ *
+ * Get a random target from the given party. Returns null if there are no
+ * active pokemon from the given party.
+ */
+JSBool getRandomTarget(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    const jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int party = JSVAL_TO_INT(v);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getRandomTarget: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    Pokemon *target = p->getRandomTarget(party);
+    if (target) {
+        *ret = OBJECT_TO_JSVAL(target->getObject()->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+    return JS_TRUE;
+}
+
+/**
  * field.getPokemon(party, idx)
  *
  * Get a particular pokemon.
@@ -516,6 +543,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("isCriticalHit", isCriticalHit, 3, 0, 0),
     JS_FS("getMoveCount", getMoveCount, 0, 0, 0),
     JS_FS("requestInactivePokemon", requestInactivePokemon, 1, 0, 0),
+    JS_FS("getRandomTarget", getRandomTarget, 1, 0, 0),
     JS_FS_END
 };
 

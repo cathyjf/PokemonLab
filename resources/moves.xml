@@ -649,11 +649,58 @@ user.applyStatus(user, effect);
     <contact/>
     <protect/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("BideEffect");
+if (!effect) {
+    effect = new StatusEffect("BideEffect");
+    effect.name = Text.battle_messages_unique(103);
+    effect.turns_ = 3;
+    effect.damage = 0;
+    effect.vetoSwitch = function(subject) {
+        return (subject == this.subject);
+    };
+    effect.unapplyEffect = function() {
+        this.subject.clearForcedMove();
+    };
+    effect.informFreeze = effect.informSleep = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.informFinishedExecution = function() {
+        if (!this.subject.lastMove) {
+            this.subject.removeStatus(this);
+        }
+    };
+    effect.informDamaged = function(user, move, damage) {
+        if ((move.name != "Pain Split") && (damage > 0)) {
+            this.damage += damage;
+            this.party_ = user.party;
+            this.position_ = user.position;
+        }
+    };
+    effect = user.applyStatus(user, effect);
+}
+if (--effect.turns_ != 0) {
+    user.setForcedMove(this, null);
+    field.print(Text.battle_messages_unique(104, user));
+    return;
+}
+var damage = effect.damage * 2;
+var party_ = effect.party_;
+var position_ = effect.position_;
+user.removeStatus(effect);
+if (damage == 0) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var p = field.getActivePokemon(party_, position_);
+if (!p && !(p = field.getRandomTarget(1 - user.party))) {
+    field.print(Text.battle_messages(3));
+    return;
+}
+field.print(Text.battle_messages_unique(105, user));
+p.hp -= damage;
 ]]>
 </use>
 </move>
