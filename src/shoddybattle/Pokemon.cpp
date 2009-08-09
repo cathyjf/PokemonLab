@@ -116,13 +116,13 @@ unsigned int Pokemon::getBaseStat(const STAT i) const {
 }
 
 StatusObjectPtr Pokemon::getItem() const {
-    if (m_item->isRemovable(m_cx))
+    if (m_item && m_item->isRemovable(m_cx))
         return StatusObjectPtr();
     return m_item;
 }
 
 StatusObjectPtr Pokemon::getAbility() const {
-    if (m_ability->isRemovable(m_cx))
+    if (m_ability && m_ability->isRemovable(m_cx))
         return StatusObjectPtr();
     return m_ability;
 }
@@ -469,6 +469,9 @@ bool Pokemon::executeMove(MoveObjectPtr move,
     }
 
     m_field->informUseMove(this, move.get());
+
+    // TODO: Some sort of call here to allow Snatch to work, and to allow
+    //       transforming targets for Follow Me and friends.
 
     if (move->getFlag(m_cx, F_UNIMPLEMENTED)) {
         cout << "But it's unimplemented..." << endl;
