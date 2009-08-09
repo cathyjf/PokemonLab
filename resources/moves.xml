@@ -6783,11 +6783,37 @@ if (target.fainted && switching && (user.party == field.host)) {
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+var damage = field.calculate(this, user, target, targets);
+if (damage == 0) {
+    return;
+}
+target.hp -= damage;
+var effect = user.getStatus("RageEffect");
+if (effect) {
+    user.removeStatus(effect);
+}
+effect = new StatusEffect("RageEffect");
+effect.turns_ = 2;
+effect.informFinishedExecution = function() {
+    if (--this.turns_ == 0) {
+        this.subject.removeStatus(this);
+    }
+};
+effect.activate_ = function() {
+    field.print(Text.battle_messages_unique(42, this.subject));
+    var effect = new StatChangeEffect(Stat.ATTACK, 1);
+    effect.silent = true;
+    this.subject.applyStatus(this.subject, effect);
+};
+effect.informDamaged = function(user, move, damage) {
+    if (damage > 0) {
+        this.activate_();
+    }
+};
+user.applyStatus(user, effect);
 ]]>
 </use>
 </move>

@@ -567,6 +567,10 @@ function makeDelayedAttackMove(move) {
                     }
                 } else {
                     this.subject.hp -= damage;
+                    effect = this.subject.getStatus("RageEffect");
+                    if (effect) {
+                        effect.activate_();
+                    }
                 }
             } else {
                 field.print(Text.battle_messages(2, user, this.subject));
