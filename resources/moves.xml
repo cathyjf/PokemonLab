@@ -3336,7 +3336,6 @@ if (!effect) {
     effect = user.applyStatus(user, effect);
 }
 this.power = this.power_ << effect.multiplier;
-print("Fury Cutter power = " + this.power);
 var damage = field.calculate(this, user, target, targets);
 if (damage == 0) {
     user.removeStatus(effect);
