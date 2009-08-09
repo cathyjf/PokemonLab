@@ -6803,10 +6803,11 @@ effect.informFinishedExecution = function() {
     }
 };
 effect.activate_ = function() {
-    field.print(Text.battle_messages_unique(42, this.subject));
     var effect = new StatChangeEffect(Stat.ATTACK, 1);
     effect.silent = true;
-    this.subject.applyStatus(this.subject, effect);
+    if (this.subject.applyStatus(this.subject, effect)) {
+        field.print(Text.battle_messages_unique(42, this.subject));
+    }
 };
 effect.informDamaged = function(user, move, damage) {
     if (damage > 0) {
