@@ -128,12 +128,11 @@ function makeEntryHazardMove(move, hazard) {
 }
 
 /**
- * Make a move that grants the user immunity to particular moves for the
- * duration of the present turn. The move has a 50% chance of failure if the
- * user's last action was a successful execution of Protect, Detect, or Endure.
- * The move also fails if the user is the last pokemon to move this turn.
+ * Make a move that has a 50% chance of failure if the user's last action was
+ * a successful execution of this type of move, and that also fails if the user
+ * is the last pokemon to act this round.
  */
-function makeProtectMove(move) {
+function makeProtectTypeMove(move, func) {
     move.use = function(field, user, target, targets) {
         // Check if every other pokemon has already moved.
         var failure = true;
@@ -169,8 +168,20 @@ function makeProtectMove(move) {
             }
         };
         user.applyStatus(user, effect);
-        // Apply the protect effect to the user.
-        effect = new StatusEffect("ProtectEffect");
+        // Execute the move logic.
+        func(field, user);
+    };
+}
+
+/**
+ * Make a move that grants the user immunity to particular moves for the
+ * duration of the present turn. The move has a 50% chance of failure if the
+ * user's last action was a successful execution of Protect, Detect, or Endure.
+ * The move also fails if the user is the last pokemon to move this turn.
+ */
+function makeProtectMove(move) {
+    makeProtectTypeMove(move, function(field, user) {
+        var effect = new StatusEffect("ProtectEffect");
         effect.tier = 0;
         effect.tick = function() {
             this.subject.removeStatus(this);
@@ -185,7 +196,7 @@ function makeProtectMove(move) {
         };
         user.applyStatus(user, effect);
         field.print(Text.battle_messages_unique(145, user));
-    };
+    });
 }
 
 /**
@@ -740,6 +751,9 @@ function makeRampageMove(move) {
                 // does not continue.
                 this.subject.removeStatus(this);
             } else if (--this.turns == 0) {
+                // TODO: Tweak this (should confuse whenever the user has
+                //       used the attack at least one previous time in the
+                //       sequence).
                 var user = this.subject;
                 if (!user.getStatus("ConfusionEffect")) {
                     field.print(Text.battle_messages_unique(97, user));

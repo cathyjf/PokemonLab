@@ -2555,13 +2555,30 @@ target.hp -= damage;
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+makeProtectTypeMove(this, function(field, user) {
+    var effect = new StatusEffect("EndureEffect");
+    effect.tier = 0;
+    effect.tick = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.transformHealthChange = function(delta, user, indirect) {
+        if (indirect || (delta < 0)
+                || this.subject.getStatus("SubstituteEffect"))
+            return delta;
+        if ((this.subject.hp - delta) > 0)
+            return delta;
+        field.print(Text.battle_messages_unique(149, this.subject));
+        return this.subject.hp - 1;
+    };
+    user.applyStatus(user, effect);
+    field.print(Text.battle_messages_unique(149, user));
+});
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Energy Ball" id="116">

@@ -391,6 +391,7 @@
 147: $1 used $2's $3! // Pluck
 
 148: $1 can't use $2 after Imprison!
+149: $1 braced itself!
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
