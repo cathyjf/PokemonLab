@@ -449,6 +449,8 @@ function makeItemSwitchMove(move) {
         user.item = target.item;
         if (id_) {
             target.item = HoldItem[id_];
+        } else {
+            target.item = null;
         }
         if (user.item) {
             field.print(Text.battle_messages_unique(13, user, user.item));
