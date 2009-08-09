@@ -205,7 +205,8 @@ ScriptValue BattleField::sendMessage(const string &message,
 /**
  * Sort a set of pokemon by speed.
  */
-void BattleField::sortBySpeed(vector<Pokemon *> &pokemon) {
+template <class T>
+void BattleField::sortBySpeed(T &pokemon) {
     sort(pokemon.begin(), pokemon.end(),
             boost::bind(&BattleFieldImpl::speedComparator,
                 m_impl, BattleFieldImpl::RANDOM_MAP(), _1, _2));
@@ -694,6 +695,39 @@ bool BattleField::vetoSwitch(Pokemon *subject) {
     return false;
 }
 
+/**
+ * Determine whether to veto the execution of a move. A single effect wanting
+ * to veto the execution is enough to do so.
+ */
+/**bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
+        MoveObject *move) {
+    if (user->vetoExecution(user, target, move))
+        return true;
+    
+    vector<Pokemon *> pokemon;
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted()) {
+                Pokemon *pp = p.get();
+                if (pp != user) {
+                    pokemon.push_back(pp);
+                }
+            }
+        }
+    }
+
+    sortBySpeed(pokemon);
+    for (vector<Pokemon *>::iterator i = pokemon.begin();
+            i != pokemon.end(); ++i) {
+        if ((*i)->vetoExecution(user, target, move)) {
+            return true;
+        }
+    }
+    return false;
+}**/
+
 namespace {
 
 /**
@@ -1085,7 +1119,8 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
                 p->setLastMove(move);
                 m_impl->lastMove = move;
             }
-            p->sendMessage("informFinishedExecution", 0, NULL);
+            ScriptValue val[] = { move.get() };
+            p->sendMessage("informFinishedExecution", 1, val);
         } else {
             switchPokemon(p.get(), id);
         }

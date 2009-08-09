@@ -203,7 +203,8 @@ public:
     /**
      * Sort a set of pokemon by speed.
      */
-    void sortBySpeed(std::vector<Pokemon *> &pokemon);
+    template <class T>
+    void sortBySpeed(T &pokemon);
 
     /**
      * Get a list of pokemon that can be switched to.

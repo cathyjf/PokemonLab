@@ -3302,11 +3302,50 @@ makeMultipleHitMove(this);
     <protect/>
     <memorable/>
     <flinch/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.power_ = this.power;
+]]>
+</init>
+<attemptHit>
+<![CDATA[
+if (field.attemptHit(this, user, target))
+    return true;
+var effect = user.getStatus("FuryCutterEffect");
+if (effect) {
+    user.removeStatus(effect);
+}
+return false;
+]]>
+</attemptHit>
 <use>
 <![CDATA[
-
+var effect = user.getStatus("FuryCutterEffect");
+if (!effect) {
+    effect = new StatusEffect("FuryCutterEffect");
+    effect.multiplier = 0;
+    effect.informFreeze = effect.informSleep = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.informFinishedExecution = function(move) {
+        if ((move.name == "Fury Cutter") && !this.subject.lastMove) {
+            this.subject.removeStatus(this);
+        }
+    };
+    effect = user.applyStatus(user, effect);
+}
+this.power = this.power_ << effect.multiplier;
+print("Fury Cutter power = " + this.power);
+var damage = field.calculate(this, user, target, targets);
+if (damage == 0) {
+    user.removeStatus(effect);
+    return;
+}
+target.hp -= damage;
+if (effect.multiplier < 4) {
+    ++effect.multiplier;
+}
 ]]>
 </use>
 </move>
