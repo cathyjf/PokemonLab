@@ -2566,10 +2566,12 @@ makeProtectTypeMove(this, function(field, user) {
         this.subject.removeStatus(this);
     };
     effect.transformHealthChange = function(delta, user, indirect) {
-        if (indirect || (delta < 0)
-                || this.subject.getStatus("SubstituteEffect"))
+        if (indirect || (delta < 0))
             return delta;
-        if ((this.subject.hp - delta) > 0)
+        var effect = this.subject.getStatus("SubstituteEffect");
+        if (effect && (effect.hp_ != 0))
+            return delta;
+        if (this.subject.hp > delta)
             return delta;
         field.print(Text.battle_messages_unique(149, this.subject));
         return this.subject.hp - 1;
