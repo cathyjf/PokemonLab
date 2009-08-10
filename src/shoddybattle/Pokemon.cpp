@@ -763,6 +763,11 @@ void Pokemon::getModifiers(Pokemon *user, Pokemon *target,
  */
 void Pokemon::faint() {
     m_fainted = true;
+    if (m_hp > 0) {
+        const int delta = m_hp;
+        m_hp = 0;
+        m_field->informHealthChange(this, delta);
+    }
     m_field->informFainted(this);
     // TODO: Clear memory at end of move execution instead.
     clearMemory();
