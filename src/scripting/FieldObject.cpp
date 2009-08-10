@@ -389,6 +389,30 @@ JSBool getPartySize(JSContext *cx,
 }
 
 /**
+ * field.getTrainer(party)
+ *
+ * Get the trainer name of a particular party.
+ */
+JSBool getTrainer(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    const jsval v = argv[0];
+    if (!JSVAL_IS_INT(v)) {
+        return JS_FALSE;
+    }
+    const int party = JSVAL_TO_INT(v);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getTrainer: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
+    string name = p->getActivePokemon()[party]->getName();
+    char *pstr = JS_strdup(cx, name.c_str());
+    JSString *str = JS_NewString(cx, pstr, name.length());
+    *ret = STRING_TO_JSVAL(str);
+    return JS_TRUE;
+}
+
+/**
  * field.getRandomTarget(party)
  *
  * Get a random target from the given party. Returns null if there are no
@@ -544,6 +568,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getMoveCount", getMoveCount, 0, 0, 0),
     JS_FS("requestInactivePokemon", requestInactivePokemon, 1, 0, 0),
     JS_FS("getRandomTarget", getRandomTarget, 1, 0, 0),
+    JS_FS("getTrainer", getTrainer, 1, 0, 0),
     JS_FS_END
 };
 

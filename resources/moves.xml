@@ -9805,7 +9805,8 @@ target.hp -= damage;
 var selection = field.requestInactivePokemon(user);
 if (selection) {
     user.replaceBy(selection);
-    field.print(Text.battle_messages_unique(96, user, selection));
+    var trainer = field.getTrainer(user.party);
+    field.print(Text.battle_messages_unique(96, user, trainer));
 }
 ]]>
 </use>
