@@ -92,7 +92,7 @@ struct BattleFieldImpl {
         }
     }
 
-    void applyEffects(Pokemon::PTR pokemon) {
+    void applyEffects(Pokemon *pokemon) {
         for (STATUSES::const_iterator i = effects.begin();
                 i != effects.end(); ++i) {
             if (!(*i)->isActive(context))
@@ -575,7 +575,7 @@ void BattleField::sendOutPokemon(const int party,
     (*m_impl->active[party])[slot].pokemon = replacement;
     replacement->setSlot(slot);
     informSendOut(replacement.get());
-    m_impl->applyEffects(replacement);
+    m_impl->applyEffects(replacement.get());
     replacement->switchIn();
 }
 
@@ -784,8 +784,6 @@ void BattleField::beginBattle(const int party) {
         if (p) {
             p->setSlot(i);
             informSendOut(p.get());
-            m_impl->applyEffects(p);
-            p->switchIn();
         }
     }
 }
@@ -797,6 +795,20 @@ void BattleField::beginBattle() {
     // Host goes second (if I remember correctly). TODO: Check this.
     beginBattle(1 - m_impl->host);
     beginBattle(m_impl->host);
+
+    Pokemon::ARRAY pokemon;
+    getActivePokemon(pokemon);
+    vector<Pokemon *> entries;
+    for (Pokemon::ARRAY::iterator i = pokemon.begin();
+            i != pokemon.end(); ++i) {
+        entries.push_back(i->get());
+    }
+    sortBySpeed(entries);
+    vector<Pokemon *>::iterator i = entries.begin();
+    for (; i != entries.end(); ++i) {
+        m_impl->applyEffects(*i);
+        (*i)->switchIn();
+    }
 }
 
 namespace {
