@@ -185,6 +185,34 @@ makeEffect(WeatherEffect, {
 });
 
 makeEffect(StatusEffect, {
+    id : "UproarEffect",
+    name : Text.battle_messages_unique(151),
+    idx_ : GlobalEffect.UPROAR,
+    users_ : 0,
+    informSleepCheck : function(effect) {
+        effect.wakeUp();
+        return true;
+    },
+    transformStatus : function(subject, status) {
+        if (status.id != "SleepEffect")
+            return status;
+        if (subject.hasAbility("Soundproof"))
+            return status;
+        return null;
+    },
+    informFinished : function() {
+        // Does nothing.
+    },
+    removeUser : function() {
+        if (--this.users_ <= 0) {
+            this.users_ = 0;
+            getGlobalController(this.subject).removeGlobalEffect(
+                    this.subject, GlobalEffect.UPROAR);
+        }
+    }
+});
+
+makeEffect(StatusEffect, {
     id : "TrickRoomEffect",
     name : Text.battle_messages_unique(34),
     idx_ : GlobalEffect.TRICK_ROOM,

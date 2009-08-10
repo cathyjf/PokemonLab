@@ -353,8 +353,6 @@
 
 119: Power Trick
 120: $1 swapped its stats!
-121: $1 caused an uproar!
-122: $1 calmed down.
 
 123: Lucky Chant
 124: $1's lucky chant shielded its team from critical hits!
@@ -392,6 +390,11 @@
 
 148: $1 can't use $2 after Imprison!
 149: $1 braced itself!
+150: $1 endured the hit!
+
+151: Uproar
+152: $1 caused an uproar!
+153: $1 calmed down.
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

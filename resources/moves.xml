@@ -2573,7 +2573,7 @@ makeProtectTypeMove(this, function(field, user) {
             return delta;
         if (this.subject.hp > delta)
             return delta;
-        field.print(Text.battle_messages_unique(149, this.subject));
+        field.print(Text.battle_messages_unique(150, this.subject));
         return this.subject.hp - 1;
     };
     user.applyStatus(user, effect);
@@ -9823,13 +9823,51 @@ if (selection) {
     <memorable/>
     <flinch/>
     <sound/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+this.prepareSelf = function(field, user) {
+    user.setForcedMove(this, null);
+    if (user.getStatus("RampageEffect"))
+        return;
+    var effect = new StatusEffect("RampageEffect");
+    effect.tier = 6.1; // Arbitrary, but needs to be after sleep.
+    effect.turns = field.random(2, 5);
+    effect.vetoSwitch = function(subject) {
+        return (subject == this.subject);
+    };
+    effect.unapplyEffect = function() {
+        this.subject.clearForcedMove();
+        var effect = this.subject.getStatus("UproarEffect");
+        if (effect) {
+            effect.removeUser();
+        }
+        field.print(Text.battle_messages_unique(153, this.subject));
+    };
+    effect.informFreeze = effect.informSleep = function() {
+        this.subject.removeStatus(this);
+    };
+    effect.informFinishedExecution = function() {
+        if (!this.subject.lastMove) {
+            this.subject.removeStatus(this);
+        }
+    };
+    effect.tick = function() {
+        if (--this.turns == 0) {
+            this.subject.removeStatus(this);
+        }
+    };
+    user.applyStatus(user, effect);
+    effect = user.getStatus("UproarEffect");
+    if (!effect) {
+        effect = getGlobalController(user).applyGlobalEffect(user,
+                GlobalEffect.UPROAR);
+    }
+    ++effect.users_;
+    field.print(Text.battle_messages_unique(152, user));
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Vacuum Wave" id="441">

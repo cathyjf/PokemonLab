@@ -453,8 +453,14 @@ makeEffect(StatusEffect, {
     informBeginTurn : function() {
         return true;
     },
+    wakeUp : function() {
+        this.subject.removeStatus(this);
+        this.subject.field.print(Text.status_effects_sleep(2, this.subject));
+    },
     tick : function() {
-        this.subject.field.sendMessage("informSleepTick", this);
+        if (!this.subject.sendMessage("informSleepCheck", this)) {
+            this.subject.field.sendMessage("informSleepTick", this);
+        }
     },
     vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
@@ -462,9 +468,10 @@ makeEffect(StatusEffect, {
         // Only handle the "overall veto", not target specific.
         if (target != null)
             return false;
+        if (this.subject.sendMessage("informSleepCheck", this))
+            return false;
         if (this.turns <= 0) {
-            user.removeStatus(this);
-            field.print(Text.status_effects_sleep(2, user));
+            this.wakeUp();
             return false;
         }
         --this.turns;
