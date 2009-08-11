@@ -607,7 +607,7 @@ void Pokemon::removeStatuses(STATUSES &effects, T predicate) {
  * Return whether the pokemon has the specified ability.
  */
 bool Pokemon::hasAbility(const string &name) {
-    if (!m_ability)
+    if (!m_ability || !m_ability->isActive(m_cx))
         return false;
     return (m_ability->getId(m_cx) == name);
 }

@@ -48,6 +48,11 @@ Ability.prototype.getState = function() {
         return this.state;
     if (this.subject.getStatus("GastroAcidEffect"))
         return StatusEffect.STATE_DEACTIVATED;
+    if ((this.id == "Klutz") || (this.id == "Mold Breaker"))
+        return StatusEffect.STATE_ACTIVE;
+    var p = this.subject.field.executionUser;
+    if (p && (p != this.subject) && p.hasAbility("Mold Breaker"))
+        return StatusEffect.STATE_DEACTIVATED;
     return StatusEffect.STATE_ACTIVE;
 };
 
@@ -1528,6 +1533,13 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Klutz"
+});
+
+/*******************
+ * Mold Breaker
+ *******************/
+makeAbility({
+    name : "Mold Breaker"
 });
 
 /*******************
