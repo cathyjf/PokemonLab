@@ -3795,11 +3795,16 @@ makeDelayedAttackMove(this);
     <protect/>
     <reflect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("GastroAcidEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("GastroAcidEffect");
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(38, target));
 ]]>
 </use>
 </move>

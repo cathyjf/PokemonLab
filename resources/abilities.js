@@ -43,6 +43,13 @@ Ability.prototype.switchIn = function() {
     this.subject.applyStatus(this.subject, effect);
     this.informActivate();
 };
+Ability.prototype.getState = function() {
+    if (!this.subject || (this.state != StatusEffect.STATE_ACTIVE))
+        return this.state;
+    if (this.subject.getStatus("GastroAcidEffect"))
+        return StatusEffect.STATE_DEACTIVATED;
+    return StatusEffect.STATE_ACTIVE;
+};
 
 /**
  * Allows for a nicer syntax for making an ability.
