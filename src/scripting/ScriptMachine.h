@@ -184,12 +184,12 @@ public:
     void disableClone(ScriptContext *);
 
     // State.
-    int getState(ScriptContext *) const;
+    int getState(ScriptContext *);
     void setState(ScriptContext *, const int);
-    bool isActive(ScriptContext *cx) const {
+    bool isActive(ScriptContext *cx) {
         return getState(cx) == STATE_ACTIVE;
     }
-    bool isRemovable(ScriptContext *cx) const {
+    bool isRemovable(ScriptContext *cx) {
         return getState(cx) == STATE_REMOVABLE;
     }
     void dispose(ScriptContext *cx) {

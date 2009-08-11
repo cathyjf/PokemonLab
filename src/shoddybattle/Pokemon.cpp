@@ -331,10 +331,10 @@ void Pokemon::clearMemory() {
  */
 StatusObjectPtr Pokemon::getStatus(const string &id) {
     for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if ((*i)->isRemovable(m_cx))
+        if ((*i)->getId(m_cx) != id)
             continue;
 
-        if ((*i)->getId(m_cx) == id)
+        if (!(*i)->isRemovable(m_cx))
             return *i;
     }
     return StatusObjectPtr();

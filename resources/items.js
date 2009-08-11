@@ -52,6 +52,14 @@ HoldItem.prototype.consume = function() {
     effect.item_ = this.id;
     this.subject.removeStatus(this);
 };
+HoldItem.prototype.getState = function() {
+    if (!this.subject || (this.state != StatusEffect.STATE_ACTIVE))
+        return this.state;
+    if (this.subject.getStatus("EmbargoEffect")
+            || this.subject.hasAbility("Klutz"))
+        return StatusEffect.STATE_DEACTIVATED;
+    return StatusEffect.STATE_ACTIVE;
+};
 
 function makeItem(obj) {
     var item = new HoldItem(obj.name);
@@ -73,6 +81,7 @@ function makeEvadeItem(item) {
     });
 }
 
+// TODO: Also remove statuses in tick().
 function makeStatusCureItem(item, ids) {
     makeItem({
         name : item,

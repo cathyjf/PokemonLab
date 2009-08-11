@@ -2471,11 +2471,25 @@ target.hp -= field.calculate(this, user, target, targets);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
 <use>
 <![CDATA[
-
+if (target.getStatus("EmbargoEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("EmbargoEffect");
+effect.name = Text.battle_messages_unique(116);
+effect.tier = 8.1; // TODO: Research required.
+effect.turns_ = 5;
+effect.tick = function() {
+    if (--this.turns_ == 0) {
+        field.print(Text.battle_messages_unique(118, this.subject));
+        this.subject.removeStatus(this);
+    }
+};
+target.applyStatus(user, effect);
+field.print(Text.battle_messages_unique(117, target));
 ]]>
 </use>
 </move>
@@ -3420,7 +3434,7 @@ this.prepareSelf = function(field, user) {
     }
 };
 this.use = function(field, user, target, targets) {
-    if (!this.usable_) {
+    if (!this.usable_ || user.getStatus("EmbargoEffect")) {
         field.print(Text.battle_messages(0));
         return;
     }

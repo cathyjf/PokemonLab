@@ -330,7 +330,11 @@ bool StatusObject::isSingleton(ScriptContext *scx) const {
     return ret;
 }
 
-int StatusObject::getState(ScriptContext *scx) const {
+int StatusObject::getState(ScriptContext *scx) {
+    if (scx->hasProperty(this, "getState")) {
+        ScriptValue v = scx->callFunctionByName(this, "getState", 0, NULL);
+        return v.getInt();
+    }
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
     JS_BeginRequest(cx);

@@ -102,8 +102,8 @@ function makePluckMove(move) {
         if (damage != 0) {
             target.hp -= damage;
             if (target.item && target.item.berry_
-                    && !target.sendMessage("informRemoveItem")) {
-                // TODO: Check for Embargo on the user (but not the target).
+                    && !target.sendMessage("informRemoveItem")
+                    && !user.getStatus("EmbargoEffect")) {
                 field.print(Text.battle_messages_unique(
                         147, user, target, target.item));
                 target.item.use(user);
