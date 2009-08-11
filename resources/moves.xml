@@ -5920,13 +5920,100 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPATTACK, 2));
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
-<use>
+<init>
 <![CDATA[
-
+var table_ = {
+    "Cheri Berry": [Type.FIRE, 60],
+    "Chesto Berry": [Type.WATER, 60],
+    "Pecha Berry": [Type.ELECTRIC, 60],
+    "Rawst Berry": [Type.GRASS, 60],
+    "Aspear Berry": [Type.ICE, 60],
+    "Leppa Berry": [Type.FIGHTING, 60],
+    "Oran Berry": [Type.POISON, 60],
+    "Persim Berry": [Type.GROUND, 60],
+    "Lum Berry": [Type.FLYING, 60],
+    "Sitrus Berry": [Type.PSYCHIC, 60],
+    "Figy Berry": [Type.BUG, 60],
+    "Wiki Berry": [Type.ROCK, 60],
+    "Mago Berry": [Type.GHOST, 60],
+    "Aguav Berry": [Type.DRAGON, 60],
+    "Iapapa Berry": [Type.DARK, 60],
+    "Razz Berry": [Type.STEEL, 60],
+    "Bluk Berry": [Type.FIRE, 70],
+    "Nanab Berry": [Type.WATER, 70],
+    "Wepear Berry": [Type.ELECTRIC, 70],
+    "Pinap Berry": [Type.GRASS, 70],
+    "Pomeg Berry": [Type.ICE, 70],
+    "Kelpsy Berry": [Type.FIGHTING, 70],
+    "Qualot Berry": [Type.POISON, 70],
+    "Hondew Berry": [Type.GROUND, 70],
+    "Grepa Berry": [Type.FLYING, 70],
+    "Tamato Berry": [Type.PSYCHIC, 70],
+    "Cornn Berry": [Type.BUG, 70],
+    "Magost Berry": [Type.ROCK, 70],
+    "Rabuta Berry": [Type.GHOST, 70],
+    "Nomel Berry": [Type.DRAGON, 70],
+    "Spelon Berry": [Type.DARK, 70],
+    "Pamtre Berry": [Type.STEEL, 70],
+    "Watmel Berry": [Type.FIRE, 80],
+    "Durin Berry": [Type.WATER, 80],
+    "Belue Berry": [Type.ELECTRIC, 80],
+    "Occa Berry": [Type.FIRE, 60],
+    "Passho Berry": [Type.WATER, 60],
+    "Wacan Berry": [Type.ELECTRIC, 60],
+    "Rindo Berry": [Type.GRASS, 60],
+    "Yache Berry": [Type.ICE, 60],
+    "Chople Berry": [Type.FIGHTING, 60],
+    "Kebia Berry": [Type.POISON, 60],
+    "Shuca Berry": [Type.GROUND, 60],
+    "Coba Berry": [Type.FLYING, 60],
+    "Payapa Berry": [Type.PSYCHIC, 60],
+    "Tanga Berry": [Type.BUG, 60],
+    "Charti Berry": [Type.ROCK, 60],
+    "Kasib Berry": [Type.GHOST, 60],
+    "Haban Berry": [Type.DRAGON, 60],
+    "Colbur Berry": [Type.DARK, 60],
+    "Babiri Berry": [Type.STEEL, 60],
+    "Chilan Berry": [Type.NORMAL, 60],
+    "Liechi Berry": [Type.GRASS, 80],
+    "Ganlon Berry": [Type.ICE, 80],
+    "Salac Berry": [Type.FIGHTING, 80],
+    "Petaya Berry": [Type.POISON, 80],
+    "Apicot Berry": [Type.GROUND, 80],
+    "Lansat Berry": [Type.FLYING, 80],
+    "Starf Berry": [Type.PSYCHIC, 80],
+    "Enigma Berry": [Type.BUG, 80],
+    "Micle Berry": [Type.ROCK, 80],
+    "Custap Berry": [Type.GHOST, 80],
+    "Jaboca Berry": [Type.DRAGON, 80],
+    "Rowap Berry": [Type.DARK, 80],
+};
+var power_ = this.power;
+var type_ = this.type;
+this.prepareSelf = function(field, user) {
+    this.power = power_;
+    this.type = type_;
+    this.usable_ = false;
+    var item = user.item && user.item.id;
+    var entry = item && table_[item];
+    if (entry) {
+        this.usable_ = true;
+        this.type = entry[0];
+        this.power = entry[1];
+    }
+};
+this.use = function(field, user, target, targets) {
+    if (user.hasAbility("Klutz") || user.getStatus("EmbargoEffect")
+            || !this.usable_) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    target.hp -= field.calculate(this, user, target, targets);
+    user.item = null;
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Nature Power" id="264">
