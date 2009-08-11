@@ -142,6 +142,9 @@ public:
     unsigned int getEv(const STAT i) const { return m_ev[i]; }
     unsigned int getStat(const STAT i);
     unsigned int getRawStat(const STAT i) const { return m_stat[i]; }
+    void setRawStat(const STAT i, const unsigned int v) {
+        m_stat[i] = v;
+    }
     int getStatLevel(const STAT i) const { return m_statLevel[i]; }
     void setStatLevel(const STAT i, int level) {
         if (level < -6) {

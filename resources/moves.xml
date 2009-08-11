@@ -6505,11 +6505,25 @@ makeStatLevelSwapMove(this, [Stat.ATTACK, Stat.SPATTACK]);
 <pp>10</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
 <use>
 <![CDATA[
-
+field.print(Text.battle_messages_unique(120, user));
+var effect = user.getStatus("PowerTrickEffect");
+if (effect) {
+    user.removeStatus(effect);
+    return;
+}
+effect = new StatusEffect("PowerTrickEffect");
+effect.name = Text.battle_messages_unique(119);
+effect.applyEffect = effect.unapplyEffect = function() {
+    var attack = this.subject.getRawStat(Stat.ATTACK);
+    var defence = this.subject.getRawStat(Stat.DEFENCE);
+    this.subject.setRawStat(Stat.ATTACK, defence);
+    this.subject.setRawStat(Stat.DEFENCE, attack);
+};
+user.applyStatus(user, effect);
 ]]>
 </use>
 </move>

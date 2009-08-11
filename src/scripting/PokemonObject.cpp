@@ -261,6 +261,33 @@ JSBool setStatLevel(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool getRawStat(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    double d;
+    JS_ValueToNumber(cx, v, &d);
+    const STAT stat = (STAT)(int)d;
+
+    assert(stat <= S_SPDEFENCE);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    *ret = INT_TO_JSVAL(p->getRawStat(stat));
+    return JS_TRUE;
+}
+
+JSBool setRawStat(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    double d;
+    JS_ValueToNumber(cx, argv[0], &d);
+    const STAT stat = (STAT)(int)d;
+
+    JS_ValueToNumber(cx, argv[1], &d);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->setRawStat(stat, (int)d);
+    return JS_TRUE;
+}
+
 JSBool getTypes(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -889,6 +916,8 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("replaceBy", replaceBy, 1, 0, 0),
     JS_FS("getTypes", getTypes, 0, 0, 0),
     JS_FS("setTypes", setTypes, 1, 0, 0),
+    JS_FS("getRawStat", getRawStat, 1, 0, 0),
+    JS_FS("setRawStat", setRawStat, 2, 0, 0),
     JS_FS_END
 };
 
