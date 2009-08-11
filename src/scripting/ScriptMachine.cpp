@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <nspr/nspr.h>
-#include <jsapi.h>
+#include <js/jsapi.h>
 #include <set>
 #include <fstream>
 #include <iostream>
@@ -310,7 +310,7 @@ ScriptValue ScriptArray::operator[](const int i) {
 
 ScriptValue::ScriptValue(const ScriptObject *object) {
     m_fail = false;
-    m_val = (void *)OBJECT_TO_JSVAL(object->getObject());
+    m_val = (void *)OBJECT_TO_JSVAL((JSObject *)object->getObject());
 }
 
 ScriptValue::ScriptValue(int i) {

@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <nspr/nspr.h>
-#include <jsapi.h>
+#include <js/jsapi.h>
 #include <set>
 #include <iostream>
 

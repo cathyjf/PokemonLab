@@ -28,7 +28,7 @@
 
 #include <stdlib.h>
 #include <nspr/nspr.h>
-#include <jsapi.h>
+#include <js/jsapi.h>
 
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"
@@ -95,7 +95,7 @@ JSBool applyStatus(JSContext *cx,
         }
         StatusObjectPtr objret = p->applyStatus(inducer, &status);
         if (objret) {
-            *ret = OBJECT_TO_JSVAL(objret->getObject());
+            *ret = OBJECT_TO_JSVAL((JSObject *)objret->getObject());
         }
     }
     return JS_TRUE;
@@ -325,7 +325,7 @@ JSBool getMove(JSContext *cx,
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     MoveObjectPtr sobj = p->getMove(slot);
     if (sobj) {
-        *ret = OBJECT_TO_JSVAL(sobj->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)sobj->getObject());
     } else {
         *ret = JSVAL_NULL;
     }
@@ -494,7 +494,7 @@ JSBool getStatus(JSContext *cx,
     }
     
     if (sobj) {
-        *ret = OBJECT_TO_JSVAL(sobj->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)sobj->getObject());
     } else {
         *ret = JSVAL_NULL;
     }
@@ -720,14 +720,14 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_MEMORY: {
             MoveObjectPtr move = p->getMemory();
             if (move) {
-                *vp = OBJECT_TO_JSVAL(move->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)move->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }
         } break;
         
         case PTI_FIELD: {
-            *vp = OBJECT_TO_JSVAL(p->getField()->getObject()->getObject());
+            *vp = OBJECT_TO_JSVAL((JSObject *)p->getField()->getObject()->getObject());
         } break;
 
         case PTI_PARTY: {
@@ -753,7 +753,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_LAST_MOVE: {
             MoveObjectPtr move = p->getLastMove();
             if (move) {
-                *vp = OBJECT_TO_JSVAL(move->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)move->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -770,7 +770,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_ITEM: {
             StatusObjectPtr item = p->getItem();
             if (item) {
-                *vp = OBJECT_TO_JSVAL(item->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)item->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -779,7 +779,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_ABILITY: {
             StatusObjectPtr ability = p->getAbility();
             if (ability) {
-                *vp = OBJECT_TO_JSVAL(ability->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)ability->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }

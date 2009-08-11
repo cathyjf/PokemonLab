@@ -24,7 +24,7 @@
 
 #include <stdlib.h>
 #include <nspr/nspr.h>
-#include <jsapi.h>
+#include <js/jsapi.h>
 
 #include "ScriptMachine.h"
 #include "../shoddybattle/Pokemon.h"

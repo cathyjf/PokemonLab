@@ -24,7 +24,7 @@
 
 #include <stdlib.h>
 #include <nspr/nspr.h>
-#include <jsapi.h>
+#include <js/jsapi.h>
 
 #include "ScriptMachine.h"
 #include "../shoddybattle/BattleField.h"
@@ -104,7 +104,7 @@ JSBool getActivePokemon(JSContext *cx,
     if (!pokemon || pokemon->isFainted()) {
         *ret = JSVAL_NULL;
     } else {
-        *ret = OBJECT_TO_JSVAL(pokemon->getObject()->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)pokemon->getObject()->getObject());
     }
     return JS_TRUE;
 }
@@ -188,7 +188,7 @@ JSBool getMove(JSContext *cx,
     const MoveTemplate *tpl = moves->getMove(str);
     if (tpl) {
         MoveObjectPtr move = scx->newMoveObject(tpl);
-        *ret = OBJECT_TO_JSVAL(move->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)move->getObject());
     } else {
         *ret = JSVAL_NULL;
     }
@@ -210,7 +210,7 @@ JSBool applyStatus(JSContext *cx,
     StatusObject effect(JSVAL_TO_OBJECT(v));
     StatusObjectPtr ptr = field->applyStatus(&effect);
     if (ptr) {
-        *ret = OBJECT_TO_JSVAL(ptr->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)ptr->getObject());
     } else {
         *ret = JSVAL_NULL;
     }
@@ -432,7 +432,7 @@ JSBool getRandomTarget(JSContext *cx,
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
     Pokemon *target = p->getRandomTarget(party);
     if (target) {
-        *ret = OBJECT_TO_JSVAL(target->getObject()->getObject());
+        *ret = OBJECT_TO_JSVAL((JSObject *)target->getObject()->getObject());
     } else {
         *ret = JSVAL_NULL;
     }
@@ -513,7 +513,7 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case FTI_LAST_MOVE: {
             MoveObjectPtr move = p->getLastMove();
             if (move) {
-                *vp = OBJECT_TO_JSVAL(move->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)move->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }
@@ -530,7 +530,7 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case FTI_EXECUTION: {
             const BattleField::EXECUTION *execution = p->topExecution();
             if (execution) {
-                *vp = OBJECT_TO_JSVAL(execution->move->getObject());
+                *vp = OBJECT_TO_JSVAL((JSObject *)execution->move->getObject());
             } else {
                 *vp = JSVAL_NULL;
             }
