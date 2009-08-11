@@ -37,6 +37,7 @@ function makeSacrificeMove(move, func) {
         var slot = user.position;
         while (true) {
             user.switchOut();
+            field.sendMessage("informReplacePokemon", user);
             selection.sendOut(slot);
             if (!selection.fainted)
                 break;
@@ -225,6 +226,7 @@ function makeRandomSwitchMove(move) {
         var choice = choices[field.random(0, length - 1)];
         var slot = target.position;
         target.switchOut(); // note: sets target.position to -1.
+        field.sendMessage("informReplacePokemon", target);
         choice.sendOut(slot);
     };
 }
@@ -880,8 +882,8 @@ function makeTrappingMove(move) {
                 return false;
             return true;
         };
-        effect.informWithdraw = function(subject) {
-            if (subject == this.inducer) {
+        effect.informReplacePokemon = effect.informWithdraw = function(p) {
+            if (p == this.inducer) {
                 this.subject.removeStatus(this);
             }
         };
@@ -930,8 +932,8 @@ function makeTemporaryTrappingMove(move, text) {
                 return false;
             return true;
         };
-        effect.informWithdraw = function(subject) {
-            if (subject == this.inducer) {
+        effect.informReplacePokemon = effect.informWithdraw = function(p) {
+            if (p == this.inducer) {
                 this.subject.removeStatus(this);
             }
         };
