@@ -398,6 +398,8 @@
 155: $1 got an encore!
 156: $1's encore ended.
 
+157: $1 flung its $2!
+
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
 1: $1 created a whirlwind!  // Razor Wind
