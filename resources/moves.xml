@@ -2508,11 +2508,66 @@ makeStatusMove(this, [[BurnEffect, 0.1]]);
 <flags>
     <protect/>
     <memorable/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Transform", "Mimic", "Sketch", "Mirror Move", "Encore",
+                   "Struggle"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+if (target.getStatus("EncoreEffect")) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var move = target.lastMove;
+if (!move || (this.forbidden_.indexOf(move.name) != -1)
+        || (target.getPp(move) <= 0)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var effect = new StatusEffect("EncoreEffect");
+effect.name = Text.battle_messages_unique(154);
+effect.tier = 0;
+effect.move_ = move;
+var id_ = target.getMoveId(move)
+effect.turns_ = field.random(4, 8);
+effect.choice_ = !target.forcedMove;
+effect.informBeginExecution = function() {
+    var turn = this.subject.turn;
+    if (this.subject.isSelectable(this.move_)) {
+        turn.move = id_;
+    } else {
+        turn.move = -1;
+        this.subject.setForcedMove(field.getMove("Struggle"), null);
+    }
+    turn.target = -1;
+};
+var this_ = this;
+effect.informFinishedExecution = function(move) {
+    if (this.choice_ && this.subject.lastMove) {
+        this.subject.setPp(move, this.subject.getPp(move) - 1);
+    }
+    var move_ = this.subject.getMove(id_);
+    if (!move_ || (this.subject.getPp(move_) <= 0)
+            || (this.move_.name != move_.name)) {
+        this.subject.removeStatus(this);
+        return;
+    }
+    if ((this.turns_ > 1) && (this.choice_ = !this.subject.forcedTurn)) {
+        this.subject.setForcedMove(this_, null);
+    }
+};
+effect.tick = function() {
+    if (--this.turns_ == 0) {
+        field.print(Text.battle_messages_unique(156, this.subject));
+        this.subject.removeStatus(this);
+    }
+};
+target.applyStatus(user, effect);
+target.setForcedMove(this, null);
+field.print(Text.battle_messages_unique(155, target));
 ]]>
 </use>
 </move>
@@ -8047,7 +8102,7 @@ this.forbidden_ = ["Assist", "Bide", "Chatter", "Copycat", "Focus Punch",
 </init>
 <use>
 <![CDATA[
-if (!user.getStatus("SleepEffect")) {
+if (!user.getStatus("SleepEffect") || user.getStatus("EncoreEffect")) {
     field.print(Text.battle_messages(0));
     return;
 }

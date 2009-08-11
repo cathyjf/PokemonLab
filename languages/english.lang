@@ -255,8 +255,6 @@
 29: Taunt // for status effect listing
 
 31: $1 consumed $2's $3 //bug bite
-32: $1 got an encore!
-33: $1's encore ended.
 
 35: $1's power was weakened!
 36: $1 unleashed energy!
@@ -395,6 +393,10 @@
 151: Uproar
 152: $1 caused an uproar!
 153: $1 calmed down.
+
+154: Encore
+155: $1 got an encore!
+156: $1's encore ended.
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam

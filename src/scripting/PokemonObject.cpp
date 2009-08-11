@@ -71,6 +71,7 @@ enum POKEMON_TINYID {
     PTI_ITEM,    // modifiable
     PTI_ABILITY, // modifiable
     PTI_TURN,
+    PTI_FORCED_TURN,
     PTI_DAMAGED
 };
 
@@ -329,6 +330,22 @@ JSBool getMove(JSContext *cx,
     } else {
         *ret = JSVAL_NULL;
     }
+
+    return JS_TRUE;
+}
+
+JSBool getMoveId(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_OBJECT(v)) {
+        return JS_FALSE;
+    }
+    MoveObject moveObj(JSVAL_TO_OBJECT(v));
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    const int id = p->getMove(moveObj.getName(scx));
+    *ret = INT_TO_JSVAL(id);
 
     return JS_TRUE;
 }
@@ -796,6 +813,18 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 *vp = JSVAL_NULL;
             }
         } break;
+
+        case PTI_FORCED_TURN: {
+            PokemonTurn *turn = p->getForcedTurn();
+            if (turn) {
+                JSObject *turnobj = JS_NewObject(cx, NULL, NULL, NULL);
+                JS_DefineProperties(cx, turnobj, turnProperties);
+                JS_SetPrivate(cx, turnobj, turn);
+                *vp = OBJECT_TO_JSVAL(turnobj);
+            } else {
+                *vp = JSVAL_NULL;
+            }
+        } break;
     }
     return JS_TRUE;
 }
@@ -826,6 +855,7 @@ JSPropertySpec pokemonProperties[] = {
     { "item", PTI_ITEM, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "ability", PTI_ABILITY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "turn", PTI_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "forcedTurn", PTI_FORCED_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "damaged", PTI_DAMAGED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
@@ -838,6 +868,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("isImmune", isImmune, 1, 0, 0),
     JS_FS("getStatus", getStatus, 1, 0, 0),
     JS_FS("getMove", getMove, 1, 0, 0),
+    JS_FS("getMoveId", getMoveId, 1, 0, 0),
     JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
     JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),
     JS_FS("getStatLevel", getStatLevel, 1, 0, 0),

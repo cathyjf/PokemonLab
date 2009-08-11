@@ -1088,7 +1088,6 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         const PokemonTurn *turn = ordered[i];
-        const int id = turn->id;
 
         if (p->isFainted() || !p->isActive()) {
             // Can't execute anything if we've fainted or become inactive.
@@ -1096,7 +1095,10 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         }
         
         if (turn->type == TT_MOVE) {
+            p->sendMessage("informBeginExecution", 0, NULL);
+            
             const bool choice = (p->getForcedTurn() == NULL);
+            const int id = turn->id;
             MoveObjectPtr move = p->getMove(id);
             Pokemon *target = NULL;
             TARGET tc = move->getTargetClass(m_impl->context);
@@ -1134,7 +1136,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
             ScriptValue val[] = { move.get() };
             p->sendMessage("informFinishedExecution", 1, val);
         } else {
-            switchPokemon(p.get(), id);
+            switchPokemon(p.get(), turn->id);
         }
         p->setTurn(NULL);
         if (determineVictory()) {
