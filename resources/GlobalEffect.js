@@ -234,7 +234,9 @@ makeEffect(StatusEffect, {
 
 makeEffect(StatusEffect, {
     id : "GlobalEffectController",
-    flags : [false, false, false, false, false, false, false, false],
+    ctor : function() {
+        this.flags = [false, false, false, false, false, false, false, false];
+    },
     removeGlobalEffect : function(user, idx) {
         if (!this.flags[idx])
             return;
