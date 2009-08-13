@@ -99,7 +99,9 @@ EntryHazard[EntryHazard.STEALTH_ROCK] = {
 
 makeEffect(StatusEffect, {
     id : "EntryHazardController",
-    effects_ : [[], []],
+    ctor : function() {
+        this.effects_ = [[], []];
+    },
     applyHazard : function(field, hazard, party) {
         var layers = this.effects_[party][hazard] || 0;
         if (!EntryHazard[hazard].addLayer(layers, field))
