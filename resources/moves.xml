@@ -4102,9 +4102,9 @@ target.hp -= field.calculate(this, user, target, targets);
 </flags>
 <use>
 <![CDATA[
-var speed = user.speed;
+var speed = user.getStat(Stat.SPEED);
 if (speed < 1) speed = 1;
-this.power = Math.floor((target.speed * 25) / speed) + 1;
+this.power = Math.floor((target.getStat(Stat.SPEED) * 25) / speed) + 1;
 if (this.power > 150) {
     this.power = 150;
 }
