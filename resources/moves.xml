@@ -5970,7 +5970,6 @@ makeLockOnMove(this);
 <![CDATA[
 user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 var effect = new StatusEffect("MinimiseEffect");
-effect.passable = false;
 user.applyStatus(user, effect);
 ]]>
 </use>
