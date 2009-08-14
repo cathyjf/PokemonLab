@@ -882,8 +882,10 @@ function makeTrappingMove(move) {
                 return false;
             return true;
         };
+        var party_ = user.party;
+        var position_ = user.position;
         effect.informReplacePokemon = effect.informWithdraw = function(p) {
-            if (p == this.inducer) {
+            if ((p.party == party_) && (p.position == position_)) {
                 this.subject.removeStatus(this);
             }
         };
@@ -932,8 +934,10 @@ function makeTemporaryTrappingMove(move, text) {
                 return false;
             return true;
         };
+        var party_ = user.party;
+        var position_ = user.position;
         effect.informReplacePokemon = effect.informWithdraw = function(p) {
-            if (p == this.inducer) {
+            if ((p.party == party_) && (p.position == position_)) {
                 this.subject.removeStatus(this);
             }
         };

@@ -555,11 +555,39 @@ user.applyStatus(user, new StatChangeEffect(Stat.DEFENCE, 2));
 <pp>40</pp>
 <target>User</target>
 <flags>
-    <unimplemented/>
+
 </flags>
+<init>
+<![CDATA[
+this.effects_ = ["AquaRingEffect", "TrappingEffect", "ConfusionEffect",
+                 "CurseEffect", "EmbargoEffect", "HighCriticalEffect",
+                 "GastroAcidEffect", "IngrainEffect", "LeechSeedEffect",
+                 "LockOnEffect", "MagnetRiseEffect", "PerishSongEffect",
+                 "PowerTrickEffect", "SubstituteEffect"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+var selection = field.requestInactivePokemon(user);
+if (!selection) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+for (var i = 0; i <= Stat.EVASION; ++i) {
+    var level = user.getStatLevel(i);
+    if (level != 0) {
+        selection.applyStatus(selection, new StatChangeEffect(i, level));
+    }
+}
+this.effects_.forEach(function(i) {
+    var effect = user.getStatus(i);
+    if (effect) {
+        selection.applyStatus(selection, effect);
+    }
+});
+var slot = user.position;
+user.switchOut();
+selection.sendOut(slot);
 ]]>
 </use>
 </move>
@@ -3511,11 +3539,11 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPDEFENCE, -1), 0.1]]);
 </flags>
 <use>
 <![CDATA[
-if (user.getStatus("FocusEnergyEffect")) {
+if (user.getStatus("HighCriticalEffect")) {
     field.print(Text.battle_messages(0));
     return;
 }
-var effect = new StatusEffect("FocusEnergyEffect");
+var effect = new StatusEffect("HighCriticalEffect");
 effect.name = Text.battle_messages_unique(63);
 effect.criticalModifier = function() {
     return 2;
