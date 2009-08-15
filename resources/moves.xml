@@ -576,13 +576,17 @@ if (!selection) {
 for (var i = 0; i <= Stat.EVASION; ++i) {
     var level = user.getStatLevel(i);
     if (level != 0) {
-        selection.applyStatus(selection, new StatChangeEffect(i, level));
+        var effect = new StatChangeEffect(i, level);
+        effect.silent = true;
+        selection.applyStatus(selection, effect);
     }
 }
 this.effects_.forEach(function(i) {
     var effect = user.getStatus(i);
     if (effect) {
+        field.narration = false;
         selection.applyStatus(selection, effect);
+        field.narration = true;
     }
 });
 var slot = user.position;
