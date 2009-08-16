@@ -91,6 +91,8 @@ public:
         return Type::ORDINARY;
     }
 
+    static std::string getModeText(FLAGS, FLAGS = FLAGS());
+
     FLAGS getStatusFlags(ClientPtr client);
 
     void setStatusFlags(const std::string &, ClientPtr client, FLAGS flags);
@@ -128,6 +130,8 @@ public:
     virtual bool join(ClientPtr client);
 
     virtual void part(ClientPtr client);
+
+    virtual void writeLog(const std::string &);
 
     virtual ~Channel() { }
 

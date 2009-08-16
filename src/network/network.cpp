@@ -38,6 +38,7 @@
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <vector>
 #include <deque>
 #include <set>
@@ -59,6 +60,7 @@ using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::asio::ip;
+namespace fs = boost::filesystem;
 
 namespace shoddybattle { namespace network {
 
@@ -1083,6 +1085,9 @@ ChannelPtr ServerImpl::getChannel(const string &name) {
 void ServerImpl::initialiseChannels() {
     using database::DatabaseRegistry;
 
+    fs::create_directory("logs");
+    fs::create_directory("logs/chat");
+
     DatabaseRegistry::CHANNEL_INFO info;
     m_registry.getChannelInfo(info);
     DatabaseRegistry::CHANNEL_INFO::iterator i = info.begin();
@@ -1093,10 +1098,11 @@ void ServerImpl::initialiseChannels() {
         const Channel::CHANNEL_FLAGS flags = element.get<2>();
         ChannelPtr p = ChannelPtr(new Channel(m_server,
                 name, topic, flags, i->first));
-        if (p->getName() == "main") {
+        if (name == "main") {
             m_mainChannel = p;
         }
         m_channels.insert(p);
+        fs::create_directory("logs/chat/" + name);
     }
 
     assert(m_mainChannel);

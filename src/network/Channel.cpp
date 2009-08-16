@@ -22,15 +22,20 @@
  * online at http://gnu.org.
  */
 
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include "boost/date_time/posix_time/posix_time.hpp"
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
+#include <fstream>
 #include "Channel.h"
 #include "network.h"
 #include "../database/DatabaseRegistry.h"
 
 using namespace std;
 using namespace boost;
+using namespace boost::gregorian;
+using namespace boost::posix_time;
 
 namespace shoddybattle { namespace network {
 
@@ -42,7 +47,13 @@ struct Channel::ChannelImpl {
     string topic; // channel topic
     CHANNEL_FLAGS flags;
     shared_mutex mutex;
+    date lastDate;
+    ofstream log;
+
+    static const char *MODES;
 };
+
+const char *Channel::ChannelImpl::MODES = "aovbiu";
 
 class Channel::ChannelInfo : public OutMessage {
 public:
@@ -74,11 +85,11 @@ public:
 class Channel::ChannelStatus : public OutMessage {
 public:
     ChannelStatus(ChannelPtr channel, const string &user,
-            ClientPtr client, int flags):
+            const string &subject, int flags):
             OutMessage(CHANNEL_STATUS) {
         *this << channel->getId();
         *this << user;
-        *this << client->getName();
+        *this << subject;
         *this << flags;
         finalise();
     }
@@ -86,11 +97,11 @@ public:
 
 class Channel::ChannelMessage : public OutMessage {
 public:
-    ChannelMessage(ChannelPtr channel, ClientPtr client,
+    ChannelMessage(ChannelPtr channel, const string &name,
                 const string &msg):
             OutMessage(CHANNEL_MESSAGE) {
         *this << channel->getId();
-        *this << client->getName();
+        *this << name;
         *this << msg;
         finalise();
     }
@@ -99,10 +110,10 @@ public:
 class Channel::ChannelJoinPart : public OutMessage {
 public:
     ChannelJoinPart(ChannelPtr channel,
-            ClientPtr client, bool join):
+            const string &name, bool join):
             OutMessage(CHANNEL_JOIN_PART) {
         *this << channel->getId();
-        *this << client->getName();
+        *this << name;
         *this << ((unsigned char)join);
         finalise();
     }
@@ -121,6 +132,40 @@ Channel::Channel(Server *server,
     m_impl->id = id;
 }
 
+string Channel::getModeText(FLAGS f2, FLAGS f1) {
+    string ret;
+    int last = -1;
+    for (int i = 0; i < FLAG_COUNT; ++i) {
+        if (f1[i] == f2[i])
+            continue;
+        int diff = f1[i];
+        if (diff != last) {
+            last = diff;
+            ret += diff ? "-" : "+";
+        }
+        ret += ChannelImpl::MODES[i];
+    }
+    return ret;
+}
+
+void Channel::writeLog(const string &line) {
+    lock_guard<shared_mutex> lock(mutex);
+    const date d = day_clock::local_day();
+    const bool open = m_impl->log.is_open();
+    if (!open || (d.day() != m_impl->lastDate.day())) {
+        if (open) {
+            m_impl->log.close();
+        }
+        m_impl->lastDate = d;
+        const string file = "logs/chat/" + m_impl->name
+                + "/" + to_iso_extended_string(d);
+        m_impl->log.open(file.c_str(), ios_base::app);
+    }
+    const time_duration t = second_clock::local_time().time_of_day();
+    const string prefix = to_simple_string(t);
+    m_impl->log << "(" << prefix << ") " << line << endl;
+}
+
 Channel::FLAGS Channel::getStatusFlags(ClientPtr client) {
     shared_lock<shared_mutex> lock(m_impl->mutex);
     CLIENT_MAP::iterator i = m_impl->clients.find(client);
@@ -132,17 +177,23 @@ Channel::FLAGS Channel::getStatusFlags(ClientPtr client) {
 
 void Channel::setStatusFlags(const string &name, ClientPtr client,
         Channel::FLAGS flags) {
+    FLAGS old;
     {
         shared_lock<shared_mutex> lock(m_impl->mutex);
         CLIENT_MAP::iterator i = m_impl->clients.find(client);
         if (i == m_impl->clients.end()) {
             return;
         }
+        old = i->second;
         i->second = flags;
         commitStatusFlags(client, flags);
     }
+    const string subject = client->getName();
     broadcast(ChannelStatus(shared_from_this(), name,
-            client, flags.to_ulong()));
+            subject, flags.to_ulong()));
+    const string message = "[mode] " + getModeText(flags, old)
+            + " " + subject + ", " + name;
+    writeLog(message);
 }
 
 Channel::CLIENT_MAP::value_type Channel::getClient(const string &name) {
@@ -205,9 +256,17 @@ bool Channel::join(ClientPtr client) {
     }
     lock.unlock();
     // inform the channel
-    broadcast(ChannelJoinPart(shared_from_this(), client, true));
+    const string name = client->getName();
+    broadcast(ChannelJoinPart(shared_from_this(), name, true));
     broadcast(ChannelStatus(shared_from_this(), string(),
-            client, flags.to_ulong()));
+            name, flags.to_ulong()));
+
+    string message = "[join] " + name + ", " + client->getIp();
+    if (flags.any()) {
+        message += ", " + getModeText(flags);
+    }
+    writeLog(message);
+
     return true;
 }
 
@@ -223,7 +282,12 @@ void Channel::part(ClientPtr client) {
     }
     handlePart(client);
     lock.unlock();
-    broadcast(ChannelJoinPart(shared_from_this(), client, false));
+    const string name = client->getName();
+    broadcast(ChannelJoinPart(shared_from_this(), name, false));
+
+    const string message = "[part] " + name;
+    writeLog(message);
+
     if (getPopulation() == 0) {
         handleFinalise();
     }
@@ -248,7 +312,11 @@ void Channel::sendMessage(const string &message, ClientPtr client) {
     if (flags[PROTECTED]
             || flags[OP]
             || (!flags[BAN] && (flags[VOICE] || !m_impl->flags[MODERATED]))) {
-        broadcast(ChannelMessage(shared_from_this(), client, message));
+        const string name = client->getName();
+        broadcast(ChannelMessage(shared_from_this(), name, message));
+
+        const string log = name + ": " + message;
+        writeLog(log);
     }
 }
 
