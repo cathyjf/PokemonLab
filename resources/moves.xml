@@ -5933,11 +5933,32 @@ makeRecoveryMove(this);
 <target>Non-user</target>
 <flags>
     <protect/>
-    <unimplemented/>
 </flags>
+<init>
+<![CDATA[
+this.forbidden_ = ["Metronome", "Struggle", "Sketch", "Mimic", "Chatter"];
+]]>
+</init>
 <use>
 <![CDATA[
-
+var move = target.lastMove;
+if (user.getStatus("TransformEffect") || !move
+        || (this.forbidden_.indexOf(move.name) != -1)
+        || (user.getPp(move) != -1)) {
+    field.print(Text.battle_messages(0));
+    return;
+}
+var id_ = user.getMoveId(this);
+var original_ = user.getMove(id_);
+var pp_ = user.getPp(original_);
+var maxPp_ = user.getMaxPp(original_);
+var effect = new StatusEffect("MimicEffect");
+effect.unapplyEffect = function() {
+    this.subject.setMove(id_, original_, pp_, maxPp_);
+};
+user.applyStatus(user, effect);
+user.setMove(id_, move, 5, 5);
+field.print(Text.battle_messages_unique(37, user, move));
 ]]>
 </use>
 </move>

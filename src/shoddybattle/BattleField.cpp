@@ -1127,6 +1127,9 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
             if (p->executeMove(move, target)) {
                 if (choice) {
                     // Only deduct pp if the move was chosen freely.
+                    // TODO: Actually deduct this after the field-wide veto
+                    //       check, but before the move is used (matters for
+                    //       Mimic).
                     p->deductPp(id);
                 }
                 // Set last move used.

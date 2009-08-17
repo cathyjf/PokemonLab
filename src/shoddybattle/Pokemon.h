@@ -181,7 +181,7 @@ public:
     void deductPp(const int i);
     void deductPp(boost::shared_ptr<MoveObject>);
 
-    void setMove(const int, const std::string &, const int);
+    void setMove(const int, const std::string &, const int, const int);
     void setAbility(StatusObject *);
     void setAbility(const std::string &);
     void setItem(StatusObject *);
@@ -274,7 +274,8 @@ public:
     };
 
 private:
-    void setMove(const int, boost::shared_ptr<MoveObject>, const int);
+    void setMove(const int, boost::shared_ptr<MoveObject>,
+            const int, const int);
 
     const PokemonSpecies *m_species;
     unsigned int m_level;

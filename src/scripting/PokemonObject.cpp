@@ -361,6 +361,23 @@ JSBool getMove(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool setMove(JSContext *cx,
+        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+    if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_OBJECT(argv[1])
+            || !JSVAL_IS_INT(argv[2]) || !JSVAL_IS_INT(argv[3])) {
+        return JS_FALSE;
+    }
+    const int slot = JSVAL_TO_INT(argv[0]);
+    MoveObject moveObj(JSVAL_TO_OBJECT(argv[1]));
+    const int pp = JSVAL_TO_INT(argv[2]);
+    const int maxPp = JSVAL_TO_INT(argv[3]);
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->setMove(slot, moveObj.getName(scx), pp, maxPp);
+    return JS_TRUE;
+}
+
 JSBool getMoveId(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
     jsval v = argv[0];
@@ -895,6 +912,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("isImmune", isImmune, 1, 0, 0),
     JS_FS("getStatus", getStatus, 1, 0, 0),
     JS_FS("getMove", getMove, 1, 0, 0),
+    JS_FS("setMove", setMove, 4, 0, 0),
     JS_FS("getMoveId", getMoveId, 1, 0, 0),
     JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
     JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),

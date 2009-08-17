@@ -554,7 +554,8 @@ void Pokemon::removeMemory(Pokemon *pokemon) {
 /**
  * Set one of this pokemon's moves to a different move.
  */
-void Pokemon::setMove(const int i, MoveObjectPtr move, const int pp) {
+void Pokemon::setMove(const int i, MoveObjectPtr move,
+        const int pp, const int maxPp) {
     if (m_moves.size() <= i) {
         m_moves.resize(i + 1, MoveObjectPtr());
         m_pp.resize(i + 1, 0);
@@ -562,7 +563,12 @@ void Pokemon::setMove(const int i, MoveObjectPtr move, const int pp) {
         m_moveUsed.resize(i + 1, false);
     }
     m_moves[i] = move;
-    m_maxPp[i] = m_pp[i] = pp;
+    m_pp[i] = pp;
+    m_maxPp[i] = maxPp;
+    if (m_field) {
+        const int id = move->getTemplate(m_cx)->getId();
+        m_field->informSetMove(this, i, id, pp, maxPp);
+    }
 }
 
 /**
@@ -570,13 +576,14 @@ void Pokemon::setMove(const int i, MoveObjectPtr move, const int pp) {
  * function will probably only be used for testing, as actual logic is more
  * likely to be use the MoveObject * version above.
  */
-void Pokemon::setMove(const int i, const string &name, const int pp) {
+void Pokemon::setMove(const int i, const string &name,
+        const int pp, const int maxPp) {
     ScriptContext *cx = m_field->getContext();
     MoveDatabase *moves = m_machine->getMoveDatabase();
     const MoveTemplate *tpl = moves->getMove(name);
     assert(tpl);
     MoveObjectPtr move = cx->newMoveObject(tpl);
-    setMove(i, move, pp);
+    setMove(i, move, pp, maxPp);
 }
 
 /**

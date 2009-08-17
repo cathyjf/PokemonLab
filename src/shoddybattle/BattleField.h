@@ -352,6 +352,8 @@ public:
     virtual void informSendOut(Pokemon *);
     virtual void informHealthChange(Pokemon *, const int);
     virtual void informSetPp(Pokemon *, const int, const int) { }
+    virtual void informSetMove(Pokemon *, const int, const int,
+            const int, const int) { }
     virtual void informFainted(Pokemon *);
 
     typedef Pokemon::RECENT_MOVE EXECUTION;

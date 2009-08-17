@@ -857,6 +857,31 @@ void NetworkBattle::informSetPp(Pokemon *pokemon,
 }
 
 /**
+ * BATTLE_SET_MOVE
+ *
+ * int32 : field id
+ * byte  : pokemon index
+ * byte  : move index
+ * int16 : new move (move list index)
+ * byte  : pp of new move
+ * byte  : max pp of new move
+ */
+void NetworkBattle::informSetMove(Pokemon *pokemon, const int idx,
+        const int move, const int pp, const int maxPp) {
+    OutMessage msg(OutMessage::BATTLE_SET_MOVE);
+    msg << getId();
+    msg << (unsigned char)pokemon->getPosition();
+    msg << (unsigned char)idx;
+    msg << (int16_t)move;
+    msg << (unsigned char)pp;
+    msg << (unsigned char)maxPp;
+    msg.finalise();
+
+    ClientPtr client = m_impl->m_clients[pokemon->getParty()];
+    client->sendMessage(msg);
+}
+
+/**
  * BATTLE_FAINTED
  *
  * int32 : field id
