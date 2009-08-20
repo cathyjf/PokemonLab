@@ -599,6 +599,7 @@
 [item-messages]
 0: $1's leftovers restored its health a little!
 1: $1's $2 cured its $3!
+2: $1's Quick Claw activated!
 
 [client-messages]
 0: *** $1 sets mode $2 $3

@@ -132,6 +132,89 @@ function makePlateItem(item, type) {
     HoldItem[item].plate_ = true;
 }
 
+function makeChoiceItem(item, func) {
+    makeItem({
+        name : item,
+        choiceItem_ : true,
+        statModifier : func,
+        informFinishedExecution : function() {
+            var move_ = this.subject.lastMove;
+            if (!move_ || (move_.name == "Mimic") || (move_.name == "Sketch")
+                    || (move_.name == "Transform")
+                    || (this.subject.getPp(move_) == -1)
+                    || this.subject.getStatus("ChoiceLockEffect"))
+                return;
+            var effect = new StatusEffect("ChoiceLockEffect");
+            effect.vetoSelection = function(user, move) {
+                if (user != this.subject)
+                    return false;
+                var item_ = user.item;
+                if (!item_ || !item_.choiceItem_
+                        || (item_.getState() != StatusEffect.STATE_ACTIVE)) {
+                    this.subject.removeStatus(this);
+                    return false;
+                }
+                return (move.name != move_.name);
+            };
+            this.subject.applyStatus(this.subject, effect);
+        }
+    });
+}
+
+makeChoiceItem("Choice Band", function(field, stat, subject) {
+    if (subject != this.subject)
+        return null;
+    if (stat != Stat.ATTACK)
+        return null;
+    return [1.5, 3];
+});
+
+makeChoiceItem("Choice Specs", function(field, stat, subject) {
+    if (subject != this.subject)
+        return null;
+    if (stat != Stat.SPATTACK)
+        return null;
+    return [1.5, 3];
+});
+
+makeChoiceItem("Choice Scarf", function(field, stat, subject) {
+    if (subject != this.subject)
+        return null;
+    if (stat != Stat.SPEED)
+        return null;
+    return [1.5, 2];
+});
+
+makeItem({
+    name : "Quick Claw",
+    value_ : -1,
+    switchIn : function() {
+        this.value_ = -1;
+    },
+    switchOut : function() {
+        this.value_ = -1;
+        return false;
+    },
+    applyEffect : function() {
+        this.value_ = -1;
+        return true;
+    },
+    inherentPriority : function() {
+        if (this.value_ == -1) {
+            this.value_ = this.subject.field.random(0.2) ? 3 : 0;
+        }
+        return this.value_;
+    },
+    informBeginExecution : function() {
+        if (this.value_ > 0) {
+            this.subject.field.print(Text.item_messages(2, this.subject));
+        }
+    },
+    informFinishedExecution : function() {
+        this.value_ = -1;
+    }
+});
+
 makeTypeBoostingItem("SilverPowder", Type.BUG);
 makeTypeBoostingItem("Metal Coat", Type.STEEL);
 makeTypeBoostingItem("Soft Sand", Type.GROUND);
