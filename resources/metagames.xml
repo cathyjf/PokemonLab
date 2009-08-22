@@ -1,0 +1,61 @@
+<!--
+   File:   metagames.xml
+   Author: Catherine
+
+   Created on August 21, 2009, 2:44 PM
+
+   This file is a part of Shoddy Battle.
+   Copyright (C) 2009  Catherine Fitzpatrick
+
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Affero General Public License
+   as published by the Free Software Foundation; either version 3
+   of the License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Affero General Public License for more details.
+
+   You should have received a copy of the GNU Affero General Public License
+   along with this program; if not, visit the Free Software Foundation, Inc.
+   online at http://gnu.org.
+-->
+
+<metagames>
+
+<metagame>
+    <name>Standard</name>
+    <id>standard</id> <!-- used for table names -->
+    <description>Standard OU metagame with Uber pokemon banned.</description>
+    <ban-list>
+        <pokemon>Arceus</pokemon>
+        <pokemon>Darkrai</pokemon>
+        <pokemon>Deoxys</pokemon>
+        <pokemon>Deoxys-e</pokemon>
+        <pokemon>Deoxys-l</pokemon>
+        <pokemon>Deoxys-f</pokemon>
+        <pokemon>Dialga</pokemon>
+        <pokemon>Garchomp</pokemon>
+        <pokemon>Giratina</pokemon>
+        <pokemon>Giratina-o</pokemon>
+        <pokemon>Groudon</pokemon>
+        <pokemon>Ho-oh</pokemon>
+        <pokemon>Kyogre</pokemon>
+        <pokemon>Latios</pokemon>
+        <pokemon>Lugia</pokemon>
+        <pokemon>Manaphy</pokemon>
+        <pokemon>Mew</pokemon>
+        <pokemon>Mewtwo</pokemon>
+        <pokemon>Palkia</pokemon>
+        <pokemon>Raquaza</pokemon>
+        <pokemon>Shaymin-s</pokemon>
+        <pokemon>Wobbuffet</pokemon>
+        <pokemon>Wynaut</pokemon>
+    </ban-list>
+    <clauses>
+        <clause>Classic Sleep Clause</clause>
+    </clauses>
+</metagame>
+
+</metagames>

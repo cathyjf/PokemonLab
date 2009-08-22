@@ -55,6 +55,7 @@
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../mechanics/PokemonNature.h"
 #include "../scripting/ScriptMachine.h"
+#include "../matchmaking/MetagameList.h"
 
 using namespace std;
 using namespace boost;
@@ -1168,6 +1169,29 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 int main() {
     using namespace shoddybattle;
+
+    vector<MetagamePtr> metagames;
+    Metagame::readMetagames("resources/metagames.xml", metagames);
+
+    const int length = metagames.size();
+    for (int i = 0; i < length; ++i) {
+        MetagamePtr p = metagames[i];
+        cout << p->getName() << endl;
+        cout << "    " << p->getId() << endl;
+        cout << "    " << p->getDescription() << endl;
+        cout << "    Ban list:" << endl;
+        const set<string> &banList = p->getBanList();
+        for (set<string>::const_iterator j = banList.begin();
+                j != banList.end(); ++j) {
+            cout << "        " << *j << endl;
+        }
+        cout << "    Clauses:" << endl;
+        const vector<string> &clauses = p->getClauses();
+        for (vector<string>::const_iterator j = clauses.begin();
+                j != clauses.end(); ++j) {
+            cout << "        " << *j << endl;
+        }
+    }
 
     network::Server server(8446);
 

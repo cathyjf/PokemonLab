@@ -17,3 +17,4 @@ include("resources/GlobalEffect.js");
 include("resources/hazards.js");
 include("resources/abilities.js");
 include("resources/items.js");
+include("resources/clauses.js");

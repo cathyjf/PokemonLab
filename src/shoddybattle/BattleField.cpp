@@ -942,6 +942,32 @@ int BattleField::getAliveCount(const int party, const bool reserve) const {
  * Determine whether the match has ended.
  */
 bool BattleField::determineVictory() {
+    int victory = -1;
+    for (STATUSES::const_iterator i = m_impl->effects.begin();
+            i != m_impl->effects.end(); ++i) {
+        if (!(*i)->isActive(m_impl->context))
+            continue;
+
+        if (m_impl->context->hasProperty(i->get(), "determineVictory")) {
+            ScriptValue v = m_impl->context->callFunctionByName(i->get(),
+                   "determineVictory", 0, NULL);
+            if (!v.failed()) {
+                const int val = v.getInt();
+                if (val != -1) {
+                    if ((victory != -1) && (victory != val)) {
+                        informVictory(-1);
+                        return true;
+                    }
+                    victory = val;
+                }
+            }
+        }
+    }
+    if (victory != -1) {
+        informVictory(victory);
+        return true;
+    }
+
     vector<bool> fainted(TEAM_COUNT, true);
     int total = TEAM_COUNT;
     for (int i = 0; i < TEAM_COUNT; ++i) {
