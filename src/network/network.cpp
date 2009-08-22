@@ -386,10 +386,12 @@ public:
     void removeClient(ClientImplPtr client);
     void broadcast(OutMessage &msg);
     void initialiseChannels();
+    void initialiseMatchmaking(const string &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
     ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
+    void sendMetagameList(ClientImplPtr client);
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
@@ -406,6 +408,11 @@ private:
         ChannelList(ServerImpl *);
     };
 
+    class MetagameList : public OutMessage {
+    public:
+        MetagameList(const vector<MetagamePtr> &);
+    };
+
     CHANNEL_LIST m_channels;
     shared_mutex m_channelMutex;
     ChannelPtr m_mainChannel;
@@ -415,6 +422,8 @@ private:
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
     ScriptMachine m_machine;
+    vector<MetagamePtr> m_metagames;
+    shared_ptr<MetagameList> m_metagameList;
     Server *m_server;
 };
 
@@ -437,6 +446,10 @@ ScriptMachine *Server::getMachine() {
 
 void Server::initialiseChannels() {
     m_impl->initialiseChannels();
+}
+
+void Server::initialiseMatchmaking(const string &file) {
+    m_impl->initialiseMatchmaking(file);
 }
 
 ChannelPtr Server::getMainChannel() const {
@@ -642,9 +655,10 @@ private:
             return;
         }
 
-        sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
-
         m_id = auth.second;
+
+        sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
+        m_server->sendMetagameList(shared_from_this());
     }
 
     /**
@@ -1009,6 +1023,10 @@ void ServerImpl::sendChannelList(ClientImplPtr client) {
     client->sendMessage(ChannelList(this));
 }
 
+void ServerImpl::sendMetagameList(ClientImplPtr client) {
+    client->sendMessage(*m_metagameList);
+}
+
 void ServerImpl::addChannel(ChannelPtr p) {
     lock_guard<shared_mutex> lock(m_channelMutex);
     m_channels.insert(p);
@@ -1038,6 +1056,32 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
         *this << (unsigned char)p->getChannelType();
         *this << p->getTopic();
         *this << p->getPopulation();
+    }
+    finalise();
+}
+
+ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
+        OutMessage(METAGAME_LIST) {
+    const int size = metagames.size();
+    *this << (int16_t)size;
+    for (int i = 0; i < size; ++i) {
+        MetagamePtr p = metagames[i];
+        *this << (unsigned char)i;
+        *this << p->getName();
+        *this << p->getId();
+        *this << p->getDescription();
+        const set<unsigned int> &banList = p->getBanList();
+        *this << (int16_t)banList.size();
+        set<unsigned int>::const_iterator j = banList.begin();
+        for (; j != banList.end(); ++j) {
+            *this << (int16_t)(*j);
+        }
+        const vector<string> &clauses = p->getClauses();
+        const int size2 = clauses.size();
+        *this << (int16_t)size2;
+        for (int k = 0; k < size2; ++k) {
+            *this << clauses[k];
+        }
     }
     finalise();
 }
@@ -1109,6 +1153,16 @@ void ServerImpl::initialiseChannels() {
     assert(m_mainChannel);
 }
 
+void ServerImpl::initialiseMatchmaking(const string &file) {
+    SpeciesDatabase *species = m_machine.getSpeciesDatabase();
+    Metagame::readMetagames(file, species, m_metagames);
+    vector<MetagamePtr>::const_iterator i = m_metagames.begin();
+    for (; i != m_metagames.end(); ++i) {
+        m_registry.initialiseLadder((*i)->getId());
+    }
+    m_metagameList = shared_ptr<MetagameList>(new MetagameList(m_metagames));
+}
+
 /** Start the server. */
 void ServerImpl::run() {
     m_registry.startThread();
@@ -1170,29 +1224,6 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 int main() {
     using namespace shoddybattle;
 
-    vector<MetagamePtr> metagames;
-    Metagame::readMetagames("resources/metagames.xml", metagames);
-
-    const int length = metagames.size();
-    for (int i = 0; i < length; ++i) {
-        MetagamePtr p = metagames[i];
-        cout << p->getName() << endl;
-        cout << "    " << p->getId() << endl;
-        cout << "    " << p->getDescription() << endl;
-        cout << "    Ban list:" << endl;
-        const set<string> &banList = p->getBanList();
-        for (set<string>::const_iterator j = banList.begin();
-                j != banList.end(); ++j) {
-            cout << "        " << *j << endl;
-        }
-        cout << "    Clauses:" << endl;
-        const vector<string> &clauses = p->getClauses();
-        for (vector<string>::const_iterator j = clauses.begin();
-                j != clauses.end(); ++j) {
-            cout << "        " << *j << endl;
-        }
-    }
-
     network::Server server(8446);
 
     ScriptMachine *machine = server.getMachine();
@@ -1203,7 +1234,9 @@ int main() {
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "Catherine", "");
     registry->startThread();
+
     server.initialiseChannels();
+    server.initialiseMatchmaking("resources/metagames.xml");
 
     vector<shared_ptr<thread> > threads;
     for (int i = 0; i < 20; ++i) {

@@ -224,6 +224,35 @@ int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     return result[0][0];
 }
 
+void DatabaseRegistry::initialiseLadder(const std::string &id) {
+    const string &table1 = "ladder_stats_" + id;
+    const string &table2 = "ladder_matches_" + id;
+    ScopedConnection conn(m_impl->pool);
+    {
+        Query query = conn->query("show tables like %0q");
+        query.parse();
+        StoreQueryResult result = query.store(table1);
+        if (!result.empty())
+            return;
+    }
+    {
+        Query query = conn->query("create table ");
+        query << table1 << " (user int(11) unique, rating double, ";
+        query << "deviation double, volatility double, estimate double, ";
+        query << "updated_rating double, updated_deviation double, ";
+        query << "updated_volatility double)";
+        query.parse();
+        query.execute();
+    }
+    {
+        Query query = conn->query("create table ");
+        query << table2 << " (player1 int(11), player2 int(11), ";
+        query << "victor int(4))";
+        query.parse();
+        query.execute();
+    }
+}
+
 DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
         const int challenge,
         const unsigned char *response) {

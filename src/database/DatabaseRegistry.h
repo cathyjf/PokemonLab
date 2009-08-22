@@ -95,6 +95,11 @@ public:
      * Set a user's flags on a channel.
      */
     void setUserFlags(const int channel, const int idx, const int flags);
+
+    /**
+     * Initialise the tables required for a ladder.
+     */
+    void initialiseLadder(const std::string &id);
     
 private:
     DatabaseRegistryImpl *m_impl;

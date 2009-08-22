@@ -35,16 +35,19 @@ namespace shoddybattle {
 class Metagame;
 typedef boost::shared_ptr<Metagame> MetagamePtr;
 
+class SpeciesDatabase;
+
 class Metagame {
 public:
-    static void readMetagames(const std::string &, std::vector<MetagamePtr> &);
+    static void readMetagames(const std::string &, SpeciesDatabase *,
+            std::vector<MetagamePtr> &);
 
     Metagame();
 
     std::string getName() const;
     std::string getId() const;
     std::string getDescription() const;
-    const std::set<std::string> &getBanList() const;
+    const std::set<unsigned int> &getBanList() const;
     const std::vector<std::string> &getClauses() const;
 
 private:

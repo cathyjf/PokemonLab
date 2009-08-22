@@ -23,6 +23,7 @@
  */
 
 #include "MetagameList.h"
+#include "../shoddybattle/PokemonSpecies.h"
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -41,17 +42,18 @@ struct Metagame::MetagameImpl {
     string m_name;
     string m_id;
     string m_description;
-    set<string> m_banList;
+    set<unsigned int> m_banList;
     vector<string> m_clauses;
 
-    void getMetagame(DOMElement *node);
+    void getMetagame(SpeciesDatabase *, DOMElement *);
 };
 
 int getIntNodeValue(DOMNode *node);
 string getStringNodeValue(DOMNode *node, bool text = false);
 string getTextFromElement(DOMElement *element, bool text = false);
 
-void Metagame::MetagameImpl::getMetagame(DOMElement *node) {
+void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
+        DOMElement *node) {
     XMLCh tempStr[20];
 
     XMLString::transcode("name", tempStr, 19);
@@ -82,7 +84,13 @@ void Metagame::MetagameImpl::getMetagame(DOMElement *node) {
         for (int i = 0; i < length; ++i) {
             DOMElement *pokemon = (DOMElement *)list->item(i);
             string txt = getTextFromElement(pokemon);
-            m_banList.insert(txt);
+            const PokemonSpecies *p = species->getSpecies(txt);
+            if (!p) {
+                cout << "Unknown species: " << txt << endl;
+            } else {
+                m_banList.insert(p->getSpeciesId());
+            }
+            //m_banList.insert(txt);
         }
     }
 
@@ -113,7 +121,7 @@ string Metagame::getDescription() const {
     return m_impl->m_description;
 }
 
-const set<string> &Metagame::getBanList() const {
+const set<unsigned int> &Metagame::getBanList() const {
     return m_impl->m_banList;
 }
 
@@ -138,7 +146,7 @@ class MetagameErrorHandler : public HandlerBase {
 Metagame::Metagame():
         m_impl(boost::shared_ptr<MetagameImpl>(new MetagameImpl())) { }
 
-void Metagame::readMetagames(const string &file,
+void Metagame::readMetagames(const string &file, SpeciesDatabase *species,
         vector<MetagamePtr> &metagames) {
     XMLPlatformUtils::Initialize();
     XercesDOMParser parser;
@@ -160,7 +168,7 @@ void Metagame::readMetagames(const string &file,
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         MetagamePtr metagame(new Metagame());
-        metagame.get()->m_impl->getMetagame(item);
+        metagame.get()->m_impl->getMetagame(species, item);
         metagames.push_back(metagame);
     }
 }

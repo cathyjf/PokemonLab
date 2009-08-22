@@ -73,6 +73,7 @@ public:
     database::DatabaseRegistry *getRegistry();
     ScriptMachine *getMachine();
     void initialiseChannels();
+    void initialiseMatchmaking(const std::string &);
     boost::shared_ptr<Channel> getMainChannel() const;
     void addChannel(boost::shared_ptr<Channel>);
     void removeChannel(boost::shared_ptr<Channel>);
@@ -115,7 +116,8 @@ public:
         BATTLE_FAINTED = 22,
         BATTLE_BEGIN_TURN = 23,
         SPECTATOR_BEGIN = 24,
-        BATTLE_SET_MOVE = 25
+        BATTLE_SET_MOVE = 25,
+        METAGAME_LIST = 26
     };
 
     // variable size message
