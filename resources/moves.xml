@@ -8792,26 +8792,20 @@ makeRecoveryMove(this);
 </flags>
 <init>
 <![CDATA[
-/** TODO: WARNING! These mechanics are in fact MADE UP by me. I am making it so
-  *       that one-turn Solarbeam always has max power, regardless of what
-  *       other weathers are in effect. This may not be correct, but I doubt
-  *       it is going to be tested any time soon, so in the interest of getting
-  *       this done, I am making up some mechanics.
-  */
 makeChargeMove(this, Text.battle_messages_charge.wrap(0));
 var parent = this.use;
 var power_ = this.power;
 this.use = function(field, user, target, targets) {
     this.power = power_;
-    var flags = getGlobalController(user).getFlags();
-    if (flags[GlobalEffect.SUN]) {
-        target.hp -= field.calculate(this, user, target, targets);
-        return;
-    }
     if (flags[GlobalEffect.RAIN]
             || flags[GlobalEffect.SAND]
             || flags[GlobalEffect.HAIL]) {
         this.power /= 2;
+    }
+    var flags = getGlobalController(user).getFlags();
+    if (flags[GlobalEffect.SUN]) {
+        target.hp -= field.calculate(this, user, target, targets);
+        return;
     }
     parent.call(this, field, user, target, targets);
 };
