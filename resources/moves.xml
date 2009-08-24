@@ -8797,12 +8797,12 @@ var parent = this.use;
 var power_ = this.power;
 this.use = function(field, user, target, targets) {
     this.power = power_;
+    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.RAIN]
             || flags[GlobalEffect.SAND]
             || flags[GlobalEffect.HAIL]) {
         this.power /= 2;
     }
-    var flags = getGlobalController(user).getFlags();
     if (flags[GlobalEffect.SUN]) {
         target.hp -= field.calculate(this, user, target, targets);
         return;
