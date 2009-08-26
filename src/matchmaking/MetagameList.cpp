@@ -24,12 +24,15 @@
 
 #include "MetagameList.h"
 #include "../shoddybattle/PokemonSpecies.h"
+#include "../shoddybattle/BattleField.h"
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
+
+#include <boost/lexical_cast.hpp>
 
 #include <iostream>
 
@@ -41,7 +44,11 @@ namespace shoddybattle {
 struct Metagame::MetagameImpl {
     string m_name;
     string m_id;
+    int m_idx;
     string m_description;
+    int m_generation;
+    int m_partySize;
+    int m_maxTeamLength;
     set<unsigned int> m_banList;
     vector<string> m_clauses;
 
@@ -74,6 +81,20 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
         m_description = getTextFromElement((DOMElement *)list->item(0));
     }
 
+    XMLString::transcode("party-size", tempStr, 19);
+    list = node->getElementsByTagName(tempStr);
+    if (list->getLength() != 0) {
+        const string txt = getTextFromElement((DOMElement *)list->item(0));
+        m_partySize = boost::lexical_cast<int>(txt);
+    }
+
+    XMLString::transcode("team-length", tempStr, 19);
+    list = node->getElementsByTagName(tempStr);
+    if (list->getLength() != 0) {
+        const string txt = getTextFromElement((DOMElement *)list->item(0));
+        m_maxTeamLength = boost::lexical_cast<int>(txt);
+    }
+
     XMLString::transcode("ban-list", tempStr, 19);
     list = node->getElementsByTagName(tempStr);
     if (list->getLength() != 0) {
@@ -90,7 +111,6 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
             } else {
                 m_banList.insert(p->getSpeciesId());
             }
-            //m_banList.insert(txt);
         }
     }
 
@@ -107,6 +127,8 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
             m_clauses.push_back(txt);
         }
     }
+
+    m_generation = GEN_PLATINUM; // TODO
 }
 
 string Metagame::getName() const {
@@ -117,8 +139,24 @@ string Metagame::getId() const {
     return m_impl->m_id;
 }
 
+int Metagame::getIdx() const {
+    return m_impl->m_idx;
+}
+
 string Metagame::getDescription() const {
     return m_impl->m_description;
+}
+
+int Metagame::getGeneration() const {
+    return m_impl->m_generation;
+}
+
+int Metagame::getActivePartySize() const {
+    return m_impl->m_partySize;
+}
+
+int Metagame::getMaxTeamLength() const {
+    return m_impl->m_maxTeamLength;
 }
 
 const set<unsigned int> &Metagame::getBanList() const {
@@ -169,6 +207,7 @@ void Metagame::readMetagames(const string &file, SpeciesDatabase *species,
         DOMElement *item = (DOMElement *)list->item(i);
         MetagamePtr metagame(new Metagame());
         metagame.get()->m_impl->getMetagame(species, item);
+        metagame.get()->m_impl->m_idx = i;
         metagames.push_back(metagame);
     }
 }

@@ -9,6 +9,8 @@
     <name>Standard</name>
     <id>standard</id> <!-- used for table names -->
     <description>Standard OU metagame with Uber pokemon banned.</description>
+    <party-size>1</party-size>
+    <team-length>6</team-length>
     <ban-list>
         <pokemon>Arceus</pokemon>
         <pokemon>Darkrai</pokemon>

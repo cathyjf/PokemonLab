@@ -350,22 +350,19 @@ bool ScriptValue::getBool() const {
     return JSVAL_TO_BOOLEAN((jsval)m_val);
 }
 
-/**
- * Get an ability object by looking in the Ability property of the global
- * object for a property by the name of the ability.
- */
 StatusObject ScriptContext::getAbility(const string &name) const {
     JSContext *cx = (JSContext *)m_p;
     return m_machine->m_impl->getSpecialStatus(cx, "Ability", name);
 }
 
-/**
- * Get an item object by looking in the HoldItem property of the global
- * object for a property by the name of the ability.
- */
 StatusObject ScriptContext::getItem(const string &name) const {
     JSContext *cx = (JSContext *)m_p;
     return m_machine->m_impl->getSpecialStatus(cx, "HoldItem", name);
+}
+
+StatusObject ScriptContext::getClause(const string &name) const {
+    JSContext *cx = (JSContext *)m_p;
+    return m_machine->m_impl->getSpecialStatus(cx, "Clause", name);
 }
 
 bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {

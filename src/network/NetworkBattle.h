@@ -46,7 +46,10 @@ public:
             boost::shared_ptr<network::Client> *clients,
             Pokemon::ARRAY *teams,
             const GENERATION generation,
-            const int partySize);
+            const int partySize,
+            const int maxTeamLength,
+            const int metagame,
+            const bool rated);
 
     int getParty(boost::shared_ptr<network::Client> client) const;
 

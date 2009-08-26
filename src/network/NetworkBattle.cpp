@@ -126,6 +126,9 @@ struct NetworkBattleImpl {
     NetworkBattle *m_field;
     BattleChannelPtr m_channel;
     vector<string> m_trainer;
+    int m_maxTeamLength;
+    int m_metagame;
+    bool m_rated;
     vector<ClientPtr> m_clients;
     vector<PARTY_TURN> m_turns;
     vector<PARTY_REQUEST> m_requests;
@@ -260,8 +263,7 @@ struct NetworkBattleImpl {
         msg << m_field->getId();
         msg << m_trainer[0] << m_trainer[1];
         msg << (unsigned char)m_field->getPartySize();
-        // TODO: Do not hardcode the maximum team length.
-        msg << (unsigned char)6;
+        msg << (unsigned char)m_maxTeamLength;
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
             const Pokemon::ARRAY &team = m_field->getTeam(i);
@@ -298,6 +300,8 @@ struct NetworkBattleImpl {
      * int32  : field id
      * string : opponent
      * byte   : party
+     * int16  : metagame (-1 for a direct challenge)
+     * byte   : rated
      */
     void sendBattleBegin(const int party) {
         const int32_t id = m_field->getId();
@@ -305,6 +309,8 @@ struct NetworkBattleImpl {
 
         OutMessage msg(OutMessage::BATTLE_BEGIN);
         msg << id << opponent << ((unsigned char)party);
+        msg << (int16_t)m_metagame;
+        msg << (unsigned char)m_rated;
         msg.finalise();
         m_clients[party]->sendMessage(msg);
     }
@@ -567,9 +573,15 @@ NetworkBattle::NetworkBattle(Server *server,
         ClientPtr *clients,
         Pokemon::ARRAY *teams,
         const GENERATION generation,
-        const int partySize) {
+        const int partySize,
+        const int maxTeamLength,
+        const int metagame,
+        const bool rated) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(
             new NetworkBattleImpl(server, this));
+    m_impl->m_maxTeamLength = maxTeamLength;
+    m_impl->m_metagame = metagame;
+    m_impl->m_rated = rated;
     m_impl->m_turns.resize(TEAM_COUNT);
     m_impl->m_requests.resize(TEAM_COUNT);
     for (int i = 0; i < TEAM_COUNT; ++i) {
@@ -584,7 +596,10 @@ NetworkBattle::NetworkBattle(Server *server,
     const string topic = m_impl->m_trainer[0] + ","
             + m_impl->m_trainer[1] + ","
             + boost::lexical_cast<string>(generation) + ","
-            + boost::lexical_cast<string>(partySize);
+            + boost::lexical_cast<string>(partySize) + ","
+            + boost::lexical_cast<string>(maxTeamLength) + ","
+            + boost::lexical_cast<string>(metagame) + ","
+            + boost::lexical_cast<string>(int(rated));
     m_impl->m_channel->setTopic(topic);
 
     initialise(&m_impl->m_mech, generation, server->getMachine(),

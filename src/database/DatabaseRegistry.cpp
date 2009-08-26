@@ -225,8 +225,8 @@ int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
 }
 
 void DatabaseRegistry::initialiseLadder(const std::string &id) {
-    const string &table1 = "ladder_stats_" + id;
-    const string &table2 = "ladder_matches_" + id;
+    const string table1 = "ladder_stats_" + id;
+    const string table2 = "ladder_matches_" + id;
     ScopedConnection conn(m_impl->pool);
     {
         Query query = conn->query("show tables like %0q");

@@ -46,7 +46,11 @@ public:
 
     std::string getName() const;
     std::string getId() const;
+    int getIdx() const;
     std::string getDescription() const;
+    int getGeneration() const;
+    int getActivePartySize() const;
+    int getMaxTeamLength() const;
     const std::set<unsigned int> &getBanList() const;
     const std::vector<std::string> &getClauses() const;
 

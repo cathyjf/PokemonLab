@@ -145,7 +145,8 @@ public:
         WITHDRAW_CHALLENGE = 9,
         BATTLE_ACTION = 10,
         PART_CHANNEL = 11,
-        REQUEST_CHANNEL_LIST = 12
+        REQUEST_CHANNEL_LIST = 12,
+        QUEUE_TEAM = 13
     };
 
     InMessage() {
@@ -378,6 +379,32 @@ public:
     }
 };
 
+class MetagameQueue {
+public:
+    typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
+
+    MetagameQueue(MetagamePtr metagame, bool rated, ServerImpl *server):
+            m_metagame(metagame),
+            m_rated(rated),
+            m_server(server) { }
+            
+    bool queueClient(ClientImplPtr, Pokemon::ARRAY &);
+
+    void startMatches();
+
+private:
+    MetagamePtr m_metagame;
+    bool m_rated;
+    CLIENT_LIST m_clients;
+    vector<QUEUE_ENTRY> m_queue;
+    map<ClientImplPtr, pair<ClientImplPtr, int> > m_generations;
+    mutex m_mutex;
+    ServerImpl *m_server;
+};
+
+typedef shared_ptr<MetagameQueue> MetagameQueuePtr;
+typedef pair<int, bool> METAGAME_PAIR;
+
 class ServerImpl {
 public:
     ServerImpl(Server *, tcp::endpoint &);
@@ -397,6 +424,10 @@ public:
     bool authenticateClient(ClientImplPtr client);
     void addChannel(ChannelPtr);
     void removeChannel(ChannelPtr);
+    void handleMatchmaking();
+    MetagameQueuePtr getMetagameQueue(const int metagame, const bool rated) {
+        return m_queues[METAGAME_PAIR(metagame, rated)];
+    }
 
 private:
     void acceptClient();
@@ -423,6 +454,8 @@ private:
     database::DatabaseRegistry m_registry;
     ScriptMachine m_machine;
     vector<MetagamePtr> m_metagames;
+    map<METAGAME_PAIR, MetagameQueuePtr> m_queues;
+    thread m_matchmaking;
     shared_ptr<MetagameList> m_metagameList;
     Server *m_server;
 };
@@ -524,6 +557,10 @@ public:
     void disconnect();
     void joinChannel(ChannelPtr channel);
     void partChannel(ChannelPtr channel);
+    void insertBattle(NetworkBattle::PTR battle) {
+        lock_guard<mutex> lock(m_battleMutex);
+        m_battles.insert(battle);
+    }
 
 private:
 
@@ -802,6 +839,9 @@ private:
             return;
         }
 
+        m_challenges.erase(opponent);
+        lock.unlock();
+
         ScriptMachine *machine = m_server->getMachine();
         readTeam(machine->getSpeciesDatabase(),
                 machine->getMoveDatabase(),
@@ -814,24 +854,18 @@ private:
                 clients,
                 challenge->teams,
                 challenge->generation,
-                challenge->partySize));
+                challenge->partySize,
+                6, // TODO: Do not hardcode max team length.
+                -1,
+                false));
 
         lock2.unlock();
-        m_challenges.erase(opponent);
-        lock.unlock();
 
         // todo: apply clauses here
 
         field->beginBattle();
-
-        {
-            lock_guard<mutex> lock3(m_battleMutex);
-            m_battles.insert(field);
-        }
-        {
-            lock_guard<mutex> lock3(client.get()->m_battleMutex);
-            client.get()->m_battles.insert(field);
-        }
+        insertBattle(field);
+        client->insertBattle(field);
     }
 
     void handleWithdrawChallenge(InMessage &msg) {
@@ -872,8 +906,31 @@ private:
         }
     }
 
-    void handleRequestChannelList(InMessage &msg) {
+    void handleRequestChannelList(InMessage &) {
         m_server->sendChannelList(shared_from_this());
+    }
+
+    /**
+     * byte : metagame id
+     * byte : rated
+     * team : the pokemon team to queue
+     */
+    void handleQueueTeam(InMessage &msg) {
+        unsigned char metagame;
+        unsigned char rated;
+        msg >> metagame >> rated;
+        MetagameQueuePtr queue = m_server->getMetagameQueue(metagame, rated);
+        if (!queue) {
+            return;
+        }
+        Pokemon::ARRAY team;
+        ScriptMachine *machine = m_server->getMachine();
+        readTeam(machine->getSpeciesDatabase(),
+                machine->getMoveDatabase(),
+                msg,
+                team);
+        // TODO: Verify legality of team.
+        queue->queueClient(shared_from_this(), team);
     }
 
     string m_name;
@@ -915,7 +972,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleWithdrawChallenge,
     &ClientImpl::handleBattleAction,
     &ClientImpl::handlePartChannel,
-    &ClientImpl::handleRequestChannelList
+    &ClientImpl::handleRequestChannelList,
+    &ClientImpl::handleQueueTeam
 };
 
 const int ClientImpl::MESSAGE_COUNT =
@@ -1019,6 +1077,56 @@ void ClientImpl::disconnect() {
     m_channels.clear();
 }
 
+bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
+    lock_guard<mutex> lock(m_mutex);
+    if (m_clients.find(client) != m_clients.end())
+        return false;
+    if (team.size() > m_metagame->getMaxTeamLength())
+        return false;
+    // TODO: validate team with the metagame's other rules
+    m_queue.push_back(QUEUE_ENTRY(client, team));
+    return true;
+}
+
+void MetagameQueue::startMatches() {
+    lock_guard<mutex> lock(m_mutex);
+    if (m_queue.size() < 2)
+        return;
+    // TODO: Sort the list of clients.
+    // TODO: Use the generations map to prevent rematches.
+    QUEUE_ENTRY remainder;
+    int size = m_queue.size();
+    const bool hasRemainder = size % 2;
+    if (hasRemainder) {
+        --size;
+        remainder = m_queue.back();
+    }
+    for (int i = 0; i < size; i += 2) {
+        QUEUE_ENTRY &q1 = m_queue[i];
+        QUEUE_ENTRY &q2 = m_queue[i + 1];
+        ClientPtr clients[] = { q1.first, q2.first };
+        Pokemon::ARRAY teams[] = { q1.second, q2.second };
+        NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
+                clients,
+                teams,
+                (GENERATION)m_metagame->getGeneration(),
+                m_metagame->getActivePartySize(),
+                m_metagame->getMaxTeamLength(),
+                m_metagame->getIdx(),
+                m_rated));
+        // TODO: Apply clauses here.
+        field->beginBattle();
+        q1.first->insertBattle(field);
+        q2.first->insertBattle(field);
+    }
+    m_clients.clear();
+    m_queue.clear();
+    if (hasRemainder) {
+        m_queue.push_back(remainder);
+        m_clients.insert(remainder.first);
+    }
+}
+
 void ServerImpl::sendChannelList(ClientImplPtr client) {
     client->sendMessage(ChannelList(this));
 }
@@ -1066,10 +1174,12 @@ ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
     *this << (int16_t)size;
     for (int i = 0; i < size; ++i) {
         MetagamePtr p = metagames[i];
-        *this << (unsigned char)i;
+        *this << (unsigned char)p->getIdx();
         *this << p->getName();
         *this << p->getId();
         *this << p->getDescription();
+        *this << (unsigned char)p->getActivePartySize();
+        *this << (unsigned char)p->getMaxTeamLength();
         const set<unsigned int> &banList = p->getBanList();
         *this << (int16_t)banList.size();
         set<unsigned int>::const_iterator j = banList.begin();
@@ -1159,8 +1269,26 @@ void ServerImpl::initialiseMatchmaking(const string &file) {
     vector<MetagamePtr>::const_iterator i = m_metagames.begin();
     for (; i != m_metagames.end(); ++i) {
         m_registry.initialiseLadder((*i)->getId());
+        const int idx = (*i)->getIdx();
+        // rated queue
+        m_queues[METAGAME_PAIR(idx, true)] =
+                MetagameQueuePtr(new MetagameQueue(*i, true, this));
+        // unrated queue
+        m_queues[METAGAME_PAIR(idx, false)] =
+                MetagameQueuePtr(new MetagameQueue(*i, false, this));
     }
     m_metagameList = shared_ptr<MetagameList>(new MetagameList(m_metagames));
+    m_matchmaking = thread(boost::bind(&ServerImpl::handleMatchmaking, this));
+}
+
+void ServerImpl::handleMatchmaking() {
+    while (true) {
+        this_thread::sleep(posix_time::seconds(15));
+        map<pair<int, bool>, MetagameQueuePtr>::iterator i = m_queues.begin();
+        for (; i != m_queues.end(); ++i) {
+            i->second->startMatches();
+        }
+    }
 }
 
 /** Start the server. */
