@@ -39,6 +39,7 @@
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/random.hpp>
 #include <vector>
 #include <deque>
 #include <set>
@@ -382,11 +383,13 @@ public:
 class MetagameQueue {
 public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
+    typedef variate_generator<mt11213b &, uniform_int<> > GENERATOR;
 
     MetagameQueue(MetagamePtr metagame, bool rated, ServerImpl *server):
             m_metagame(metagame),
             m_rated(rated),
-            m_server(server) { }
+            m_server(server),
+            m_rand(mt11213b(time(NULL))) { }
             
     bool queueClient(ClientImplPtr, Pokemon::ARRAY &);
 
@@ -400,6 +403,7 @@ private:
     map<ClientImplPtr, pair<ClientImplPtr, int> > m_generations;
     mutex m_mutex;
     ServerImpl *m_server;
+    mt11213b m_rand;
 };
 
 typedef shared_ptr<MetagameQueue> MetagameQueuePtr;
@@ -1092,7 +1096,12 @@ void MetagameQueue::startMatches() {
     lock_guard<mutex> lock(m_mutex);
     if (m_queue.size() < 2)
         return;
-    // TODO: Sort the list of clients.
+    if (m_rated) {
+        // TODO: Sort the list of clients by rating estimate.
+    } else {
+        GENERATOR generator(m_rand, uniform_int<>());
+        random_shuffle(m_queue.begin(), m_queue.end(), generator);
+    }
     // TODO: Use the generations map to prevent rematches.
     QUEUE_ENTRY remainder;
     int size = m_queue.size();

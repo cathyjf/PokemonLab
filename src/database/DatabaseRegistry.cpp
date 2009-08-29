@@ -123,7 +123,7 @@ struct DatabaseRegistryImpl {
     }
     int getChallenge() {
         lock_guard<mutex> lock(randMutex);
-        boost::uniform_int<> range(1, 2147483646); // = 2^31-2
+        uniform_int<> range(1, 2147483646); // = 2^31-2
         GENERATOR r(rand, range);
         return r();
     }
