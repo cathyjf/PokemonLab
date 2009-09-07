@@ -95,7 +95,10 @@ double getImprovementSum(
         int length) {
     double sum = 0.0;
     for (int i = 0; i < length; ++i) {
-        sum += opponentG[i] * (((double)score[i]) - e[i]);
+        const int v = score[i];
+        if (v != -1) {
+            sum += opponentG[i] * (((double)v) - e[i]);
+        }
     }
     return sum;
 }

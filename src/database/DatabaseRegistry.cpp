@@ -278,10 +278,11 @@ void DatabaseRegistry::updatePlayerStats(const string &ladder,
     StoreQueryResult::iterator i = res.begin();
     for (; i != res.end(); ++i) {
         Row &row = *i;
+        const int player0 = row[0];
+        const int player1 = row[1];
         const int v = row[2];
-        const int victor = row[v];
-        const int score = (victor == id);
-        const int opponent = score ? row[1 - v] : victor;
+        const int score = (v == -1) ? -1 : (int(row[v]) == id);
+        const int opponent = (player0 == id) ? player1 : player0;
         Query q = conn->query("select rating, deviation from ");
         q << table1 << " where user=" << opponent;
         q.parse();
