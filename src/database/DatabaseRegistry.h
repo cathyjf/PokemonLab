@@ -100,6 +100,13 @@ public:
      * Initialise the tables required for a ladder.
      */
     void initialiseLadder(const std::string &id);
+
+    void postLadderMatch(const std::string &ladder, const int player0,
+            const int player1, int victor);
+
+    void joinLadder(const std::string &, const int);
+
+    void updatePlayerStats(const std::string &ladder, const int id);
     
 private:
     DatabaseRegistryImpl *m_impl;

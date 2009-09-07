@@ -30,6 +30,7 @@
 #include <ssqls.h>
 #include <string>
 #include <sstream>
+#include "../matchmaking/glicko2.h"
 #include "sha2.h"
 #include "rijndael.h"
 #include "DatabaseRegistry.h"
@@ -39,6 +40,14 @@ using namespace mysqlpp;
 using namespace boost;
 
 namespace shoddybattle { namespace database {
+
+const double INITIAL_RATING = 1500.0;
+const double INITIAL_DEVIATION = 350.0;
+const double INITIAL_VOLATILITY = 0.09;
+const double SYSTEM_CONSTANT = 1.2;
+
+const char *TABLE_STATS_PREFIX = "ladder_stats_";
+const char *TABLE_MATCHES_PREFIX = "ladder_matches_";
 
 // MySQL users table
 sql_create_6(users, 1, 6,
@@ -225,8 +234,8 @@ int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
 }
 
 void DatabaseRegistry::initialiseLadder(const std::string &id) {
-    const string table1 = "ladder_stats_" + id;
-    const string table2 = "ladder_matches_" + id;
+    const string table1 = TABLE_STATS_PREFIX + id;
+    const string table2 = TABLE_MATCHES_PREFIX + id;
     ScopedConnection conn(m_impl->pool);
     {
         Query query = conn->query("show tables like %0q");
@@ -251,6 +260,93 @@ void DatabaseRegistry::initialiseLadder(const std::string &id) {
         query.parse();
         query.execute();
     }
+}
+
+void DatabaseRegistry::updatePlayerStats(const string &ladder,
+        const int id) {
+    const string table1 = TABLE_STATS_PREFIX + ladder;
+    const string table2 = TABLE_MATCHES_PREFIX + ladder;
+    vector<glicko2::MATCH> matches;
+    ScopedConnection conn(m_impl->pool);
+    StoreQueryResult res;
+    {
+        Query q = conn->query("select * from ");
+        q << table2 << " where player1=" << id << " or player2=" << id;
+        q.parse();
+        res = q.store();
+    }
+    StoreQueryResult::iterator i = res.begin();
+    for (; i != res.end(); ++i) {
+        Row &row = *i;
+        const int v = row[2];
+        const int victor = row[v];
+        const int score = (victor == id);
+        const int opponent = score ? row[1 - v] : victor;
+        Query q = conn->query("select rating, deviation from ");
+        q << table1 << " where user=" << opponent;
+        q.parse();
+        StoreQueryResult res2 = q.store();
+        if (!res2.empty()) {
+            Row &r2 = res2[0];
+            const double rating = r2[0];
+            const double deviation = r2[1];
+            glicko2::MATCH match = { score, rating, deviation };
+            matches.push_back(match);
+        }
+    }
+    {
+        Query q = conn->query("select rating, deviation, volatility from ");
+        q << table1 << " where user=" << id;
+        q.parse();
+        res = q.store();
+    }
+    if (res.empty())
+        return;
+    Row &r = res[0];
+    const double rating = r[0];
+    const double deviation = r[1];
+    const double volatility = r[2];
+    glicko2::PLAYER player = { rating, deviation, volatility };
+    glicko2::updatePlayer(player, matches, SYSTEM_CONSTANT);
+    const double estimate = glicko2::getRatingEstimate(player.rating,
+            player.deviation);
+    Query q = conn->query("update ");
+    q << table1 << " set updated_rating=" << player.rating
+            << ", updated_deviation=" << player.deviation
+            << ", updated_volatility=" << player.volatility
+            << ", estimate=" << estimate << " where user=" << id;
+    q.parse();
+    q.execute();
+}
+
+void DatabaseRegistry::joinLadder(const string &ladder, const int id) {
+    const string table = TABLE_STATS_PREFIX + ladder;
+    ScopedConnection conn(m_impl->pool);
+    {
+        Query query = conn->query("select user from ");
+        query << table << " where user=" << id;
+        query.parse();
+        StoreQueryResult result = query.store();
+        if (!result.empty())
+            return;
+    }
+    Query query = conn->query("insert into ");
+    query << table << " values (" << id << "," << INITIAL_RATING << ","
+            << INITIAL_DEVIATION << "," << INITIAL_VOLATILITY
+            << ",0,0,0,0)";
+    query.parse();
+    query.execute();
+}
+
+void DatabaseRegistry::postLadderMatch(const string &ladder,
+        const int player0, const int player1, int victor) {
+    const string table = TABLE_MATCHES_PREFIX + ladder;
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("insert into ");
+    query << table << " values (" << player0 << "," << player1
+            << "," << victor << ")";
+    query.parse();
+    query.execute();
 }
 
 DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,

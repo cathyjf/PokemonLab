@@ -77,6 +77,7 @@ public:
     boost::shared_ptr<Channel> getMainChannel() const;
     void addChannel(boost::shared_ptr<Channel>);
     void removeChannel(boost::shared_ptr<Channel>);
+    void postLadderMatch(const int, std::vector<ClientPtr> &, const int);
 
 private:
     ServerImpl *m_impl;

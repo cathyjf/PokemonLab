@@ -731,7 +731,10 @@ void NetworkBattle::informVictory(const int party) {
 
     m_impl->broadcast(msg);
 
-    // todo: adjust ratings etc.
+    if (m_impl->m_rated) {
+        m_impl->m_server->postLadderMatch(m_impl->m_metagame,
+                m_impl->m_clients, party);
+    }
 
     // terminate this battle
     terminate();

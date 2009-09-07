@@ -432,6 +432,7 @@ public:
     MetagameQueuePtr getMetagameQueue(const int metagame, const bool rated) {
         return m_queues[METAGAME_PAIR(metagame, rated)];
     }
+    void postLadderMatch(const int, vector<ClientPtr> &, const int);
 
 private:
     void acceptClient();
@@ -564,6 +565,14 @@ public:
     void insertBattle(NetworkBattle::PTR battle) {
         lock_guard<mutex> lock(m_battleMutex);
         m_battles.insert(battle);
+    }
+    void joinLadder(const string &ladder) {
+        lock_guard<mutex> lock(m_ratingMutex);
+        m_server->getRegistry()->joinLadder(ladder, m_id);
+    }
+    void updateLadderStats(const string &ladder) {
+        lock_guard<mutex> lock(m_ratingMutex);
+        m_server->getRegistry()->updatePlayerStats(ladder, m_id);
     }
 
 private:
@@ -957,6 +966,7 @@ private:
     ServerImpl *m_server;
     CHANNEL_LIST m_channels;    // channels this user is in
     shared_mutex m_channelMutex;
+    mutex m_ratingMutex;
 
     typedef void (ClientImpl::*MESSAGE_HANDLER)(InMessage &msg);
     static const MESSAGE_HANDLER m_handlers[];
@@ -1081,6 +1091,18 @@ void ClientImpl::disconnect() {
     m_channels.clear();
 }
 
+void ServerImpl::postLadderMatch(const int metagame,
+        vector<ClientPtr> &clients, const int victor) {
+    ClientImpl *impl0 = dynamic_cast<ClientImpl *>(clients[0].get());
+    ClientImpl *impl1 = dynamic_cast<ClientImpl *>(clients[1].get());
+    if (!impl0 || !impl1)
+        return;
+    const string ladder = m_metagames[metagame]->getId();
+    m_registry.postLadderMatch(ladder, impl0->getId(), impl1->getId(), victor);
+    impl0->updateLadderStats(ladder);
+    impl1->updateLadderStats(ladder);
+}
+
 bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     lock_guard<mutex> lock(m_mutex);
     if (m_clients.find(client) != m_clients.end())
@@ -1088,6 +1110,9 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     if (team.size() > m_metagame->getMaxTeamLength())
         return false;
     // TODO: validate team with the metagame's other rules
+    if (m_rated) {
+        client->joinLadder(m_metagame->getId());
+    }
     m_queue.push_back(QUEUE_ENTRY(client, team));
     return true;
 }
@@ -1097,7 +1122,7 @@ void MetagameQueue::startMatches() {
     if (m_queue.size() < 2)
         return;
     if (m_rated) {
-        // TODO: Sort the list of clients by rating estimate.
+        // TODO: Sort the list of clients by rating.
     } else {
         GENERATOR generator(m_rand, uniform_int<>());
         random_shuffle(m_queue.begin(), m_queue.end(), generator);
@@ -1160,6 +1185,11 @@ void ServerImpl::removeChannel(ChannelPtr p) {
 
 void Server::removeChannel(ChannelPtr p) {
     m_impl->removeChannel(p);
+}
+
+void Server::postLadderMatch(const int metagame,
+        vector<ClientPtr> &clients, const int victor) {
+    m_impl->postLadderMatch(metagame, clients, victor);
 }
 
 ServerImpl::ChannelList::ChannelList(ServerImpl *server):
