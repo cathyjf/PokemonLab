@@ -699,7 +699,7 @@ if (!effect) {
     effect.informFreeze = effect.informSleep = function() {
         this.subject.removeStatus(this);
     };
-    effect.informFinishedExecution = function() {
+    effect.informFinishedSubjectExecution = function() {
         if (!this.subject.lastMove) {
             this.subject.removeStatus(this);
         }
@@ -1943,7 +1943,7 @@ effect.informDamaged = function(user, move, damage) {
         user.faint();
     }
 };
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     if (--this.turns_ == 0) {
         this.subject.removeStatus(this);
     }
@@ -2038,7 +2038,7 @@ effect.vetoExecution = function(field, user, target, move) {
     field.print(Text.battle_messages_unique(71, user, move));
     return true;
 };
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     if ((--this.turns <= 0) || (this.subject.getPp(this.move) <= 0)) {
         this.subject.removeStatus(this);
     }
@@ -2591,7 +2591,7 @@ effect.informBeginExecution = function() {
     turn.target = -1;
 };
 var this_ = this;
-effect.informFinishedExecution = function(move) {
+effect.informFinishedSubjectExecution = function(move) {
     if (this.choice_ && this.subject.lastMove) {
         this.subject.setPp(move, this.subject.getPp(move) - 1);
     }
@@ -3758,7 +3758,7 @@ if (!effect) {
     effect.informFreeze = effect.informSleep = function() {
         this.subject.removeStatus(this);
     };
-    effect.informFinishedExecution = function(move) {
+    effect.informFinishedSubjectExecution = function(move) {
         if ((move.name == "Fury Cutter") && !this.subject.lastMove) {
             this.subject.removeStatus(this);
         }
@@ -4020,7 +4020,7 @@ effect.informDamaged = function(user, move, damage) {
         }
     }
 };
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     if (--this.turns_ == 0) {
         this.subject.removeStatus(this);
     }
@@ -4448,7 +4448,7 @@ effect.modifier = function(field, user, target, move, critical) {
         return null;
     return [0, 1.5, -1];
 };
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     this.subject.removeStatus(this);
 };
 target.applyStatus(user, effect);
@@ -7336,7 +7336,7 @@ if (effect) {
 }
 effect = new StatusEffect("RageEffect");
 effect.turns_ = 2;
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     if (--this.turns_ == 0) {
         this.subject.removeStatus(this);
     }
@@ -9301,7 +9301,7 @@ effect.transformHealthChange = function(delta, user, indirect) {
         var this_ = this;
         var effect_ = new StatusEffect("SubstituteUnapplyEffect");
         effect_.singleton = false;
-        effect_.informFinishedExecution = function() {
+        effect_.informFinishedSubjectExecution = function() {
             this_.subject.removeStatus(this_);
             this.subject.removeStatus(this);
         };
@@ -10054,7 +10054,7 @@ effect.vetoSelection = function(user, move) {
         return false;
     return (this.move.name == move.name);
 };
-effect.informFinishedExecution = function() {
+effect.informFinishedSubjectExecution = function() {
     this.move = this.subject.lastMove;
     this.set_ = true;
 };
@@ -10379,7 +10379,7 @@ this.prepareSelf = function(field, user) {
     effect.informFreeze = effect.informSleep = function() {
         this.subject.removeStatus(this);
     };
-    effect.informFinishedExecution = function() {
+    effect.informFinishedSubjectExecution = function() {
         if (!this.subject.lastMove) {
             this.subject.removeStatus(this);
         }

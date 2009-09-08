@@ -60,6 +60,16 @@ HoldItem.prototype.getState = function() {
         return StatusEffect.STATE_DEACTIVATED;
     return StatusEffect.STATE_ACTIVE;
 };
+HoldItem.prototype.condition = function() {
+    return false;
+};
+HoldItem.prototype.informFinishedExecution = function() {
+    if (this.condition()) {
+        this.use(this.subject);
+    }
+};
+HoldItem.prototype.tier = 10;
+HoldItem.prototype.tick = HoldItem.prototype.informFinishedExecution;
 
 function makeItem(obj) {
     var item = new HoldItem(obj.name);
@@ -81,7 +91,6 @@ function makeEvadeItem(item) {
     });
 }
 
-// TODO: Also remove statuses in tick().
 function makeStatusCureItem(item, ids) {
     makeItem({
         name : item,
@@ -96,20 +105,43 @@ function makeStatusCureItem(item, ids) {
             }, this);
             this.consume();
         },
-        applyEffect : function() {
+        condition : function() {
             for (var i in ids) {
                 var id = ids[i];
                 if (this.subject.getStatus(id)) {
-                    this.use(this.subject);
-                    break;
+                    return true;
                 }
             }
-        },
-        informEffectApplied : function(effect) {
-            if (ids.indexOf(effect.id) != -1) {
-                this.use(this.subject);
-            }
+            return false;
         }
+    });
+}
+
+function makePinchBerry(item, effect) {
+    makeItem({
+        name : item,
+        berry_ : true,
+        use : effect,
+        condition : function() {
+            var d = this.subject.sendMessage("informPinchBerry");
+            if (!d) d = 4;
+            var threshold = Math.floor(this.subject.getStat(Stat.HP) / d);
+            return (this.subject.hp <= threshold);
+        }
+    });
+}
+
+function makeStatBoostBerry(item, stat) {
+    makePinchBerry(item, function(user) {
+        if (user.getStatLevel(stat) == 6)
+            return;
+        var effect = new StatChangeEffect(stat, 1);
+        effect.silent = true;
+        if (!user.applyStatus(user, effect))
+            return;
+        user.field.print(Text.item_messages(3, user, this,
+                Text.stats_long(stat)));
+        this.consume();
     });
 }
 
@@ -137,7 +169,7 @@ function makeChoiceItem(item, func) {
         name : item,
         choiceItem_ : true,
         statModifier : func,
-        informFinishedExecution : function() {
+        informFinishedSubjectExecution : function() {
             var move_ = this.subject.lastMove;
             if (!move_ || (move_.name == "Mimic") || (move_.name == "Sketch")
                     || (move_.name == "Transform")
@@ -210,10 +242,16 @@ makeItem({
             this.subject.field.print(Text.item_messages(2, this.subject));
         }
     },
-    informFinishedExecution : function() {
+    informFinishedSubjectExecution : function() {
         this.value_ = -1;
     }
 });
+
+makeStatBoostBerry("Liechi Berry", Stat.ATTACK);
+makeStatBoostBerry("Ganlon Berry", Stat.DEFENCE);
+makeStatBoostBerry("Salac Berry", Stat.SPEED);
+makeStatBoostBerry("Petaya Berry", Stat.SPATTACK);
+makeStatBoostBerry("Apicot Berry", Stat.SPDEFENCE);
 
 makeTypeBoostingItem("SilverPowder", Type.BUG);
 makeTypeBoostingItem("Metal Coat", Type.STEEL);
@@ -292,7 +330,7 @@ makeItem({
         var max = this.subject.getStat(Stat.HP);
         if (this.subject.hp == max)
             return;
-        this.subject.field.print(Text.item_messages(0, this.subject));
+        this.subject.field.print(Text.item_messages(0, this, this.subject));
         var delta = Math.floor(max / 16);
         this.subject.hp += delta;
     }

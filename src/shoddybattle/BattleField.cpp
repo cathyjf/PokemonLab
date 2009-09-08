@@ -1162,8 +1162,8 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
                 p->setLastMove(move);
                 m_impl->lastMove = move;
             }
-            ScriptValue val[] = { move.get() };
-            p->sendMessage("informFinishedExecution", 1, val);
+            ScriptValue val[] = { p.get(), move.get() };
+            sendMessage("informFinishedExecution", 2, val);
         } else {
             switchPokemon(p.get(), turn->id);
         }

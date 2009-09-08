@@ -60,7 +60,7 @@ function makeJumpKickMove(move) {
     move.prepareSelf = function(field, user, target) {
         var effect = new StatusEffect("JumpKickEffect");
         effect.calculating_ = false;
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             this.calculating_ = true;
             field.narration = false;
             var damage = field.calculate(move, user, target, 1);
@@ -163,7 +163,7 @@ function makeProtectTypeMove(move, func) {
         // Set the protect flag for the user.
         var effect = new StatusEffect("ProtectFlagEffect");
         effect.turns_ = 2;
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             if (--this.turns_ == 0) {
                 this.subject.removeStatus(this);
             }
@@ -700,7 +700,7 @@ function makeMomentumMove(move) {
         effect.informFreeze = effect.informSleep = function() {
             this.subject.removeStatus(this);
         };
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             if (!this.subject.lastMove || (++this.multiplier == 5)) {
                 this.subject.removeStatus(this);
             }
@@ -753,7 +753,7 @@ function makeRampageMove(move) {
         effect.informFreeze = effect.informSleep = function() {
             this.subject.removeStatus(this);
         };
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             if (!this.subject.lastMove) {
                 // Subject was prevented from using the move, so the effect
                 // does not continue.
@@ -957,7 +957,7 @@ function makeRechargeMove(move) {
         var effect = new StatusEffect("RechargeMoveEffect");
         effect.vetoTier = -5;
         effect.turns = 2;
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             if (--this.turns == 0) {
                 this.subject.removeStatus(this);
             }
@@ -1127,7 +1127,7 @@ function makeChargeMove(move, text, vulnerable) {
         effect = new StatusEffect("ChargeMoveEffect");
         effect.move = this;
         effect.turns = 2;
-        effect.informFinishedExecution = function() {
+        effect.informFinishedSubjectExecution = function() {
             if (--this.turns == 0) {
                 this.subject.removeStatus(this);
             }

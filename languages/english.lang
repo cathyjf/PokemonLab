@@ -597,9 +597,10 @@
 58: $1 finally got its act together!
 
 [item-messages]
-0: $1's leftovers restored its health a little!
+0: $1's $2 restored its health a little!
 1: $1's $2 cured its $3!
 2: $1's Quick Claw activated!
+3: $1's $2 raised its $3!
 
 [client-messages]
 0: *** $1 sets mode $2 $3

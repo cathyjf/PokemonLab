@@ -136,9 +136,16 @@ StatusEffect.prototype = {
     // Called after field effects are ticked.
     endTick : function() { },
 
+    // Called at the end of every pokemon's turn.
+    informFinishedExecution : function(subject, move) {
+        if (this.informFinishedSubjectExecution && (this.subject == subject)) {
+            this.informFinishedSubjectExecution(move);
+        }
+    },
+
     /**
-     * Methods that may be implemented to achieve a desired function, but have no
-     * default implementation.
+     * Methods that may be implemented to achieve a desired function, but have
+     * no default implementation.
      */
 
     /**

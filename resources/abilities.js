@@ -416,6 +416,16 @@ makeAbility({
 });
 
 /*******************
+ * Gluttony
+ *******************/
+makeAbility({
+    name : "Gluttony",
+    informPinchBerry : function() {
+        return 2;
+    }
+});
+
+/*******************
  * Intimidate
  *******************/
 makeAbility({
