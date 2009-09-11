@@ -131,6 +131,27 @@ function makePinchBerry(item, effect) {
     });
 }
 
+function makeFlavourHealingBerry(item, stat) {
+    makeItem({
+        name : item,
+        berry_ : true,
+        condition : function() {
+            var threshold = Math.floor(this.subject.getStat(Stat.HP) / 2);
+            return (this.subject.hp <= threshold);
+        },
+        use : function(user) {
+            user.field.print(Text.item_messages(0, user, this));
+            var delta = Math.floor(user.getStat(Stat.HP) / 8);
+            user.hp += delta;
+            if (user.getNatureEffect(stat) < 1.0) {
+                user.field.print(Text.item_messages(4, user));
+                user.applyStatus(user, new ConfusionEffect());
+            }
+            this.consume();
+        }
+    })
+};
+
 function makeStatBoostBerry(item, stat) {
     makePinchBerry(item, function(user) {
         if (user.getStatLevel(stat) == 6)
@@ -252,6 +273,12 @@ makeStatBoostBerry("Ganlon Berry", Stat.DEFENCE);
 makeStatBoostBerry("Salac Berry", Stat.SPEED);
 makeStatBoostBerry("Petaya Berry", Stat.SPATTACK);
 makeStatBoostBerry("Apicot Berry", Stat.SPDEFENCE);
+
+makeFlavourHealingBerry("Figy Berry", Stat.ATTACK);
+makeFlavourHealingBerry("Wiki Berry", Stat.SPATTACK);
+makeFlavourHealingBerry("Mago Berry", Stat.SPEED);
+makeFlavourHealingBerry("Aguav Berry", Stat.SPDEFENCE);
+makeFlavourHealingBerry("Iapapa Berry", Stat.DEFENCE);
 
 makeTypeBoostingItem("SilverPowder", Type.BUG);
 makeTypeBoostingItem("Metal Coat", Type.STEEL);
