@@ -292,6 +292,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     string nickname;
     unsigned char shiny;
     unsigned char gender;
+    unsigned char happiness;
     int level;
     string item;
     string ability;
@@ -302,7 +303,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     int ivs[STAT_COUNT];
     int evs[STAT_COUNT];
 
-    msg >> speciesId >> nickname >> shiny >> gender >> level
+    msg >> speciesId >> nickname >> shiny >> gender >> happiness >> level
             >> item >> ability >> nature >> moveCount;
 
     nickname = trim(nickname);
@@ -331,7 +332,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
             evs,
             level,
             gender,
-            255, // TODO: happiness
+            happiness,
             shiny,
             moves,
             ppUp));
@@ -1384,7 +1385,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 1
+#if 0
 
 #include <boost/thread.hpp>
 
