@@ -1094,37 +1094,22 @@ function makeRecoilMove(move, divisor) {
  * when the move is selected. If the final parameter is not undefined then the
  * move also makes the user invulnerable to all moves except those named in
  * the array passed as the final parameter.
- *
- * NOTE (TODO): It should not be possible for the charge turn to be stopped
- *              by an immunity veto (target != null).
  */
 function makeChargeMove(move, text, vulnerable) {
     var execute = getParentUse(move);
     var accuracy_ = move.accuracy;
     move.accuracy = 0;
     move.charge_ = true;
-    move.use = function(field, user, target, targets) {
-        var effect = user.getStatus("ChargeMoveEffect");
-        if (effect) {
-            if (effect.turns == 2) {
-                // We get here if the move has more than one target and this
-                // is the charge turn; hence, we don't need to do anything.
-                return;
-            }
-            // The charge turn has already been completed, so we proceed to
-            // execute the move.
-            execute.call(this, field, user, target, targets);
+    move.prepareSelf = function(field, user, target) {
+        if (user.getStatus("ChargeMoveEffect"))
             return;
-        }
-
-        // Otherwise, the user spends his turn charging.
         field.print(text(user));
         if (this.additional) {
             this.additional(user);
         }
         var move_ = user.setForcedMove(this, target);
         move_.accuracy = accuracy_;
-        effect = new StatusEffect("ChargeMoveEffect");
+        var effect = new StatusEffect("ChargeMoveEffect");
         effect.move = this;
         effect.turns = 2;
         effect.informFinishedSubjectExecution = function() {
@@ -1155,6 +1140,15 @@ function makeChargeMove(move, text, vulnerable) {
             };
         }
         user.applyStatus(user, effect);
+    };
+    move.use = function(field, user, target, targets) {
+        var effect = user.getStatus("ChargeMoveEffect");
+        if (effect && (effect.turns < 2)) {
+            // The charge turn has already been completed, so we proceed to
+            // execute the move.
+            execute.call(this, field, user, target, targets);
+            return;
+        }
     };
 }
 
