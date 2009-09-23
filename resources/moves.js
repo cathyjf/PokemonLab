@@ -192,6 +192,8 @@ function makeProtectMove(move) {
                 return false;
             if (!move.flags[Flag.PROTECT])
                 return false;
+            if ((move.accuracy == 0) && move.charge_)
+                return false;
             field.print(Text.battle_messages_unique(145, this.subject));
             return true;
         };
