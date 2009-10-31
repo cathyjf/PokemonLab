@@ -150,7 +150,7 @@ function makeFlavourHealingBerry(item, stat) {
             this.consume();
         }
     })
-};
+}
 
 function makeStatBoostBerry(item, stat) {
     makePinchBerry(item, function(user) {

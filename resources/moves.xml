@@ -3944,13 +3944,24 @@ makeStatusMove(this, [[SleepEffect]]);
 <pp>5</pp>
 <target>All</target>
 <flags>
-    <unimplemented/>
-</flags>
-<use>
-<![CDATA[
 
+</flags>
+<init>
+<![CDATA[
+this.prepareSelf = function(field, user) {
+    var effect = getGlobalController(user);
+    if (effect.flags[GlobalEffect.GRAVITY]) {
+        field.print(Text.battle_messages(0));
+        return;
+    }
+    effect.applyGlobalEffect(user, GlobalEffect.GRAVITY);
+    field.print(Text.battle_messages_unique(113));
+};
+this.use = function() {
+    // Does nothing.
+};
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Growl" id="161">

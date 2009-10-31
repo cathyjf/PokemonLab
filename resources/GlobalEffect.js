@@ -233,6 +233,54 @@ makeEffect(StatusEffect, {
 });
 
 makeEffect(StatusEffect, {
+    id : "GravityEffect",
+    name : Text.battle_messages_unique(112),
+    idx_ : GlobalEffect.GRAVITY,
+    turns_ : 5,
+    forbidden_ : ["Fly", "Bounce", "Magnet Rise", "Hi Jump Kick",
+                  "Splash", "Jump Kick"],
+    applyEffect : function() {
+        var effect = this.subject.getStatus("MagnetRiseEffect");
+        if (effect) {
+            this.subject.removeStatus(effect);
+        }
+        effect = this.subject.getStatus("ChargeMoveEffect");
+        if (effect && (this.forbidden_.indexOf(effect.move.name) != -1)) {
+            this.subject.removeStatus(effect);
+        }
+        return true;
+    },
+    vulnerability : function(user, target) {
+        return Type.GROUND;
+    },
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        return [1.6, 12];
+    },
+    vetoSelection : function(user, move) {
+        return (this.forbidden_.indexOf(move.name) != -1);
+    },
+    vetoExecution : function(field, user, target, move) {
+        if (target != null)
+            return false;
+        if (this.forbidden_.indexOf(move.name) == -1)
+            return false;
+        field.print(Text.battle_messages_unique(114, user, move));
+        return true;
+    },
+    informFinished : function(field) {
+        field.print(Text.battle_messages_unique(115));
+    },
+    endTick : function() {
+        if (--this.turns_ == 0) {
+            getGlobalController(this.subject).removeGlobalEffect(
+                    this.subject, GlobalEffect.GRAVITY);
+        }
+    }
+});
+
+makeEffect(StatusEffect, {
     id : "GlobalEffectController",
     ctor : function() {
         this.flags = [false, false, false, false, false, false, false, false];

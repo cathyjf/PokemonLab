@@ -1178,7 +1178,7 @@ function makeCounterMove(move, cls, ratio) {
             }
         }
 
-        // if we get here, the move failed
+        // If we get here, the move failed.
         field.print(Text.battle_messages(0));
     };
 }
