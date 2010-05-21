@@ -59,6 +59,7 @@ public:
             ClientPtr) = 0;
     virtual void joinChannel(boost::shared_ptr<Channel>) = 0;
     virtual void partChannel(boost::shared_ptr<Channel>) = 0;
+    virtual void informBanned(int date) = 0;
 
 protected:
     Client() { }
@@ -78,6 +79,7 @@ public:
     void addChannel(boost::shared_ptr<Channel>);
     void removeChannel(boost::shared_ptr<Channel>);
     void postLadderMatch(const int, std::vector<ClientPtr> &, const int);
+    bool commitBan(const int, const std::string &, const int, const int);
 
 private:
     ServerImpl *m_impl;
@@ -118,7 +120,8 @@ public:
         BATTLE_BEGIN_TURN = 23,
         SPECTATOR_BEGIN = 24,
         BATTLE_SET_MOVE = 25,
-        METAGAME_LIST = 26
+        METAGAME_LIST = 26,
+        KICK_BAN_MESSAGE = 27
     };
 
     // variable size message

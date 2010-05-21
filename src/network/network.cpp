@@ -35,11 +35,13 @@
 #include <boost/shared_array.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/random.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <vector>
 #include <deque>
 #include <set>
@@ -57,11 +59,13 @@
 #include "../mechanics/PokemonNature.h"
 #include "../scripting/ScriptMachine.h"
 #include "../matchmaking/MetagameList.h"
+#include "../network/Channel.h"
 
 using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::asio::ip;
+using namespace boost::posix_time;
 namespace fs = boost::filesystem;
 
 namespace shoddybattle { namespace network {
@@ -147,7 +151,8 @@ public:
         BATTLE_ACTION = 10,
         PART_CHANNEL = 11,
         REQUEST_CHANNEL_LIST = 12,
-        QUEUE_TEAM = 13
+        QUEUE_TEAM = 13,
+        BAN_MESSAGE = 14
     };
 
     InMessage() {
@@ -211,8 +216,9 @@ public:
 private:
     void ensureMoreData(const int count) const {
         const int length = m_data.size();
-        if ((length - m_pos) < count)
+        if ((length - m_pos) < count) {
             throw InvalidMessage();
+        }
     }
 
     vector<unsigned char> m_data;
@@ -273,6 +279,7 @@ public:
  * string : nickname
  * byte   : whether the pokemon is shiny
  * byte   : gender
+ * byte   : happiness
  * int32  : level
  * string : item
  * string : ability
@@ -381,6 +388,18 @@ public:
     }
 };
 
+class KickBanMessage : public OutMessage {
+public:
+    KickBanMessage(const int channel, const string &mod, const string &target, const int date):
+            OutMessage(KICK_BAN_MESSAGE) {
+        *this << channel;
+        *this << mod;
+        *this << target;
+        *this << date;
+        finalise();
+    }
+};
+
 class MetagameQueue {
 public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
@@ -416,7 +435,7 @@ public:
     Server *getServer() const { return m_server; }
     void run();
     void removeClient(ClientImplPtr client);
-    void broadcast(OutMessage &msg);
+    void broadcast(const OutMessage &msg);
     void initialiseChannels();
     void initialiseMatchmaking(const string &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
@@ -434,12 +453,12 @@ public:
         return m_queues[METAGAME_PAIR(metagame, rated)];
     }
     void postLadderMatch(const int, vector<ClientPtr> &, const int);
+    bool commitBan(const int, const string &, const int, const int);
 
 private:
     void acceptClient();
     void handleAccept(ClientImplPtr client,
             const boost::system::error_code &error);
-
     class ChannelList : public OutMessage {
     public:
         ChannelList(ServerImpl *);
@@ -493,6 +512,10 @@ void Server::initialiseMatchmaking(const string &file) {
 
 ChannelPtr Server::getMainChannel() const {
     return m_impl->getMainChannel();
+}
+
+bool Server::commitBan(const int id, const string &user, const int auth, const int date) {
+    return m_impl->commitBan(id, user, auth, date);
 }
 
 Server::~Server() {
@@ -575,6 +598,11 @@ public:
         lock_guard<mutex> lock(m_ratingMutex);
         m_server->getRegistry()->updatePlayerStats(ladder, m_id);
     }
+    
+    void informBanned(int date) {
+        string d = lexical_cast<string>(date);
+        sendMessage(RegistryResponse(RegistryResponse::USER_BANNED, d));
+    }
 
 private:
 
@@ -656,6 +684,18 @@ private:
     void handleRequestChallenge(InMessage &msg) {
         string user;
         msg >> user;
+        int ban;
+        int flags;
+        m_server->getRegistry()->getBan(-1, user, ban, flags);
+        if (ban > 0) {
+            if (ban < time(NULL)) {
+                //ban expired remove the ban
+                m_server->commitBan(-1, user, 0, 0);
+            } else {
+                informBanned(ban);
+                return;
+            }
+        }
         unsigned char data[16];
         m_challenge = m_server->getRegistry()->getAuthChallenge(user, data);
         if (m_challenge != 0) {
@@ -710,6 +750,7 @@ private:
 
         sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
         m_server->sendMetagameList(shared_from_this());
+        m_server->getRegistry()->updateIp(m_name, m_ip);
     }
 
     /**
@@ -768,6 +809,21 @@ private:
      * byte : whether to enable or disable it (1 or 0)
      */
     void handleModeMessage(InMessage &msg);
+
+    /** 
+     * int32 : channel id
+     * string : user to ban
+     * int32 : ban expiry
+     */
+    void handleBanMessage(InMessage &msg);
+    
+    //Formats a ban to output to a log
+    string getBanString(const string &mod, const string &user, const int date);
+
+    /**
+     * Commits a ban to the registry and alerts the clients
+     */
+    bool commitBan(const int, const string &, const int, const int);
 
     /**
      * string : opponent
@@ -988,7 +1044,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleBattleAction,
     &ClientImpl::handlePartChannel,
     &ClientImpl::handleRequestChannelList,
-    &ClientImpl::handleQueueTeam
+    &ClientImpl::handleQueueTeam,
+    &ClientImpl::handleBanMessage
 };
 
 const int ClientImpl::MESSAGE_COUNT =
@@ -1083,6 +1140,93 @@ void ClientImpl::handleChannelMessage(InMessage &msg) {
     }
 }
 
+/**
+ * int32 : channel id
+ * string : user to ban
+ * int32 : ban expiry - call me up if this program lasts until 2038
+ */
+void ClientImpl::handleBanMessage(InMessage &msg) {
+    int id;
+    string target;
+    int date;
+    msg >> id >> target >> date;
+    ChannelPtr channel = (id == -1) ? m_server->getMainChannel() : getChannel(id);
+    if (!channel)
+        return;
+    //takes the max level of the target and any of their alts
+    Channel::FLAGS uauth = m_server->getRegistry()->getMaxLevel(channel->getId(), target);
+    ClientImplPtr client = m_server->getClient(target);
+    if (id == -1) {
+        //global ban
+        //only administrators in the main channel can global ban
+        Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
+        if (!auth[Channel::PROTECTED] || uauth[Channel::PROTECTED])
+            return;
+        int ban;
+        int setter;
+        m_server->getRegistry()->getBan(id, target, ban, setter);
+        bool unban = m_server->commitBan(id, target, auth.to_ulong(), date);
+        string msg;
+        if (unban && (ban > 0)) {
+            msg = "[unban global] " + m_name + " -> " + target;
+            //Inform the invoker that the user was unbanned
+            sendMessage(KickBanMessage(channel->getId(), m_name, target, -1));
+        } else if (!unban) {
+            msg = "[ban global] " + getBanString(m_name, target, date);
+            //if they're online, disconnect them from the server
+            if (client) {
+                m_server->broadcast(KickBanMessage(-1, m_name, target, date));
+                m_server->removeClient(client);
+            } else {
+                sendMessage(KickBanMessage(-1, m_name, target, date));
+            }
+        }
+        channel->writeLog(msg);
+    } else {
+        Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
+        if (!auth[Channel::OP] || uauth[Channel::PROTECTED])
+            return;
+        if (date == 0) { 
+            //0 date means kick
+            if (client && client->getChannel(id)) {
+                channel->broadcast(KickBanMessage(channel->getId(), m_name, target, 0));
+                client->partChannel(channel);
+            }
+        } else {
+            int ban;
+            int setter;
+            m_server->getRegistry()->getBan(id, target, ban, setter);
+            //can't change ban made by user with a higher level
+            Channel::FLAGS flags = setter;
+            if (!auth[Channel::PROTECTED] && flags[Channel::PROTECTED])
+                return;
+            bool unban = m_server->commitBan(id, target, auth.to_ulong(), date);
+            string msg;
+            if (unban) {
+                if (ban > 0) {
+                    msg = "[unban] " + m_name + " -> " + target;
+                    sendMessage(KickBanMessage(channel->getId(), m_name, target, -1));
+                }
+            } else {
+                //kick the client from the channel if they're there
+                msg = "[ban] " + getBanString(m_name, target, date);
+                if (client && client->getChannel(id)) {
+                    channel->broadcast(KickBanMessage(channel->getId(), m_name, target, date));
+                    client->partChannel(channel);
+                } else {
+                    //only inform the invoker of success if the user is not online
+                    sendMessage(KickBanMessage(channel->getId(), m_name, target, date));
+                }
+            }
+            channel->writeLog(msg);
+        }
+    }
+}
+
+string ClientImpl::getBanString(const string &mod, const string &user, const int date) {
+    return mod + " -> " + user + " " + to_iso_extended_string(from_time_t(date));
+}
+
 void ClientImpl::disconnect() {
     lock_guard<shared_mutex> lock(m_channelMutex);
     CHANNEL_LIST::iterator i = m_channels.begin();
@@ -1090,6 +1234,11 @@ void ClientImpl::disconnect() {
         (*i)->part(shared_from_this());
     }
     m_channels.clear();
+}
+
+bool ServerImpl::commitBan(const int channel, const string &user, 
+                                const int auth, const int date) {
+    return m_registry.setBan(channel, user, auth, date);
 }
 
 void ServerImpl::postLadderMatch(const int metagame,
@@ -1337,6 +1486,7 @@ void ServerImpl::run() {
     m_service.run();
 }
 
+
 /**
  * Remove a client.
  */
@@ -1352,7 +1502,7 @@ void ServerImpl::removeClient(ClientImplPtr client) {
 /**
  * Send a message to all clients.
  */
-void ServerImpl::broadcast(OutMessage &msg) {
+void ServerImpl::broadcast(const OutMessage &msg) {
     shared_lock<shared_mutex> lock(m_clientMutex);
     for_each(m_clients.begin(), m_clients.end(),
             boost::bind(&ClientImpl::sendMessage, _1, boost::ref(msg)));
@@ -1385,9 +1535,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 }} // namespace shoddybattle::network
 
-#if 0
-
-#include <boost/thread.hpp>
+#if 1
 
 int main() {
     using namespace shoddybattle;
@@ -1396,11 +1544,10 @@ int main() {
 
     ScriptMachine *machine = server.getMachine();
     machine->acquireContext()->runFile("resources/main.js");
-
     machine->getSpeciesDatabase()->verifyAbilities(machine);
 
     database::DatabaseRegistry *registry = server.getRegistry();
-    registry->connect("shoddybattle2", "localhost", "Catherine", "");
+    registry->connect("shoddybattle2", "localhost", "root", "");
     registry->startThread();
 
     server.initialiseChannels();

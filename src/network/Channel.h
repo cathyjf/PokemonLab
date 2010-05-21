@@ -72,7 +72,7 @@ public:
     static const int FLAG_COUNT = 6;
     typedef std::bitset<FLAG_COUNT> FLAGS;
 
-    enum {
+    enum  {
         MODERATED,   // +m
         INVITE_ONLY  // +i
     };
@@ -92,10 +92,14 @@ public:
     }
 
     static std::string getModeText(FLAGS, FLAGS = FLAGS());
+    
+    static std::string getChannelModeText(CHANNEL_FLAGS, CHANNEL_FLAGS = CHANNEL_FLAGS());
 
     FLAGS getStatusFlags(ClientPtr client);
 
     void setStatusFlags(const std::string &, ClientPtr client, FLAGS flags);
+    
+    void setChannelFlags(const std::string &, CHANNEL_FLAGS flags);
 
     CLIENT_MAP::value_type getClient(const std::string &name);
 
@@ -116,13 +120,13 @@ public:
     void broadcast(const OutMessage &msg, ClientPtr client = ClientPtr());
 
     virtual void commitStatusFlags(ClientPtr client, FLAGS flags);
+    
+    virtual void commitChannelFlags(CHANNEL_FLAGS flags);
 
     virtual FLAGS handleJoin(ClientPtr client);
 
     virtual void handlePart(ClientPtr client);
-
-    virtual bool handleBan() const { return false; }
-
+    
     virtual void handleFinalise() { }
 
     virtual int32_t getId() const;
@@ -141,6 +145,7 @@ private:
     class ChannelMessage;
     class ChannelJoinPart;
     class ChannelImpl;
+    virtual bool handleBan(ClientPtr client);
 
     boost::shared_ptr<ChannelImpl> m_impl;
 };

@@ -30,6 +30,7 @@
 #include <ssqls.h>
 #include <string>
 #include <sstream>
+#include <ctime>
 #include "../matchmaking/glicko2.h"
 #include "sha2.h"
 #include "rijndael.h"
@@ -206,13 +207,20 @@ void DatabaseRegistry::getChannelInfo(DatabaseRegistry::CHANNEL_INFO &info) {
         info[id] = INFO_ELEMENT(name, topic, flags);
     }
 }
+	
+void DatabaseRegistry::setChannelFlags(const int channel, const int flags) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("update channels set flags=");
+    query << flags << " where id=" << channel;
+    query.execute();
+}
 
 void DatabaseRegistry::setUserFlags(const int channel, const int idx,
         const int flags) {
     ScopedConnection conn(m_impl->pool);
     {
         Query query = conn->query("delete from channel");
-        query << channel << " where user = " << idx;
+        query << channel << " where id = " << idx;
         query.execute();
     }
     {
@@ -225,7 +233,7 @@ void DatabaseRegistry::setUserFlags(const int channel, const int idx,
 int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query("select flags from channel");
-    query << channel << " where user = " << idx;
+    query << channel << " where id = " << idx;
     query.parse();
     StoreQueryResult result = query.store();
     if (result.empty())
@@ -433,6 +441,71 @@ bool DatabaseRegistry::registerUser(const string name,
     query.execute();
     return true;
 }
+
+int DatabaseRegistry::getMaxLevel(const int channel, const string &user) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select flags from channel");
+    query << channel << " join users on channel" << channel;
+    query << ".id=users.id where ip=(select ip from users where name= %0q )";
+    query.parse();
+    StoreQueryResult res = query.store(user);
+
+    if (res.empty()) {
+        return 0;
+    } else {
+        int max = 0;
+        int length = res.num_rows();
+        for (int i = 0; i < length; ++i) {
+            if ((int)res[i][0] > max) {
+                max = (int)res[i][0];
+            }
+        }
+        return max;
+    }
+}
+
+void DatabaseRegistry::getBan(const int channel, const string &user, int &date, int &flags) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select expiry, flags from bans where channel=");
+    query << channel << " and id=(select id from users where name= %0q )";
+    query.parse();
+    StoreQueryResult res = query.store(user);
+    if (res.empty()) {
+        date = flags = 0;
+        return;
+    }
+    date = (int)DateTime(res[0][0]);
+    flags = (int)res[0][1];
+}
+
+bool DatabaseRegistry::setBan(const int channel, const string &user, 
+                                    const int flags, const long date) {
+    ScopedConnection conn(m_impl->pool);
+    {
+        Query query = conn->query("delete from bans where channel=");
+        query << channel << " and id=(select id from users where name= %0q )";
+        query.parse();
+        query.execute(user);
+    }
+    
+    if (date < time(NULL)) {
+        return true;
+    } else {
+        Query query = conn->query("insert into bans values(");
+        query << "%0q, (select id from users where name= %1q ), %2q, %3q)";
+        query.parse();
+        query.execute(channel, user, flags, DateTime(date));
+        return false;
+    }
+}   
+
+void DatabaseRegistry::updateIp(const string &user, const string &ip) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("update users set ip= %0q where name= %1q");
+    query.parse();
+    query.execute(ip, user);
+}
+
 
 }} // namespace shoddybattle::database
 

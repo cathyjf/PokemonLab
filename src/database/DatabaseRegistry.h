@@ -27,6 +27,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <boost/tuple/tuple.hpp>
 
 namespace shoddybattle { namespace database {
@@ -96,6 +97,33 @@ public:
      */
     void setUserFlags(const int channel, const int idx, const int flags);
 
+    /**
+     * Set the flags for a channel.
+     */
+    void setChannelFlags(const int channel, const int flags);
+    
+    /**
+     * Gets a user's ban length on a channel and the authority
+     * of the setter
+     */
+    void getBan(const int channel, const std::string &user, int &date, int &flags);
+    
+    /**
+     * Sets the ban for a user on a channel
+     * Returns if the user was unbanned
+     */
+    bool setBan(const int channel, const std::string &user, const int flags, const long date);
+    
+    /**
+     * Gets the maximum level of a user (including their alts)
+     */
+    int getMaxLevel(const int channel, const std::string &user);
+    
+    /**
+     * Updates the user's ip address when they sign on
+     */
+    void updateIp(const std::string &user, const std::string &ip);
+    
     /**
      * Initialise the tables required for a ladder.
      */

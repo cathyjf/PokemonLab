@@ -51,9 +51,11 @@ struct Channel::ChannelImpl {
     ofstream log;
 
     static const char *MODES;
+    static const char *CHANNEL_MODES;
 };
 
 const char *Channel::ChannelImpl::MODES = "aovbiu";
+const char *Channel::ChannelImpl::CHANNEL_MODES = "mi";
 
 class Channel::ChannelInfo : public OutMessage {
 public:
@@ -148,6 +150,22 @@ string Channel::getModeText(FLAGS f2, FLAGS f1) {
     return ret;
 }
 
+string Channel::getChannelModeText(CHANNEL_FLAGS f2, CHANNEL_FLAGS f1) {
+    string ret;
+    int last = -1;
+    for (int i = 0; i < CHANNEL_FLAG_COUNT; ++i) {
+        if (f1[i] == f2[i])
+            continue;
+        int diff = f1[i];
+        if (diff != last) {
+            last = diff;
+            ret += diff ? "-" : "+";
+        }
+        ret += ChannelImpl::CHANNEL_MODES[i];
+    }
+    return ret;
+}
+
 void Channel::writeLog(const string &line) {
     lock_guard<shared_mutex> lock(mutex);
     const date d = day_clock::local_day();
@@ -196,6 +214,17 @@ void Channel::setStatusFlags(const string &name, ClientPtr client,
     writeLog(message);
 }
 
+void Channel::setChannelFlags(const string &name, Channel::CHANNEL_FLAGS flags) {
+    CHANNEL_FLAGS old = m_impl->flags;
+    m_impl->flags = flags;
+    commitChannelFlags(flags);
+    broadcast(ChannelStatus(shared_from_this(), name,
+                            "", flags.to_ulong()));
+    const string message = "[mode] " + getChannelModeText(flags, old)
+        + ", " + name;
+    writeLog(message);
+}
+    
 Channel::CLIENT_MAP::value_type Channel::getClient(const string &name) {
     shared_lock<shared_mutex> lock(m_impl->mutex);
     CLIENT_MAP::iterator i = m_impl->clients.begin();
@@ -230,7 +259,11 @@ string Channel::getTopic() {
 int32_t Channel::getId() const {
     // assume that pointers are 32-bit
     // todo: use something less hacky than this for ids
-    return (int32_t)this;
+	if (getChannelType() == Type::ORDINARY)
+        return m_impl->id;
+    int64_t point = (int64_t)this;
+    int32_t id = (int32_t)(point);
+	return id;
 }
 
 bool Channel::join(ClientPtr client) {
@@ -242,7 +275,7 @@ bool Channel::join(ClientPtr client) {
     }
     // look up the client's auto flags on this channel
     Channel::FLAGS flags = handleJoin(client);
-    if (flags[BAN] && handleBan()) {
+    if (handleBan(client)) {
         // user is banned from this channel
         return false;
     }
@@ -268,6 +301,19 @@ bool Channel::join(ClientPtr client) {
     writeLog(message);
 
     return true;
+}
+
+bool Channel::handleBan(ClientPtr client) {
+    int ban, flags;
+    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban ,flags);
+    if (ban < time(NULL)) {
+        //ban expired; remove it
+        m_impl->server->commitBan(m_impl->id, client->getName(), 0, 0);
+        return false;
+    } else {
+        client->informBanned(ban);
+        return true;
+    }
 }
 
 void Channel::part(ClientPtr client) {
@@ -298,6 +344,10 @@ void Channel::commitStatusFlags(ClientPtr client, FLAGS flags) {
             flags.to_ulong());
 }
 
+void Channel::commitChannelFlags(CHANNEL_FLAGS flags) {
+    m_impl->server->getRegistry()->setChannelFlags(m_impl->id, flags.to_ulong());
+}
+
 Channel::FLAGS Channel::handleJoin(ClientPtr client) {
     return m_impl->server->getRegistry()->getUserFlags(m_impl->id,
             client->getId());
@@ -322,12 +372,27 @@ void Channel::sendMessage(const string &message, ClientPtr client) {
 
 bool Channel::setMode(ClientPtr setter, const string &user,
         const int mode, const bool enabled) {
+    FLAGS auth = getStatusFlags(setter);
     CLIENT_MAP::value_type target = getClient(user);
     if (!target.first) {
-        // todo: maybe issue an error message
-        return false;
+        // no user means it's a channel flag
+		CHANNEL_FLAGS cflags = m_impl->flags;
+        switch (mode) {
+            case Mode::M: {
+                if (auth[OP]) {
+                    cflags[MODERATED] = enabled;
+                }
+            } break;
+            case Mode::I: {
+                if (auth[OP]) {
+                    cflags[INVITE_ONLY] = enabled;
+                }
+            } break;
+        }
+        if (cflags == m_impl->flags) return false;
+        setChannelFlags(setter->getName(), cflags);
+        return true;
     }
-    FLAGS auth = getStatusFlags(setter);
     FLAGS flags = target.second;
     switch (mode) {
         case Mode::A: {
