@@ -121,7 +121,8 @@ public:
         SPECTATOR_BEGIN = 24,
         BATTLE_SET_MOVE = 25,
         METAGAME_LIST = 26,
-        KICK_BAN_MESSAGE = 27
+        KICK_BAN_MESSAGE = 27,
+        USER_DETAILS = 28
     };
 
     // variable size message

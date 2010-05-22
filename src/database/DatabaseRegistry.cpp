@@ -506,6 +506,53 @@ void DatabaseRegistry::updateIp(const string &user, const string &ip) {
     query.execute(ip, user);
 }
 
+string DatabaseRegistry::getIp(const string &user) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select ip from users where name= %0q");
+    query.parse();
+    StoreQueryResult res = query.store(user);
+    if (res.empty()) {
+        return string();
+    } else {
+        string ip;
+        res[0][0].to_string(ip);
+        return ip;
+    }
+}
+
+const vector<string> DatabaseRegistry::getAliases(const string &user) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select name from users where ip=");
+    query << "(select ip from users where name= %0q)";
+    query.parse();
+    StoreQueryResult res = query.store(user);
+    vector<string> ret;
+    for (int i = 0; i < res.num_rows(); ++i) {
+        string alias;
+        res[i][0].to_string(alias);
+        ret.push_back(alias);
+    }
+    return ret;
+}
+
+const DatabaseRegistry::BAN_LIST DatabaseRegistry::getBans(const string &user) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select bans.channel, users.name, bans.expiry from bans ");
+    query << "join users on users.id=bans.id where users.ip=";
+    query << "(select ip from users where name= %0q )";
+    query.parse();
+    StoreQueryResult res = query.store(user);
+    DatabaseRegistry::BAN_LIST bans;
+    const int count = res.num_rows();
+    for (int i = 0; i < count; ++i) {
+        Row r = res[i];
+        int id = r[0];
+        string name = string(r[1].c_str());
+        int date = (int)DateTime(r[2]);
+        bans.push_back(BAN_ELEMENT(id, name, date));
+    }
+    return bans;
+}
 
 }} // namespace shoddybattle::database
 

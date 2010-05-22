@@ -39,6 +39,8 @@ public:
     typedef std::pair<bool, int> AUTH_PAIR;
     typedef boost::tuple<std::string, std::string, int> INFO_ELEMENT;
     typedef std::map<int, INFO_ELEMENT> CHANNEL_INFO;
+    typedef boost::tuple<int, std::string, int> BAN_ELEMENT;
+    typedef std::vector<BAN_ELEMENT> BAN_LIST;
 
     DatabaseRegistry();
     ~DatabaseRegistry();
@@ -123,6 +125,21 @@ public:
      * Updates the user's ip address when they sign on
      */
     void updateIp(const std::string &user, const std::string &ip);
+    
+    /**
+     * Get's a user's ip address
+     */
+    std::string getIp(const std::string &user);
+    
+    /**
+     * Get's a user's aliases
+     */
+    const std::vector<std::string> getAliases(const std::string &user);
+    
+    /**
+     * Get's a user's bans
+     */
+    const BAN_LIST getBans(const std::string &user);
     
     /**
      * Initialise the tables required for a ladder.

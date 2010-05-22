@@ -400,6 +400,34 @@ public:
     }
 };
 
+class UserDetailMessage : public OutMessage {
+public:
+    UserDetailMessage() : OutMessage(USER_DETAILS) {
+        *this << "";
+        *this << "";
+        *this << (unsigned char)0;
+        *this << (unsigned char)0;
+        finalise();
+    }
+    UserDetailMessage(const string& name, const string &ip, vector<string> &aliases, 
+                            database::DatabaseRegistry::BAN_LIST &bans) : OutMessage(USER_DETAILS) {
+        using database::DatabaseRegistry;
+        *this << name;
+        *this << ip;
+        *this << (unsigned char)aliases.size();
+        vector<string>::iterator i = aliases.begin();
+        for (; i != aliases.end(); ++i) {
+            *this << *i;
+        }
+        *this << (unsigned char)bans.size();
+        DatabaseRegistry::BAN_LIST::iterator j = bans.begin();
+        for (; j != bans.end(); ++j) {
+            *this << (int)(j->get<0>()) << j->get<1>() << (int)(j->get<2>());
+        }
+        finalise();
+    }
+};
+
 class MetagameQueue {
 public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
@@ -824,6 +852,33 @@ private:
      * Commits a ban to the registry and alerts the clients
      */
     bool commitBan(const int, const string &, const int, const int);
+    
+    /**
+     * string : user
+     */
+    void handleRequestUserInfo(InMessage &msg) {
+        string user;
+        msg >> user;
+        bool auth = false;
+        lock_guard<shared_mutex> lock(m_channelMutex);
+        CHANNEL_LIST::iterator i = m_channels.begin();
+        for (; i != m_channels.end(); ++i) {
+            Channel::FLAGS flags= (*i)->getStatusFlags(shared_from_this());
+            if (flags[Channel::OP] || flags[Channel::PROTECTED]) {
+                auth = true;
+                break;
+            }
+        }
+        if (!auth) return;
+        string ip = m_server->getRegistry()->getIp(user);
+        if (ip == "") {
+            sendMessage(UserDetailMessage());
+        } else {
+            vector<string> aliases = m_server->getRegistry()->getAliases(user);
+            database::DatabaseRegistry::BAN_LIST bans = m_server->getRegistry()->getBans(user);
+            sendMessage(UserDetailMessage(user, ip, aliases, bans));
+        }
+    }
 
     /**
      * string : opponent
@@ -1045,7 +1100,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handlePartChannel,
     &ClientImpl::handleRequestChannelList,
     &ClientImpl::handleQueueTeam,
-    &ClientImpl::handleBanMessage
+    &ClientImpl::handleBanMessage,
+    &ClientImpl::handleRequestUserInfo
 };
 
 const int ClientImpl::MESSAGE_COUNT =
@@ -1184,7 +1240,10 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         channel->writeLog(msg);
     } else {
         Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
-        if (!auth[Channel::OP] || uauth[Channel::PROTECTED])
+        string ip = m_server->getRegistry()->getIp(target);
+        if ((!auth[Channel::OP] || uauth[Channel::PROTECTED]) && !((m_ip == ip) && (date == 0)))
+            //Stop here if the user doesn't have the authority, but let everyone kick their own
+            //alts or themselves
             return;
         if (date == 0) { 
             //0 date means kick
