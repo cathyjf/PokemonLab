@@ -187,8 +187,13 @@ double JewelMechanics::getEffectiveness(BattleField &field,
     const bool immune = (vulnerabilities.find(type) == vulnerabilities.end());
     double effectiveness = 1.0;
     const TYPE_ARRAY &types = target->getTypes();
+    
     for (TYPE_ARRAY::const_iterator i = types.begin(); i != types.end(); ++i) {
-        const double factor = type->getMultiplier(**i);
+        double factor;
+        if (!field.getTransformedEffectiveness(type, *i, target, factor)) {
+            factor = type->getMultiplier(**i);
+        }
+        
         if ((factor != 0.0) || immune) {
             effectiveness *= factor;
             if (factors) {

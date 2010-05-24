@@ -252,6 +252,9 @@ public:
     void getImmunities(Pokemon *user, Pokemon *target,
             std::set<const PokemonType *> &immunities,
             std::set<const PokemonType *> &vulnerabilities);
+            
+    bool getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type, 
+                                                                Pokemon *target, double &effectiveness);
 
     unsigned char getHappiness() const {
         return m_happiness;

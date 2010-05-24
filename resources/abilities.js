@@ -72,7 +72,7 @@ function makeStatusImmuneAbility(ability, immune) {
         transformStatus : function(subject, status) {
             if (subject != this.subject)
                 return status;
-            if (status.id == immune)
+            if (status.id in immune)
                 return null;
             return status;
         },
@@ -721,32 +721,38 @@ makeAbility({
 /*******************
  * Insomnia
  *******************/
-makeStatusImmuneAbility("Insomnia", "SleepEffect");
+makeStatusImmuneAbility("Insomnia", ["SleepEffect"]);
 
 /*******************
  * Vital Spirit
  *******************/
-makeStatusImmuneAbility("Vital Spirit", "SleepEffect");
+makeStatusImmuneAbility("Vital Spirit", ["SleepEffect"]);
 
 /*******************
  * Water Veil
  *******************/
-makeStatusImmuneAbility("Water Veil", "BurnEffect");
+makeStatusImmuneAbility("Water Veil", ["BurnEffect"]);
 
 /*******************
  * Magma Armor
  *******************/
-makeStatusImmuneAbility("Magma Armor", "FreezeEffect");
+makeStatusImmuneAbility("Magma Armor", ["FreezeEffect"]);
 
 /*******************
  * Limber
  *******************/
-makeStatusImmuneAbility("Limber", "ParalysisEffect");
+makeStatusImmuneAbility("Limber", ["ParalysisEffect"]);
 
 /*******************
  * Own Tempo
  *******************/
-makeStatusImmuneAbility("Own Tempo", "ConfusionEffect");
+makeStatusImmuneAbility("Own Tempo", ["ConfusionEffect"]);
+
+/*******************
+ * Immunity
+ *******************/
+makeStatusImmuneAbility("Immunity", ["PoisonEffect", "ToxicEffect"]);
+
 
 /*******************
  * Early Bird
@@ -1590,4 +1596,129 @@ makeAbility({
 makeAbility({
     name : "Illuminate"
     // Has no effect in battle.
+});
+
+/*******************
+ * Download
+ *******************/
+makeAbility({
+    name : "Download",
+    informActivate: function() {
+		var user = this.subject;
+		var party = user.party;
+		var opponent = user.field.getActivePokemon(1 - party);
+		if (opponent.getRawStat(Stat.ATTACK) > opponent.getRawStat(Stat.SPATTACK))
+			var stat = Stat.ATTACK;
+		else
+			var stat = Stat.SPATTACK;
+		var effect = new StatChangeEffect(stat, 1);
+		effect.silent = true;
+		if (user.applyStatus(this.subject, effect)) {
+			user.field.print(
+				Text.ability_messages(59, user, user.ability, Text.stats_long(stat)));
+		}
+	}
+});
+
+/*******************
+ * Anticipation
+ *******************/
+makeAbility({
+	name : "Anticipation",
+	informActivate: function() {
+		var user = this.subject;
+		var party = user.party;
+		var opponent = user.field.getActivePokemon(1 - party);
+		for (var i = 0; i < 4; i++) {
+			var move = opponent.getMove(i);
+			if ((move == null) || move.power < 1) continue;
+			if (user.field.getEffectiveness(move.type, user) > 1) {
+				user.field.print(Text.ability_messages(2, user));
+				break;
+			}
+		}
+	}
+});
+
+/*******************
+ * Normalize
+ *******************/
+makeAbility({
+	name: "Normalize",
+	transformEffectiveness: function(moveType, type, target) {
+		if (target != this.subject)
+			return target.field.getEffectiveness(moveType, type);
+		else
+			return target.field.getEffectiveness(Type.NORMAL, type);		
+	}
+});
+
+/*******************
+ * Unburden
+ *******************/
+makeAbility({
+	name: "Unburden",
+	informLostItem: function(target) {
+		if (target != this.subject)
+			return;
+		var effect = new StatusEffect("Unburden");
+		effect.name = "Unburden";
+		effect.statModifier = function(field, stat, subject) {
+			if (subject != this.subject)
+				return null;
+			if (stat != Stat.SPEED)
+				return null;
+			return [2, 1];
+		}
+		this.subject.applyStatus(this.subject, effect);
+	}
+});
+
+/*******************
+ * Speed Boost
+ *******************/
+makeAbility({
+	name: "Speed Boost",
+	tier: 6,
+    subtier: 2,
+	tick: function() {
+		eff = new StatChangeEffect(Stat.SPEED, 1);
+        eff.silent = true;
+        this.subject.applyStatus(this.subject, eff);
+        this.subject.field.print(Text.ability_messages(43, this.subject));
+	}
+});
+
+/*******************
+ * Forewarn
+ *******************/
+makeAbility({
+	name: "Forewarn",
+	informActivate: function() {
+		var party = this.subject.party;
+		var opponent = this.subject.field.getActivePokemon(1 - party);
+		var move = null;
+        for (var i = 0; i < 4; i++) {
+			var m = opponent.getMove(i);
+            if ((move == null) || (m.power > move.power))
+                move = m;
+		}
+        if (move != null) {
+            this.subject.field.print(Text.ability_messages(17, this.subject, move));
+        }
+    }
+});
+
+/*******************
+ * Scrappy
+ *******************/
+makeAbility({
+	name: "Scrappy",
+    transformEffectiveness: function(moveType, type, target) {
+        var exceptions_ = [Type.NORMAL, Type.FIGHTING];
+        if ((target != this.subject) && (type == Type.GHOST) && (moveType in exceptions_)) {
+            return 1.0;
+        }
+        return target.field.getTypeEffectiveness(moveType, type);
+    }
 });

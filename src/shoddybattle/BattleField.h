@@ -322,7 +322,13 @@ public:
     void getImmunities(Pokemon *user, Pokemon *target,
             std::set<const PokemonType *> &immunities,
             std::set<const PokemonType *> &vulnerabilities);
-
+    
+    /**
+     * Get's the transformed effectiveness of a move type on a target
+     */
+    bool getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type,
+                                                        Pokemon *target, double &effectiveness);
+    
     /**
      * Send a message to the whole field.
      */

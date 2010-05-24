@@ -214,6 +214,26 @@ void Pokemon::getImmunities(Pokemon *user, Pokemon *target,
 }
 
 /**
+ * Transform the effectiveness of a certain move type on a target
+ */
+bool Pokemon::getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type, 
+                                                                    Pokemon *target, double &effectiveness) {
+    effectiveness = moveType->getMultiplier(*type);
+    //The behaviour if more than one transform really isn't defined
+    //so I'll just stop after the first one
+    for (STATUSES::const_iterator i = m_effects.begin();
+            i != m_effects.end(); ++i) {
+        if (!(*i)->isActive(m_cx))
+            continue;
+        if ((*i)->transformEffectiveness(m_cx, moveType->getTypeValue(), type->getTypeValue(), 
+                                                                    target, &effectiveness)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Determine whether the selection of a move should be vetoed.
  */
 bool Pokemon::vetoSelection(Pokemon *user, MoveObject *move) {

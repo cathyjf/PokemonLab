@@ -1232,6 +1232,26 @@ void BattleField::getImmunities(Pokemon *user, Pokemon *target,
 }
 
 /**
+ * Get the transformed effectiveness of a move of a certain
+ * type against a particular target
+ */
+bool BattleField::getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type,
+                                                                                Pokemon *target, double &factor) {
+    for (int i = 0; i < TEAM_COUNT; ++i) {
+        for (int j = 0; j < m_impl->partySize; ++j) {
+            PokemonSlot &slot = (*m_impl->active[i])[j];
+            Pokemon::PTR p = slot.pokemon;
+            if (p && !p->isFainted()) {
+                if (p->getTransformedEffectiveness(moveType, type, target, factor)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+/**
  * Get the stat modifiers in play for a particular hit. Checks all of the
  * active pokemon for "modifier" properties.
  */

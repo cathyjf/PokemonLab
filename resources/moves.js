@@ -447,8 +447,10 @@ function makeItemSwitchMove(move) {
             field.print(Text.battle_messages(0));
             return;
         }
-        if (target.sendMessage("informRemoveItem"))
+        if (target.sendMessage("informRemoveItem") || target.sendMessage("informItemSwitch")) {
+            field.print(Text.battle_messages(0));
             return;
+        }
         var id_ = user.item && user.item.id;
         user.item = target.item;
         if (id_) {
@@ -1003,7 +1005,7 @@ function makeTwoHitMove(move) {
  * chance of 5 hits.
  */
 function makeMultipleHitMove(move) {
-    move.use = function(field, user, target, targets) {
+	move.use = function(field, user, target, targets) {
         var hits = user.sendMessage("informMultipleHitMove");
         if (!hits) {
             var rand = field.random(0, 1000);
@@ -1021,7 +1023,10 @@ function makeMultipleHitMove(move) {
         for (; i < hits; ++i) {
             if (target.fainted)
                 break;
-            target.hp -= field.calculate(this, user, target, targets);
+            var damage = field.calculate(this, user, target, targets);
+			target.hp -= damage;
+			if (damage == 0)
+				return;
         }
         field.print(Text.battle_messages_unique(0, i));
     };
@@ -1078,10 +1083,15 @@ function makeRecoilMove(move, divisor) {
         var recoil = sgn * Math.floor(Math.abs(delta / divisor));
         if (user.sendMessage("informRecoilDamage", recoil, move))
             return;
-
         if (recoil > 0) {
             field.print(Text.battle_messages_unique(58, user));
         } else if (recoil < 0) {
+            var adjusted = user.sendMessage("informAbsorbHealth", user, recoil);
+            if (adjusted) {
+                print(recoil);
+                recoil = adjusted;
+                print(recoil + "\n");
+            }
             if (target.sendMessage("informDrainHealth", user, -recoil))
                 return;
             field.print(Text.battle_messages_unique(59, user));

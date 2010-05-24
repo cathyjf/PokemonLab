@@ -565,7 +565,7 @@ void NetworkBattle::terminate() {
     
     BattleField::terminate();
     // TODO: Maybe a better way to collect garbage here.
-    m_impl->m_server->getMachine()->acquireContext()->maybeGc();
+    //m_impl->m_server->getMachine()->acquireContext()->maybeGc();
     m_impl->m_channel->informBattleTerminated();
 }
 

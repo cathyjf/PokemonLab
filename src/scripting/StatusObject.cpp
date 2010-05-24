@@ -170,6 +170,17 @@ const PokemonType *StatusObject::getImmunity(ScriptContext *scx,
     return PokemonType::getByValue(type);
 }
 
+bool StatusObject::transformEffectiveness(ScriptContext *scx,
+        int moveType, int type, Pokemon *target, double *effectiveness) {
+    if (!scx->hasProperty(this, "transformEffectiveness"))
+        return false;
+    
+    ScriptValue argv[] = { moveType, type, target };
+    ScriptValue v = scx->callFunctionByName(this, "transformEffectiveness", 3, argv);
+    *effectiveness = v.getDouble(scx);
+    return true;
+}
+
 bool StatusObject::vetoSelection(ScriptContext *scx,
         Pokemon *user, MoveObject *move) {
     if (!scx->hasProperty(this, "vetoSelection"))

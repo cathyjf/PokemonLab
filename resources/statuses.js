@@ -134,6 +134,15 @@ makeEffect(StatusEffect, {
     id : "AttractEffect",
     name : Text.status_effects_attract(0),
     vetoTier : 9,
+    applyEffect : function() {
+        var field = this.subject.field;
+        field.print(Text.status_effects_attract(3, 
+                        this.subject, field.getActivePokemon(1 - this.subject.party)));
+        if (this.subject.sendMessage("informAttracted", this.inducer)) {
+            return false;
+        }
+        return true;
+    },
     informWithdraw : function(subject) {
         if (subject == this.inducer) {
             this.subject.removeStatus(this);

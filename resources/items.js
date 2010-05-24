@@ -152,6 +152,22 @@ function makeFlavourHealingBerry(item, stat) {
     })
 }
 
+function makeHealingBerry(item, func) {
+    makeItem({
+        name: item,
+        berry_: true,
+        condition: function() {
+            var threshold = Math.floor(this.subject.getStat(Stat.HP) / 2);
+            return (this.subject.hp <= threshold);
+        },
+        use: function(user) {
+            user.field.print(Text.item_messages(0, user, this));
+            user.hp += func(user);
+            this.consume();
+        }
+    });
+}
+
 function makeStatBoostBerry(item, stat) {
     makePinchBerry(item, function(user) {
         if (user.getStatLevel(stat) == 6)
@@ -213,6 +229,64 @@ function makeChoiceItem(item, func) {
         }
     });
 }
+
+
+/**
+ * Item that boost a stat for a certain group of species
+ * species is a list of species
+ * modifiers is a dict of stat->multiplier
+ */
+function makeSpeciesBoostingItem(item, species, modifiers) {
+    makeItem({
+        name: item,
+        statModifier: function(field, stat, subject) {
+            if (subject != this.subject)
+                return null;
+            var found = false;
+            for (i in species) {
+                if (species[i] ==  subject.species) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                return null;
+            for (i in modifiers) {
+                if (modifiers[i][0] == stat) {
+                    return [modifiers[i][1], 3];
+                }
+            }
+            return null;
+        }
+    });
+}
+
+function makeStatusInducingItem(item, effect) {
+    makeItem({
+        name: item,
+        tier: 6,
+        subtier: 6,
+        tick: function() {
+            this.subject.applyStatus(this.subject, effect);
+        }
+    });
+}
+
+function makeStabBoostItem(item, species) {
+    makeItem({
+        name: item,
+        modifier: function(field, user, target, move, critical) {
+            if (user != this.subject)
+                return null;
+            if (user.species != species)
+                return null;
+            if (!(user.isType(move.type)))
+                return null;
+            return [1.2, 3];
+        }
+    });
+}
+            
 
 makeChoiceItem("Choice Band", function(field, stat, subject) {
     if (subject != this.subject)
@@ -280,6 +354,12 @@ makeFlavourHealingBerry("Mago Berry", Stat.SPEED);
 makeFlavourHealingBerry("Aguav Berry", Stat.SPDEFENCE);
 makeFlavourHealingBerry("Iapapa Berry", Stat.DEFENCE);
 
+makeHealingBerry("Oran Berry", function(p) { return 10; });
+makeHealingBerry("Berry Juice", function(p) { return 20; });
+makeHealingBerry("Sitrus Berry", function(p) { 
+    return Math.floor(p.getStat(Stat.HP) / 4);
+});
+
 makeTypeBoostingItem("SilverPowder", Type.BUG);
 makeTypeBoostingItem("Metal Coat", Type.STEEL);
 makeTypeBoostingItem("Soft Sand", Type.GROUND);
@@ -328,6 +408,22 @@ makeStatusCureItem("Lum Berry", ["ParalysisEffect", "SleepEffect",
 makeEvadeItem("Brightpowder");
 makeEvadeItem("Lax Incense");
 
+makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"], [[Stat.SPATTACK, 2.0]]);
+makeSpeciesBoostingItem("DeepSeaScale", ["Clamperl"], [[Stat.SPDEFENCE, 2.0]]);
+makeSpeciesBoostingItem("Light Ball", ["Pikachu"], [[Stat.SPATTACK, 2.0], [Stat.ATTACK, 2.0]]);
+makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"], [[Stat.SPATTACK, 1.5], [Stat.SPDEFENCE, 1.5]]);
+makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"], [[Stat.ATTACK, 2.0]]);
+//todo: probably have to change these for transform
+makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0], [Stat.SPDEFENCE, 2.0]]);
+makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0]]);
+
+makeStabBoostItem("Adamant Orb", "Dialga");
+makeStabBoostItem("Lustrous Orb", "Palkia");
+//todo: griseous orb
+
+makeStatusInducingItem("Flame Orb", new BurnEffect());
+makeStatusInducingItem("Toxic Orb", new ToxicEffect());
+
 makeItem({
     name : "Light Clay",
     informPartyBuffTurns : function() {
@@ -350,6 +446,13 @@ makeItem({
 });
 
 makeItem({
+    name : "Mosaic Mail",
+    informItemSwitch : function() {
+        return true;
+    }
+});
+
+makeItem({
     name : "Leftovers",
     tier : 6,
     subtier : 2,
@@ -357,16 +460,112 @@ makeItem({
         var max = this.subject.getStat(Stat.HP);
         if (this.subject.hp == max)
             return;
-        this.subject.field.print(Text.item_messages(0, this, this.subject));
+        this.subject.field.print(Text.item_messages(0, this.subject, this));
         var delta = Math.floor(max / 16);
         this.subject.hp += delta;
     }
 });
 
 makeItem({
-    name : "Lagging Tail",
-    inherentPriority : function() {
-        return -2;
+    name : "Black Sludge",
+    tier : 6,
+    subtier : 2,
+    tick : function() {
+        var max = this.subject.getStat(Stat.HP);
+        if (this.subject.isType(Type.POISON)) {
+            if (this.subject.hp == max)
+                return;
+            this.subject.field.print(Text.item_messages(0, this.subject, this));
+            var delta = Math.floor(max / 16);
+        } else {
+            this.subject.field.print(Text.battle_messages_unique(54, this.subject, this));
+            var delta = -Math.floor(max / 8);
+        }
+        this.subject.hp += delta;
     }
 });
+
+function makeNegativePriorityItem(item) {
+    makeItem({
+        name : item,
+        inherentPriority : function() {
+            return -2;
+        }
+    });
+}
+
+makeNegativePriorityItem("Full Incense");
+makeNegativePriorityItem("Lagging Tail");
+
+makeItem({
+    name: "Wide Lens",
+    statModifier: function(field, stat, subject) {
+        if (this.subject != subject)
+            return null;
+        if (stat != Stat.ACCURACY)
+            return null;
+        return [1.1, 3];
+    }
+});
+
+makeItem({
+    name : "Macho Brace",
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+        return [0.5, 3];
+    }
+});
+
+makeItem({
+    name : "Big Root",
+    informAbsorbHealth : function(user, absorb) {
+        if (user == this.subject)
+            return Math.floor(absorb * 1.3);
+        return absorb;
+    }
+});
+
+makeItem({
+    name : "Mental Herb",
+    informAttracted : function(inducer) {
+        this.subject.field.print(
+                    Text.status_effects_attract(4, this.subject, this));
+        this.consume();
+        return true;
+    }
+});
+
+makeItem({
+    name : "Destiny Knot",
+    informAttracted : function(inducer) {
+        //todo: message?
+        if (!inducer.getStatus("AttractEffect"))
+            inducer.applyStatus(this.subject, new AttractEffect());
+        return false;
+    }
+});
+
+function makeSpeciesCriticalItem(item, species) {
+    makeItem({
+        name : item,
+        criticalModifier : function() { return 2; }
+    });
+}
+
+makeSpeciesCriticalItem("Lucky Punch", "Chansey");
+makeSpeciesCriticalItem("Stick", "Farfetch'd");
+
+function makeCriticalBoostItem(item) {
+    makeItem({
+        name : item,
+        criticalModifier : function() { return 1; }
+    });
+}
+
+makeCriticalBoostItem("Razor Claw");
+makeCriticalBoostItem("Scope Lens");
+        
 

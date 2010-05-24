@@ -257,7 +257,7 @@ if (user.getStatus("AquaRingEffect")) {
 var move_ = this;
 var effect = new StatusEffect("AquaRingEffect");
 effect.tier = 6;
-effect.subtier = 1; // Note that this is a guess (TODO).
+effect.subtier = 1;
 effect.tick = function() {
     var max = this.subject.getStat(Stat.HP);
     if (this.subject.hp == max)
@@ -265,6 +265,9 @@ effect.tick = function() {
     var delta = Math.floor(max / 16);
     if (this.subject.sendMessage("informRecoilDamage", -delta, move_))
         return;
+    var adjusted = this.subject.sendMessage("informAbsorbHealth", this.subject, delta);
+    if (adjusted)
+        delta = adjusted;
     field.print(Text.battle_messages_unique(56, this.subject, move_));
     this.subject.hp += delta;
 };
@@ -453,7 +456,6 @@ if (target.getStatus("AttractEffect") || !isOppositeGender(user, target)) {
     return;
 }
 target.applyStatus(user, new AttractEffect());
-field.print(Text.status_effects_attract(3, target, user));
 ]]>
 </use>
 </move>
@@ -4915,6 +4917,9 @@ effect.tick = function() {
     var delta = Math.floor(max / 16);
     if (this.subject.sendMessage("informRecoilDamage", -delta, move_))
         return;
+    var adjusted = this.subject.sendMessage("informAbsorbHealth", this.subject, delta);
+    if (adjusted)
+        delta = adjusted;
     field.print(Text.battle_messages_unique(144, this.subject));
     this.subject.hp += delta;
 };
@@ -5241,6 +5246,9 @@ effect.tick = function() {
     this.subject.hp -= damage;
     if (target.sendMessage("informDrainHealth", p, damage))
         return;
+    var adjusted = this.subject.sendMessage("informAbsorbHealth", this.subject, damage);
+    if (adjusted)
+        damage = adjusted;
     p.hp += damage;
 };
 target.applyStatus(user, effect);
