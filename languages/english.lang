@@ -604,6 +604,8 @@
 2: $1's Quick Claw activated!
 3: $1's $2 raised its $3!
 4: The berry was the wrong flavour for $1!
+5: $1's $2 weakened $3's power!
+6: $1 was hurt by $2's $3! //damage feedback berries
 
 [client-messages]
 0: *** $1 sets mode $2 $3

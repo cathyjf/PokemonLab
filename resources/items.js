@@ -182,6 +182,41 @@ function makeStatBoostBerry(item, stat) {
     });
 }
 
+function makeTypeResistingBerry(item, type) {
+    makeItem({
+        name : item,
+        berry_ : true,
+        modifier: function(field, user, target, move, critical) {
+            if (target != this.subject)
+                return null;
+            if (type != move.type)
+                return null;
+            if (move.power <= 1)
+                return null;
+            effectiveness = field.getEffectiveness(move.type, target);
+            if ((effectiveness < 2.0) && (type != Type.NORMAL)) 
+                return null;
+            field.print(Text.item_messages(5, target, item, move));
+            this.consume();
+            return [2, 0.5, 3];
+        }
+    });
+}
+
+function makeFeedbackDamageBerry(item, moveclass) {
+    makeItem({
+        name : item,
+        berry_ : true,
+        informDamaged : function(user, move, damage) {
+            if (move.moveClass != moveclass)
+                return;
+            user.field.print(Text.item_messages(6, user, this.subject, this));
+            user.hp -= Math.floor(user.getStat(Stat.HP) / 8);
+            this.consume();
+        }
+    });
+}
+
 function makeTypeBoostingItem(item, type) {
     makeItem({
         name : item,
@@ -282,7 +317,20 @@ function makeStabBoostItem(item, species) {
                 return null;
             if (!(user.isType(move.type)))
                 return null;
-            return [1.2, 3];
+            return [0, 1.2, 2];
+        }
+    });
+}
+
+function makeMoveClassBoostingItem(item, class) {
+    makeItem({
+        name : item,
+        modifier : function(field, user, target, move, critical) {
+            if (user != this.subject)
+                return null;
+            if (move.moveClass != class)
+                return null;
+            return [0, 1.1, 2];
         }
     });
 }
@@ -360,6 +408,45 @@ makeHealingBerry("Sitrus Berry", function(p) {
     return Math.floor(p.getStat(Stat.HP) / 4);
 });
 
+makeFeedbackDamageBerry("Jaboca Berry", MoveClass.PHYSICAL);
+makeFeedbackDamageBerry("Rowap Berry", MoveClass.SPECIAL);
+
+makeItem({
+    name : "Enigma Berry",
+    berry_ : true,
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if (user == subject)
+            return;
+        var field = subject.field;
+        if (field.getEffectiveness(move.type, subject) < 2.0)
+            return;
+        if (subject.fainted)
+            return;
+        field.print(Text.item_messages(0, subject, this));
+        subject.hp += Math.floor(subject.getStat(Stat.HP) / 4);
+        this.consume();
+    }
+});
+
+makeTypeResistingBerry("Babiri Berry", Type.STEEL);
+makeTypeResistingBerry("Charti Berry", Type.ROCK);
+makeTypeResistingBerry("Chilan Berry", Type.FIGHTING);
+makeTypeResistingBerry("Chople Berry", Type.NORMAL);
+makeTypeResistingBerry("Coba Berry", Type.FLYING);
+makeTypeResistingBerry("Colbur Berry", Type.DARK);
+makeTypeResistingBerry("Haban Berry", Type.DRAGON);
+makeTypeResistingBerry("Kasib Berry", Type.GHOST);
+makeTypeResistingBerry("Kebia Berry", Type.POISON);
+makeTypeResistingBerry("Occa Berry", Type.FIRE);
+makeTypeResistingBerry("Passho Berry", Type.WATER);
+makeTypeResistingBerry("Payapa Berry", Type.PSYCHIC);
+makeTypeResistingBerry("Rindo Berry", Type.GRASS);
+makeTypeResistingBerry("Shuca Berry", Type.GROUND);
+makeTypeResistingBerry("Tanga Berry", Type.BUG);
+makeTypeResistingBerry("Wacan Berry", Type.ELECTRIC);
+makeTypeResistingBerry("Yache Berry", Type.ICE);
+
 makeTypeBoostingItem("SilverPowder", Type.BUG);
 makeTypeBoostingItem("Metal Coat", Type.STEEL);
 makeTypeBoostingItem("Soft Sand", Type.GROUND);
@@ -423,6 +510,19 @@ makeStabBoostItem("Lustrous Orb", "Palkia");
 
 makeStatusInducingItem("Flame Orb", new BurnEffect());
 makeStatusInducingItem("Toxic Orb", new ToxicEffect());
+
+makeMoveClassBoostingItem("Muscle Band", MoveClass.PHYSICAL);
+makeMoveClassBoostingItem("Wise Glasses", MoveClass.SPECIAL);
+makeItem({
+    name : "Expert Belt",
+    modifier : function(field, user, target, move, critical) {
+        if (user != this.subject)
+            return null;
+        if (field.getEffectiveness(move.type, target) < 2.0)
+            return null;
+        return [3, 1.2, 1];
+    }
+});
 
 makeItem({
     name : "Light Clay",
@@ -567,5 +667,64 @@ function makeCriticalBoostItem(item) {
 
 makeCriticalBoostItem("Razor Claw");
 makeCriticalBoostItem("Scope Lens");
+
+
+/*function makeFlinchItem(item) {
+    makeItem({
+        name : item,
+        switchIn : function() {
+            var opp = this.subject.field.getActivePokemon(1 - this.subject.party);
+            var effect = new StatusEffect("_FlinchItemEffect");
+            effect.name = "";
+            effect.informDamaged = function(user, move, target) {
+                var subject = this.subject;
+                if (subject.getStatus("SubstituteEffect") || (damage == 0))
+                    return;
+                if (move.flags[Flag.FLINCH]) {
+                    if (subject.field.random(0.1)) {
+                        subject.applyStatus(user, new FlinchEffect());
+                    }
+                }
+            }
+            opp.applyStatus(this.subject, effect);
+            return true;
+        },
+        switchOut : function() {
+            var opp = this.subject.field.getActivePokemon(1 - this.subject.party);
+            opp.removeStatus("_FlinchItemEffect");
+            return false;
+        }
+    });
+}
+
+makeFlinchItem("King's Rock");
+makeFlinchItem("Razor Fang");
+
+makeItem({
+    name : "Shell Bell",
+    switchIn : function() {
+        var effect = new StatusEffect("_ShellBellEffect");
+        effect.name = "Shell Bell";
+        effect.informDamaged = function(user, move, damage) {
+            if (user == this.subject)
+                return;
+            if (damage <= 0)
+                return;
+            if (user.hp == user.getStat(Stat.HP))
+                return;
+            user.field.print(Text.item_messages(0, user, this));
+            user.hp += Math.floor(damage / 8);
+        }
+        var opp = this.subject.field.getActivePokemon(1 - this.subject.party);
+        opp.applyStatus(this.subject, effect);
+        return true;
+    },
+    switchOut : function() {
+        var opp = this.subject.field.getActivePokemon(1 - this.subject.party);
+        opp.removeStatus("_ShellBellEffect");
+        return false;
+    }
+});*/
+            
         
 

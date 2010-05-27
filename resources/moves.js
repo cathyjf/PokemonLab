@@ -1088,9 +1088,7 @@ function makeRecoilMove(move, divisor) {
         } else if (recoil < 0) {
             var adjusted = user.sendMessage("informAbsorbHealth", user, recoil);
             if (adjusted) {
-                print(recoil);
                 recoil = adjusted;
-                print(recoil + "\n");
             }
             if (target.sendMessage("informDrainHealth", user, -recoil))
                 return;
