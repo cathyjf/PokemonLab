@@ -554,5 +554,24 @@ const DatabaseRegistry::BAN_LIST DatabaseRegistry::getBans(const string &user) {
     return bans;
 }
 
+void DatabaseRegistry::setPersonalMessage(const string &user, const string &msg) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("update users set message= %0q where name= %1q");
+    query.parse();
+    query.execute(msg, user);
+}
+
+void DatabaseRegistry::loadPersonalMessage(const string &user, string &msg) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select message from users where name= %0q");
+    query.parse();
+    StoreQueryResult res = query.store(user);
+    if (res.empty() || res[0][0].is_null()) {
+        msg = "";
+    } else {
+        res[0][0].to_string(msg);
+    }
+}
+
 }} // namespace shoddybattle::database
 

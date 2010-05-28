@@ -108,6 +108,7 @@ OutMessage &OutMessage::operator<<(const int32_t i) {
 
 OutMessage &OutMessage::operator<<(const unsigned char byte) {
     m_data.push_back(byte);
+    return *this;
 }
 
 /**
@@ -152,7 +153,10 @@ public:
         PART_CHANNEL = 11,
         REQUEST_CHANNEL_LIST = 12,
         QUEUE_TEAM = 13,
-        BAN_MESSAGE = 14
+        BAN_MESSAGE = 14,
+        USER_INFO_MESSAGE = 15,
+        USER_PERSONAL_MESSAGE = 16,
+        USER_MESSAGE_REQUEST = 17
     };
 
     InMessage() {
@@ -428,6 +432,15 @@ public:
     }
 };
 
+class UserPersonalMessage : public OutMessage {
+public:
+    UserPersonalMessage(const string& name, const string *msg) : OutMessage(USER_MESSAGE) {
+        *this << name;
+        *this << *msg;
+        finalise();
+    }
+};
+
 class MetagameQueue {
 public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
@@ -482,6 +495,8 @@ public:
     }
     void postLadderMatch(const int, vector<ClientPtr> &, const int);
     bool commitBan(const int, const string &, const int, const int);
+    void commitPersonalMessage(const string& user, const string& msg);
+    void loadPersonalMessage(const string &user, string &msg);
 
 private:
     void acceptClient();
@@ -631,7 +646,15 @@ public:
         string d = lexical_cast<string>(date);
         sendMessage(RegistryResponse(RegistryResponse::USER_BANNED, d));
     }
-
+    
+    string *getPersonalMessage() {
+        return &m_message;
+    }
+    
+    void loadPersonalMessage() {
+        m_server->loadPersonalMessage(m_name, m_message);
+    }
+    
 private:
 
     ChannelPtr getChannel(const int id);
@@ -779,6 +802,8 @@ private:
         sendMessage(RegistryResponse(RegistryResponse::SUCCESSFUL_LOGIN));
         m_server->sendMetagameList(shared_from_this());
         m_server->getRegistry()->updateIp(m_name, m_ip);
+        loadPersonalMessage();
+
     }
 
     /**
@@ -1057,11 +1082,30 @@ private:
         // TODO: Verify legality of team.
         queue->queueClient(shared_from_this(), team);
     }
+    
+    void handlePersonalMessage(InMessage &msg) {
+        //todo: maybe do some other sort of filtering; I don't know
+        msg >> m_message;
+        if (m_message.size() > 150) {
+            m_message = m_message.substr(0, 150);
+        }
+        m_server->commitPersonalMessage(m_name, m_message);
+    }
+    
+    void handlePersonalMessageRequest(InMessage &msg) {
+        string user;
+        msg >> user;
+        ClientImplPtr client = m_server->getClient(user);
+        if (client) {
+            sendMessage(UserPersonalMessage(user, client->getPersonalMessage()));
+        }
+    }
 
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
     int m_challenge; // for challenge-response authentication
+    string m_message;
 
     map<string, ChallengePtr> m_challenges;
     mutex m_challengeMutex;
@@ -1101,7 +1145,9 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleRequestChannelList,
     &ClientImpl::handleQueueTeam,
     &ClientImpl::handleBanMessage,
-    &ClientImpl::handleRequestUserInfo
+    &ClientImpl::handleRequestUserInfo,
+    &ClientImpl::handlePersonalMessage,
+    &ClientImpl::handlePersonalMessageRequest
 };
 
 const int ClientImpl::MESSAGE_COUNT =
@@ -1293,6 +1339,14 @@ void ClientImpl::disconnect() {
         (*i)->part(shared_from_this());
     }
     m_channels.clear();
+}
+
+void ServerImpl::commitPersonalMessage(const string &user, const string &msg) {
+    m_registry.setPersonalMessage(user, msg);
+}
+
+void ServerImpl::loadPersonalMessage(const string &user, string &message) {
+    m_registry.loadPersonalMessage(user, message);
 }
 
 bool ServerImpl::commitBan(const int channel, const string &user, 

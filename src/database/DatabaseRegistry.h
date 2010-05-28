@@ -153,6 +153,10 @@ public:
 
     void updatePlayerStats(const std::string &ladder, const int id);
     
+    void setPersonalMessage(const std::string &user, const std::string &message);
+    
+    void loadPersonalMessage(const std::string &user, std::string &message);
+    
 private:
     DatabaseRegistryImpl *m_impl;
     DatabaseRegistry(const DatabaseRegistry &);
