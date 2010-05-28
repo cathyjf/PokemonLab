@@ -1608,7 +1608,7 @@ makeAbility({
     informActivate: function() {
 		var user = this.subject;
 		var party = user.party;
-		var opponent = user.field.getActivePokemon(1 - party);
+		var opponent = user.field.getRandomTarget(1 - party);
 		if (opponent.getRawStat(Stat.ATTACK) > opponent.getRawStat(Stat.SPATTACK))
 			var stat = Stat.ATTACK;
 		else
@@ -1630,15 +1630,20 @@ makeAbility({
 	informActivate: function() {
 		var user = this.subject;
 		var party = user.party;
-		var opponent = user.field.getActivePokemon(1 - party);
-		for (var i = 0; i < 4; i++) {
-			var move = opponent.getMove(i);
-			if ((move == null) || move.power < 1) continue;
-			if (user.field.getEffectiveness(move.type, user) > 1) {
-				user.field.print(Text.ability_messages(2, user));
-				break;
-			}
-		}
+        var found = false;
+        for (var i = 0; i < user.field.partySize; i++) {
+            if (found) break;
+            var opponent = user.field.getActivePokemon(1 - party, i);
+            for (var j = 0; j < 4; j++) {
+                var move = opponent.getMove(j);
+                if ((move == null) || move.power < 1) continue;
+                if (user.field.getEffectiveness(move.type, user) > 1) {
+                    user.field.print(Text.ability_messages(2, user));
+                    found = true;
+                    break;
+                }
+            }
+        }
 	}
 });
 
@@ -1698,13 +1703,15 @@ makeAbility({
 	name: "Forewarn",
 	informActivate: function() {
 		var party = this.subject.party;
-		var opponent = this.subject.field.getActivePokemon(1 - party);
-		var move = null;
-        for (var i = 0; i < 4; i++) {
-			var m = opponent.getMove(i);
-            if ((move == null) || (m.power > move.power))
-                move = m;
-		}
+        var move = null;
+        for (var i = 0; i < this.subject.field.partySize; i++) {
+            var opponent = this.subject.field.getActivePokemon(1 - party, i);
+            for (var j = 0; j < 4; j++) {
+                var m = opponent.getMove(j);
+                if ((move == null) || (m.power > move.power))
+                    move = m;
+            }
+        }
         if (move != null) {
             this.subject.field.print(Text.ability_messages(17, this.subject, move));
         }

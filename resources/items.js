@@ -395,6 +395,19 @@ makeStatBoostBerry("Ganlon Berry", Stat.DEFENCE);
 makeStatBoostBerry("Salac Berry", Stat.SPEED);
 makeStatBoostBerry("Petaya Berry", Stat.SPATTACK);
 makeStatBoostBerry("Apicot Berry", Stat.SPDEFENCE);
+makePinchBerry("Starf Berry", function() {
+    var stats = [Stat.ATTACK, Stat.DEFENCE, Stat.SPEED, Stat.SPATTACK, Stat.SPDEFENCE];
+    var field = this.subject.field;
+    var stat = stats[field.random(0, stats.length - 1)];
+    if (this.subject.getStatLevel(stat) == 6)
+        return;
+    var effect = new StatChangeEffect(stat, 2);
+    effect.silent = true;
+    if (!this.subject.applyStatus(this.subject, effect))
+        return;
+    field.print(Text.item_messages(3, this.subject, this, Text.stats_long(stat)));
+    this.consume();
+});
 
 makeFlavourHealingBerry("Figy Berry", Stat.ATTACK);
 makeFlavourHealingBerry("Wiki Berry", Stat.SPATTACK);
@@ -725,6 +738,30 @@ makeItem({
         return false;
     }
 });*/
+
+makeItem({
+    name : "Sticky Barb",
+    tier : 6,
+    subtier : 18,
+    tick : function() {
+        var subject = this.subject;
+        subject.field.print(Text.item_messages(7, subject, this));
+        subject.hp -= Math.floor(subject.getStat(Stat.HP) / 8);
+    },
+    informDamaged : function(user, move, damage) {
+        if (user == this.subject)
+            return;
+        if (!move.flags[Flag.CONTACT])
+            return;
+        user.field.print(Text.item_messages(8, user, this));
+        user.hp -= Math.floor(user.getStat(Stat.HP) / 8);
+        if (user.item)
+            return;
+        user.field.print(Text.item_messages(9, this, user));
+        user.item = this;
+        this.subject.item = null;
+    }
+});
             
         
 
