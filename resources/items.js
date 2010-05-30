@@ -249,27 +249,22 @@ function makeChoiceItem(item, func) {
         choiceItem_ : true,
         statModifier : func,
         informFinishedSubjectExecution : function() {
-            print("??");
             var move_ = this.subject.lastMove;
             if (!move_ || (move_.name == "Mimic") || (move_.name == "Sketch")
                     || (move_.name == "Transform")
                     || (this.subject.getPp(move_) == -1)
                     || this.subject.getStatus("ChoiceLockEffect"))
                 return;
-            print("????");
             var effect = new StatusEffect("ChoiceLockEffect");
             effect.vetoSelection = function(user, move) {
-                print("a: " + user.name + "," + move.name + "," + move_.name);
                 if (user != this.subject)
                     return false;
-                print("b");
                 var item_ = user.item;
                 if (!item_ || !item_.choiceItem_
                         || (item_.getState() != StatusEffect.STATE_ACTIVE)) {
                     this.subject.removeStatus(this);
                     return false;
                 }
-                print("c");
                 return (move.name != move_.name);
             };
             this.subject.applyStatus(this.subject, effect);

@@ -454,9 +454,7 @@ function makeItemSwitchMove(move) {
         var id_ = user.item && user.item.id;
         user.item = target.item;
         if (id_) {
-            print(id_);
             target.item = HoldItem[id_];
-            print("ohno");
         } else {
             target.item = null;
         }
