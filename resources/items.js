@@ -64,13 +64,19 @@ HoldItem.prototype.getState = function() {
 HoldItem.prototype.condition = function() {
     return false;
 };
-HoldItem.prototype.informFinishedExecution = function() {
-    if (this.condition()) {
-        this.use(this.subject);
-    }
+HoldItem.prototype.checkCondition_ = function() {
+    if (!this.condition())
+        return false;
+    this.use(this.subject);
+    return true;
+};
+HoldItem.prototype.informFinishedExecution = function(subject, move) {
+    if (this.checkCondition_())
+        return;
+    StatusEffect.prototype.informFinishedExecution.call(this, subject, move);
 };
 HoldItem.prototype.tier = 10;
-HoldItem.prototype.tick = HoldItem.prototype.informFinishedExecution;
+HoldItem.prototype.tick = HoldItem.prototype.checkCondition_;
 
 function makeItem(obj) {
     var item = new HoldItem(obj.name);
@@ -243,22 +249,27 @@ function makeChoiceItem(item, func) {
         choiceItem_ : true,
         statModifier : func,
         informFinishedSubjectExecution : function() {
+            print("??");
             var move_ = this.subject.lastMove;
             if (!move_ || (move_.name == "Mimic") || (move_.name == "Sketch")
                     || (move_.name == "Transform")
                     || (this.subject.getPp(move_) == -1)
                     || this.subject.getStatus("ChoiceLockEffect"))
                 return;
+            print("????");
             var effect = new StatusEffect("ChoiceLockEffect");
             effect.vetoSelection = function(user, move) {
+                print("a: " + user.name + "," + move.name + "," + move_.name);
                 if (user != this.subject)
                     return false;
+                print("b");
                 var item_ = user.item;
                 if (!item_ || !item_.choiceItem_
                         || (item_.getState() != StatusEffect.STATE_ACTIVE)) {
                     this.subject.removeStatus(this);
                     return false;
                 }
+                print("c");
                 return (move.name != move_.name);
             };
             this.subject.applyStatus(this.subject, effect);
