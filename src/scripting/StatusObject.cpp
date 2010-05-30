@@ -268,9 +268,9 @@ string StatusObject::getId(ScriptContext *scx) const {
 }
 
 string StatusObject::toString(ScriptContext *scx) {
-    ScriptValue v = scx->callFunctionByName(this, "toString", 0, NULL);
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
+    ScriptValue v = scx->callFunctionByName(this, "toString", 0, NULL);
     jsval val = (jsval)v.getValue();
     string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
