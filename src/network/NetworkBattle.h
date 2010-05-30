@@ -22,6 +22,9 @@
  * online at http://gnu.org.
  */
 
+#ifndef _NETWORK_BATTLE_H_
+#define _NETWORK_BATTLE_H_
+
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
 #include "../shoddybattle/BattleField.h"
@@ -78,3 +81,5 @@ private:
 };
 
 }} // namespace shoddybattle::network
+
+#endif
