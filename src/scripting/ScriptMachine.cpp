@@ -93,10 +93,12 @@ struct ScriptMachineImpl {
     
     ScriptContext *newContext() {
         JSContext *cx = JS_NewContext(runtime, 8192);
+        JS_BeginRequest(cx);
         JS_SetGlobalObject(cx, global);
         JS_SetOptions(cx, JSOPTION_VAROBJFIX);
         JS_SetVersion(cx, JSVERSION_LATEST);
         JS_SetErrorReporter(cx, reportError);
+        JS_EndRequest(cx);
         ScriptContext *context = new ScriptContext(cx);
         JS_SetContextPrivate(cx, context);
         context->m_machine = machine;
@@ -243,13 +245,11 @@ static JSBool loadText(JSContext *cx,
     char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     TextLookup lookup(cx, scx, func);
-    jsrefcount ref = JS_SuspendRequest(cx);
     try {
         scx->getMachine()->loadText(str, lookup);
     } catch (SyntaxException e) {
         cout << "loadText: Syntax error on line " << e.getLine() << endl;
     }
-    JS_ResumeRequest(cx, ref);
     return JS_TRUE;
 }
 
@@ -592,6 +592,8 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     JS_SetVersion(m_impl->cx, JSVERSION_LATEST);
     JS_SetErrorReporter(m_impl->cx, reportError);
 
+    //JS_SetGCZeal(m_impl->cx, 2);
+
     JS_BeginRequest(m_impl->cx);
     m_impl->global = JS_NewObject(m_impl->cx, &globalClass, NULL, NULL);
     JS_EndRequest(m_impl->cx);
@@ -619,10 +621,11 @@ ScriptMachine::~ScriptMachine() {
         if (cx->isBusy()) {
             cout << "Error: Busy context in ~ScriptMachine()." << endl;
         }
+        JS_SetContextThread((JSContext *)cx->m_p);
         JS_DestroyContext((JSContext *)cx->m_p);
         delete cx;
     }
-    JS_ClearContextThread(m_impl->cx);
+    JS_SetContextThread(m_impl->cx);
     JS_DestroyContext(m_impl->cx);
     JS_DestroyRuntime(m_impl->runtime);
     delete m_impl;

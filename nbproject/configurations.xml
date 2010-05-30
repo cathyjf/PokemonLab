@@ -1,20 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="51">
+<configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/abilities.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/constants.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/languages/english.lang</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/FieldEffect.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/main.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/moves.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/moves.xml</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/species.xml</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/StatusEffect.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/statuses.js</itemPath>
-      <itemPath>/home/Catherine/ShoddyBattle2/resources/text.js</itemPath>
+      <itemPath>resources/GlobalEffect.js</itemPath>
+      <itemPath>resources/StatusEffect.js</itemPath>
+      <itemPath>resources/abilities.js</itemPath>
+      <itemPath>resources/clauses.js</itemPath>
+      <itemPath>resources/constants.js</itemPath>
+      <itemPath>languages/english.lang</itemPath>
+      <itemPath>resources/hazards.js</itemPath>
+      <itemPath>resources/items.js</itemPath>
+      <itemPath>resources/main.js</itemPath>
+      <itemPath>resources/metagames.xml</itemPath>
+      <itemPath>resources/moves.js</itemPath>
+      <itemPath>resources/moves.xml</itemPath>
+      <itemPath>resources/species.xml</itemPath>
+      <itemPath>resources/statuses.js</itemPath>
+      <itemPath>resources/text.js</itemPath>
+    </logicalFolder>
+    <logicalFolder name="src" displayName="Source Files" projectFiles="true">
+      <logicalFolder name="database" displayName="database" projectFiles="true">
+        <itemPath>src/database/DatabaseRegistry.cpp</itemPath>
+        <itemPath>src/database/DatabaseRegistry.h</itemPath>
+        <itemPath>src/database/rijndael.cpp</itemPath>
+        <itemPath>src/database/rijndael.h</itemPath>
+        <itemPath>src/database/sha2.c</itemPath>
+        <itemPath>src/database/sha2.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="matchmaking" displayName="matchmaking" projectFiles="true">
+        <itemPath>src/matchmaking/MetagameList.cpp</itemPath>
+        <itemPath>src/matchmaking/MetagameList.h</itemPath>
+        <itemPath>src/matchmaking/glicko2.cpp</itemPath>
+        <itemPath>src/matchmaking/glicko2.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="mechanics" displayName="mechanics" projectFiles="true">
+        <itemPath>src/mechanics/BattleMechanics.h</itemPath>
+        <itemPath>src/mechanics/JewelMechanics.cpp</itemPath>
+        <itemPath>src/mechanics/JewelMechanics.h</itemPath>
+        <itemPath>src/mechanics/PokemonNature.cpp</itemPath>
+        <itemPath>src/mechanics/PokemonNature.h</itemPath>
+        <itemPath>src/mechanics/PokemonType.cpp</itemPath>
+        <itemPath>src/mechanics/PokemonType.h</itemPath>
+        <itemPath>src/mechanics/stat.cpp</itemPath>
+        <itemPath>src/mechanics/stat.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="moves" displayName="moves" projectFiles="true">
+        <itemPath>src/moves/PokemonMove.cpp</itemPath>
+        <itemPath>src/moves/PokemonMove.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="network" displayName="network" projectFiles="true">
+        <itemPath>src/network/Channel.cpp</itemPath>
+        <itemPath>src/network/Channel.h</itemPath>
+        <itemPath>src/network/NetworkBattle.cpp</itemPath>
+        <itemPath>src/network/NetworkBattle.h</itemPath>
+        <itemPath>src/network/ThreadedQueue.h</itemPath>
+        <itemPath>src/network/network.cpp</itemPath>
+        <itemPath>src/network/network.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="scripting" displayName="scripting" projectFiles="true">
+        <itemPath>src/scripting/FieldObject.cpp</itemPath>
+        <itemPath>src/scripting/MoveObject.cpp</itemPath>
+        <itemPath>src/scripting/ObjectWrapper.h</itemPath>
+        <itemPath>src/scripting/PokemonObject.cpp</itemPath>
+        <itemPath>src/scripting/ScriptMachine.cpp</itemPath>
+        <itemPath>src/scripting/ScriptMachine.h</itemPath>
+        <itemPath>src/scripting/StatusObject.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="shoddybattle"
+                     displayName="shoddybattle"
+                     projectFiles="true">
+        <itemPath>src/shoddybattle/BattleField.cpp</itemPath>
+        <itemPath>src/shoddybattle/BattleField.h</itemPath>
+        <itemPath>src/shoddybattle/ObjectTeamFile.cpp</itemPath>
+        <itemPath>src/shoddybattle/ObjectTeamFile.h</itemPath>
+        <itemPath>src/shoddybattle/Pokemon.cpp</itemPath>
+        <itemPath>src/shoddybattle/Pokemon.h</itemPath>
+        <itemPath>src/shoddybattle/PokemonSpecies.cpp</itemPath>
+        <itemPath>src/shoddybattle/PokemonSpecies.h</itemPath>
+        <itemPath>src/shoddybattle/SimpleBattle.cpp</itemPath>
+        <itemPath>src/shoddybattle/Team.cpp</itemPath>
+        <itemPath>src/shoddybattle/Team.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="text" displayName="text" projectFiles="true">
+        <itemPath>src/text/Text.cpp</itemPath>
+        <itemPath>src/text/Text.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -22,6 +94,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -31,55 +106,27 @@
         <platform>2</platform>
       </toolsSet>
       <compileType>
-        <ccCompilerTool>
-          <includeDirectories>
-            <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
-            <directoryPath>/usr/local/include/mysql++</directoryPath>
-            <directoryPath>/usr/include/mysql</directoryPath>
-          </includeDirectories>
-          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c -lmysqlpp</commandLine>
-        </ccCompilerTool>
+        <ccTool>
+          <incDir>
+            <pElem>/usr/local/include/boost-1_38/</pElem>
+            <pElem>/usr/local/include/mysql++</pElem>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time</commandLine>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
+        </ccTool>
         <linkerTool>
           <linkerAddLib>
-            <directoryPath>/usr/local/lib</directoryPath>
+            <pElem>/usr/lib/mysql</pElem>
+            <pElem>/usr/local/lib</pElem>
+            <pElem>/usr/lib</pElem>
           </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/FieldEffect.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/constants.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves.xml">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/text.js">
-        <itemTool>3</itemTool>
-      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -88,62 +135,31 @@
         <platform>2</platform>
       </toolsSet>
       <compileType>
-        <cCompilerTool>
+        <cTool>
           <developmentMode>5</developmentMode>
-        </cCompilerTool>
-        <ccCompilerTool>
+        </cTool>
+        <ccTool>
           <developmentMode>5</developmentMode>
-          <includeDirectories>
-            <directoryPath>/usr/local/include/boost-1_38/</directoryPath>
-            <directoryPath>/usr/local/include/mysql++</directoryPath>
-            <directoryPath>/usr/include/mysql</directoryPath>
-          </includeDirectories>
-          <commandLine>-ljs -lboost_thread-mt -lboost_regex -lboost_system-mt -lnspr -lxerces-c -lmysqlpp</commandLine>
-        </ccCompilerTool>
+          <incDir>
+            <pElem>/usr/local/include/boost-1_38/</pElem>
+            <pElem>/usr/local/include/mysql++</pElem>
+            <pElem>/usr/include/mysql</pElem>
+          </incDir>
+          <commandLine>-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time</commandLine>
+        </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
         <linkerTool>
           <linkerAddLib>
-            <directoryPath>/usr/local/lib</directoryPath>
+            <pElem>/usr/lib/mysql</pElem>
+            <pElem>/usr/lib</pElem>
+            <pElem>/usr/local/lib</pElem>
           </linkerAddLib>
           <linkerLibItems>
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/Catherine/ShoddyBattle2/languages/english.lang">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/FieldEffect.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/StatusEffect.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/abilities.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/constants.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/main.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/moves.xml">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/species.xml">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/statuses.js">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="/home/Catherine/ShoddyBattle2/resources/text.js">
-        <itemTool>3</itemTool>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

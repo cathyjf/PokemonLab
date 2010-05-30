@@ -196,6 +196,9 @@ JSBool toString(JSContext *cx,
 MoveObjectPtr ScriptContext::newMoveObject(const MoveTemplate *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
+    FILE *file = fopen("/home/Catherine/jsdump.txt", "w");
+    JS_DumpHeap(cx, file, NULL, 0, NULL, 15, NULL);
+    fclose(file);
     JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
     MoveObjectPtr ret = addRoot(new MoveObject(obj, p));
 

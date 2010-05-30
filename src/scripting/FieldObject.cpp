@@ -39,6 +39,14 @@ using namespace boost;
 namespace shoddybattle {
 
 namespace {
+
+JSClass fieldClass = {
+    "FieldObject",
+    JSCLASS_HAS_PRIVATE,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+};
     
 enum FIELD_TINYID {
     FTI_GENERATION,
@@ -587,7 +595,7 @@ JSFunctionSpec fieldFunctions[] = {
 FieldObjectPtr ScriptContext::newFieldObject(BattleField *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
-    JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
+    JSObject *obj = JS_NewObject(cx, &fieldClass, NULL, NULL);
     FieldObjectPtr ptr = addRoot(new FieldObject(obj));
     JS_DefineProperties(cx, obj, fieldProperties);
     JS_DefineFunctions(cx, obj, fieldFunctions);

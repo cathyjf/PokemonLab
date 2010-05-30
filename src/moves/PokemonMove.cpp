@@ -384,7 +384,8 @@ using namespace shoddybattle;
 
 int main() {
     ScriptMachine machine;
-    machine.acquireContext()->runFile("resources/main.js");
+    ScriptContextPtr cx = machine.acquireContext();
+    cx->runFile("resources/main.js");
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
     MoveDatabase *moves = machine.getMoveDatabase();
@@ -401,31 +402,36 @@ int main() {
     JewelMechanics mechanics;
     field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Synthesis", 3);
-    field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5);
-    team[0][5]->setHp(50);
-    field.getActivePokemon(0, 0)->setMove(0, "Hail", 5);
-    field.getActivePokemon(0, 0)->setMove(1, "Acupressure", 5);
-    field.getActivePokemon(0, 0)->setMove(2, "Focus Punch", 5);
-    field.getActivePokemon(1, 0)->setMove(0, "Pursuit", 5);
-    field.getActivePokemon(1, 1)->setMove(0, "Hail", 5);
-    field.getActivePokemon(1, 1)->setMove(1, "Tackle", 5);
+    field.getActivePokemon(0, 0)->setMove(0, "Fly", 5, 5);
+    field.getActivePokemon(0, 0)->setMove(1, "Tackle", 5, 5);
+    field.getActivePokemon(0, 0)->setMove(2, "Bubble", 5, 5);
 
-    field.getActivePokemon(0, 0)->setItem("Brightpowder");
-    field.getActivePokemon(0, 1)->setItem("Lagging Tail");
+    field.getActivePokemon(0, 1)->setMove(0, "Trick Room", 3, 3);
+    field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5, 5);
+
+    field.getActivePokemon(1, 0)->setMove(0, "Earthquake", 5, 5);
+
+    field.getActivePokemon(1, 1)->setMove(0, "Tackle", 5, 5);
+    field.getActivePokemon(1, 1)->setMove(1, "Splash", 5, 5);
+
+    field.getActivePokemon(0, 0)->setItem("Iapapa Berry");
+    field.getActivePokemon(0, 1)->setItem("Dread Plate");
     field.getActivePokemon(1, 0)->setItem("Leftovers");
-    field.getActivePokemon(1, 1)->setItem("Light Clay");
+    field.getActivePokemon(1, 1)->setItem("Quick Claw");
 
-    field.getActivePokemon(0, 0)->setAbility("Sand Veil");
+    field.getActivePokemon(0, 0)->setAbility("Intimidate");
     field.getActivePokemon(0, 1)->setAbility("Levitate");
-    field.getActivePokemon(1, 0)->setAbility("Soundproof");
-    field.getActivePokemon(1, 1)->setAbility("Anger Point");
+    field.getActivePokemon(1, 0)->setAbility("Flash Fire");
+    field.getActivePokemon(1, 1)->setAbility("Synchronize");
 
     field.beginBattle();
 
+    StatusObject clause = cx->getClause("Classic Sleep Clause");
+    field.applyStatus(&clause);
+
     vector<PokemonTurn> turns;
     //turns.push_back(PokemonTurn(TT_SWITCH, 5));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
@@ -433,19 +439,23 @@ int main() {
     time_t initial = clock();
 
     field.processTurn(turns);
-    turns[0] = PokemonTurn(TT_SWITCH, 5);
-    turns[3] = PokemonTurn(TT_MOVE, 1, 1);
-    
+    cout << "   ----" << endl;
+    //turns[0] = PokemonTurn(TT_MOVE, 1, 1);
+    //turns[3] = PokemonTurn(TT_MOVE, 1, 1);
+
 
     field.processTurn(turns);
-    turns[0] = PokemonTurn(TT_SWITCH, 2);
+    cout << "   ----" << endl;
+    //turns[0] = PokemonTurn(TT_SWITCH, 2);
 
     //field.processTurn(turns);
-    
+
     field.processTurn(turns);
+    cout << "   ----" << endl;
     field.processTurn(turns);
-    field.processTurn(turns);
-    field.processTurn(turns);
+    //field.processTurn(turns);
+    //field.processTurn(turns);
+
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
     cout << delta << " seconds to process the turn." << endl;
@@ -454,4 +464,5 @@ int main() {
 }
 
 #endif
+
 

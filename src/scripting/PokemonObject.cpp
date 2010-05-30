@@ -46,6 +46,14 @@ namespace shoddybattle {
 
 namespace {
 
+JSClass pokemonClass = {
+    "PokemonObject",
+    JSCLASS_HAS_PRIVATE,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+};
+
 enum POKEMON_TINYID {
     PTI_SPECIES,
     PTI_NAME,
@@ -965,7 +973,7 @@ JSFunctionSpec pokemonFunctions[] = {
 PokemonObjectPtr ScriptContext::newPokemonObject(Pokemon *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
-    JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
+    JSObject *obj = JS_NewObject(cx, &pokemonClass, NULL, NULL);
     PokemonObjectPtr ret = addRoot(new PokemonObject(obj));
     JS_DefineProperties(cx, obj, pokemonProperties);
     JS_DefineFunctions(cx, obj, pokemonFunctions);
