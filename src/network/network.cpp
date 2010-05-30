@@ -896,7 +896,7 @@ private:
         }
         if (!auth) return;
         string ip = m_server->getRegistry()->getIp(user);
-        if (ip == "") {
+        if (ip.empty()) {
             sendMessage(UserDetailMessage());
         } else {
             vector<string> aliases = m_server->getRegistry()->getAliases(user);

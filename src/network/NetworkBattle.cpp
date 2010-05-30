@@ -934,7 +934,7 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect, const b
     if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
         return;
     string text = effect->toString(cx);
-    if (text == "") {
+    if (text.empty()) {
         return;
     }
     OutMessage msg(OutMessage::BATTLE_STATUS_CHANGE);
@@ -947,5 +947,6 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect, const b
     msg.finalise();
     m_impl->broadcast(msg);
 }
+
 }} // namespace shoddybattle::network
 
