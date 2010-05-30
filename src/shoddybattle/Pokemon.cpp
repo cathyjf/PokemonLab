@@ -674,7 +674,7 @@ StatusObjectPtr Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
     ScriptValue val[] = { applied.get(), inducer };
     sendMessage("informEffectApplied", 2, val);
     
-    m_field->informStatusChange(this, effect, true);
+    m_field->informStatusChange(this, applied.get(), true);
     
     return applied;
 }
