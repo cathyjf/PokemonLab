@@ -329,13 +329,13 @@ function makeStabBoostItem(item, species) {
     });
 }
 
-function makeMoveClassBoostingItem(item, class) {
+function makeMoveClassBoostingItem(item, class_) {
     makeItem({
         name : item,
         modifier : function(field, user, target, move, critical) {
             if (user != this.subject)
                 return null;
-            if (move.moveClass != class)
+            if (move.moveClass != class_)
                 return null;
             return [0, 1.1, 2];
         }
