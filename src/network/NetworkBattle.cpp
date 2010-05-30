@@ -249,6 +249,7 @@ struct NetworkBattleImpl {
      *             int16  : species id
      *             if species != -1:
      *                 byte : gender
+     *                 byte : level
      *                 byte : whether the pokemon is shiny
      *         byte : whether the pokemon is fainted
      *         if not fainted:
@@ -320,6 +321,7 @@ struct NetworkBattleImpl {
             int16_t species = (int16_t)p->getSpeciesId();
             msg << species;
             msg << (unsigned char)p->getGender();
+            msg << (unsigned char)p->getLevel();
             msg << (unsigned char)p->isShiny();
         } else {
             msg << ((int16_t)-1);
@@ -335,6 +337,7 @@ struct NetworkBattleImpl {
      *         int16 : species id
      *         if id != -1:
      *             byte : gender
+     *             byte : level
      *             byte : whether the pokemon is shiny
      */
     void updateBattlePokemon() {
@@ -557,15 +560,12 @@ void BattleChannel::handlePart(ClientPtr client) {
 
 void NetworkBattle::terminate() {
     NetworkBattle::PTR p = shared_from_this();
-
     boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
-
     // There will always be two clients in the vector at this point.
     m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
-    
     BattleField::terminate();
     // TODO: Maybe a better way to collect garbage here.
-    //m_impl->m_server->getMachine()->acquireContext()->maybeGc();
+    m_impl->m_server->getMachine()->acquireContext()->maybeGc();
     m_impl->m_channel->informBattleTerminated();
 }
 
@@ -919,5 +919,33 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
     m_impl->updateBattlePokemon();
 }
 
+/**
+ * BATTLE_STATUS_CHANGE
+ *
+ * int32 : field id
+ * byte : party
+ * byte : index
+ * byte : effect radius
+ * string : message
+ * byte : if this status is being applied
+ */
+void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect, const bool applied) {
+    ScriptContext *cx = getContext();
+    if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
+        return;
+    string text = effect->toString(cx);
+    if (text == "") {
+        return;
+    }
+    OutMessage msg(OutMessage::BATTLE_STATUS_CHANGE);
+    msg << getId();
+    msg << (unsigned char)p->getParty();
+    msg << (unsigned char)p->getPosition();
+    msg << (unsigned char)effect->getRadius(cx);
+    msg << text;
+    msg << (unsigned char)applied;
+    msg.finalise();
+    m_impl->broadcast(msg);
+}
 }} // namespace shoddybattle::network
 

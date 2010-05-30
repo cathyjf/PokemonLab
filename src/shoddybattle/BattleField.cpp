@@ -659,6 +659,10 @@ void BattleField::informFainted(Pokemon *p) {
     cout << p->getName() << " fainted!" << endl;
 }
 
+void BattleField::informStatusChange(Pokemon *p, StatusObject *effect, const bool applied) {
+
+}
+
 /**
  * Determine whether to veto the selection of a move.
  */

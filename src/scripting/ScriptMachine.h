@@ -178,6 +178,15 @@ public:
     static const int STATE_DEACTIVATED = 1;
     static const int STATE_REMOVABLE = 2;
     
+    static const int TYPE_NORMAL = 0;
+    static const int TYPE_ITEM = 1;
+    static const int TYPE_ABILITY = 2;
+    
+    static const int RADIUS_SINGLE = 0;
+    static const int RADIUS_USER_PARTY = 1;
+    static const int RADIUS_ENEMY_PARTY = 2;
+    static const int RADIUS_GLOBAL = 3;
+    
     StatusObject(void *p): ScriptObject(p) { }
 
     boost::shared_ptr<StatusObject> cloneAndRoot(ScriptContext *);
@@ -198,11 +207,14 @@ public:
     
     // Basic properties.
     std::string getId(ScriptContext *) const;
+    std::string toString(ScriptContext *);
+    int getType(ScriptContext *) const;
     Pokemon *getInducer(ScriptContext *) const;
     void setInducer(ScriptContext *, Pokemon *);
     Pokemon *getSubject(ScriptContext *) const;
     void setSubject(ScriptContext *, Pokemon *);
     int getLock(ScriptContext *) const;
+    int getRadius(ScriptContext *) const;
     std::string getName(ScriptContext *) const;
     bool isPassable(ScriptContext *) const;
     double getTier(ScriptContext *) const;

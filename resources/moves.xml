@@ -4319,6 +4319,7 @@ if (target.getStatus("HealBlockEffect")) {
 }
 var effect = new StatusEffect("HealBlockEffect");
 effect.name = Text.battle_messages_unique(126);
+effect.radius = StatusEffect.RADIUS_GLOBAL;
 effect.vetoTier = 4;
 // TODO: Get the correct tier for Heal Block. Note that it actually matters
 //       whether Heal Block is before or after Aqua Ring / Ingrain healing.
@@ -4865,6 +4866,7 @@ if (!success) {
 }
 var effect = new StatusEffect("ImprisonEffect");
 effect.name = Text.battle_messages_unique(101);
+effect.radius = StatusEffect.RADIUS_ENEMY_PARTY;
 effect.vetoTier = 3;
 effect.vetoExecution = function(field, user, target, move) {
     if (user.party == this.subject.party)
@@ -5386,6 +5388,7 @@ this.prepareSelf = function(field, user) {
     }
     var effect = new StatusEffect("LuckyChantEffect");
     effect.name = Text.battle_messages_unique(123);
+    effect.radius = StatusEffect.RADIUS_USER_PARTY;
     effect.turns = 5;
     var party_ = user.party;
     effect.applyEffect = function() {
@@ -6116,6 +6119,7 @@ this.prepareSelf = function(field, user) {
     }
     var effect = new StatusEffect("MistEffect");
     effect.name = Text.battle_messages_unique(106);
+    effect.radius = StatusEffect.RADIUS_USER_PARTY;
     effect.turns = 5;
     var party_ = user.party;
     effect.applyEffect = function() {
@@ -6269,7 +6273,7 @@ makeTypeWeakeningMove(this, Type.ELECTRIC);
 </flags>
 <init>
 <![CDATA[
-makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 0.1]]);
+makeStatusMove(this, [[new StatChangeEffect(Stat.ACCURACY, -1), 1.0]]);
 ]]>
 </init>
 </move>
@@ -7977,6 +7981,7 @@ this.prepareSelf = function(field, user) {
     }
     var effect = new StatusEffect("SafeguardEffect");
     effect.name = Text.battle_messages_unique(109);
+    effect.radius = StatusEffect.RADIUS_USER_PARTY;
     effect.turns = 5;
     var party_ = user.party;
     effect.applyEffect = function() {
@@ -9718,6 +9723,7 @@ this.prepareSelf = function(field, user) {
     }
     var effect = new StatusEffect("TailwindEffect");
     effect.name = Text.battle_messages_unique(137);
+    effect.radius = StatusEffect.RADIUS_USER_PARTY;
     effect.turns = 3;
     var party_ = user.party;
     effect.applyEffect = function() {
@@ -10754,6 +10760,7 @@ if (user.getStatus("WishEffect")) {
     return;
 }
 var effect = new StatusEffect("WishEffect");
+effect.name = "Wish";
 effect.turns = 2;
 effect.party_ = user.party;
 effect.position_ = user.position;

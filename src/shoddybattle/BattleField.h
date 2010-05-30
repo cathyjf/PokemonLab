@@ -361,6 +361,7 @@ public:
     virtual void informSetMove(Pokemon *, const int, const int,
             const int, const int) { }
     virtual void informFainted(Pokemon *);
+    virtual void informStatusChange(Pokemon *, StatusObject *, const bool);
 
     typedef Pokemon::RECENT_MOVE EXECUTION;
     const EXECUTION *topExecution() const;

@@ -59,6 +59,18 @@ StatusEffect.STATE_ACTIVE = 0;
 StatusEffect.STATE_DEACTIVATED = 1;
 StatusEffect.STATE_REMOVABLE = 2;
 
+// Flags used to communicate the type of this status
+StatusEffect.TYPE_NORMAL = 0;
+StatusEffect.TYPE_ITEM = 1;
+StatusEffect.TYPE_ABILITY = 2;
+
+// Flags used to communicate who the effect applies to
+// Used for sending messages about statuses to the client
+StatusEffect.RADIUS_SINGLE = 0;
+StatusEffect.RADIUS_USER_PARTY = 1;
+StatusEffect.RADIUS_ENEMY_PARTY = 2;
+StatusEffect.RADIUS_GLOBAL = 3;
+
 /**
  * StatusEffect prototype.
  */
@@ -69,11 +81,13 @@ StatusEffect.prototype = {
     inducer : null,                 // Pokemon who induced this status effect.
     subject : null,                 // Subject (i.e. victim) of this status effect.
     lock : 0,                       // Special category of status effects, which cannot coexist.
+    type : StatusEffect.TYPE_NORMAL,
     state : StatusEffect.STATE_ACTIVE,
+    radius : StatusEffect.RADIUS_SINGLE,
     singleton : true,
 
     // Properties specific to each type of status effect
-    name : "A Status Effect",       // English name of the effect
+    name : "",       // English name of the effect
     tier : -1,                      // End of turn tier for this effect.
     subtier : - 1,
     vetoTier : 0,

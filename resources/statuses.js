@@ -421,6 +421,9 @@ makeEffect(StatusEffect, {
     },
     singleton : false,
     name : "StatChangeEffect",
+    toString : function() {
+        return this.name + ";" + this.stat + ";" + this.delta_;
+    },
     informFailure : function() { },
     unapplyEffect : function() {
         var present = this.subject.getStatLevel(this.stat);

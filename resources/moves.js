@@ -454,7 +454,9 @@ function makeItemSwitchMove(move) {
         var id_ = user.item && user.item.id;
         user.item = target.item;
         if (id_) {
+            print(id_);
             target.item = HoldItem[id_];
+            print("ohno");
         } else {
             target.item = null;
         }
@@ -864,8 +866,8 @@ function makeOneHitKillMove(move) {
             field.print(Text.battle_messages(1, target));
             return;
         }
-        target.hp = 0;
         field.print(Text.battle_messages_unique(48));
+        target.hp = 0;
     };
 }
 

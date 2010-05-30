@@ -33,10 +33,11 @@ function Ability(name) {
 }
 
 Ability.prototype = new StatusEffect();
+Ability.prototype.type = StatusEffect.TYPE_ABILITY;
 Ability.prototype.switchIn = function() {
     if (!this.informActivate)
         return;
-    var id_ = "Ability" + this.id + "ActivatedEffect";
+    var id_ = this.id + "ActivatedEffect";
     if (this.subject.getStatus(id_))
         return;
     var effect = new StatusEffect(id_);

@@ -673,6 +673,9 @@ StatusObjectPtr Pokemon::applyStatus(Pokemon *inducer, StatusObject *effect) {
 
     ScriptValue val[] = { applied.get(), inducer };
     sendMessage("informEffectApplied", 2, val);
+    
+    m_field->informStatusChange(this, effect, true);
+    
     return applied;
 }
 
@@ -700,6 +703,10 @@ bool Pokemon::transformStatus(Pokemon *subject, StatusObjectPtr *status) {
 void Pokemon::removeStatus(StatusObject *status) {
     status->unapplyEffect(m_cx);
     status->dispose(m_cx);
+}
+
+void Pokemon::informStatusChange(StatusObject *status, const bool applied) {
+    m_field->informStatusChange(this, status, applied);
 }
 
 /**

@@ -267,6 +267,8 @@ public:
     void clearDamagedFlag() {
         m_damaged = false;
     }
+    
+    void informStatusChange(StatusObject *status, const bool applied);
 
     struct RECENT_MOVE {
         Pokemon *user;

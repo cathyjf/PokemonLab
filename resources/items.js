@@ -28,6 +28,7 @@ function HoldItem(name) {
 }
 
 HoldItem.prototype = new StatusEffect();
+HoldItem.prototype.type = StatusEffect.TYPE_ITEM;
 HoldItem.prototype.switchOut = function() {
     return false;
 };
@@ -35,9 +36,9 @@ HoldItem.prototype.use = function() { };
 HoldItem.prototype.consume = function() {
     if (this.subject.fainted)
         return;
-    var effect = this.subject.getStatus("ConsumedItemEffect");
+    var effect = this.subject.getStatus("ItemConsumedEffect");
     if (!effect) {
-        effect = new StatusEffect("ConsumedItemEffect");
+        effect = new StatusEffect("ItemConsumedEffect");
         var party_ = this.subject.party;
         var position_ = this.subject.position;
         effect.applyEffect = function() {

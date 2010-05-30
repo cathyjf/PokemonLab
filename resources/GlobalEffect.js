@@ -24,6 +24,7 @@
 
 makeEffect(StatusEffect, {
     id : "GlobalEffect",
+    radius: StatusEffect.RADIUS_GLOBAL,
     ticked_ : false,
     beginTick : function() {
         this.ticked_ = false;

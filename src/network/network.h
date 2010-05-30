@@ -123,7 +123,8 @@ public:
         METAGAME_LIST = 26,
         KICK_BAN_MESSAGE = 27,
         USER_DETAILS = 28,
-        USER_MESSAGE = 29
+        USER_MESSAGE = 29,
+        BATTLE_STATUS_CHANGE = 30
     };
 
     // variable size message

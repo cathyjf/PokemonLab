@@ -232,6 +232,8 @@ bool StatusObject::switchOut(ScriptContext *cx) {
     
 void StatusObject::unapplyEffect(ScriptContext *cx) {
     cx->callFunctionByName(this, "unapplyEffect", 0, NULL);
+    Pokemon *subject = getSubject(cx);
+    subject->informStatusChange(this, false);
 }
 
 bool StatusObject::applyEffect(ScriptContext *scx) {
@@ -260,6 +262,16 @@ string StatusObject::getId(ScriptContext *scx) const {
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "id", &val);
     assert(JSVAL_IS_STRING(val));
+    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    JS_EndRequest(cx);
+    return ret;
+}
+
+string StatusObject::toString(ScriptContext *scx) {
+    ScriptValue v = scx->callFunctionByName(this, "toString", 0, NULL);
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    jsval val = (jsval)v.getValue();
     string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
     return ret;
@@ -330,6 +342,17 @@ int StatusObject::getLock(ScriptContext *scx) const {
     return ret;
 }
 
+int StatusObject::getRadius(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "radius", &val);
+    JS_EndRequest(cx);
+    assert(JSVAL_IS_INT(val));
+    int ret = JSVAL_TO_INT(val);
+    return ret;
+}
+
 bool StatusObject::isSingleton(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
@@ -356,14 +379,30 @@ int StatusObject::getState(ScriptContext *scx) {
     return ret;
 }
 
+int StatusObject::getType(ScriptContext *scx) const {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    JS_GetProperty(cx, (JSObject *)m_p, "type", &val);
+    JS_EndRequest(cx);
+    assert(JSVAL_IS_INT(val));
+    int ret = JSVAL_TO_INT(val);
+    return ret;
+}
+
 string StatusObject::getName(ScriptContext *scx) const {
     // todo: actually returns an array now!
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "name", &val);
-    assert(JSVAL_IS_STRING(val));
-    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    JSString *jsstr;
+    if (!JSVAL_IS_STRING(val)) {
+        jsstr = JS_ValueToString(cx, val);
+    } else {
+        jsstr = JSVAL_TO_STRING(val);
+    }
+    string ret = JS_GetStringBytes(jsstr);
     JS_EndRequest(cx);
     return ret;
 }

@@ -69,6 +69,7 @@ public:
     void informSetPp(Pokemon *, const int, const int);
     void informSetMove(Pokemon *, const int, const int, const int, const int);
     void informFainted(Pokemon *);
+    void informStatusChange(Pokemon *, StatusObject *, const bool);
 
     int32_t getId() const;
 
