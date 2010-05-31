@@ -46,6 +46,7 @@ makeEffect(GlobalEffect, {
     turns_ : 5,
     applyEffect : function() {
         this.tier = 3 + 0.1 * this.idx_;
+        return true;
     },
     tickField : function(field) {
         if ((this.turns_ != -1) && (--this.turns_ == 0)) {
