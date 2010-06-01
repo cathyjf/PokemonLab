@@ -1173,7 +1173,7 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
             (this->*m_handlers[type])(m_msg);
         } catch (InMessage::InvalidMessage &) {
             // The client sent an invalid message.
-            // Disconnect him immediately.
+            // Disconnect the client immediately.
             m_server->removeClient(shared_from_this());
             return;
         }
@@ -1500,7 +1500,7 @@ ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
 
 ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
         m_server(server),
-        m_acceptor(m_service, endpoint) {
+        m_acceptor(m_service, endpoint, true) {
     acceptClient();
 }
 

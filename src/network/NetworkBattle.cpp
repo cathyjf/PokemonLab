@@ -483,7 +483,7 @@ struct NetworkBattleImpl {
         if (m_waiting) {
             // One client is in the middle of selecting a pokemon for a move
             // like U-turn or Baton Pass. To allow the battle to exit nicely,
-            // we have to pick a pokemon for him.
+            // we have to pick a pokemon for the client.
             const int party = m_selection->getParty();
             m_selection = m_field->getRandomInactivePokemon(m_selection);
             m_waiting = false;
@@ -527,13 +527,13 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     if (p) {
         FLAGS flags = p->getStatusFlags(client);
         if (flags[OP]) {
-            // This user is a main chat op, so he gets +ao (protected ops).
+            // This user is a main chat op, so the user gets +ao (protected ops).
             ret[PROTECTED] = true;
             ret[OP] = true;
         }
     }
     if (m_field && (m_field->m_field->getParty(client) != -1)) {
-        // This user is a participant in the battle, so he gets +o.
+        // This user is a participant in the battle, so the user gets +o.
         ret[OP] = true;
     }
     // TODO: bans
