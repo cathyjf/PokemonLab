@@ -307,8 +307,8 @@ public:
 
     bool isBusy() const { return m_busy; }
 
-    void setContextThread();
-    void clearContextThread();
+    void setContextThread(int);
+    int clearContextThread();
 
 private:
     friend class ScriptMachine;

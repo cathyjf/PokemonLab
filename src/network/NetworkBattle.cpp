@@ -173,7 +173,7 @@ struct NetworkBattleImpl {
         boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
         m_lock = &lock;
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
-        cx->setContextThread();
+        cx->setContextThread(0);
         if (m_replacement) {
             m_field->processReplacements(*ptr);
         } else {
@@ -195,11 +195,12 @@ struct NetworkBattleImpl {
         requestAction(party);
 
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
-        cx->clearContextThread();
+        
+        const int depth = cx->clearContextThread();
         while (m_waiting) {
             m_condition.wait(*m_lock);
         }
-        cx->setContextThread();
+        cx->setContextThread(depth);
 
         Pokemon *ret = m_selection;
         m_selection = NULL;
@@ -476,7 +477,8 @@ struct NetworkBattleImpl {
     }
 
     void handleForfeit(const int party) {
-        boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
+        boost::unique_lock<boost::recursive_mutex>
+                lock(m_mutex, boost::adopt_lock);
 
         if (m_waiting) {
             // One client is in the middle of selecting a pokemon for a move
@@ -494,7 +496,7 @@ struct NetworkBattleImpl {
         }
 
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
-        cx->setContextThread();
+        cx->setContextThread(0);
         m_field->informVictory(1 - party);
         cx->clearContextThread();
     }
@@ -567,7 +569,7 @@ void BattleChannel::handlePart(ClientPtr client) {
     }
     // Simultaneously lock both the channel mutex and the battle mutex.
     boost::lock(m_mutex, *m);
-    boost::lock_guard<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
+    boost::unique_lock<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
             lock2(*m, boost::adopt_lock);
     if (impl->m_terminated)
         return;
@@ -575,6 +577,9 @@ void BattleChannel::handlePart(ClientPtr client) {
     if ((party = p->getParty(client)) != -1) {
         // User was a participant in the battle, so we need to end the battle.
         impl->handleForfeit(party);
+        // We need to break the association between lock2 and *m because
+        // handleForfeit() has already unlocked *m.
+        lock2.release();
     }
 }
 

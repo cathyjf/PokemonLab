@@ -540,7 +540,7 @@ ScriptContextPtr ScriptMachine::acquireContext() {
     if (i != contexts.end()) {
         ScriptContext *cx = *i;
         cx->m_busy = true;
-        cx->setContextThread();
+        cx->setContextThread(0);
         return ScriptContextPtr(cx,
                 boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
     }
@@ -553,12 +553,15 @@ ScriptContextPtr ScriptMachine::acquireContext() {
             boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
 }
 
-void ScriptContext::clearContextThread() {
+int ScriptContext::clearContextThread() {
+    const int depth = JS_SuspendRequest((JSContext *)m_p);
     JS_ClearContextThread((JSContext *)m_p);
+    return depth;
 }
 
-void ScriptContext::setContextThread() {
+void ScriptContext::setContextThread(const int depth) {
     JS_SetContextThread((JSContext *)m_p);
+    JS_ResumeRequest((JSContext *)m_p, depth);
 }
 
 static JSFunctionSpec globalFunctions[] = {
