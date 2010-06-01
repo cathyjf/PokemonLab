@@ -553,12 +553,14 @@ bool BattleChannel::join(ClientPtr client) {
 
 void BattleChannel::handlePart(ClientPtr client) {
     NetworkBattle::PTR p;
+    NetworkBattleImpl *impl = NULL;
     boost::recursive_mutex *m = NULL;
     {
         boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
         if (!m_field)
             return;
-        p = m_field->m_field->shared_from_this();
+        impl = m_field;
+        p = impl->m_field->shared_from_this();
         m = &m_field->m_mutex;
     }
     // Simultaneously lock both the channel mutex and the battle mutex.
@@ -566,9 +568,9 @@ void BattleChannel::handlePart(ClientPtr client) {
     boost::lock_guard<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
             lock2(*m, boost::adopt_lock);
     int party = -1;
-    if ((party = m_field->m_field->getParty(client)) != -1) {
+    if ((party = p->getParty(client)) != -1) {
         // User was a participant in the battle, so we need to end the battle.
-        m_field->handleForfeit(party);
+        impl->handleForfeit(party);
     }
 }
 
