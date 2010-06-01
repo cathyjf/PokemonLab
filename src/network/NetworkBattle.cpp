@@ -98,8 +98,11 @@ public:
     }
 
     void informBattleTerminated() {
-        boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
         m_field = NULL;
+    }
+
+    boost::unique_lock<boost::recursive_mutex> getUniqueLock() {
+        return boost::unique_lock<boost::recursive_mutex>(m_mutex);
     }
 
 private:
@@ -560,9 +563,11 @@ void BattleChannel::handlePart(ClientPtr client) {
 }
 
 void NetworkBattle::terminate() {
+    boost::unique_lock<boost::recursive_mutex> lock
+            = m_impl->m_channel->getUniqueLock();
     m_impl->m_channel->informBattleTerminated();
     NetworkBattle::PTR p = shared_from_this();
-    boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
+    boost::lock_guard<boost::recursive_mutex> lock2(m_impl->m_mutex);
     // There will always be two clients in the vector at this point.
     m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
     BattleField::terminate();
