@@ -569,7 +569,7 @@ void BattleChannel::handlePart(ClientPtr client) {
     boost::lock(m_mutex, *m);
     boost::lock_guard<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
             lock2(*m, boost::adopt_lock);
-    if (m_terminated)
+    if (impl->m_terminated)
         return;
     int party = -1;
     if ((party = p->getParty(client)) != -1) {
@@ -585,7 +585,7 @@ void NetworkBattle::terminate() {
     boost::lock(m, m_impl->m_mutex);
     boost::unique_lock<boost::recursive_mutex> lock(m, boost::adopt_lock),
             lock2(m_impl->m_mutex, boost::adopt_lock);
-    m_terminated = true;
+    m_impl->m_terminated = true;
     m_impl->m_channel->informBattleTerminated();
     // There will always be two clients in the vector at this point.
     m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
