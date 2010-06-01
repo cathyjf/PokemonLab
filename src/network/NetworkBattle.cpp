@@ -101,8 +101,8 @@ public:
         m_field = NULL;
     }
 
-    boost::unique_lock<boost::recursive_mutex> getUniqueLock() {
-        return boost::unique_lock<boost::recursive_mutex>(m_mutex);
+    boost::recursive_mutex &getMutex() {
+        return m_mutex;
     }
 
 private:
@@ -552,22 +552,34 @@ bool BattleChannel::join(ClientPtr client) {
 }
 
 void BattleChannel::handlePart(ClientPtr client) {
-    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
-    
+    NetworkBattle::PTR p;
+    boost::recursive_mutex *m = NULL;
+    {
+        boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
+        if (!m_field)
+            return;
+        p = m_field->m_field->shared_from_this();
+        m = &m_field->m_mutex;
+    }
+    // Simultaneously lock both the channel mutex and the battle mutex.
+    boost::lock(m_mutex, *m);
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
+            lock2(*m, boost::adopt_lock);
     int party = -1;
-    if (m_field && ((party = m_field->m_field->getParty(client)) != -1)) {
-        NetworkBattle::PTR p = m_field->m_field->shared_from_this();
-        // user was a participant in the battle, so we need to end the battle
+    if ((party = m_field->m_field->getParty(client)) != -1) {
+        // User was a participant in the battle, so we need to end the battle.
         m_field->handleForfeit(party);
     }
 }
 
 void NetworkBattle::terminate() {
-    boost::unique_lock<boost::recursive_mutex> lock
-            = m_impl->m_channel->getUniqueLock();
-    m_impl->m_channel->informBattleTerminated();
     NetworkBattle::PTR p = shared_from_this();
-    boost::lock_guard<boost::recursive_mutex> lock2(m_impl->m_mutex);
+    // Simultaneously lock both the channel mutex and the battle mutex.
+    boost::recursive_mutex &m = m_impl->m_channel->getMutex();
+    boost::lock(m, m_impl->m_mutex);
+    boost::unique_lock<boost::recursive_mutex> lock(m, boost::adopt_lock),
+            lock2(m_impl->m_mutex, boost::adopt_lock);
+    m_impl->m_channel->informBattleTerminated();
     // There will always be two clients in the vector at this point.
     m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
     BattleField::terminate();
