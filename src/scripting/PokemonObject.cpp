@@ -54,6 +54,14 @@ JSClass pokemonClass = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
+JSClass turnClass = {
+    "TurnObject",
+    JSCLASS_HAS_PRIVATE,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+};
+
 enum POKEMON_TINYID {
     PTI_SPECIES,
     PTI_NAME,
@@ -877,7 +885,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_TURN: {
             PokemonTurn *turn = p->getTurn();
             if (turn) {
-                JSObject *turnobj = JS_NewObject(cx, NULL, NULL, NULL);
+                JSObject *turnobj = JS_NewObject(cx, &turnClass, NULL, NULL);
                 JS_DefineProperties(cx, turnobj, turnProperties);
                 JS_SetPrivate(cx, turnobj, turn);
                 *vp = OBJECT_TO_JSVAL(turnobj);
@@ -889,7 +897,7 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         case PTI_FORCED_TURN: {
             PokemonTurn *turn = p->getForcedTurn();
             if (turn) {
-                JSObject *turnobj = JS_NewObject(cx, NULL, NULL, NULL);
+                JSObject *turnobj = JS_NewObject(cx, &turnClass, NULL, NULL);
                 JS_DefineProperties(cx, turnobj, turnProperties);
                 JS_SetPrivate(cx, turnobj, turn);
                 *vp = OBJECT_TO_JSVAL(turnobj);
