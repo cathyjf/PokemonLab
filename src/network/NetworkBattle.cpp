@@ -98,6 +98,7 @@ public:
     }
 
     void informBattleTerminated() {
+        boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
         m_field = NULL;
     }
 
@@ -113,7 +114,7 @@ private:
 
     Server *m_server;
     NetworkBattleImpl *m_field;
-    boost::mutex m_mutex;
+    boost::recursive_mutex m_mutex;
 };
 
 typedef vector<PokemonTurn> PARTY_TURN;
@@ -533,7 +534,7 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
 }
 
 bool BattleChannel::join(ClientPtr client) {
-    boost::lock_guard<boost::mutex> lock(m_mutex);
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
 
     // If the battle has ended then more clients may not join.
     if (!m_field)
@@ -548,7 +549,7 @@ bool BattleChannel::join(ClientPtr client) {
 }
 
 void BattleChannel::handlePart(ClientPtr client) {
-    boost::lock_guard<boost::mutex> lock(m_mutex);
+    boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
     
     int party = -1;
     if (m_field && ((party = m_field->m_field->getParty(client)) != -1)) {
@@ -559,6 +560,7 @@ void BattleChannel::handlePart(ClientPtr client) {
 }
 
 void NetworkBattle::terminate() {
+    m_impl->m_channel->informBattleTerminated();
     NetworkBattle::PTR p = shared_from_this();
     boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
     // There will always be two clients in the vector at this point.
@@ -566,7 +568,6 @@ void NetworkBattle::terminate() {
     BattleField::terminate();
     // TODO: Maybe a better way to collect garbage here.
     m_impl->m_server->getMachine()->acquireContext()->maybeGc();
-    m_impl->m_channel->informBattleTerminated();
 }
 
 NetworkBattle::NetworkBattle(Server *server,
@@ -929,7 +930,8 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
  * string : message
  * byte : if this status is being applied
  */
-void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect, const bool applied) {
+void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
+        const bool applied) {
     ScriptContext *cx = getContext();
     if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
         return;
