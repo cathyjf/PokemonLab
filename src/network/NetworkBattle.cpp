@@ -145,6 +145,7 @@ struct NetworkBattleImpl {
     bool m_waiting;
     Pokemon *m_selection;
     boost::condition_variable_any m_condition;
+    bool m_terminated;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p):
             m_queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
@@ -154,6 +155,7 @@ struct NetworkBattleImpl {
             m_turnCount(0),
             m_waiting(false),
             m_server(server),
+            m_terminated(false),
             m_channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))) { }
 
@@ -567,6 +569,8 @@ void BattleChannel::handlePart(ClientPtr client) {
     boost::lock(m_mutex, *m);
     boost::lock_guard<boost::recursive_mutex> lock(m_mutex, boost::adopt_lock),
             lock2(*m, boost::adopt_lock);
+    if (m_terminated)
+        return;
     int party = -1;
     if ((party = p->getParty(client)) != -1) {
         // User was a participant in the battle, so we need to end the battle.
@@ -581,6 +585,7 @@ void NetworkBattle::terminate() {
     boost::lock(m, m_impl->m_mutex);
     boost::unique_lock<boost::recursive_mutex> lock(m, boost::adopt_lock),
             lock2(m_impl->m_mutex, boost::adopt_lock);
+    m_terminated = true;
     m_impl->m_channel->informBattleTerminated();
     // There will always be two clients in the vector at this point.
     m_impl->m_clients[0]->terminateBattle(p, m_impl->m_clients[1]);
