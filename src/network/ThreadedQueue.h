@@ -60,9 +60,10 @@ public:
         m_impl->condition.notify_one();
     }
 
-    void terminate() {
+    ~ThreadedQueue() {
         if (boost::this_thread::get_id() == m_impl->thread.get_id()) {
             m_impl->terminated = true;
+            m_impl->thread.detach();
             return;
         }
         boost::unique_lock<boost::mutex> lock(m_impl->mutex);
@@ -76,10 +77,6 @@ public:
             m_impl->condition.notify_one();
             m_impl->thread.join();
         }
-    }
-
-    ~ThreadedQueue() {
-        terminate();
     }
 
     struct ThreadedQueueImpl {
