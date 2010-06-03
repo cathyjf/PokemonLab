@@ -35,16 +35,9 @@
 
 #include "ScriptMachine.h"
 #include "../text/Text.h"
+#include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../moves/PokemonMove.h"
-
-/**
- * When this debug option is enabled, the program keeps track of how many
- * active roots exist. Although it should be impossible to lose a root since
- * they are all managed through shared pointers, this setting may still be
- * useful for debugging.
- */
-#define ENABLE_ROOT_COUNT 0
 
 using namespace std;
 using namespace boost;
@@ -308,6 +301,22 @@ ScriptValue ScriptArray::operator[](const int i) {
     return ScriptValue((void *)val);
 }
 
+ScriptArrayPtr ScriptArray::newTeamArray(const Pokemon::ARRAY &team,
+        ScriptContext *scx) {
+    const int length = team.size();
+    jsval array[length];
+    for (int i = 0; i < length; ++i) {
+        ScriptObject *obj = team[i]->getObject();
+        array[i] = OBJECT_TO_JSVAL((JSObject *)obj->getObject());
+    }
+    JSContext *cx = (JSContext *)scx->m_p;
+    JS_BeginRequest(cx);
+    JSObject *obj = JS_NewArrayObject(cx, length, array);
+    ScriptArrayPtr ret = scx->addRoot(new ScriptArray(obj, scx));
+    JS_EndRequest(cx);
+    return ret;
+}
+
 ScriptValue::ScriptValue(const ScriptObject *object) {
     m_fail = false;
     m_val = (void *)OBJECT_TO_JSVAL((JSObject *)object->getObject());
@@ -549,6 +558,8 @@ ScriptContextPtr ScriptMachine::acquireContext() {
     ScriptContext *context = m_impl->newContext();
     context->m_busy = true;
     contexts.insert(context);
+    // TODO: Should we call setContextThread() here?
+    //       I can't remember why it doesn't.
     return ScriptContextPtr(context,
             boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
 }

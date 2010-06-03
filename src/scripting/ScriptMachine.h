@@ -80,6 +80,10 @@ class ScriptArray : public ScriptObject {
 public:
     ScriptArray(void *p, ScriptContext *cx): ScriptObject(p), m_cx(cx) { }
 
+    static boost::shared_ptr<ScriptArray>
+            newTeamArray(const std::vector<boost::shared_ptr<Pokemon> > &,
+            ScriptContext *);
+
     ScriptValue operator[](const int i);
 private:
     ScriptContext *m_cx;
@@ -330,6 +334,7 @@ private:
 
 typedef boost::shared_ptr<ScriptContext> ScriptContextPtr;
 typedef boost::shared_ptr<ScriptFunction> ScriptFunctionPtr;
+typedef boost::shared_ptr<ScriptArray> ScriptArrayPtr;
 typedef boost::shared_ptr<MoveObject> MoveObjectPtr;
 typedef boost::shared_ptr<StatusObject> StatusObjectPtr;
 typedef boost::shared_ptr<FieldObject> FieldObjectPtr;
