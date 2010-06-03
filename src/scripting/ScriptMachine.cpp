@@ -121,6 +121,29 @@ struct ScriptMachineImpl {
         JS_EndRequest(cx);
         return ret;
     }
+
+    void getStatusList(JSContext *cx, const string &type,
+            vector<StatusObject> &list) {
+        JS_BeginRequest(cx);
+        jsval val;
+        JS_GetProperty(cx, global, type.c_str(), &val);
+        JSObject *obj = JSVAL_TO_OBJECT(val); // Clause object
+        JSIdArray *ids = JS_Enumerate(cx, obj);
+        if (ids) {
+            for (int i = 0; i < ids->length; ++i) {
+                JS_GetPropertyById(cx, obj, ids->vector[i], &val);
+                if (JSVAL_IS_OBJECT(val)) {
+                    JSBool inst;
+                    if (JS_HasInstance(cx, obj, val, &inst) && inst) {
+                        JSObject *entry = JSVAL_TO_OBJECT(val);
+                        list.push_back(StatusObject(entry));
+                    }
+                }
+            }
+            JS_DestroyIdArray(cx, ids);
+        }
+        JS_EndRequest(cx);
+    }
 };
 
 unsigned int ScriptMachine::getRootCount() const {
@@ -372,6 +395,11 @@ StatusObject ScriptContext::getItem(const string &name) const {
 StatusObject ScriptContext::getClause(const string &name) const {
     JSContext *cx = (JSContext *)m_p;
     return m_machine->m_impl->getSpecialStatus(cx, "Clause", name);
+}
+
+void ScriptContext::getClauseList(vector<StatusObject> &clauses) const {
+    JSContext *cx = (JSContext *)m_p;
+    m_machine->m_impl->getStatusList(cx, "Clause", clauses);
 }
 
 bool ScriptContext::hasProperty(ScriptObject *obj, const string name) const {

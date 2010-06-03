@@ -30,11 +30,9 @@
 function Clause(name) {
     this.name = this.id = name;
     Clause[name] = this;
-    Clause.list_.push(name);
 }
 
 Clause.prototype = new StatusEffect();
-Clause.list_ = [];
 
 /**
  * Allows for a nicer syntax for making a clause.

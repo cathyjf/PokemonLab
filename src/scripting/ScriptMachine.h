@@ -291,6 +291,8 @@ public:
     StatusObject getAbility(const std::string &) const;
     StatusObject getItem(const std::string &) const;
     StatusObject getClause(const std::string &) const;
+
+    void getClauseList(std::vector<StatusObject> &) const;
     
     ScriptValue callFunction(ScriptObject *obj,
             const ScriptFunction *func,
