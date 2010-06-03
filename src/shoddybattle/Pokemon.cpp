@@ -127,6 +127,22 @@ StatusObjectPtr Pokemon::getAbility() const {
     return m_ability;
 }
 
+string Pokemon::getItemName() const {
+    StatusObjectPtr item = getItem();
+    if (item) {
+        return item->getName(m_cx);
+    }
+    return m_itemName;
+}
+
+string Pokemon::getAbilityName() const {
+    StatusObjectPtr ability = getAbility();
+    if (ability) {
+        return ability->getName(m_cx);
+    }
+    return m_abilityName;
+}
+
 /**
  * Determine whether the pokemon has a particular type.
  */
@@ -936,7 +952,7 @@ void Pokemon::setItem(const string &name) {
     if (!item.isNull()) {
         setItem(&item);
     } else {
-        cout << "No such item: " << name << "." << endl;
+        //cout << "No such item: " << name << "." << endl;
     }
 }
 
@@ -980,10 +996,12 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
     m_field = field;
     m_party = party;
     m_position = idx;
-    const BattleMechanics *mech = field->getMechanics();
-    for (int i = 0; i < STAT_COUNT; ++i) {
-        m_stat[i] = mech->calculateStat(*this, (STAT)i);
-        m_statLevel[i] = 0;
+    if (field) {
+        const BattleMechanics *mech = field->getMechanics();
+        for (int i = 0; i < STAT_COUNT; ++i) {
+            m_stat[i] = mech->calculateStat(*this, (STAT)i);
+            m_statLevel[i] = 0;
+        }
     }
     m_statLevel[S_ACCURACY] = 0;
     m_statLevel[S_EVASION] = 0;
@@ -992,7 +1010,9 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
     m_hp = m_stat[S_HP];
 
     // Get script machine.
-    m_machine = field->getScriptMachine();
+    if (field) {
+        m_machine = field->getScriptMachine();
+    }
     m_scx = cx;
     m_cx = m_scx.get();
 
@@ -1000,19 +1020,23 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
     m_object = m_cx->newPokemonObject(this);
 
     // Create move objects.
-    vector<const MoveTemplate *>::const_iterator i = m_moveProto.begin();
-    int j = 0;
-    for (; i != m_moveProto.end(); ++i) {
-        MoveObjectPtr obj = m_cx->newMoveObject(*i);
-        m_moves.push_back(obj);
-        m_maxPp[j] = m_pp[j] = obj->getPp(m_cx) * (5 + m_ppUps[j]) / 5;
-        ++j;
+    if (m_moves.empty()) {
+        vector<const MoveTemplate *>::const_iterator i = m_moveProto.begin();
+        int j = 0;
+        for (; i != m_moveProto.end(); ++i) {
+            MoveObjectPtr obj = m_cx->newMoveObject(*i);
+            m_moves.push_back(obj);
+            m_maxPp[j] = m_pp[j] = obj->getPp(m_cx) * (5 + m_ppUps[j]) / 5;
+            ++j;
+        }
     }
 
     // Create ability and item objects.
-    setAbility(m_abilityName);
-    if (!m_itemName.empty()) {
-        setItem(m_itemName);
+    if (field) {
+        setAbility(m_abilityName);
+        if (!m_itemName.empty()) {
+            setItem(m_itemName);
+        }
     }
 }
 

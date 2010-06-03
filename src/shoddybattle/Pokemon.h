@@ -246,15 +246,17 @@ public:
     }
 
     boost::shared_ptr<StatusObject> getItem() const;
-
     boost::shared_ptr<StatusObject> getAbility() const;
+
+    std::string getItemName() const;
+    std::string getAbilityName() const;
 
     void getImmunities(Pokemon *user, Pokemon *target,
             std::set<const PokemonType *> &immunities,
             std::set<const PokemonType *> &vulnerabilities);
             
-    bool getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type, 
-                                                                Pokemon *target, double &effectiveness);
+    bool getTransformedEffectiveness(const PokemonType *moveType,
+            const PokemonType *type, Pokemon *target, double &effectiveness);
 
     unsigned char getHappiness() const {
         return m_happiness;

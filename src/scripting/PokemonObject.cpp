@@ -87,6 +87,8 @@ enum POKEMON_TINYID {
     PTI_ACTED,
     PTI_ITEM,    // modifiable
     PTI_ABILITY, // modifiable
+    PTI_ITEM_NAME,
+    PTI_ABILITY_NAME,
     PTI_TURN,
     PTI_FORCED_TURN,
     PTI_DAMAGED
@@ -882,6 +884,20 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
             }
         } break;
 
+        case PTI_ITEM_NAME: {
+            string name = p->getItemName();
+            char *pstr = JS_strdup(cx, name.c_str());
+            JSString *str = JS_NewString(cx, pstr, name.length());
+            *vp = STRING_TO_JSVAL(str);
+        } break;
+
+        case PTI_ABILITY_NAME: {
+            string name = p->getAbilityName();
+            char *pstr = JS_strdup(cx, name.c_str());
+            JSString *str = JS_NewString(cx, pstr, name.length());
+            *vp = STRING_TO_JSVAL(str);
+        } break;
+
         case PTI_TURN: {
             PokemonTurn *turn = p->getTurn();
             if (turn) {
@@ -934,6 +950,8 @@ JSPropertySpec pokemonProperties[] = {
     { "acted", PTI_ACTED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "item", PTI_ITEM, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "ability", PTI_ABILITY, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
+    { "itemName", PTI_ITEM_NAME, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
+    { "abilityName", PTI_ABILITY_NAME, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "turn", PTI_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "forcedTurn", PTI_FORCED_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "damaged", PTI_DAMAGED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
