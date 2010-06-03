@@ -32,6 +32,7 @@ class ScriptObject;
 class ObjectWrapper {
 public:
     virtual ScriptObject *getObject() = 0;
+    virtual ~ObjectWrapper() { }
 };
 
 }
