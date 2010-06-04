@@ -227,6 +227,7 @@ public:
     bool isSingleton(ScriptContext *) const;
     int getInherentPriority(ScriptContext *);
     int getCriticalModifier(ScriptContext *);
+    std::string getDescription(ScriptContext *);
 
     // Methods.
     bool applyEffect(ScriptContext *);

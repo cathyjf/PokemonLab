@@ -847,6 +847,7 @@ function makePartyBuffMove(move, moveClass) {
  * that a OHKO move deals.
  */
 function makeOneHitKillMove(move) {
+    move.isOneHitKill_ = true;
     move.attemptHit = function(field, user, target) {
         if (user.level < target.level)
             return true;

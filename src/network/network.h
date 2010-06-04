@@ -75,6 +75,7 @@ public:
     ScriptMachine *getMachine();
     void initialiseChannels();
     void initialiseMatchmaking(const std::string &);
+    void initialiseClauses();
     boost::shared_ptr<Channel> getMainChannel() const;
     void addChannel(boost::shared_ptr<Channel>);
     void removeChannel(boost::shared_ptr<Channel>);
@@ -124,7 +125,8 @@ public:
         KICK_BAN_MESSAGE = 27,
         USER_DETAILS = 28,
         USER_MESSAGE = 29,
-        BATTLE_STATUS_CHANGE = 30
+        BATTLE_STATUS_CHANGE = 30,
+        CLAUSE_LIST = 31
     };
 
     // variable size message

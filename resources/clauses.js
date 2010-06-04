@@ -27,26 +27,33 @@
  *
  * Constructs a new clause and makes it a property of the Clause function.
  */
-function Clause(name) {
+function Clause(name, description) {
     this.name = this.id = name;
+    this.description = description;
     Clause[name] = this;
 }
 
 Clause.prototype = new StatusEffect();
+Clause.prototype.type = StatusEffect.TYPE_CLAUSE;
 
 /**
  * Allows for a nicer syntax for making a clause.
  */
 function makeClause(obj) {
-    var clause = new Clause(obj.name);
+    var clause = new Clause(obj.name, obj.description);
     for (var p in obj) {
         clause[p] = obj[p];
     }
 }
 
-function makeClassicEffectClause(clause, id) {
+/**
+ * Classic clauses allow only one instance of an effect in a party.
+ * Any attempts to apply the status to a 2nd Pokemon will fail
+ */ 
+function makeClassicEffectClause(clause, id, description) {
     makeClause({
         name : clause,
+        description: description,
         transformStatus : function(subject, status) {
             if (status.id != id)
                 return status;
@@ -64,6 +71,47 @@ function makeClassicEffectClause(clause, id) {
     });
 }
 
-makeClassicEffectClause("Classic Sleep Clause", "SleepEffect");
-makeClassicEffectClause("Classic Freeze Clause", "FreezeEffect");
+makeClassicEffectClause("Classic Sleep Clause", "SleepEffect",
+    "Only one Pokemon in a party can be asleep due to an enemy move " +
+    "at any time. Any further attempts by an enemy to put" +
+    " another Pokemon to sleep will fail");
+makeClassicEffectClause("Classic Freeze Clause", "FreezeEffect",
+    "Only one Pokemon in a party can be frozen due to an enemy move " +
+    "at any time. Any further attempts by an enemy to freeze" +
+    " another Pokemon will fail");
+
+/**
+ * Makes a clause which checks if pokemon has any illegal moves.
+ * This is checked before the battle begins
+ * param is a flag that is set on the type of disallowed move
+ */
+function makeIllegalMoveClause(clause, param, description) {
+    makeClause({
+        name: clause,
+        description: description,
+        validatePokemon: function(p) {
+            for (var i in p.moves) {
+                if (moves.param)
+                    return false;
+            }
+            return true;
+        }
+    });
+}
+
+makeIllegalMoveClause("OHKO Clause", "isOneHitKill_",
+    "One hit knock out moves are not allowed");
+
+
+makeClause({
+    name : "Strict Damage Clause",
+    description : "Reported damage is never greater than the " +
+                    "target's remaining health",
+    transformHealthChange : function(delta, user, indirect) {
+        if (delta > user.hp) {
+            return user.hp;
+        }
+        return delta;
+    }
+});
 

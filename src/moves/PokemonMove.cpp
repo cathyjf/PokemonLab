@@ -393,8 +393,8 @@ int main() {
     species->verifyAbilities(&machine);
 
     Pokemon::ARRAY team[2];
-    loadTeam("/home/Catherine/gengarteam", *species, team[0]);
-    loadTeam("/home/Catherine/toxicorb", *species, team[1]);
+    loadTeam("/Users/ben/sb1team", *species, team[0]);
+    loadTeam("/Users/ben/sb1team2", *species, team[1]);
 
     const string trainer[] = { "Catherine", "bearzly" };
 

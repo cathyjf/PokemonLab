@@ -469,6 +469,7 @@ private:
 
 typedef shared_ptr<MetagameQueue> MetagameQueuePtr;
 typedef pair<int, bool> METAGAME_PAIR;
+typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
 public:
@@ -479,11 +480,13 @@ public:
     void broadcast(const OutMessage &msg);
     void initialiseChannels();
     void initialiseMatchmaking(const string &);
+    void initialiseClauses();
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
     ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     void sendMetagameList(ClientImplPtr client);
+    void sendClauseList(ClientImplPtr client);
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
@@ -511,6 +514,11 @@ private:
     public:
         MetagameList(const vector<MetagamePtr> &);
     };
+    
+    class ClauseList : public OutMessage {
+    public:
+        ClauseList(vector<CLAUSE_PAIR> &clauses);
+    };
 
     CHANNEL_LIST m_channels;
     shared_mutex m_channelMutex;
@@ -525,7 +533,9 @@ private:
     map<METAGAME_PAIR, MetagameQueuePtr> m_queues;
     thread m_matchmaking;
     shared_ptr<MetagameList> m_metagameList;
+    vector<CLAUSE_PAIR> m_clauses;
     Server *m_server;
+    
 };
 
 Server::Server(const int port) {
@@ -551,6 +561,10 @@ void Server::initialiseChannels() {
 
 void Server::initialiseMatchmaking(const string &file) {
     m_impl->initialiseMatchmaking(file);
+}
+
+void Server::initialiseClauses() {
+    m_impl->initialiseClauses();
 }
 
 ChannelPtr Server::getMainChannel() const {
@@ -803,6 +817,7 @@ private:
         m_server->sendMetagameList(shared_from_this());
         m_server->getRegistry()->updateIp(m_name, m_ip);
         loadPersonalMessage();
+        m_server->sendClauseList(shared_from_this());
 
     }
 
@@ -1432,6 +1447,10 @@ void ServerImpl::sendMetagameList(ClientImplPtr client) {
     client->sendMessage(*m_metagameList);
 }
 
+void ServerImpl::sendClauseList(ClientImplPtr client) {
+    client->sendMessage(ClauseList(m_clauses));
+}
+
 void ServerImpl::addChannel(ChannelPtr p) {
     lock_guard<shared_mutex> lock(m_channelMutex);
     m_channels.insert(p);
@@ -1494,6 +1513,17 @@ ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
         for (int k = 0; k < size2; ++k) {
             *this << clauses[k];
         }
+    }
+    finalise();
+}
+
+ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses) 
+                                        : OutMessage(CLAUSE_LIST) {
+    *this << (int16_t)clauses.size();
+    vector<CLAUSE_PAIR>::iterator i = clauses.begin();
+    for (; i != clauses.end(); ++i) {
+        *this << i->first;
+        *this << i->second;
     }
     finalise();
 }
@@ -1583,6 +1613,17 @@ void ServerImpl::initialiseMatchmaking(const string &file) {
     m_matchmaking = thread(boost::bind(&ServerImpl::handleMatchmaking, this));
 }
 
+void ServerImpl::initialiseClauses() {
+    ScriptContextPtr scx = m_machine.acquireContext();
+    vector<StatusObject> clauses;
+    scx->getClauseList(clauses);
+    vector<StatusObject>::iterator i = clauses.begin();
+    for (; i != clauses.end(); ++i) {
+        m_clauses.push_back(
+            CLAUSE_PAIR(i->getId(scx.get()), i->getDescription(scx.get())));
+    }
+}
+
 void ServerImpl::handleMatchmaking() {
     while (true) {
         this_thread::sleep(posix_time::seconds(15));
@@ -1665,6 +1706,7 @@ int main() {
 
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");
+    server.initialiseClauses();
 
     vector<shared_ptr<thread> > threads;
     for (int i = 0; i < 20; ++i) {

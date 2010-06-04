@@ -277,6 +277,19 @@ string StatusObject::toString(ScriptContext *scx) {
     return ret;
 }
 
+string StatusObject::getDescription(ScriptContext *scx) {
+    JSContext *cx = (JSContext *)scx->m_p;
+    jsval val;
+    JS_BeginRequest(cx);
+    if (!scx->hasProperty(this, "description"))
+        return string();
+    JS_GetProperty(cx, (JSObject *)m_p, "description", &val);
+    assert(JSVAL_IS_STRING(val));
+    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    JS_EndRequest(cx);
+    return ret;
+}
+
 Pokemon *StatusObject::getInducer(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;

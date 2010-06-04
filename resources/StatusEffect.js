@@ -63,6 +63,7 @@ StatusEffect.STATE_REMOVABLE = 2;
 StatusEffect.TYPE_NORMAL = 0;
 StatusEffect.TYPE_ITEM = 1;
 StatusEffect.TYPE_ABILITY = 2;
+StatusEffect.TYPE_CLAUSE = 3;
 
 // Flags used to communicate who the effect applies to
 // Used for sending messages about statuses to the client
