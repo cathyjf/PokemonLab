@@ -199,6 +199,15 @@ bool StatusObject::vetoExecution(ScriptContext *scx, BattleField *field,
     return v.getBool();
 }
 
+bool StatusObject::validateTeam(ScriptContext *scx, const Pokemon::ARRAY &team) {
+    if (!scx->hasProperty(this, "validateTeam"))
+        return true;
+    ScriptArrayPtr teamPtr = ScriptArray::newTeamArray(team, scx);
+    ScriptValue argv[] = { teamPtr.get() };
+    ScriptValue v = scx->callFunctionByName(this, "validateTeam", 1, argv);
+    return v.getBool();
+}
+
 void StatusObject::informTargeted(ScriptContext *cx,
         Pokemon *user, MoveObject *move) {
     if (!cx->hasProperty(this, "informTargeted"))

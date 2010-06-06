@@ -605,6 +605,7 @@ NetworkBattle::NetworkBattle(Server *server,
         const GENERATION generation,
         const int partySize,
         const int maxTeamLength,
+        vector<StatusObject> &clauses,
         const int metagame,
         const bool rated) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(
@@ -633,7 +634,7 @@ NetworkBattle::NetworkBattle(Server *server,
     m_impl->m_channel->setTopic(topic);
 
     initialise(&m_impl->m_mech, generation, server->getMachine(),
-            teams, &m_impl->m_trainer[0], partySize);
+            teams, &m_impl->m_trainer[0], partySize, clauses);
 }
 
 int32_t NetworkBattle::getId() const {

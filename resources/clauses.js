@@ -89,10 +89,14 @@ function makeIllegalMoveClause(clause, param, description) {
     makeClause({
         name: clause,
         description: description,
-        validatePokemon: function(p) {
-            for (var i in p.moves) {
-                if (moves.param)
-                    return false;
+        validateTeam: function(team) {
+            for (var i in team) {
+                var p = team[i];
+                for (var j = 0; j < 4; j++) {
+                    var move = p.getMove(j);
+                    if (move && move[param])
+                        return false;
+                }
             }
             return true;
         }
@@ -102,16 +106,50 @@ function makeIllegalMoveClause(clause, param, description) {
 makeIllegalMoveClause("OHKO Clause", "isOneHitKill_",
     "One hit knock out moves are not allowed");
 
+makeIllegalMoveClause("Evasion Clause", "isEvasionMove_",
+    "Moves that specifically raise evasion are not allowed");
 
 makeClause({
     name : "Strict Damage Clause",
     description : "Reported damage is never greater than the " +
                     "target's remaining health",
     transformHealthChange : function(delta, user, indirect) {
-        if (delta > user.hp) {
-            return user.hp;
+        if (user == this.subject) {
+            return delta;
+        }
+        if (delta > this.subject.hp) {
+            return this.subject.hp;
         }
         return delta;
     }
 });
 
+makeClause({
+    name : "Species Clause",
+    description : "All Pokemon on a team must be of different species",
+    validateTeam : function(team) {
+        var used = [];
+        for (var i in team) {
+            var species = team[i].species;
+            if (used.indexOf(species) != -1)
+                return false;
+            used.push(species);
+        }
+        return true;
+    }
+});
+
+makeClause({
+    name : "Item Clause",
+    description : "All Pokemon on a team must have different items",
+    validateTeam : function(team) {
+        var used = [];
+        for (var i in team) {
+            var item = team[i].itemName;
+            if (used.indexOf(item) != -1)
+                return false;
+            used.push(item);
+        }
+        return true;
+    }
+});

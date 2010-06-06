@@ -380,7 +380,7 @@ makeEffect(StatusEffect, {
 makeEffect(StatusEffect, {
     id : "StatChangeEffect",
     ctor : function(stat, delta) {
-        this.stat = stat;
+        this.stat_ = stat;
         this.delta_ = delta;
         this.applyEffect = function() {
             var present = this.subject.getStatLevel(stat);
@@ -422,12 +422,12 @@ makeEffect(StatusEffect, {
     singleton : false,
     name : "StatChangeEffect",
     toString : function() {
-        return this.name + ";" + this.stat + ";" + this.delta_;
+        return this.name + ";" + this.stat_ + ";" + this.delta_;
     },
     informFailure : function() { },
     unapplyEffect : function() {
-        var present = this.subject.getStatLevel(this.stat);
-        this.subject.setStatLevel(this.stat, present - this.delta);
+        var present = this.subject.getStatLevel(this.stat_);
+        this.subject.setStatLevel(this.stat_, present - this.delta_);
     }
 });
 

@@ -2178,6 +2178,9 @@ makeTwoHitMove(this);
 <flags>
     <snatch/>
 </flags>
+<init>
+this.isEvasionMove_ = true;
+</init>
 <use>
 <![CDATA[
 user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
@@ -6013,6 +6016,9 @@ makeLockOnMove(this);
 <flags>
     <snatch/>
 </flags>
+<init>
+this.isEvasionMove_ = true;
+</init>
 <use>
 <![CDATA[
 user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));

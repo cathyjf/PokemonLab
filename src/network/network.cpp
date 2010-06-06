@@ -365,19 +365,38 @@ struct Challenge {
     Pokemon::ARRAY teams[TEAM_COUNT];
     GENERATION generation;
     int partySize;
-    // todo: clauses and other options
-
+    int metagame;
+    vector<int> clauses;
+    bool timing;
+    int pool;
+    int periods;
+    int periodLength;
 };
 
 typedef shared_ptr<Challenge> ChallengePtr;
 
 class IncomingChallenge : public OutMessage {
 public:
-    IncomingChallenge(const string &user, const Challenge &data):
+    IncomingChallenge(const string &user, Challenge &data):
             OutMessage(INCOMING_CHALLENGE) {
         *this << user;
         *this << (unsigned char)data.generation;
         *this << data.partySize;
+        int metagame = data.metagame;
+        *this << metagame;
+        if (metagame == -1) {
+            *this << (unsigned char)data.clauses.size();
+            vector<int>::iterator i = data.clauses.begin();
+            for (; i != data.clauses.end(); ++i) {
+                *this << (unsigned char)(*i);
+            }
+            *this << (unsigned char)data.timing;
+            if (data.timing) {
+                *this << data.pool;
+                *this << (unsigned char)data.periods;
+                *this << data.periodLength;
+            }
+        }
         finalise();
     }
 };
@@ -486,7 +505,10 @@ public:
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     void sendMetagameList(ClientImplPtr client);
+    void getMetagameClauses(const int metagame, vector<string> &clauses);
     void sendClauseList(ClientImplPtr client);
+    void fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
+                                            vector<StatusObject> &ret);
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
@@ -930,10 +952,34 @@ private:
         unsigned char generation;
         int partySize;
         msg >> opponent >> generation >> partySize;
-        // todo: read in other challenge details
-
+        int metagame;
+        msg >> metagame;
+        if (metagame == -1) {
+            unsigned char clauseCount;
+            msg >> clauseCount;
+            unsigned char clause;
+            for (int i = 0; i < clauseCount; ++i) {
+                msg >> clause;
+                challenge->clauses.push_back(clause);
+            }
+            unsigned char timing;
+            int pool = 0;
+            unsigned char periods = 0;
+            int periodLength = 0;
+            msg >> timing;
+            if (timing) {
+                msg >> pool >> periods >> periodLength;
+            }
+            challenge->timing = timing;
+            challenge->pool = pool;
+            challenge->periods = periods;
+            challenge->periodLength = periodLength;
+        }
+        
         challenge->generation = (GENERATION)generation;
         challenge->partySize = partySize;
+        challenge->metagame = metagame;
+        
 
         lock_guard<mutex> lock(m_challengeMutex);
 
@@ -1012,7 +1058,37 @@ private:
                 machine->getMoveDatabase(),
                 msg,
                 challenge->teams[0]);
-        // todo: verify legality of team
+        
+        ScriptContextPtr cx = machine->acquireContext();
+        
+        vector<StatusObject> clauses;
+        int metagame = challenge->metagame;
+        if (metagame == -1) {
+            m_server->fetchClauses(cx, challenge->clauses, clauses);
+        } else {
+            vector<string> clauseList;
+            m_server->getMetagameClauses(metagame, clauseList);
+            vector<string>::iterator i = clauseList.begin();
+            for (; i != clauseList.end(); ++i) {
+                clauses.push_back(cx->getClause((*i)));
+            }
+        }
+        
+        for (int i = 0; i < 2; ++i) {
+            Pokemon::ARRAY team = challenge->teams[i];
+            Pokemon::ARRAY::iterator p = team.begin();
+            for (; p != team.end(); ++p) {
+                (*p)->initialise(NULL, cx, 0, 0);
+            }
+            vector<StatusObject>::iterator c = clauses.begin();
+            for (; c != clauses.end(); ++c) {
+                if (!c->validateTeam(cx.get(), team)) {
+                    //todo: stuff
+                    cout << "Team " << i << " does not conform to " << c->getId(cx.get()) << endl;
+                }
+            }
+        }
+        
 
         ClientPtr clients[] = { shared_from_this(), client };
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
@@ -1020,13 +1096,14 @@ private:
                 challenge->teams,
                 challenge->generation,
                 challenge->partySize,
-                6, // TODO: Do not hardcode max team length.
+                6, // TODO: Do not hardcode max team length.,
+                clauses,
                 -1,
                 false));
 
         lock2.unlock();
 
-        // todo: apply clauses here
+        
 
         field->beginBattle();
         insertBattle(field);
@@ -1418,12 +1495,14 @@ void MetagameQueue::startMatches() {
         QUEUE_ENTRY &q2 = m_queue[i + 1];
         ClientPtr clients[] = { q1.first, q2.first };
         Pokemon::ARRAY teams[] = { q1.second, q2.second };
+        vector<StatusObject> clauses; //todo: fix this
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 teams,
                 (GENERATION)m_metagame->getGeneration(),
                 m_metagame->getActivePartySize(),
                 m_metagame->getMaxTeamLength(),
+                clauses,
                 m_metagame->getIdx(),
                 m_rated));
         // TODO: Apply clauses here.
@@ -1447,8 +1526,32 @@ void ServerImpl::sendMetagameList(ClientImplPtr client) {
     client->sendMessage(*m_metagameList);
 }
 
+void ServerImpl::getMetagameClauses(const int idx, vector<string> &ret) {
+    if ((idx < 0) || (idx > m_metagames.size()))
+        return;
+    MetagamePtr p = m_metagames[idx];
+    const vector<string> &clauses = p->getClauses();
+    for (int i = 0; i < clauses.size(); ++i) {
+        ret.push_back(clauses[i]);
+    }
+}
+    
+
 void ServerImpl::sendClauseList(ClientImplPtr client) {
     client->sendMessage(ClauseList(m_clauses));
+}
+
+void ServerImpl::fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
+                                                vector<StatusObject> &ret) {
+    vector<int>::iterator i = clauses.begin();
+    int size = m_clauses.size();
+    for (; i != clauses.end(); ++i) {
+        int idx = (*i);
+        if ((idx < 0) || (idx > size))
+            continue;
+        string name = m_clauses[idx].first;
+        ret.push_back(scx->getClause(name));
+    }
 }
 
 void ServerImpl::addChannel(ChannelPtr p) {

@@ -51,6 +51,7 @@ public:
             const GENERATION generation,
             const int partySize,
             const int maxTeamLength,
+            std::vector<StatusObject> &clauses,
             const int metagame,
             const bool rated);
 

@@ -38,6 +38,7 @@
     </ban-list>
     <clauses>
         <clause>Classic Sleep Clause</clause>
+        <clause>Strict Damage Clause</clause>
     </clauses>
 </metagame>
 

@@ -254,6 +254,7 @@ public:
     bool transformStatLevel(ScriptContext *, Pokemon *, Pokemon *, STAT, int *);
     const PokemonType *getVulnerability(ScriptContext *, Pokemon *, Pokemon *);
     const PokemonType *getImmunity(ScriptContext *, Pokemon *, Pokemon *);
+    bool validateTeam(ScriptContext *, const std::vector<boost::shared_ptr<Pokemon> > &);
 
 };
 

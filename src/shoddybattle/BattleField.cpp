@@ -108,7 +108,8 @@ struct BattleFieldImpl {
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
         const std::string trainer[TEAM_COUNT],
-        const int activeParty);
+        const int activeParty,
+        vector<StatusObject> &clauses);
     
     void terminate() {
         if (object) {
@@ -799,7 +800,6 @@ void BattleField::beginBattle() {
     // Host goes second (if I remember correctly). TODO: Check this.
     beginBattle(1 - m_impl->host);
     beginBattle(m_impl->host);
-
     Pokemon::ARRAY pokemon;
     getActivePokemon(pokemon);
     vector<Pokemon *> entries;
@@ -1299,10 +1299,11 @@ void BattleField::initialise(const BattleMechanics *mech,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
         const std::string trainer[TEAM_COUNT],
-        const int activeParty) {
+        const int activeParty,
+        vector<StatusObject> &clauses) {
     try {
         m_impl->initialise(this, mech, generation,
-                machine, teams, trainer, activeParty);
+                machine, teams, trainer, activeParty, clauses);
     } catch (BattleFieldException &e) {
         m_impl->terminate();
         throw e;
@@ -1315,7 +1316,8 @@ void BattleFieldImpl::initialise(BattleField *field,
         ScriptMachine *machine,
         Pokemon::ARRAY teams[TEAM_COUNT],
         const std::string trainer[TEAM_COUNT],
-        const int activeParty) {
+        const int activeParty,
+        vector<StatusObject> &clauses) {
     if (mech == NULL) {
         throw BattleFieldException();
     }
@@ -1358,6 +1360,11 @@ void BattleFieldImpl::initialise(BattleField *field,
             }
             p->initialise(field, contextRef, i, j);
         }
+    }
+    // Apply clauses to the field
+    vector<StatusObject>::iterator i = clauses.begin();
+    for (; i != clauses.end(); ++i) {
+        field->applyStatus(&*i);
     }
 }
 

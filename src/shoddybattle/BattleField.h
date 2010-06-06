@@ -152,7 +152,8 @@ public:
             ScriptMachine *machine,
             Pokemon::ARRAY teams[TEAM_COUNT],
             const std::string trainer[TEAM_COUNT],
-            const int activeParty);
+            const int activeParty,
+            std::vector<StatusObject> &clauses);
 
     /**
      * Get the party size.
