@@ -113,7 +113,11 @@ makeClause({
     name : "Strict Damage Clause",
     description : "Reported damage is never greater than the " +
                     "target's remaining health",
-    informStrictDamage : function() { return true; }
+    informReportDamage : function(delta, hp, max) {
+        if (delta > 0)
+            return (delta > hp) ? hp : delta;
+        return ((hp - delta) > max) ? (hp - max) : delta;
+    }
 });
 
 makeClause({

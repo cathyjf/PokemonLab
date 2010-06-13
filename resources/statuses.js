@@ -136,8 +136,7 @@ makeEffect(StatusEffect, {
     vetoTier : 9,
     applyEffect : function() {
         var field = this.subject.field;
-        field.print(Text.status_effects_attract(3, 
-                        this.subject, field.getActivePokemon(1 - this.subject.party)));
+        field.print(Text.status_effects_attract(3, this.subject, this.inducer));
         if (this.subject.sendMessage("informAttracted", this.inducer)) {
             return false;
         }
