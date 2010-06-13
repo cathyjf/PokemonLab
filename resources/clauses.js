@@ -27,9 +27,8 @@
  *
  * Constructs a new clause and makes it a property of the Clause function.
  */
-function Clause(name, description) {
+function Clause(name) {
     this.name = this.id = name;
-    this.description = description;
     this.idx = Clause.__count__ - 1;
     Clause[name] = this;
 }
@@ -41,7 +40,7 @@ Clause.prototype.type = StatusEffect.TYPE_CLAUSE;
  * Allows for a nicer syntax for making a clause.
  */
 function makeClause(obj) {
-    var clause = new Clause(obj.name, obj.description);
+    var clause = new Clause(obj.name);
     for (var p in obj) {
         clause[p] = obj[p];
     }
@@ -54,7 +53,7 @@ function makeClause(obj) {
 function makeClassicEffectClause(clause, id, description) {
     makeClause({
         name : clause,
-        description: description,
+        description : description,
         transformStatus : function(subject, status) {
             if (status.id != id)
                 return status;
@@ -88,12 +87,12 @@ makeClassicEffectClause("Classic Freeze Clause", "FreezeEffect",
  */
 function makeIllegalMoveClause(clause, param, description) {
     makeClause({
-        name: clause,
-        description: description,
-        validateTeam: function(team) {
+        name : clause,
+        description : description,
+        validateTeam : function(team) {
             for (var i in team) {
                 var p = team[i];
-                for (var j = 0; j < 4; j++) {
+                for (var j = 0; j < p.moveCount; j++) {
                     var move = p.getMove(j);
                     if (move && move[param])
                         return false;
