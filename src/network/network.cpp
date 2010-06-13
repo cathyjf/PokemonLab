@@ -1065,6 +1065,8 @@ private:
     }
 
     void handleChallengeTeam(InMessage &msg) {
+        unique_lock<mutex> lock(m_challengeMutex);
+        
         string opponent;
         msg >> opponent;
         if (m_challenges.count(opponent) == 0)
@@ -1100,7 +1102,6 @@ private:
             return;
         }
         
-        unique_lock<mutex> lock(m_challengeMutex);
         m_challenges.erase(opponent);
         lock.unlock();
 
