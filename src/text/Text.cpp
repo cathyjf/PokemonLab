@@ -148,6 +148,7 @@ bool Text::loadFile(const string path, LOOKUP_FUNCTION lookup)
         m_text[category][idx] = trim(text);
 
     }
+    return true;
 }
 
 }
