@@ -276,6 +276,20 @@ string StatusObject::getId(ScriptContext *scx) const {
     return ret;
 }
 
+int StatusObject::getIdx(ScriptContext *scx) {
+    JSContext *cx = (JSContext *)scx->m_p;
+    if (scx->hasProperty(this, "idx")) {
+        jsval val;
+        JS_BeginRequest(cx);
+        JS_GetProperty(cx, (JSObject *)m_p, "idx", &val);
+        JS_EndRequest(cx);
+        assert(JSVAL_IS_INT(val));
+        return JSVAL_TO_INT(val);
+    }
+    
+    return -1;
+}
+
 string StatusObject::toString(ScriptContext *scx) {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);

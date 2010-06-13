@@ -845,8 +845,18 @@ void Pokemon::setHp(int hp) {
     if (delta == 0) {
         return;
     }
+    int report;
+    if (sendMessage("informStrictDamage", 0, NULL).getBool()) {
+        if (delta > 0)
+            report = (delta > m_hp) ? m_hp : delta;
+        else
+            report = ((delta + m_hp) > max) ? max : delta;
+
+    } else {
+        report = delta;
+    }
     m_hp -= delta;
-    m_field->informHealthChange(this, delta);
+    m_field->informHealthChange(this, report);
     if (delta > 0) {
         m_damaged = true;
         if (move) {

@@ -30,6 +30,7 @@
 function Clause(name, description) {
     this.name = this.id = name;
     this.description = description;
+    this.idx = Clause.__count__ - 1;
     Clause[name] = this;
 }
 
@@ -113,15 +114,7 @@ makeClause({
     name : "Strict Damage Clause",
     description : "Reported damage is never greater than the " +
                     "target's remaining health",
-    transformHealthChange : function(delta, user, indirect) {
-        if (user == this.subject) {
-            return delta;
-        }
-        if (delta > this.subject.hp) {
-            return this.subject.hp;
-        }
-        return delta;
-    }
+    informStrictDamage : function() { return true; }
 });
 
 makeClause({

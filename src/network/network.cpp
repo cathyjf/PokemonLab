@@ -353,6 +353,7 @@ void readTeam(SpeciesDatabase *speciesData,
         MoveDatabase *moveData,
         InMessage &msg,
         Pokemon::ARRAY &team) {
+    team.clear();
     int size;
     msg >> size;
     for (int i = 0; i < size; ++i) {
@@ -460,6 +461,20 @@ public:
     }
 };
 
+class InvalidTeamMessage : public OutMessage {
+public:
+    InvalidTeamMessage(const string &user, const vector<int> &cls) : OutMessage(INVALID_TEAM) {
+        cout << "this is an invalid team " << endl;
+        *this << user;
+        *this << (int16_t)cls.size();
+        vector<int>::const_iterator i = cls.begin();
+        for (; i != cls.end(); ++i) {
+            *this << (int16_t)(*i);
+        }
+        finalise();
+    }
+};
+
 class MetagameQueue {
 public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
@@ -500,6 +515,8 @@ public:
     void initialiseChannels();
     void initialiseMatchmaking(const string &);
     void initialiseClauses();
+    bool validateTeam(ScriptContextPtr, Pokemon::ARRAY &, vector<StatusObject> &, 
+                                                                    vector<int> &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
     ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
@@ -509,6 +526,9 @@ public:
     void sendClauseList(ClientImplPtr client);
     void fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
                                             vector<StatusObject> &ret);
+    void fetchClauses(ScriptContextPtr scx, const int metagame, 
+                                            vector<StatusObject> &ret);
+
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
@@ -962,6 +982,7 @@ private:
                 msg >> clause;
                 challenge->clauses.push_back(clause);
             }
+            cout << "challenge has " << challenge->clauses.size() << " clauses" << endl;
             unsigned char timing;
             int pool = 0;
             unsigned char periods = 0;
@@ -1021,7 +1042,22 @@ private:
                 machine->getMoveDatabase(),
                 msg,
                 team);
-        // todo: verify legality of team
+        
+        ScriptContextPtr cx = machine->acquireContext();
+        vector<StatusObject> clauses;
+        int metagame = challenge->metagame;
+        if (metagame == -1) {
+            m_server->fetchClauses(cx, challenge->clauses, clauses);
+        } else {
+            m_server->fetchClauses(cx, challenge->metagame, clauses);
+        }
+        cout << "there are " << challenge->clauses.size() << " clauses" << endl;
+        vector<int> violations;
+        if (!m_server->validateTeam(cx, team, clauses, violations)) {
+            sendMessage(InvalidTeamMessage(opponent, violations));
+            return;
+        }
+        
         unique_lock<mutex> lock(challenge->mx);
         challenge->teams[1] = team;
         lock.unlock();
@@ -1030,65 +1066,44 @@ private:
     }
 
     void handleChallengeTeam(InMessage &msg) {
-        unique_lock<mutex> lock(m_challengeMutex);
-
         string opponent;
         msg >> opponent;
-
         if (m_challenges.count(opponent) == 0)
             return;
-
         ClientImplPtr client = m_server->getClient(opponent);
         if (!client) {
             return;
         }
-
         ChallengePtr challenge = m_challenges[opponent];
 
         unique_lock<mutex> lock2(challenge->mx);
         if (challenge->teams[1].empty()) {
             return;
         }
-
-        m_challenges.erase(opponent);
-        lock.unlock();
-
+        
         ScriptMachine *machine = m_server->getMachine();
         readTeam(machine->getSpeciesDatabase(),
                 machine->getMoveDatabase(),
                 msg,
                 challenge->teams[0]);
         
-        ScriptContextPtr cx = machine->acquireContext();
-        
+        ScriptContextPtr cx = machine->acquireContext();      
         vector<StatusObject> clauses;
         int metagame = challenge->metagame;
         if (metagame == -1) {
             m_server->fetchClauses(cx, challenge->clauses, clauses);
         } else {
-            vector<string> clauseList;
-            m_server->getMetagameClauses(metagame, clauseList);
-            vector<string>::iterator i = clauseList.begin();
-            for (; i != clauseList.end(); ++i) {
-                clauses.push_back(cx->getClause((*i)));
-            }
+            m_server->fetchClauses(cx, metagame, clauses);
+        }      
+        vector<int> violations;
+        if (!m_server->validateTeam(cx, challenge->teams[0], clauses, violations)) {
+            sendMessage(InvalidTeamMessage(opponent, violations));
+            return;
         }
         
-        for (int i = 0; i < 2; ++i) {
-            Pokemon::ARRAY team = challenge->teams[i];
-            Pokemon::ARRAY::iterator p = team.begin();
-            for (; p != team.end(); ++p) {
-                (*p)->initialise(NULL, cx, 0, 0);
-            }
-            vector<StatusObject>::iterator c = clauses.begin();
-            for (; c != clauses.end(); ++c) {
-                if (!c->validateTeam(cx.get(), team)) {
-                    //todo: stuff
-                    cout << "Team " << i << " does not conform to " << c->getId(cx.get()) << endl;
-                }
-            }
-        }
-        
+        unique_lock<mutex> lock(m_challengeMutex);
+        m_challenges.erase(opponent);
+        lock.unlock();
 
         ClientPtr clients[] = { shared_from_this(), client };
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
@@ -1464,7 +1479,15 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
         return false;
     if (team.size() > m_metagame->getMaxTeamLength())
         return false;
-    // TODO: validate team with the metagame's other rules
+        
+    ScriptContextPtr scx = m_server->getMachine()->acquireContext();
+    vector<StatusObject> clauses;
+    m_server->fetchClauses(scx, m_metagame->getIdx(), clauses);
+    vector<int> violations;
+    if (!m_server->validateTeam(scx, team, clauses, violations)) {
+        client->sendMessage(InvalidTeamMessage(string(), violations));
+        return false;
+    }
     if (m_rated) {
         client->joinLadder(m_metagame->getId());
     }
@@ -1495,7 +1518,9 @@ void MetagameQueue::startMatches() {
         QUEUE_ENTRY &q2 = m_queue[i + 1];
         ClientPtr clients[] = { q1.first, q2.first };
         Pokemon::ARRAY teams[] = { q1.second, q2.second };
-        vector<StatusObject> clauses; //todo: fix this
+        vector<StatusObject> clauses;
+        m_server->fetchClauses(m_server->getMachine()->acquireContext(), 
+                                            m_metagame->getIdx(), clauses);
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 teams,
@@ -1505,7 +1530,6 @@ void MetagameQueue::startMatches() {
                 clauses,
                 m_metagame->getIdx(),
                 m_rated));
-        // TODO: Apply clauses here.
         field->beginBattle();
         q1.first->insertBattle(field);
         q2.first->insertBattle(field);
@@ -1551,6 +1575,16 @@ void ServerImpl::fetchClauses(ScriptContextPtr scx, vector<int> &clauses,
             continue;
         string name = m_clauses[idx].first;
         ret.push_back(scx->getClause(name));
+    }
+}
+
+void ServerImpl::fetchClauses(ScriptContextPtr scx, const int metagame, 
+                                                vector<StatusObject> &ret) {
+    vector<string> clauses;
+    getMetagameClauses(metagame, clauses);
+    vector<string>::iterator i = clauses.begin();
+    for (; i != clauses.end(); ++i) {
+        ret.push_back(scx->getClause(*i));
     }
 }
 
@@ -1725,6 +1759,24 @@ void ServerImpl::initialiseClauses() {
         m_clauses.push_back(
             CLAUSE_PAIR(i->getId(scx.get()), i->getDescription(scx.get())));
     }
+}
+
+bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team, 
+                            vector<StatusObject> &clauses, vector<int> &violations) {
+    //todo: verify ivs, moves etc.
+    Pokemon::ARRAY::iterator i = team.begin();
+    for (; i != team.end(); ++i) {
+        (*i)->initialise(NULL, scx, 0, 0);
+    }
+    bool pass = true;
+    ScriptContext *cx = scx.get();
+    for (int i = 0; i < clauses.size(); ++i) {
+        if (!clauses[i].validateTeam(cx, team)) {
+            pass = false;
+            violations.push_back(clauses[i].getIdx(cx));
+        }
+    }
+    return pass;
 }
 
 void ServerImpl::handleMatchmaking() {

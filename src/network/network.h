@@ -126,7 +126,8 @@ public:
         USER_DETAILS = 28,
         USER_MESSAGE = 29,
         BATTLE_STATUS_CHANGE = 30,
-        CLAUSE_LIST = 31
+        CLAUSE_LIST = 31,
+        INVALID_TEAM = 32
     };
 
     // variable size message

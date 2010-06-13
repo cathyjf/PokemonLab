@@ -38,7 +38,29 @@
     </ban-list>
     <clauses>
         <clause>Classic Sleep Clause</clause>
+        <clause>OHKO Clause</clause>
+        <clause>Classic Freeze Clause</clause>
         <clause>Strict Damage Clause</clause>
+        <clause>Evasion Clause</clause>
+    </clauses>
+</metagame>
+
+<metagame>
+    <name>Uber</name>
+    <id>uber</id>
+    <description>Uber metagame with everything allowed except for Wobbuffet and son.</description>
+    <party-size>1</party-size>
+    <team-length>6</team-length>
+    <ban-list>
+        <pokemon>Wobbuffet</pokemon>
+        <pokemon>Wynaut</pokemon>
+    </ban-list>
+    <clauses>
+        <clause>Classic Sleep Clause</clause>
+        <clause>OHKO Clause</clause>
+        <clause>Classic Freeze Clause</clause>
+        <clause>Strict Damage Clause</clause>
+        <clause>Evasion Clause</clause>
     </clauses>
 </metagame>
 

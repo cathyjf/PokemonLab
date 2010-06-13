@@ -211,6 +211,7 @@ public:
     
     // Basic properties.
     std::string getId(ScriptContext *) const;
+    int getIdx(ScriptContext *);
     std::string toString(ScriptContext *);
     int getType(ScriptContext *) const;
     Pokemon *getInducer(ScriptContext *) const;
