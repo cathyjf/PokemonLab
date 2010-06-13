@@ -1051,7 +1051,6 @@ private:
         } else {
             m_server->fetchClauses(cx, challenge->metagame, clauses);
         }
-        cout << "there are " << challenge->clauses.size() << " clauses" << endl;
         vector<int> violations;
         if (!m_server->validateTeam(cx, team, clauses, violations)) {
             sendMessage(InvalidTeamMessage(opponent, violations));
