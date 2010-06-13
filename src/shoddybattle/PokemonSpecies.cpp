@@ -131,15 +131,12 @@ string getStringNodeValue(DOMNode *node, bool text = false) {
 }
 
 string getTextFromElement(DOMElement *element, bool text = false) {
-    string ret;
     DOMNodeList *list = element->getChildNodes();
-    int length = list->getLength();
-    for (int i = 0; i < 1; ++i) {
-        DOMNode *item = list->item(i);
-        string part = getStringNodeValue(item, text);
-        ret += part;
+    if (list->getLength() > 0) {
+        DOMNode *item = list->item(0);
+        return getStringNodeValue(item, text);
     }
-    return ret;
+    return string();
 }
 
 string &lowercase(string &str) {
@@ -170,7 +167,7 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
     // types
     XMLString::transcode("type", tempStr, 19);
     DOMNodeList *list = node->getElementsByTagName(tempStr);
-    XMLSize_t length = list->getLength();
+    int length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         string type = getTextFromElement(item);
@@ -276,7 +273,7 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
 
             XMLString::transcode("move", tempStr, 19);
             DOMNodeList *list2 = moves->getElementsByTagName(tempStr);
-            XMLSize_t length2 = list2->getLength();
+            int length2 = list2->getLength();
             for (int j = 0; j < length2; ++j) {
                 DOMElement *move = (DOMElement *)list2->item(j);
                 string strMove = getTextFromElement(move);
@@ -308,7 +305,7 @@ bool PokemonSpecies::loadSpecies(const string file, SpeciesDatabase &set) {
     XMLString::transcode("species", tempStr, 11);
     DOMNodeList *list = root->getElementsByTagName(tempStr);
 
-    XMLSize_t length = list->getLength();
+    int length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         SPECIES species;

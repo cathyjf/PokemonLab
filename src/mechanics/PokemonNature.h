@@ -70,7 +70,7 @@ private:
     STAT m_benefit, m_harm;
     unsigned int m_id; /** Internal ID of the nature. **/
     PokemonNature(int internal, STAT benefit, STAT harm):
-       m_id(internal), m_benefit(benefit), m_harm(harm) { }
+       m_benefit(benefit), m_harm(harm), m_id(internal) { }
     static const PokemonNature m_natures[25];
 };
 

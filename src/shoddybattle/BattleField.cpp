@@ -51,8 +51,8 @@ struct BattleFieldImpl {
     bool descendingSpeed;
     std::stack<BattleField::EXECUTION> executing;
     MoveObjectPtr lastMove;
-    int host;
     bool narration;
+    int host;
 
     typedef map<pair<Pokemon *, Pokemon *>, bool> RANDOM_MAP;
 
@@ -225,7 +225,8 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
         if (turn->id < 0)
             return false;
         Pokemon::ARRAY &arr = m_impl->teams[pokemon->getParty()];
-        if (turn->id >= arr.size())
+        const int size = arr.size();
+        if (turn->id >= size)
             return false;
         Pokemon::PTR p = arr[turn->id];
         return ((p->getSlot() == -1) && !p->isFainted());
@@ -499,7 +500,7 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
     vector<TurnOrderEntity> entities;
 
     const int count = pokemon.size();
-    assert(count == turns.size());
+    assert(count == (int)turns.size());
     for (int i = 0; i < count; ++i) {
         TurnOrderEntity entity;
         Pokemon::PTR p = pokemon[i];
@@ -660,7 +661,7 @@ void BattleField::informFainted(Pokemon *p) {
     cout << p->getName() << " fainted!" << endl;
 }
 
-void BattleField::informStatusChange(Pokemon *p, StatusObject *effect, const bool applied) {
+void BattleField::informStatusChange(Pokemon *, StatusObject *, const bool) {
 
 }
 
@@ -1038,7 +1039,7 @@ void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
     getFaintedPokemon(pokemon);
 
     const int count = pokemon.size();
-    if (count != turns.size())
+    if (count != (int)turns.size())
         throw BattleFieldException();
 
     vector<const PokemonTurn *> ordered;
@@ -1067,7 +1068,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
     vector<Pokemon::PTR> pokemon;
     getActivePokemon(pokemon);
     const int count = pokemon.size();
-    if (count != turns.size())
+    if (count != (int)turns.size())
         throw BattleFieldException();
     
     vector<const PokemonTurn *> ordered;
@@ -1239,14 +1240,15 @@ void BattleField::getImmunities(Pokemon *user, Pokemon *target,
  * Get the transformed effectiveness of a move of a certain
  * type against a particular target
  */
-bool BattleField::getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type,
-                                                                                Pokemon *target, double &factor) {
+bool BattleField::getTransformedEffectiveness(const PokemonType *moveType,
+        const PokemonType *type, Pokemon *target, double &factor) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
             PokemonSlot &slot = (*m_impl->active[i])[j];
             Pokemon::PTR p = slot.pokemon;
             if (p && !p->isFainted()) {
-                if (p->getTransformedEffectiveness(moveType, type, target, factor)) {
+                if (p->getTransformedEffectiveness(moveType, type,
+                        target, factor)) {
                     return true;
                 }
             }

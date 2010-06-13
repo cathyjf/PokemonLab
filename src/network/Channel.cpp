@@ -353,7 +353,7 @@ Channel::FLAGS Channel::handleJoin(ClientPtr client) {
             client->getId());
 }
 
-void Channel::handlePart(ClientPtr client) {
+void Channel::handlePart(ClientPtr /*client*/) {
 
 }
 

@@ -179,7 +179,7 @@ const MoveTemplate *MoveObject::getTemplate(ScriptContext *scx) const {
 namespace {
 
 JSBool toString(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     /**const string str = "whatever";
     char *pstr = JS_strdup(cx, str.c_str());
     JSString *ostr = JS_NewString(cx, pstr, str.length());

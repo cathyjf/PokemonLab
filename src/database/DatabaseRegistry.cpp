@@ -527,7 +527,8 @@ const vector<string> DatabaseRegistry::getAliases(const string &user) {
     query.parse();
     StoreQueryResult res = query.store(user);
     vector<string> ret;
-    for (int i = 0; i < res.num_rows(); ++i) {
+    const int size = res.num_rows();
+    for (int i = 0; i < size; ++i) {
         string alias;
         res[i][0].to_string(alias);
         ret.push_back(alias);

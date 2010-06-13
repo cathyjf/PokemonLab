@@ -581,7 +581,7 @@ private:
 };
 
 Server::Server(const int port) {
-    tcp::endpoint endpoint(tcp::v4(), 8446);
+    tcp::endpoint endpoint(tcp::v4(), port);
     m_impl = new ServerImpl(this, endpoint);
 }
 
@@ -624,11 +624,11 @@ Server::~Server() {
 class ClientImpl : public Client, public enable_shared_from_this<ClientImpl> {
 public:
     ClientImpl(io_service &service, ServerImpl *server):
-            m_server(server),
+            m_authenticated(false),
+            m_challenge(0),
             m_service(service),
             m_socket(service),
-            m_authenticated(false),
-            m_challenge(0) { }
+            m_server(server) { }
 
     tcp::socket &getSocket() {
         return m_socket;
@@ -781,7 +781,7 @@ private:
         }
     }
 
-    void handleError(const boost::system::error_code &error) {
+    void handleError(const boost::system::error_code & /*error*/) {
         m_server->removeClient(shared_from_this());
     }
 
@@ -1125,7 +1125,7 @@ private:
         client->insertBattle(field);
     }
 
-    void handleWithdrawChallenge(InMessage &msg) {
+    void handleWithdrawChallenge(InMessage & /*msg*/) {
         // todo
     }
 
@@ -1477,7 +1477,8 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     lock_guard<mutex> lock(m_mutex);
     if (m_clients.find(client) != m_clients.end())
         return false;
-    if (team.size() > m_metagame->getMaxTeamLength())
+    const int size = team.size();
+    if (size > m_metagame->getMaxTeamLength())
         return false;
         
     ScriptContextPtr scx = m_server->getMachine()->acquireContext();
@@ -1551,11 +1552,13 @@ void ServerImpl::sendMetagameList(ClientImplPtr client) {
 }
 
 void ServerImpl::getMetagameClauses(const int idx, vector<string> &ret) {
-    if ((idx < 0) || (idx > m_metagames.size()))
+    const int metagamesize = m_metagames.size();
+    if ((idx < 0) || (idx > metagamesize))
         return;
     MetagamePtr p = m_metagames[idx];
     const vector<string> &clauses = p->getClauses();
-    for (int i = 0; i < clauses.size(); ++i) {
+    const int size = clauses.size();
+    for (int i = 0; i < size; ++i) {
         ret.push_back(clauses[i]);
     }
 }
@@ -1666,8 +1669,8 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
 }
 
 ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
-        m_server(server),
-        m_acceptor(m_service, endpoint, true) {
+        m_acceptor(m_service, endpoint, true),
+        m_server(server) {
     acceptClient();
 }
 
@@ -1770,7 +1773,8 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
     }
     bool pass = true;
     ScriptContext *cx = scx.get();
-    for (int i = 0; i < clauses.size(); ++i) {
+    const int size = clauses.size();
+    for (int i = 0; i < size; ++i) {
         if (!clauses[i].validateTeam(cx, team)) {
             pass = false;
             violations.push_back(clauses[i].getIdx(cx));

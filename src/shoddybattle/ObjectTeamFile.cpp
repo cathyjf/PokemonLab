@@ -367,7 +367,7 @@ private:
         return NULL;
     }
 
-    STREAM_OBJECT *readRandomObject(STREAM_CLASS_DESC *desc) {
+    STREAM_OBJECT *readRandomObject(STREAM_CLASS_DESC * /*desc*/) {
         getLong(); // seed
         getLong(); // nextNextGaussian
         getChar(); // haveNextNextGaussian

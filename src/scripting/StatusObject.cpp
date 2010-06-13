@@ -488,8 +488,8 @@ int StatusObject::getVetoTier(ScriptContext *scx) const {
 
 namespace {
 
-JSBool returnSelf(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+JSBool returnSelf(JSContext * /*cx*/,
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     *ret = OBJECT_TO_JSVAL(obj);
     return JS_TRUE;
 }

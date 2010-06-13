@@ -484,7 +484,8 @@ unsigned int Pokemon::getStat(const STAT stat) {
 MoveObjectPtr Pokemon::getMove(const int i) {
     if (i == -1)
         return m_forcedMove;
-    if (m_moves.size() <= i)
+    const int size = m_moves.size();
+    if (size <= i)
         return MoveObjectPtr();
     return m_moves[i];
 }
@@ -592,7 +593,8 @@ void Pokemon::removeMemory(Pokemon *pokemon) {
  */
 void Pokemon::setMove(const int i, MoveObjectPtr move,
         const int pp, const int maxPp) {
-    if (m_moves.size() <= i) {
+    const int size = m_moves.size();
+    if (size <= i) {
         m_moves.resize(i + 1, MoveObjectPtr());
         m_pp.resize(i + 1, 0);
         m_maxPp.resize(i + 1, 0);

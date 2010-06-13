@@ -165,7 +165,7 @@ MoveDatabase *ScriptMachine::getMoveDatabase() const {
 }
 
 static JSBool includeMoves(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
@@ -179,7 +179,7 @@ static JSBool includeMoves(JSContext *cx,
 }
 
 static JSBool include(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
     jsval val = argv[0];
     JSString *str = JS_ValueToString(cx, val);
     char *pstr = JS_GetStringBytes(str);
@@ -189,7 +189,7 @@ static JSBool include(JSContext *cx,
 }
 
 static JSBool includeSpecies(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
@@ -224,7 +224,7 @@ private:
 };
 
 static JSBool getText(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject * /*obj*/, uintN argc, jsval *argv, jsval *ret) {
     int32 category, text;
     JS_ConvertArguments(cx, 2, argv, "ii", &category, &text);
     const int count = argc - 2;
@@ -248,7 +248,7 @@ string ScriptMachine::getText(int i, int j, int argc, const char **argv) {
 }
 
 static JSBool loadText(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
@@ -270,14 +270,14 @@ static JSBool loadText(JSContext *cx,
 }
 
 static JSBool populateMoveLists(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval * /*argv*/, jsval *) {
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     scx->getMachine()->populateMoveLists();
     return JS_TRUE;
 }
 
 static JSBool printFunction(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
     jsval v = argv[0];
     JSString *jsstr;
     if (!JSVAL_IS_STRING(v)) {
@@ -307,7 +307,7 @@ void ScriptMachine::includeMoves(const std::string file) {
     m_impl->state->moves.loadMoves(file);
 }
 
-static void reportError(JSContext *cx, const char *message,
+static void reportError(JSContext * /*cx*/, const char *message,
         JSErrorReport *report) {
     fprintf(stderr, "%s:%u:%s\n",
             report->filename ? report->filename : "<no filename>",

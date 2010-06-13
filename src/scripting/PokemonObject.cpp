@@ -125,7 +125,7 @@ JSBool applyStatus(JSContext *cx,
  * pokemon.setForcedMove(move, target)
  */
 JSBool setForcedMove(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
 
@@ -154,17 +154,16 @@ JSBool setForcedMove(JSContext *cx,
  * pokemon.clearForcedMove()
  */
 JSBool clearForcedMove(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval * /*ret*/) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     p->clearForcedTurn();
     return JS_TRUE;
 }
 
 JSBool popRecentDamage(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     if (p->hasRecentDamage()) {
-        ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
         Pokemon::RECENT_DAMAGE entry = p->popRecentDamage();
 
         JSObject *user = (JSObject *)entry.user->getObject()->getObject();
@@ -185,7 +184,7 @@ JSBool popRecentDamage(JSContext *cx,
 }
 
 JSBool removeStatus(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     *ret = JSVAL_NULL;
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     jsval v = argv[0];
@@ -199,7 +198,7 @@ JSBool removeStatus(JSContext *cx,
  * pokemon.isType(type)
  */
 JSBool isType(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
 
     jsdouble d;
@@ -222,7 +221,7 @@ JSBool isType(JSContext *cx,
  * pokemon.isImmune(move)
  */
 JSBool isImmune(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -239,7 +238,7 @@ JSBool isImmune(JSContext *cx,
 }
 
 JSBool isMoveUsed(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -253,7 +252,7 @@ JSBool isMoveUsed(JSContext *cx,
 }
 
 JSBool getStatLevel(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     double d;
     JS_ValueToNumber(cx, v, &d);
@@ -267,7 +266,7 @@ JSBool getStatLevel(JSContext *cx,
 }
 
 JSBool setStatLevel(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     double d;
     JS_ValueToNumber(cx, argv[0], &d);
     const STAT stat = (STAT)(int)d;
@@ -281,7 +280,7 @@ JSBool setStatLevel(JSContext *cx,
 }
 
 JSBool getRawStat(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     double d;
     JS_ValueToNumber(cx, v, &d);
@@ -295,7 +294,7 @@ JSBool getRawStat(JSContext *cx,
 }
 
 JSBool setRawStat(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     double d;
     JS_ValueToNumber(cx, argv[0], &d);
     const STAT stat = (STAT)(int)d;
@@ -308,7 +307,7 @@ JSBool setRawStat(JSContext *cx,
 }
 
 JSBool getTypes(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     JSObject *arr = JS_NewArrayObject(cx, 0, NULL);
     *ret = OBJECT_TO_JSVAL(arr);
@@ -322,7 +321,7 @@ JSBool getTypes(JSContext *cx,
 }
 
 JSBool setTypes(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     if (!JSVAL_IS_OBJECT(argv[0])) {
         return JS_FALSE;
     }
@@ -330,8 +329,9 @@ JSBool setTypes(JSContext *cx,
     if (!JS_IsArrayObject(cx, arr)) {
         return JS_FALSE;
     }
-    jsuint length;
-    JS_GetArrayLength(cx, arr, &length);
+    jsuint ulength;
+    JS_GetArrayLength(cx, arr, &ulength);
+    const int length = ulength;
     TYPE_ARRAY types;
     for (int i = 0; i < length; ++i) {
         jsval v;
@@ -348,7 +348,7 @@ JSBool setTypes(JSContext *cx,
 }
 
 JSBool getStat(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -362,7 +362,7 @@ JSBool getStat(JSContext *cx,
 }
 
 JSBool getNatureEffect(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -381,7 +381,7 @@ JSBool getNatureEffect(JSContext *cx,
 }
 
 JSBool getMove(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -400,7 +400,7 @@ JSBool getMove(JSContext *cx,
 }
 
 JSBool setMove(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_OBJECT(argv[1])
             || !JSVAL_IS_INT(argv[2]) || !JSVAL_IS_INT(argv[3])) {
         return JS_FALSE;
@@ -417,7 +417,7 @@ JSBool setMove(JSContext *cx,
 }
 
 JSBool getMoveId(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -439,7 +439,7 @@ JSBool getMoveId(JSContext *cx,
  * Returns -1 if the pokemon does not know the move.
  */
 JSBool getPp(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -462,7 +462,7 @@ JSBool getPp(JSContext *cx,
  * Returns -1 if the pokemon does not know the move.
  */
 JSBool getMaxPp(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -482,7 +482,7 @@ JSBool getMaxPp(JSContext *cx,
  * pokemon.setPp(move, pp)
  */
 JSBool setPp(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -508,7 +508,7 @@ JSBool setPp(JSContext *cx,
  * move object.
  */
 JSBool isSelectable(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -528,7 +528,7 @@ JSBool isSelectable(JSContext *cx,
  * such as removing temporary effects and stat level changes.
  */
 JSBool switchOut(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval * /*ret*/) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     p->switchOut();
     return JS_TRUE;
@@ -541,7 +541,7 @@ JSBool switchOut(JSContext *cx,
  * presently in the slot in the process.
  */
 JSBool sendOut(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -561,7 +561,7 @@ JSBool sendOut(JSContext *cx,
  * Replace this pokemon by a target pokemon.
  */
 JSBool replaceBy(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -577,7 +577,7 @@ JSBool replaceBy(JSContext *cx,
 }
 
 JSBool getStatus(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     StatusObjectPtr sobj;
     
@@ -626,7 +626,7 @@ JSBool sendMessage(JSContext *cx,
 }
 
 JSBool hasAbility(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
@@ -647,7 +647,7 @@ struct nullDeleter {
  * pokemon.execute(move, target)
  */
 JSBool execute(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     assert(JSVAL_IS_OBJECT(argv[0]));
     MoveObject move(JSVAL_TO_OBJECT(argv[0]));
     Pokemon *target = NULL;
@@ -663,7 +663,7 @@ JSBool execute(JSContext *cx,
 }
 
 JSBool toString(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
 
     const string str = p->getToken();
@@ -675,7 +675,7 @@ JSBool toString(JSContext *cx,
 }
 
 JSBool faint(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval * /*ret*/) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     p->faint();
     return JS_TRUE;

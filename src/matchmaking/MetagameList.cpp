@@ -202,7 +202,7 @@ void Metagame::readMetagames(const string &file, SpeciesDatabase *species,
     XMLString::transcode("metagame", tempStr, 11);
     DOMNodeList *list = root->getElementsByTagName(tempStr);
 
-    XMLSize_t length = list->getLength();
+    int length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         MetagamePtr metagame(new Metagame());

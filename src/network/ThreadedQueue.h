@@ -89,9 +89,9 @@ public:
         boost::thread thread;
 
         ThreadedQueueImpl(DELEGATE delegate):
-                delegate(delegate),
+                terminated(false),
                 empty(true),
-                terminated(false) { }
+                delegate(delegate) { }
     };
 
 private:

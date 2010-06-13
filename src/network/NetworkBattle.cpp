@@ -78,7 +78,7 @@ public:
         return Type::BATTLE;
     }
 
-    void commitStatusFlags(ClientPtr client, FLAGS flags) {
+    void commitStatusFlags(ClientPtr /*client*/, FLAGS /*flags*/) {
         // does nothing in a BattleChannel
     }
 
@@ -148,16 +148,16 @@ struct NetworkBattleImpl {
     bool m_terminated;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p):
+            m_server(server),
+            m_field(p),
+            m_channel(BattleChannelPtr(
+                BattleChannel::createChannel(server, this))),
             m_queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
             m_replacement(false),
             m_victory(false),
-            m_field(p),
             m_turnCount(0),
             m_waiting(false),
-            m_server(server),
-            m_terminated(false),
-            m_channel(BattleChannelPtr(
-                BattleChannel::createChannel(server, this))) { }
+            m_terminated(false) { }
 
     void beginTurn() {
         ++m_turnCount;
@@ -233,7 +233,8 @@ struct NetworkBattleImpl {
     }
 
     ClientPtr getClient(const int idx) const {
-        if (m_clients.size() <= idx)
+        const int size = m_clients.size();
+        if (size <= idx)
             return ClientPtr();
         return m_clients[idx];
     }
@@ -698,7 +699,8 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
         }
     }
     pturn.push_back(turn);
-    if (pturn.size() < max) {
+    const int size = pturn.size();
+    if (size < max) {
         m_impl->requestAction(party);
     } else if (m_impl->m_waiting) {
         // Client has sent in an inactive pokemon for U-turn and friends.

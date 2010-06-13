@@ -337,7 +337,7 @@ void MoveDatabase::loadMoves(const string file) {
     cout << "Unimplemented moves:" << endl;
 
     int implemented = 0;
-    XMLSize_t length = list->getLength();
+    int length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
         MoveTemplateImpl *move = new MoveTemplateImpl();
@@ -388,21 +388,29 @@ int main() {
     cx->runFile("resources/main.js");
 
     SpeciesDatabase *species = machine.getSpeciesDatabase();
-    MoveDatabase *moves = machine.getMoveDatabase();
+    //MoveDatabase *moves = machine.getMoveDatabase();
 
     species->verifyAbilities(&machine);
 
     Pokemon::ARRAY team[2];
-    loadTeam("/Users/ben/sb1team", *species, team[0]);
-    loadTeam("/Users/ben/sb1team2", *species, team[1]);
+    loadTeam("/home/Catherine/gengarteam", *species, team[0]);
+    loadTeam("/home/Catherine/toxicorb", *species, team[1]);
+
+    vector<StatusObject> clauses;
+    //cx->getClauseList(clauses);
+    /**for (int i = 0; i < clauses.size(); ++i) {
+        StatusObject clause = clauses[i];
+        cout << "Clause: " << clause.getName(cx.get()) << endl;
+    }**/
 
     const string trainer[] = { "Catherine", "bearzly" };
 
     BattleField field;
     JewelMechanics mechanics;
-    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2);
+    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2,
+            clauses);
 
-    field.getActivePokemon(0, 0)->setMove(0, "Fly", 5, 5);
+    field.getActivePokemon(0, 0)->setMove(0, "Attract", 5, 5);
     field.getActivePokemon(0, 0)->setMove(1, "Tackle", 5, 5);
     field.getActivePokemon(0, 0)->setMove(2, "Bubble", 5, 5);
 
@@ -414,10 +422,10 @@ int main() {
     field.getActivePokemon(1, 1)->setMove(0, "Tackle", 5, 5);
     field.getActivePokemon(1, 1)->setMove(1, "Splash", 5, 5);
 
-    field.getActivePokemon(0, 0)->setItem("Iapapa Berry");
-    field.getActivePokemon(0, 1)->setItem("Dread Plate");
+    field.getActivePokemon(0, 0)->setItem("Leftovers");
+    field.getActivePokemon(0, 1)->setItem("Leftovers");
     field.getActivePokemon(1, 0)->setItem("Leftovers");
-    field.getActivePokemon(1, 1)->setItem("Quick Claw");
+    field.getActivePokemon(1, 1)->setItem("Leftovers");
 
     field.getActivePokemon(0, 0)->setAbility("Intimidate");
     field.getActivePokemon(0, 1)->setAbility("Levitate");
@@ -426,12 +434,9 @@ int main() {
 
     field.beginBattle();
 
-    StatusObject clause = cx->getClause("Classic Sleep Clause");
-    field.applyStatus(&clause);
-
     vector<PokemonTurn> turns;
     //turns.push_back(PokemonTurn(TT_SWITCH, 5));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
@@ -448,11 +453,11 @@ int main() {
     cout << "   ----" << endl;
     //turns[0] = PokemonTurn(TT_SWITCH, 2);
 
-    //field.processTurn(turns);
+    field.processTurn(turns);
 
     field.processTurn(turns);
     cout << "   ----" << endl;
-    field.processTurn(turns);
+    //field.processTurn(turns);
     //field.processTurn(turns);
     //field.processTurn(turns);
 

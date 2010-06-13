@@ -91,7 +91,7 @@ JSBool random(JSContext *cx,
 }
 
 JSBool getActivePokemon(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
     int party = 0, idx = 0;
     JS_ConvertArguments(cx, 2, argv, "ii", &party, &idx);
@@ -124,7 +124,7 @@ JSBool getActivePokemon(JSContext *cx,
  * Get the effectiveness of a particular type against an arbitrary pokemon.
  */
 JSBool getEffectiveness(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_OBJECT(argv[1])) {
         return JS_FALSE;
     }
@@ -145,7 +145,7 @@ JSBool getEffectiveness(JSContext *cx,
  * Get the effectiveness of a particular type against an arbitrary type.
  */
 JSBool getTypeEffectiveness(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *ret) {
     if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_INT(argv[1])) {
         return JS_FALSE;
     }
@@ -166,7 +166,7 @@ JSBool getTypeEffectiveness(JSContext *cx,
  * Return the number of moves that exist.
  */
 JSBool getMoveCount(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject * /*obj */, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     const int count = scx->getMachine()->getMoveDatabase()->getMoveCount();
     *ret = INT_TO_JSVAL(count);
@@ -178,7 +178,7 @@ JSBool getMoveCount(JSContext *cx,
  * field.getMove(idx)
  */
 JSBool getMove(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
 
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
@@ -209,7 +209,7 @@ JSBool getMove(JSContext *cx,
  * field.applyStatus(effect)
  */
 JSBool applyStatus(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -231,7 +231,7 @@ JSBool applyStatus(JSContext *cx,
  * field.removeStatus(effect)
  */
 JSBool removeStatus(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -245,12 +245,13 @@ JSBool removeStatus(JSContext *cx,
 }
 
 JSBool print(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     jsval v = argv[0];
     assert(JSVAL_IS_OBJECT(v));
     JSObject *arr = JSVAL_TO_OBJECT(v);
-    jsuint length = 0;
-    JS_GetArrayLength(cx, arr, &length);
+    jsuint ulength = 0;
+    JS_GetArrayLength(cx, arr, &ulength);
+    const int length = ulength;
     jsval msg0, msg1;
     JS_GetElement(cx, arr, 0, &msg0);
     JS_GetElement(cx, arr, 1, &msg1);
@@ -274,7 +275,7 @@ JSBool print(JSContext *cx,
 }
 
 JSBool attemptHit(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
 
     // make sure arguments are of the correct type
@@ -299,7 +300,7 @@ JSBool attemptHit(JSContext *cx,
  * field.isCriticalHit(move, user, target)
  */
 JSBool isCriticalHit(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     BattleField *p = (BattleField *)JS_GetPrivate(cx, obj);
     if (!JSVAL_IS_OBJECT(argv[0]))
         return JS_FALSE;
@@ -360,7 +361,7 @@ JSBool calculate(JSContext *cx,
  * null if no inactive pokemon exist.
  */
 JSBool requestInactivePokemon(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     const jsval v = argv[0];
     if (!JSVAL_IS_OBJECT(v)) {
         return JS_FALSE;
@@ -382,7 +383,7 @@ JSBool requestInactivePokemon(JSContext *cx,
  * Get the length of a particular party.
  */
 JSBool getPartySize(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     const jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -403,7 +404,7 @@ JSBool getPartySize(JSContext *cx,
  * Get the trainer name of a particular party.
  */
 JSBool getTrainer(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     const jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -428,7 +429,7 @@ JSBool getTrainer(JSContext *cx,
  * active pokemon from the given party.
  */
 JSBool getRandomTarget(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     const jsval v = argv[0];
     if (!JSVAL_IS_INT(v)) {
         return JS_FALSE;
@@ -454,7 +455,7 @@ JSBool getRandomTarget(JSContext *cx,
  * Get a particular pokemon.
  */
 JSBool getPokemon(JSContext *cx,
-        JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     if (!JSVAL_IS_INT(argv[0]) || !JSVAL_IS_INT(argv[1])) {
         return JS_FALSE;
     }
