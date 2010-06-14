@@ -35,6 +35,7 @@
 #include <boost/shared_array.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
@@ -1856,7 +1857,6 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 #if 1
 
 #include "../database/Authenticator.h"
-#include <boost/thread.hpp>
 
 int main() {
     using namespace shoddybattle;
