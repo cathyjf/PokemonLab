@@ -60,7 +60,7 @@ SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
     string secret, salt;
     result[0][0].to_string(secret);
     result[0][1].to_string(salt);
-    return SECRET_PAIR(secret, salt);
+    return SECRET_PAIR(DatabaseRegistry::getHexHash(secret), salt);
 }
 
 void VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,

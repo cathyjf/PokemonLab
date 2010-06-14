@@ -69,6 +69,8 @@ public:
 
     void setAuthenticator(boost::shared_ptr<Authenticator>);
 
+    static std::string getHexHash(const std::string &);
+
     /**
      * This needs to be called by every thread that is going to be making
      * use of the DatabaseRegistry.

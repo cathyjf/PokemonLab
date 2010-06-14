@@ -144,7 +144,7 @@ bool DatabaseRegistry::startThread() {
 
 static const char *HEX_TABLE = "0123456789ABCDEF";
 
-static string getHexHash(const string message) {
+string DatabaseRegistry::getHexHash(const string &message) {
     unsigned char digest[32];
     sha256(reinterpret_cast<const unsigned char *>(message.c_str()),
             message.length(), digest);
