@@ -112,7 +112,7 @@
             <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>
           </preprocessorList>
@@ -145,7 +145,7 @@
             <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>

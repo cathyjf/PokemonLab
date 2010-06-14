@@ -52,6 +52,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o \
 	${OBJECTDIR}/src/network/network.o \
 	${OBJECTDIR}/src/scripting/MoveObject.o \
+	${OBJECTDIR}/src/database/Authenticator.o \
 	${OBJECTDIR}/src/network/Channel.o \
 	${OBJECTDIR}/src/scripting/PokemonObject.o \
 	${OBJECTDIR}/src/database/sha2.o \
@@ -61,8 +62,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time
-CXXFLAGS=-lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-gcc42-mt -lboost_system-mt -lboost_filesystem -lboost_date_time
+CCFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time
+CXXFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -185,6 +186,11 @@ ${OBJECTDIR}/src/scripting/MoveObject.o: nbproject/Makefile-${CND_CONF}.mk src/s
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/MoveObject.o src/scripting/MoveObject.cpp
+
+${OBJECTDIR}/src/database/Authenticator.o: nbproject/Makefile-${CND_CONF}.mk src/database/Authenticator.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/Authenticator.o src/database/Authenticator.cpp
 
 ${OBJECTDIR}/src/network/Channel.o: nbproject/Makefile-${CND_CONF}.mk src/network/Channel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/network
