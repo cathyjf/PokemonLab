@@ -23,6 +23,8 @@
  */
 
 #include <netinet/in.h>
+
+#include "Authenticator.h"
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/random.hpp>
@@ -101,33 +103,22 @@ private:
     ShoddyConnectionPool &operator=(const ShoddyConnectionPool &);
 };
 
-/** RAII-style Connection **/
-class ScopedConnection {
-public:
-    ScopedConnection(ShoddyConnectionPool &pool):
-            m_pool(pool) {
-        m_conn = m_pool.grab();
-    }
-    Connection *operator->() {
-        return m_conn;
-    }
-    ~ScopedConnection() {
-        m_pool.release(m_conn);
-    }
-private:
-    Connection *m_conn;
-    ShoddyConnectionPool &m_pool;
+ScopedConnection::ScopedConnection(ConnectionPool &pool):
+        m_pool(pool) {
+    m_conn = m_pool.grab();
+}
 
-    ScopedConnection(const ScopedConnection &);
-    ScopedConnection &operator=(const ScopedConnection &);
-};
+ScopedConnection::~ScopedConnection() {
+    m_pool.release(m_conn);
+}
 
-struct DatabaseRegistryImpl {
+struct DatabaseRegistry::DatabaseRegistryImpl {
     typedef variate_generator<mt11213b &,
             uniform_int<> > GENERATOR;
     ShoddyConnectionPool pool;
     mt11213b rand;     // used for challenge-response
     mutex randMutex;
+    shared_ptr<Authenticator> authenticator;
     DatabaseRegistryImpl() {
         rand = mt11213b(time(NULL));
     }
@@ -139,12 +130,12 @@ struct DatabaseRegistryImpl {
     }
 };
 
-DatabaseRegistry::DatabaseRegistry() {
-    m_impl = new DatabaseRegistryImpl();
-}
+DatabaseRegistry::DatabaseRegistry():
+        m_impl(new DatabaseRegistryImpl()) { }
 
-DatabaseRegistry::~DatabaseRegistry() {
-    delete m_impl;
+void DatabaseRegistry::setAuthenticator(
+        shared_ptr<Authenticator> authenticator) {
+    m_impl->authenticator = authenticator;
 }
 
 bool DatabaseRegistry::startThread() {
@@ -362,18 +353,17 @@ DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
         const int challenge,
         const unsigned char *response) {
     ScopedConnection conn(m_impl->pool);
-    Query query =
-            conn->query("select id, password from users where name = %0q");
+    Query query = conn->query("select id from users where name = %0q");
     query.parse();
     StoreQueryResult result = query.store(name);
     if (result.empty())
         return DatabaseRegistry::AUTH_PAIR(false, -1);
 
     const int responseInt = challenge + 1;
-    string password;
     const int id = result[0][0];
-    result[0][1].to_string(password);
-    const string key = fromHex(password);
+
+    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name);
+    const string key = fromHex(secret.first);
 
     unsigned char data[16];
     unsigned char middle[16];
@@ -391,21 +381,18 @@ DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
     rijndael_encrypt(&ctx, middle, correct);
 
     const bool match = (memcmp(response, correct, 16) == 0);
+    m_impl->authenticator->finishAuthentication(conn, name, match);
     return DatabaseRegistry::AUTH_PAIR(match, id);
 }
 
-int DatabaseRegistry::getAuthChallenge(const string name,
-        unsigned char *challenge) {
+DatabaseRegistry::CHALLENGE_INFO DatabaseRegistry::getAuthChallenge(
+        const string name, unsigned char *challenge) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select password from users where name = %0q");
-    query.parse();
-    StoreQueryResult result = query.store(name);
-    if (result.empty())
-        return 0;
+    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name);
+    if (secret.first.empty())
+        return CHALLENGE_INFO();
 
-    string password;
-    result[0][0].to_string(password);
-    const string key = fromHex(password);
+    const string key = fromHex(secret.first);
     const int32_t challengeInt = m_impl->getChallenge();
     unsigned char data[16];
     unsigned char part[16];
@@ -421,7 +408,8 @@ int DatabaseRegistry::getAuthChallenge(const string name,
     rijndael_set_key(&ctx, (const unsigned char *)key.c_str() + 16, 128);
     rijndael_encrypt(&ctx, part, challenge);
 
-    return challengeInt;
+    return CHALLENGE_INFO(challengeInt,
+            m_impl->authenticator->getSecretStyle(), secret.second);
 }
 
 void DatabaseRegistry::connect(const string db, const string server,

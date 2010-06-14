@@ -35,7 +35,6 @@
 #include <boost/shared_array.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
-#include <boost/thread.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
@@ -243,11 +242,15 @@ public:
 
 class ChallengeMessage : public OutMessage {
 public:
-    ChallengeMessage(const unsigned char *challenge):
-            OutMessage(PASSWORD_CHALLENGE, 16) {
+    ChallengeMessage(const unsigned char *challenge, const int style,
+            const string &salt):
+            OutMessage(PASSWORD_CHALLENGE) {
         for (int i = 0; i < 16; ++i) {
             *this << challenge[i];
         }
+        *this << (unsigned char)style;
+        *this << salt;
+        finalise();
     }
 };
 
@@ -804,7 +807,9 @@ private:
             }
         }
         unsigned char data[16];
-        m_challenge = m_server->getRegistry()->getAuthChallenge(user, data);
+        const database::DatabaseRegistry::CHALLENGE_INFO challenge =
+                m_server->getRegistry()->getAuthChallenge(user, data);
+        m_challenge = challenge.get<0>();
         if (m_challenge != 0) {
             // user exists
 
@@ -816,7 +821,7 @@ private:
             }
 
             m_name = user;
-            ChallengeMessage msg(data);
+            ChallengeMessage msg(data, challenge.get<1>(), challenge.get<2>());
             sendMessage(msg);
         } else {
             sendMessage(RegistryResponse(RegistryResponse::NONEXISTENT_NAME));
@@ -1850,6 +1855,9 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 #if 1
 
+#include "../database/Authenticator.h"
+#include <boost/thread.hpp>
+
 int main() {
     using namespace shoddybattle;
 
@@ -1862,6 +1870,10 @@ int main() {
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "root", "");
     registry->startThread();
+//    registry->setAuthenticator(shared_ptr<database::Authenticator>(
+//            new database::DefaultAuthenticator()));
+    registry->setAuthenticator(shared_ptr<database::Authenticator>(
+            new database::VBulletinAuthenticator()));
 
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");

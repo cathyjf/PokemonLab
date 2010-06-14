@@ -29,13 +29,36 @@
 #include <map>
 #include <vector>
 #include <boost/tuple/tuple.hpp>
+#include <boost/shared_ptr.hpp>
+
+namespace mysqlpp {
+class ConnectionPool;
+class Connection;
+}
 
 namespace shoddybattle { namespace database {
 
-class DatabaseRegistryImpl;
+/** RAII-style Connection **/
+class ScopedConnection {
+public:
+    ScopedConnection(mysqlpp::ConnectionPool &);
+    ~ScopedConnection();
+    mysqlpp::Connection *operator->() {
+        return m_conn;
+    }
+private:
+    mysqlpp::Connection *m_conn;
+    mysqlpp::ConnectionPool &m_pool;
+
+    ScopedConnection(const ScopedConnection &);
+    ScopedConnection &operator=(const ScopedConnection &);
+};
+
+class Authenticator;
 
 class DatabaseRegistry {
 public:
+    typedef boost::tuple<int, int, std::string> CHALLENGE_INFO;
     typedef std::pair<bool, int> AUTH_PAIR;
     typedef boost::tuple<std::string, std::string, int> INFO_ELEMENT;
     typedef std::map<int, INFO_ELEMENT> CHANNEL_INFO;
@@ -43,7 +66,8 @@ public:
     typedef std::vector<BAN_ELEMENT> BAN_LIST;
 
     DatabaseRegistry();
-    ~DatabaseRegistry();
+
+    void setAuthenticator(boost::shared_ptr<Authenticator>);
 
     /**
      * This needs to be called by every thread that is going to be making
@@ -63,7 +87,8 @@ public:
     /**
      * Get an authentication challenge for the given user.
      */
-    int getAuthChallenge(const std::string name, unsigned char *challenge);
+    CHALLENGE_INFO getAuthChallenge(const std::string name,
+            unsigned char *challenge);
 
     /**
      * Get the information about channels.
@@ -158,7 +183,8 @@ public:
     void loadPersonalMessage(const std::string &user, std::string &message);
     
 private:
-    DatabaseRegistryImpl *m_impl;
+    class DatabaseRegistryImpl;
+    boost::shared_ptr<DatabaseRegistryImpl> m_impl;
     DatabaseRegistry(const DatabaseRegistry &);
     DatabaseRegistry &operator=(const DatabaseRegistry &);
 };
