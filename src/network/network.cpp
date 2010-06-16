@@ -370,6 +370,7 @@ struct Challenge {
     Pokemon::ARRAY teams[TEAM_COUNT];
     GENERATION generation;
     int partySize;
+    int teamLength;
     int metagame;
     vector<int> clauses;
     bool timing;
@@ -387,6 +388,7 @@ public:
         *this << user;
         *this << (unsigned char)data.generation;
         *this << data.partySize;
+        *this << data.teamLength;
         int metagame = data.metagame;
         *this << metagame;
         if (metagame == -1) {
@@ -977,7 +979,8 @@ private:
         string opponent;
         unsigned char generation;
         int partySize;
-        msg >> opponent >> generation >> partySize;
+        int teamLength;
+        msg >> opponent >> generation >> partySize >> teamLength;
         int metagame;
         msg >> metagame;
         if (metagame == -1) {
@@ -1005,6 +1008,7 @@ private:
         
         challenge->generation = (GENERATION)generation;
         challenge->partySize = partySize;
+        challenge->teamLength = teamLength;
         challenge->metagame = metagame;
         
 
@@ -1048,6 +1052,10 @@ private:
                 machine->getMoveDatabase(),
                 msg,
                 team);
+
+        if (team.size() > challenge->teamLength) {
+            team.resize(challenge->teamLength);
+        }
         
         ScriptContextPtr cx = machine->acquireContext();
         vector<StatusObject> clauses;
@@ -1093,7 +1101,11 @@ private:
                 machine->getMoveDatabase(),
                 msg,
                 challenge->teams[0]);
-        
+
+        if (challenge->teams[0].size() > challenge->teamLength) {
+            challenge->teams[0].resize(challenge->teamLength);
+        }
+
         ScriptContextPtr cx = machine->acquireContext();      
         vector<StatusObject> clauses;
         int metagame = challenge->metagame;
@@ -1117,7 +1129,7 @@ private:
                 challenge->teams,
                 challenge->generation,
                 challenge->partySize,
-                6, // TODO: Do not hardcode max team length.,
+                challenge->teamLength,
                 clauses,
                 -1,
                 false));

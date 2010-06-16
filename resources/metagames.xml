@@ -64,4 +64,30 @@
     </clauses>
 </metagame>
 
+<!-- This was added to test the challenge options better. Keep it or don't -->
+<metagame>
+    <name>VGC</name>
+    <id>vgc</id>
+    <description>Basic VGC rules</description>
+    <party-size>2</party-size>
+    <team-length>4</team-length>
+    <ban-list>
+        <pokemon>Arceus</pokemon>
+        <pokemon>Celebi</pokemon>
+        <pokemon>Darkrai</pokemon>
+        <pokemon>Deoxys</pokemon>
+        <pokemon>Deoxys-e</pokemon>
+        <pokemon>Deoxys-l</pokemon>
+        <pokemon>Deoxys-f</pokemon>
+        <pokemon>Jirachi</pokemon>
+        <pokemon>Manaphy</pokemon>
+        <pokemon>Phione</pokemon>
+        <pokemon>Shaymin</pokemon>
+        <pokemon>Mew</pokemon>
+    </ban-list>
+    <clauses>
+        <clause>Strict Damage Clause</clause>
+    </clauses>
+</metagame>
+
 </metagames>
