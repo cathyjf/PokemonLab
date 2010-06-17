@@ -63,8 +63,8 @@ SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
     return SECRET_PAIR(DatabaseRegistry::getHexHash(secret), salt);
 }
 
-void VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
-        const std::string &user, const bool success) {
+void VBulletinAuthenticator::finishAuthentication(ScopedConnection & /*conn*/,
+        const std::string & /*user*/, const bool /*success*/) {
     
 }
 

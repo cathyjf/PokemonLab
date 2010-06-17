@@ -966,7 +966,6 @@ void Pokemon::setItem(const string &name) {
  */
 void Pokemon::setLevel(const int level) {
     m_level = level;
-    cout << "m_level is " << m_level << endl;
 }
 
 /**

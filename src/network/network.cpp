@@ -470,7 +470,6 @@ public:
 class InvalidTeamMessage : public OutMessage {
 public:
     InvalidTeamMessage(const string &user, const vector<int> &cls) : OutMessage(INVALID_TEAM) {
-        cout << "this is an invalid team " << endl;
         *this << user;
         *this << (int16_t)cls.size();
         vector<int>::const_iterator i = cls.begin();
@@ -1052,7 +1051,8 @@ private:
                 msg,
                 team);
 
-        if (team.size() > challenge->teamLength) {
+        const int size = team.size();
+        if (size > challenge->teamLength) {
             team.resize(challenge->teamLength);
         }
         
@@ -1101,7 +1101,8 @@ private:
                 msg,
                 challenge->teams[0]);
 
-        if (challenge->teams[0].size() > challenge->teamLength) {
+        const int size = challenge->teams[0].size();
+        if (size > challenge->teamLength) {
             challenge->teams[0].resize(challenge->teamLength);
         }
 
@@ -1861,8 +1862,8 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         client->start();
         cout << "Accepted client from " << client->getIp() << "." << endl;
         WelcomeMessage msg(2,
-                "Official Server",
-                "Welcome to Shoddy Battle 2!");
+                "Test Server",
+                "Welcome to code name Shoddy Battle 2!");
         client->sendMessage(msg);
     }
 }

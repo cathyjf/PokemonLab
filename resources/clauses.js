@@ -192,22 +192,20 @@ makeClause({
     },
     getLevel : function(rating) {
         //return an appropriate level given a BSR
-        //we will use Catherine's function (for now) which is
+        //we will use this function (for now) which is
         //level = 180.5 - 19.5 * log_e(bsr), capped at 100
         var level = 180.5 - 19.5 * Math.log(rating);
         return (level > 100) ? 100 : Math.floor(level);
     },
     transformTeam : function(team) {
-        for (i in team) {
+        for (var i in team) {
             var p = team[i];
-            print(p.name);
             var bases = p.base;
             var rating = this.bsr(bases[Stat.HP], bases[Stat.ATTACK], 
                     bases[Stat.DEFENCE], bases[Stat.SPEED], 
                     bases[Stat.SPATTACK], bases[Stat.SPDEFENCE]);
             var level = this.getLevel(rating);
             p.level = level;
-            print(level);
         }
     }
 });
