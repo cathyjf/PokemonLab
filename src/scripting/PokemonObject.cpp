@@ -742,6 +742,13 @@ JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 p->setAbility(NULL);
             }
         } break;
+        
+        case PTI_LEVEL: {
+            if (!JSVAL_IS_NULL(*vp)) {
+                int level = JSVAL_TO_INT(*vp);
+                p->setLevel(level);
+            }
+        } break;
     }
     return JS_TRUE;
 }
@@ -933,7 +940,7 @@ JSPropertySpec pokemonProperties[] = {
     { "iv", PTI_IV, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "ev", PTI_EV, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "stat", PTI_STAT, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
-    { "level", PTI_LEVEL, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
+    { "level", PTI_LEVEL, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "nature", PTI_NATURE, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "hp", PTI_HP, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, pokemonSet },
     { "types", PTI_TYPES, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },

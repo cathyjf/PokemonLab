@@ -208,6 +208,14 @@ bool StatusObject::validateTeam(ScriptContext *scx, const Pokemon::ARRAY &team) 
     return v.getBool();
 }
 
+void StatusObject::transformTeam(ScriptContext *scx, const Pokemon::ARRAY &team) {
+    if (!scx->hasProperty(this, "transformTeam"))
+        return;
+    ScriptArrayPtr teamPtr = ScriptArray::newTeamArray(team, scx);
+    ScriptValue argv[] = { teamPtr.get() };
+    ScriptValue v = scx->callFunctionByName(this, "transformTeam", 1, argv);
+}
+
 void StatusObject::informTargeted(ScriptContext *cx,
         Pokemon *user, MoveObject *move) {
     if (!cx->hasProperty(this, "informTargeted"))

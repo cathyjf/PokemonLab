@@ -3,3 +3,6 @@
 \.chg\..*$
 \.rej$
 \.conflict\~$
+items.txt
+.DS_Store
+.hgignore

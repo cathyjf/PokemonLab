@@ -962,6 +962,14 @@ void Pokemon::setItem(const string &name) {
 }
 
 /**
+ * Set this pokemon's level
+ */
+void Pokemon::setLevel(const int level) {
+    m_level = level;
+    cout << "m_level is " << m_level << endl;
+}
+
+/**
  * Deduct PP from a move.
  */
 void Pokemon::deductPp(MoveObjectPtr move) {

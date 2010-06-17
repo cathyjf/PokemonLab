@@ -186,6 +186,7 @@ public:
     void setAbility(const std::string &);
     void setItem(StatusObject *);
     void setItem(const std::string &);
+    void setLevel(const int level);
 
     int getMoveCount() const { return m_moves.size(); }
 

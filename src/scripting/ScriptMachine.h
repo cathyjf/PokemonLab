@@ -256,6 +256,8 @@ public:
     const PokemonType *getVulnerability(ScriptContext *, Pokemon *, Pokemon *);
     const PokemonType *getImmunity(ScriptContext *, Pokemon *, Pokemon *);
     bool validateTeam(ScriptContext *, const std::vector<boost::shared_ptr<Pokemon> > &);
+    void transformTeam(ScriptContext *, const std::vector<boost::shared_ptr<Pokemon> > &);
+
 
 };
 

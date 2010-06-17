@@ -149,3 +149,65 @@ makeClause({
         return true;
     }
 });
+
+makeClause({
+    name : "Level Balance",
+    description : "Each Pokemon's level is adjusted to be in the " +
+            "range [60,100] based on its base stat rating",
+    s : function(spd) {
+        //returns a 4th order approximation to the percentile of 
+        //speeds that a certain speed falls into.
+        var p1 = 7.2915e-09;
+        var p2 = -3.1887e-06;
+        var p3 = 4.1592e-04;
+        var p4 = -0.0089004;
+        var p5 = 0.052822;
+        return p1 * Math.pow(spd, 4) + 
+               p2 * Math.pow(spd, 3) + 
+               p3 * Math.pow(spd, 2) + 
+               p4 * spd + p5;
+    },
+    bsr : function(hp, atk, def, spd, spatk, spdef) {
+        //this clause uses X-Act's Base Stat Ratings v.2
+        //as the measure to balance a pokemon's level
+        //http://www.smogon.com/forums/showthread.php?t=64133
+        var shp = hp * 2 + 141;
+        var satk = atk * 2 + 36;
+        var sdef = def * 2 + 36;
+        var sspa = spatk * 2 + 36;
+        var sspd = spdef * 2 + 36;
+        var sspe = this.s(spd);
+        
+        var rpt = shp * sdef
+        var rst = shp * sspd
+        var rps = satk * (satk * sspe + 415) / (satk * (1 - sspe) + 415);
+        var rss = sspa * (sspa * sspe + 415) / (sspa * (1 - sspe) + 415);
+        
+        var pt = rpt / 417.5187 - 18.9256;
+        var st = rst / 434.8833 - 13.9044;
+        var ps = rps / 1.855522 - 4.36533;
+        var ss = rss / 1.947004 + 4.36062;
+        
+        return (pt + st + ps + ss) / 1.525794 - 62.1586;
+    },
+    getLevel : function(rating) {
+        //return an appropriate level given a BSR
+        //we will use Catherine's function (for now) which is
+        //level = 180.5 - 19.5 * log_e(bsr), capped at 100
+        var level = 180.5 - 19.5 * Math.log(rating);
+        return (level > 100) ? 100 : Math.floor(level);
+    },
+    transformTeam : function(team) {
+        for (i in team) {
+            var p = team[i];
+            print(p.name);
+            var bases = p.base;
+            var rating = this.bsr(bases[Stat.HP], bases[Stat.ATTACK], 
+                    bases[Stat.DEFENCE], bases[Stat.SPEED], 
+                    bases[Stat.SPATTACK], bases[Stat.SPDEFENCE]);
+            var level = this.getLevel(rating);
+            p.level = level;
+            print(level);
+        }
+    }
+});

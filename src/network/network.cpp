@@ -991,7 +991,6 @@ private:
                 msg >> clause;
                 challenge->clauses.push_back(clause);
             }
-            cout << "challenge has " << challenge->clauses.size() << " clauses" << endl;
             unsigned char timing;
             int pool = 0;
             unsigned char periods = 0;
@@ -1798,6 +1797,11 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
             violations.push_back(clauses[i].getIdx(cx));
         }
     }
+    if (pass) {
+        for (int i = 0; i < size; ++i) {
+            clauses[i].transformTeam(cx, team);
+        }
+    }
     return pass;
 }
 
@@ -1882,10 +1886,10 @@ int main() {
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect("shoddybattle2", "localhost", "root", "");
     registry->startThread();
-//    registry->setAuthenticator(shared_ptr<database::Authenticator>(
-//            new database::DefaultAuthenticator()));
     registry->setAuthenticator(shared_ptr<database::Authenticator>(
-            new database::VBulletinAuthenticator()));
+            new database::DefaultAuthenticator()));
+//    registry->setAuthenticator(shared_ptr<database::Authenticator>(
+//            new database::VBulletinAuthenticator()));
 
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");
