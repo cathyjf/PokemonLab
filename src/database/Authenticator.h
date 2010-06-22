@@ -45,6 +45,7 @@ public:
     virtual SECRET_PAIR getSecret(ScopedConnection &, const std::string &) = 0;
     virtual void finishAuthentication(ScopedConnection &,
             const std::string &, const bool) { }
+    virtual ~Authenticator() { }
 };
 
 class DefaultAuthenticator : public Authenticator {
