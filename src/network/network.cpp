@@ -60,6 +60,7 @@
 #include "../scripting/ScriptMachine.h"
 #include "../matchmaking/MetagameList.h"
 #include "../network/Channel.h"
+#include "../mechanics/JewelMechanics.h"
 
 using namespace std;
 using namespace boost;
@@ -1784,7 +1785,6 @@ void ServerImpl::initialiseClauses() {
 
 bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team, 
                             vector<StatusObject> &clauses, vector<int> &violations) {
-    //todo: verify ivs, moves etc.
     Pokemon::ARRAY::iterator i = team.begin();
     for (; i != team.end(); ++i) {
         (*i)->initialise(NULL, scx, 0, 0);
@@ -1798,11 +1798,29 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
             violations.push_back(clauses[i].getIdx(cx));
         }
     }
-    if (pass) {
-        for (int i = 0; i < size; ++i) {
-            clauses[i].transformTeam(cx, team);
+    if (!pass)
+        return false;
+        
+    for (int i = 0; i < size; ++i) {
+        clauses[i].transformTeam(cx, team);
+    }
+
+    //validate a pokemon with its species and a mechanics set
+    //TODO: use the specific mechanics
+    JewelMechanics mech;
+    const int partySize = team.size();
+    for (int i = 0; i < partySize; ++i) {
+        Pokemon::PTR p = team[i];
+        if (!p->validate(cx)) {
+            violations.push_back(-i - 1);
+            pass = false;
+        }
+        if (!mech.validateHiddenStats(*p)) {
+            violations.push_back(-i - 1 - partySize);
+            pass = false;
         }
     }
+    
     return pass;
 }
 

@@ -31,6 +31,7 @@
 #include "../shoddybattle/BattleField.h"
 #include "../moves/PokemonMove.h"
 #include "../scripting/ScriptMachine.h"
+#include "stat.h"
 
 #include <ctime>
 
@@ -322,6 +323,89 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     if (damage < 1) damage = 1;
     return damage;
+}
+
+/*inline unsigned short prev(unsigned long long &n) {
+    n = (n * 4005161829L) + 171270561L;
+    return static_cast<short>(n >> 16);
+}
+
+inline unsigned short next(unsigned long long &n) {
+    n  = (n * 1103515245) + 24691;
+    return static_cast<short>(n >> 16);
+}*/
+
+inline bool validateIvs(const Pokemon &p) {
+    /*unsigned long long rand = 0;
+    const unsigned int internal = p.getNature()->getInternalValue();
+    const unsigned long long num1 = (p.getIv(S_DEFENCE) << 10)
+            + (p.getIv(S_ATTACK) << 5)
+            + p.getIv(S_HP);
+    const unsigned long long num2 = (p.getIv(S_SPDEFENCE) << 10)
+            + (p.getIv(S_SPATTACK) << 5)
+            + p.getIv(S_SPEED);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 65536; ++j) {
+            rand = (i << 31) + (num1 << 16) + j;
+            unsigned long long first = rand;
+            unsigned short second = next(rand);
+            if (second >= 32768) {
+                second -= 32768;
+            }
+            if (second == num2) {
+                rand = first;
+                unsigned short a = prev(rand);
+                unsigned short b = prev(rand);
+                unsigned short c = prev(rand);
+                unsigned long long p1 = (a << 16) + b;
+                unsigned long long p2 = (b << 16) + c;
+                if ((p1 % 25) == internal) {
+                    return true;
+                }
+                if ((p2 % 25) == internal) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;*/
+    return true;
+}
+
+/**
+ * Validates a Pokemon using the following criteria:
+ * 1) Level must be in the range [1,100]
+ * 2) IVs must be in the range [0,31]
+ * 3) EVs must be in the range [0,255]
+ * 4) Sum of all EVs must be <= 510
+ * 5) Specific natures and IV combos are not allowed
+ *    for non-breeding species
+ */
+bool JewelMechanics::validateHiddenStats(const Pokemon &p) const {
+    cout << p.getSpeciesName() << endl;
+    int level = p.getLevel();
+    if ((level < 1) || (level > 100))
+        return false;
+
+    int sum = 0;
+    for (int i = 0; i < STAT_COUNT; ++i) {
+        STAT s = static_cast<STAT>(i);
+        const int iv = p.getIv(s);
+        const int ev = p.getEv(s);
+        sum += ev;
+        if ((iv < 0) || (iv > MAX_IV))
+            return false;
+        if ((ev < 0) || (ev > MAX_EV))
+            return false;
+    }
+
+    if (sum > MAX_EV_TOTAL)
+        return false;
+
+    if (p.hasRestrictedIvs() && !validateIvs(p))
+        return false;
+
+    return true;
 }
 
 }

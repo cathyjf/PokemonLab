@@ -89,6 +89,8 @@ public:
 
     void initialise(BattleField *field, boost::shared_ptr<ScriptContext>,
             const int i, const int j);
+            
+    bool validate(ScriptContext *);
 
     ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 
@@ -133,6 +135,7 @@ public:
 
     std::string getSpeciesName() const;
     int getSpeciesId() const;
+    bool hasRestrictedIvs() const;
     std::string getName() const { return m_nickname; }
     std::string getToken() const;
     double getMass() const;

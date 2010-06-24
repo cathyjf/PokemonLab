@@ -44,6 +44,22 @@ using namespace xercesc;
 
 namespace shoddybattle {
 
+const string PokemonSpecies::m_restricted[] = {"Arceus", "Articuno", 
+        "Azelf", "Celebi", "Cresselia", "Darkrai","Deoxys", "Deoxys-f", 
+        "Groudon", "Heatran", "Ho-oh", "Jirachi","Kyogre", "Latias", "Latios", 
+        "Lugia", "Manaphy", "Mesprit", "Mew","Mewtwo", "Moltres", "Palkia", 
+        "Raikou", "Rayquaza", "Regice", "Regigigas", "Regirock", "Registeel", 
+        "Shaymin", "Suicune", "Unown", "Uxie", "Zapdos"};
+
+bool PokemonSpecies::hasRestrictedIvs() const { 
+    const int size = sizeof(m_restricted) / sizeof(string);
+    for (int i = 0; i < size; ++i) {
+        if (m_restricted[i] == m_name)
+            return true;
+    }
+    return false;
+}
+
 const int ORIGIN_COUNT = 5;
 
 /**

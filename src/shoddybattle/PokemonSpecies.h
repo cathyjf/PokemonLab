@@ -90,6 +90,7 @@ public:
     const ABILITY_LIST &getAbilities() const { return m_abilities; }
     const MOVE_LIST &getMoveList() const { return m_moves; }
     double getMass() const { return m_mass; }
+    bool hasRestrictedIvs() const;;
 
     std::set<std::string> populateMoveList(const MoveDatabase &);
     const MoveTemplate *getMove(const std::string name) const {
@@ -111,6 +112,7 @@ private:
     mutable MOVE_LIST m_moves;
     double m_mass;
     ABILITY_LIST m_abilities;
+    static const std::string m_restricted[];
 };
 
 /**

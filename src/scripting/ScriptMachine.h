@@ -166,6 +166,7 @@ public:
     double getAccuracy(ScriptContext *) const;
     const PokemonType *getType(ScriptContext *) const;
     bool getFlag(ScriptContext *, const MOVE_FLAG flag) const;
+    
 private:
     const MoveTemplate *m_template;
 };

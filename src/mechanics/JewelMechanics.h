@@ -35,8 +35,14 @@ class MoveObject;
 
 class JewelMechanicsImpl;
 
+//Maximum values for the various hidden stats
+const int MAX_IV = 31;
+const int MAX_EV = 255;
+const int MAX_EV_TOTAL = 510;
+
 class JewelMechanics : public BattleMechanics {
 public:
+    
     JewelMechanics();
     ~JewelMechanics();
     bool getCoinFlip(double) const;
@@ -51,6 +57,7 @@ public:
     int getRandomInt(const int lower, const int upper) const;
     double getEffectiveness(BattleField &field, const PokemonType *,
             Pokemon *, Pokemon *, std::vector<double> *) const;
+    bool validateHiddenStats(const Pokemon &p) const;
 private:
     JewelMechanicsImpl *m_impl;
 };

@@ -54,6 +54,7 @@ public:
             std::vector<double> *) const = 0;
     virtual bool isCriticalHit(BattleField &field, MoveObject &move,
             Pokemon &user, Pokemon &target) const = 0;
+    virtual bool validateHiddenStats(const Pokemon &p) const = 0;
     virtual ~BattleMechanics() { }
 protected:
     BattleMechanics() { }

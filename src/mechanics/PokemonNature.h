@@ -46,8 +46,8 @@ public:
         return !(*this == rhs);
     }
 
-    /** Obtain the interval value of this nature. **/
-    unsigned int getIntervalValue() const {
+    /** Obtain the internal value of this nature. **/
+    unsigned int getInternalValue() const {
         return m_id;
     }
 
