@@ -1019,6 +1019,8 @@ private:
         ClientImplPtr client = m_server->getClient(opponent);
         if (!client) {
             return;
+        } else if (getId() == client->getId()) {
+            return;
         }
 
         m_challenges[opponent] = challenge;
