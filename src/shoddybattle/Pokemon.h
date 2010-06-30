@@ -70,6 +70,11 @@ typedef std::map<int, PRIORITY_MAP> MODIFIERS;
  */
 class Pokemon : public ObjectWrapper {
 public:
+    enum FORCED_TYPE {
+        FORCED_NONE = 0,
+        FORCED_MOVE = 1,
+        FORCED_ACTION = 2
+    };
     typedef boost::shared_ptr<Pokemon> PTR;
     typedef std::vector<PTR> ARRAY;
     
@@ -209,15 +214,17 @@ public:
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);
+    void setForcedTurn(const PokemonTurn &turn, const FORCED_TYPE type);
     boost::shared_ptr<MoveObject> setForcedTurn(
-            const MoveTemplate *, Pokemon *);
+            const MoveTemplate *, Pokemon *, const FORCED_TYPE);
     PokemonTurn *getForcedTurn() const {
         if (!m_forcedTurn)
             return NULL;
         return m_forcedTurn.get();
     }
+    FORCED_TYPE getForcedType();
     bool isMoveLegal(const int i) const { return m_legalMove[i]; }
-    bool isSwitchLegal() const { return m_legalSwitch; }
+    bool isSwitchLegal() const { return m_legalSwitch && m_forcedType != FORCED_ACTION; }
 
     struct RECENT_DAMAGE {
         Pokemon *user;
@@ -337,6 +344,7 @@ private:
     PokemonTurn *m_turn;
     boost::shared_ptr<PokemonTurn> m_forcedTurn;
     boost::shared_ptr<MoveObject> m_forcedMove;
+    FORCED_TYPE m_forcedType;
 
     boost::shared_ptr<PokemonObject> m_object;
 

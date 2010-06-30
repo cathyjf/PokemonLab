@@ -180,7 +180,7 @@ void Pokemon::determineLegalActions() {
     }
 
     if (struggle) {
-        setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"), NULL);
+        setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"), NULL, FORCED_MOVE);
     }
 }
 
@@ -420,22 +420,35 @@ bool Pokemon::useMove(MoveObject *move,
  * Force the pokemon to carry out a particular turn next round.
  */
 void Pokemon::setForcedTurn(const PokemonTurn &turn) {
+    setForcedTurn(turn, Pokemon::FORCED_ACTION);
+}
+/**
+ * Force the pokemon to carry out a particular turn next round.
+ */
+void Pokemon::setForcedTurn(const PokemonTurn &turn, const FORCED_TYPE type) {
+    m_forcedType = type;
     m_forcedTurn = shared_ptr<PokemonTurn>(new PokemonTurn(turn));
 }
 
 /**
  * Force the pokemon to use a particular move next round.
  */
-MoveObjectPtr Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p) {
+MoveObjectPtr Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p, const FORCED_TYPE type) {
     int target = p ? p->getSlot() : -1;
     if (p && (p->getParty() == 1)) {
         target += m_field->getPartySize();
     }
     m_forcedMove = m_cx->newMoveObject(move);
-    setForcedTurn(PokemonTurn(TT_MOVE, -1, target));
+    setForcedTurn(PokemonTurn(TT_MOVE, -1, target), type);
     return m_forcedMove;
 }
 
+Pokemon::FORCED_TYPE Pokemon::getForcedType() {
+    if (!m_forcedMove) {
+        return FORCED_NONE;
+    }
+    return m_forcedType;
+}
 /**
  * Get the index of a named move, -1 if the pokemon does not know the move.
  */

@@ -1077,7 +1077,8 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         PokemonTurn *turn = &turns[i];
 
         PokemonTurn *forced = p->getForcedTurn();
-        if (forced) {
+        Pokemon::FORCED_TYPE type = p->getForcedType();
+        if (forced && (type == Pokemon::FORCED_ACTION || turn->type != TT_SWITCH)) {
             turn = forced;
         }
         
