@@ -122,7 +122,7 @@ JSBool applyStatus(JSContext *cx,
 }
 
 /**
- * pokemon.setForcedMove(move, target)
+ * pokemon.setForcedMove(move, target, allowSwitch)
  */
 JSBool setForcedMove(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
@@ -142,9 +142,16 @@ JSBool setForcedMove(JSContext *cx,
         return JS_FALSE;
     }
 
+    if (!JSVAL_IS_BOOLEAN(argv[2])) {
+        JS_ReportError(cx, "setForcedMove: illegal third parameter");
+        return JS_FALSE;
+    }
+
     Pokemon *target = null
             ? NULL : (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(argv[1]));
-    MoveObjectPtr forced = p->setForcedTurn(move, target, Pokemon::FORCED_ACTION);
+    Pokemon::FORCED_TYPE forcedType = (JSVAL_TO_BOOLEAN(argv[2]))
+            ? Pokemon::FORCED_MOVE : Pokemon::FORCED_ACTION;
+    MoveObjectPtr forced = p->setForcedTurn(move, target, forcedType);
 
     *ret = OBJECT_TO_JSVAL((JSObject *)forced->getObject());
     return JS_TRUE;
@@ -983,7 +990,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS("getStat", getStat, 1, 0, 0),
     JS_FS("isType", isType, 1, 0, 0),
-    JS_FS("setForcedMove", setForcedMove, 2, 0, 0),
+    JS_FS("setForcedMove", setForcedMove, 3, 0, 0),
     JS_FS("clearForcedMove", clearForcedMove, 0, 0, 0),
     JS_FS("faint", faint, 0, 0, 0),
     JS_FS("getPp", getPp, 1, 0, 0),

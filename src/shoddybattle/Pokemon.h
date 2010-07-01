@@ -211,6 +211,7 @@ public:
     void switchOut();
     void determineLegalActions();
     void clearForcedTurn() {
+        m_forcedType = FORCED_NONE;
         m_forcedTurn.reset();
     }
     void setForcedTurn(const PokemonTurn &turn);

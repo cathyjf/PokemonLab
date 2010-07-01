@@ -688,7 +688,7 @@ function makeMomentumMove(move) {
         if (user.getStatus("SleepEffect"))
             return;
 
-        user.setForcedMove(this, null);
+        user.setForcedMove(this, null, false);
 
         if (user.getStatus("MomentumEffect"))
             return;
@@ -741,7 +741,7 @@ function makeRampageMove(move) {
         if (user.getStatus("SleepEffect"))
             return;
         
-        user.setForcedMove(this, null);
+        user.setForcedMove(this, null, false);
 
         if (user.getStatus("RampageEffect"))
             return;
@@ -958,7 +958,7 @@ function makeRechargeMove(move) {
     var execute = getParentUse(move);
     move.use = function(field, user, target, targets) {
         execute.call(this, field, user, target, targets);
-        user.setForcedMove(this, target);
+        user.setForcedMove(this, target, false);
         var effect = new StatusEffect("RechargeMoveEffect");
         effect.vetoTier = -5;
         effect.turns = 2;
@@ -1118,7 +1118,7 @@ function makeChargeMove(move, text, vulnerable) {
         if (this.additional) {
             this.additional(user);
         }
-        var move_ = user.setForcedMove(this, target);
+        var move_ = user.setForcedMove(this, target, false);
         move_.accuracy = accuracy_;
         var effect = new StatusEffect("ChargeMoveEffect");
         effect.move = this;

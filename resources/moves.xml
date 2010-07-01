@@ -716,7 +716,7 @@ if (!effect) {
     effect = user.applyStatus(user, effect);
 }
 if (--effect.turns_ != 0) {
-    user.setForcedMove(this, null);
+    user.setForcedMove(this, null, false);
     field.print(Text.battle_messages_unique(104, user));
     return;
 }
@@ -2591,7 +2591,7 @@ effect.informBeginExecution = function() {
         turn.move = id_;
     } else {
         turn.move = -1;
-        this.subject.setForcedMove(field.getMove("Struggle"), null);
+        this.subject.setForcedMove(field.getMove("Struggle"), null, true);
     }
     turn.target = -1;
 };
@@ -2607,7 +2607,7 @@ effect.informFinishedSubjectExecution = function(move) {
         return;
     }
     if ((this.turns_ > 1) && (this.choice_ = !this.subject.forcedTurn)) {
-        this.subject.setForcedMove(this_, null);
+        this.subject.setForcedMove(this_, null, true);
     }
 };
 effect.tick = function() {
@@ -2617,7 +2617,7 @@ effect.tick = function() {
     }
 };
 target.applyStatus(user, effect);
-target.setForcedMove(this, null);
+target.setForcedMove(this, null, true);
 field.print(Text.battle_messages_unique(155, target));
 ]]>
 </use>
@@ -10390,7 +10390,7 @@ if (selection) {
 <init>
 <![CDATA[
 this.prepareSelf = function(field, user) {
-    user.setForcedMove(this, null);
+    user.setForcedMove(this, null, false);
     if (user.getStatus("RampageEffect"))
         return;
     var effect = new StatusEffect("RampageEffect");
