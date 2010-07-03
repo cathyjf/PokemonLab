@@ -1117,7 +1117,7 @@ bool Pokemon::validate(ScriptContext *cx) {
         return false;
     
     int genders = m_species->getPossibleGenders();
-    if (!(m_gender && (m_gender & genders)) || (!m_gender && !genders))
+    if (!(m_gender && (m_gender & genders)) && (m_gender || genders))
         return false;
         
     return true;
