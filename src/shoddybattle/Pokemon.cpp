@@ -92,6 +92,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_legalSwitch = true;
     m_slot = -1;
     m_acted = false;
+    m_revealed = false;
 }
 
 string Pokemon::getToken() const {
@@ -312,6 +313,7 @@ void Pokemon::switchIn() {
         (*i)->setSubject(m_cx, this);
         (*i)->switchIn(m_cx);
     }
+    m_revealed = true;
 }
 
 namespace {

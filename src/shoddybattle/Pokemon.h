@@ -278,6 +278,10 @@ public:
         return m_damaged;
     }
 
+    bool isRevealed() const {
+        return m_revealed;
+    }
+
     void clearDamagedFlag() {
         m_damaged = false;
     }
@@ -328,6 +332,7 @@ private:
 
     bool m_acted;   // Has this pokemon acted since it became active?
     bool m_damaged; // Has this pokemon been damaged this turn?
+    bool m_revealed;// Has this pokemon ever been seen in battle?
 
     std::stack<RECENT_DAMAGE> m_recent;
 

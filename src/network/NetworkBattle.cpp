@@ -251,18 +251,19 @@ struct NetworkBattleImpl {
      * for 0...1:
      *     byte : party size
      *     for 0...party size:
-     *         int16 : slot the pokemon is in or -1 if no slot
-     *         if slot != -1:
+     *         byte : has the pokemon been revealed
+     *         if revealed:
+     *             int16  : slot the pokemon is in or -1 if no slot:
      *             string : the nickname of the pokemon
      *             int16  : species id
      *             if species != -1:
      *                 byte : gender
      *                 byte : level
      *                 byte : whether the pokemon is shiny
-     *         byte : whether the pokemon is fainted
-     *         if not fainted:
-     *             byte : present hp in [0, 48]
-     *             // TODO: statuses, stat levels, etc.
+     *             byte : whether the pokemon is fainted
+     *             if not fainted:
+     *                 byte : present hp in [0, 48]
+     *                 // TODO: statuses, stat levels, etc.
      *
      */
     void prepareSpectator(ClientPtr client) {
@@ -280,21 +281,23 @@ struct NetworkBattleImpl {
             msg << (unsigned char)size;
             for (int j = 0; j < size; ++j) {
                 Pokemon::PTR p = team[j];
-                const int slot = p->getSlot();
-                msg << (int16_t)slot;
-                if (slot != -1) {
+                msg << (unsigned char)p->isRevealed();
+                if (p->isRevealed()) {
+                    const int slot = p->getSlot();
+                    msg << (int16_t)slot;
                     msg << p->getName();
                     writeVisualData(msg, p);
-                }
-                const bool fainted = p->isFainted();
-                msg << (unsigned char)fainted;
-                if (!fainted) {
-                    const int hp = p->getRawStat(S_HP);
-                    const int present = p->getHp();
-                    const int total =
-                            floor(48.0 * (double)present / (double)hp + 0.5);
-                    msg << (unsigned char)total;
-                    // TODO: statuses, stat levels, etc.
+                
+                    const bool fainted = p->isFainted();
+                    msg << (unsigned char)fainted;
+                    if (!fainted) {
+                        const int hp = p->getRawStat(S_HP);
+                        const int present = p->getHp();
+                        const int total =
+                                floor(48.0 * (double)present / (double)hp + 0.5);
+                        msg << (unsigned char)total;
+                        // TODO: statuses, stat levels, etc.
+                    }
                 }
             }
         }
