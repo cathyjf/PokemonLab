@@ -558,8 +558,11 @@ void BattleField::switchPokemon(Pokemon *p, const int idx) {
  * Withdraw an active pokemon.
  */
 void BattleField::withdrawPokemon(Pokemon *p) {
-    if (p->isFainted())
+    if (p->isFainted()) {
+        //TODO: call switchOut() instead?
+        p->setSlot(-1);
         return;
+    }
     informWithdraw(p);
     ScriptValue argv[] = { p };
     for (int i = 0; i < TEAM_COUNT; ++i) {

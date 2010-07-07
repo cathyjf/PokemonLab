@@ -256,10 +256,9 @@ struct NetworkBattleImpl {
      *             int16  : slot the pokemon is in or -1 if no slot:
      *             string : the nickname of the pokemon
      *             int16  : species id
-     *             if species != -1:
-     *                 byte : gender
-     *                 byte : level
-     *                 byte : whether the pokemon is shiny
+     *             byte : gender
+     *             byte : level
+     *             byte : whether the pokemon is shiny
      *             byte : whether the pokemon is fainted
      *             if not fainted:
      *                 byte : present hp in [0, 48]
@@ -286,7 +285,12 @@ struct NetworkBattleImpl {
                     const int slot = p->getSlot();
                     msg << (int16_t)slot;
                     msg << p->getName();
-                    writeVisualData(msg, p);
+
+                    int16_t species = (int16_t)p->getSpeciesId();
+                    msg << species;
+                    msg << (unsigned char)p->getGender();
+                    msg << (unsigned char)p->getLevel();
+                    msg << (unsigned char)p->isShiny();
                 
                     const bool fainted = p->isFainted();
                     msg << (unsigned char)fainted;
