@@ -368,6 +368,54 @@ makeChoiceItem("Choice Scarf", function(field, stat, subject) {
 });
 
 makeItem({
+    name : "Life Orb",
+    modifier : function(field, user, target, move, critical, targets) {
+        if (user != this.subject)
+            return null;
+        if (move.name == "__confusion")
+            return null;
+        return [2, 1.3, 0];
+    },
+    informBeginExecution: function() {
+        // Cache all HPs here to determine if any attack hit successfully later.
+        // Conveniently, this doesn't consider hitting subs a successful move
+        var subject = this.subject;
+        var field = subject.field;
+
+        this.pokemonHp_ = new Array();
+        for (var i = 0; i < 2; i++) {
+            for (var j = 0; j < field.partySize; j++) {
+                var active = subject.field.getActivePokemon(i, j);
+                if (active != subject)
+                    this.pokemonHp_.push(active.hp);
+            }
+        }
+
+    },
+    informFinishedSubjectExecution : function(move) {
+        // Confusion quits the turn, so factoring it in is unnecessary
+        var subject = this.subject;
+        var field = subject.field;
+        if (move.moveClass == MoveClass.OTHER) {
+            return;
+        }
+
+        var index = 0;
+        for (var i = 0; i < 2; i++) {
+            for (var j = 0; j < field.partySize; j++) {
+                var active = subject.field.getActivePokemon(i, j);
+                if (active != subject && active.hp < this.pokemonHp_[index++]) {
+                    var recoil = Math.floor(subject.getStat(Stat.HP) / 10);
+                    if (recoil < 1) recoil = 1;
+                    subject.hp -= recoil;
+                    return;
+                }
+            }
+        }
+    }
+});
+
+makeItem({
     name : "Quick Claw",
     value_ : -1,
     switchIn : function() {
