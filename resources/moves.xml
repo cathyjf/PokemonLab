@@ -2610,6 +2610,11 @@ effect.informFinishedSubjectExecution = function(move) {
         this.subject.setForcedMove(this_, null, true);
     }
 };
+effect.informWithdraw = function(subject) {
+    if (subject == this.subject) {
+        subject.removeStatus(this);
+    }
+};
 effect.tick = function() {
     if (--this.turns_ == 0) {
         field.print(Text.battle_messages_unique(156, this.subject));

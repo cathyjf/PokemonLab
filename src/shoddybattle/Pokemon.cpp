@@ -339,6 +339,8 @@ void Pokemon::switchOut() {
     setAbility(m_abilityName);
     // Restore original type.
     m_types = m_species->getTypes();
+    // Remove any forced moves
+    clearForcedTurn();
     // Indicate that the pokemon is no longer active.
     m_slot = -1;
     // Clear this pokemon's memory.
