@@ -1732,3 +1732,24 @@ makeAbility({
         return target.field.getTypeEffectiveness(moveType, type);
     }
 });
+
+/*******************
+ * Truant
+ *******************/
+makeAbility({
+    name: "Truant",
+    informActivate: function () {
+        this.loaf_ = false;
+    },
+    vetoExecution: function(field, user, target, move) {
+        if (user != this.subject)
+            return false;
+        if (this.loaf_)
+            field.print(Text.ability_messages(51, user));
+
+        return this.loaf_;
+    },
+    informFinishedSubjectExecution: function() {
+        this.loaf_ = !this.loaf_;
+    }
+});
