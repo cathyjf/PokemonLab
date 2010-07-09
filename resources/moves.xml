@@ -7298,6 +7298,7 @@ this.beginTurn = function(field, user, target) {
             return;
         this.executed = true;
         this.subject.execute(move, subject);
+        this.subject.setPp(move, this.subject.getPp(move) - 1);
     };
     effect.vetoExecution = function(field, user, target, move) {
         if (target != null)

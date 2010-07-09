@@ -249,7 +249,12 @@ function makeChoiceItem(item, func) {
         choiceItem_ : true,
         statModifier : func,
         informFinishedSubjectExecution : function() {
-            var move_ = this.subject.lastMove;
+            // A pokemon fleeing from pursuit vetoes the pursuiters turn,
+            // so subject.lastMove doesn't get set. Check for that.
+            var field = this.subject.field;
+            var move_ = (this.subject.getStatus("PursuitEffect"))
+                ? field.getMove("Pursuit") : this.subject.lastMove;
+
             if (!move_ || (move_.name == "Mimic") || (move_.name == "Sketch")
                     || (move_.name == "Transform")
                     || (this.subject.getPp(move_) == -1)
