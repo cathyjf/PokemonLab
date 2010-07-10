@@ -262,12 +262,16 @@ struct NetworkBattleImpl {
      *             byte : whether the pokemon is fainted
      *             if not fainted:
      *                 byte : present hp in [0, 48]
-     *                 // TODO: statuses, stat levels, etc.
-     *
+     *                 byte : number of statuses
+     *                 for each status
+     *                     string : message
+     *                     byte   : effect radius
+     *                     
      */
     void prepareSpectator(ClientPtr client) {
         boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
-
+        ScriptContext *cx = m_field->getContext();
+        
         OutMessage msg(OutMessage::SPECTATOR_BEGIN);
         msg << m_field->getId();
         msg << m_trainer[0] << m_trainer[1];
@@ -300,7 +304,31 @@ struct NetworkBattleImpl {
                         const int total =
                                 floor(48.0 * (double)present / (double)hp + 0.5);
                         msg << (unsigned char)total;
-                        // TODO: statuses, stat levels, etc.
+
+                        // Not all status get sent, so prepare them first
+                        STATUSES statuses = p->getEffects();
+                        STATUSES::const_iterator iter = statuses.begin();
+                        vector<string> texts;
+                        vector<unsigned char> radii;
+                        for (; iter != statuses.end(); ++iter) {
+                            StatusObjectPtr effect = *iter;
+                            if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
+                                continue;
+                            string text = effect->toString(cx);
+                            if (text.empty())
+                                continue;
+
+                            texts.push_back(text);
+                            radii.push_back((unsigned char)effect->getRadius(cx));
+                        }
+
+                        //Now write the statuses
+                        const int size = texts.size();
+                        msg << (unsigned char)size;
+                        for (int k = 0; k < size; k++) {
+                            msg << texts[k];
+                            msg << radii[k];
+                        }
                     }
                 }
             }

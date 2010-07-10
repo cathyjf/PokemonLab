@@ -853,7 +853,7 @@ void Pokemon::faint() {
  */
 void Pokemon::setHp(int hp) {
     // TODO: Somehow handle the fact that being hit at 1 HP and saved by
-    //       Focus Band counts as being hit for the purpose of several
+    //       Focus Band/Sash counts as being hit for the purpose of several
     //       interactions.
     if (m_fainted) {
         return;
