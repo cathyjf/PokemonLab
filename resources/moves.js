@@ -1008,6 +1008,13 @@ function makeTwoHitMove(move) {
 function makeMultipleHitMove(move) {
 	move.use = function(field, user, target, targets) {
         var hits = user.sendMessage("informMultipleHitMove");
+
+        var hasSash = false;
+        var useSash = false;
+        var sash = target.getStatus("Focus Sash");
+        if (sash && target.hp == target.getStat(Stat.HP))
+            hasSash = true;
+
         if (!hits) {
             var rand = field.random(0, 1000);
             if (rand < 375) {
@@ -1022,13 +1029,21 @@ function makeMultipleHitMove(move) {
         }
         var i = 0;
         for (; i < hits; ++i) {
-            if (target.fainted)
+            if (target.fainted || useSash)
                 break;
             var damage = field.calculate(this, user, target, targets);
-			target.hp -= damage;
-			if (damage == 0)
-				return;
+            if (damage == 0)
+		return;
+
+            if (hasSash && damage >= target.hp) {
+                target.hp = 1;
+                useSash = true;
+            } else {
+                target.hp -= damage;
+            }
         }
+
+        if (useSash) sash.use();
         field.print(Text.battle_messages_unique(0, i));
     };
 }

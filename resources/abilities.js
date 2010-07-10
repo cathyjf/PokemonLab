@@ -1750,6 +1750,8 @@ makeAbility({
         return this.loaf_;
     },
     informFinishedSubjectExecution: function() {
+        // It is impossible to do a tick event after a switch, so the swap is done here
+        // The effect should be the same
         this.loaf_ = !this.loaf_;
     }
 });

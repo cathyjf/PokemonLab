@@ -822,6 +822,25 @@ makeItem({
         this.subject.item = null;
     }
 });
-            
-        
 
+makeItem({
+    name: "Focus Sash",
+    transformHealthChange: function(delta, user, indirect) {
+        // Multihit moves take Sash into account in their own method
+        if (indirect || delta < 0)
+            return delta;
+
+        var subject = this.subject;
+        var maxHp = subject.getStat(Stat.HP);
+        if (subject.hp < maxHp)
+            return delta;
+        if (delta < subject.hp)
+            return delta;
+        this.use();
+        return (maxHp > 1) ? maxHp - 1 : 0;
+    },
+    use: function() {
+        this.subject.field.print(Text.item_messages(10, this.subject, this.name));
+        this.consume();
+    }
+});
