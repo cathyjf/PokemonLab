@@ -398,12 +398,12 @@ makeItem({
 
     },
     informFinishedSubjectExecution : function(move) {
-        // Confusion quits the turn, so factoring it in is unnecessary
+        // This implementation does not look at self damage, so confusion
+        // doesn't harm this pokemon
         var subject = this.subject;
         var field = subject.field;
-        if (move.moveClass == MoveClass.OTHER) {
+        if (move.moveClass == MoveClass.OTHER)
             return;
-        }
 
         var index = 0;
         for (var i = 0; i < 2; i++) {
