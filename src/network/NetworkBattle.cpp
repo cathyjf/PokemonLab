@@ -173,7 +173,7 @@ struct NetworkBattleImpl {
         boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
         m_lock = &lock;
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
-        cx->setContextThread(0);
+        ScriptContextLock cxLock(cx);
         if (m_replacement) {
             m_field->processReplacements(*ptr);
         } else {
@@ -182,7 +182,6 @@ struct NetworkBattleImpl {
         if (!m_victory && !requestReplacements()) {
             beginTurn();
         }
-        cx->clearContextThread();
     }
 
     Pokemon *requestInactivePokemon(Pokemon *user) {
@@ -271,6 +270,7 @@ struct NetworkBattleImpl {
     void prepareSpectator(ClientPtr client) {
         boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
         ScriptContext *cx = m_field->getContext();
+        ScriptContextLock cxLock(cx->shared_from_this());
         
         OutMessage msg(OutMessage::SPECTATOR_BEGIN);
         msg << m_field->getId();
@@ -532,9 +532,8 @@ struct NetworkBattleImpl {
         }
 
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
-        cx->setContextThread(0);
+        ScriptContextLock cxLock(cx);
         m_field->informVictory(1 - party);
-        cx->clearContextThread();
     }
 
     void maybeExecuteTurn() {

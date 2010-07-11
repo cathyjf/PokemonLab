@@ -382,7 +382,6 @@ inline bool validateIvs(const Pokemon &p) {
  *    for non-breeding species
  */
 bool JewelMechanics::validateHiddenStats(const Pokemon &p) const {
-    cout << p.getSpeciesName() << endl;
     int level = p.getLevel();
     if ((level < 1) || (level > 100))
         return false;

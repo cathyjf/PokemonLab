@@ -348,6 +348,22 @@ typedef boost::shared_ptr<StatusObject> StatusObjectPtr;
 typedef boost::shared_ptr<FieldObject> FieldObjectPtr;
 typedef boost::shared_ptr<PokemonObject> PokemonObjectPtr;
 
+/**
+ * This class allows the current thread to take control of the context for
+ * the duration of the current scope.
+ */
+class ScriptContextLock {
+public:
+    ScriptContextLock(ScriptContextPtr cx): m_cx(cx) {
+        cx->setContextThread(0);
+    }
+    ~ScriptContextLock() {
+        m_cx->clearContextThread();
+    }
+private:
+    ScriptContextPtr m_cx;
+};
+
 class Text;
 class SpeciesDatabase;
 class MoveDatabase;
