@@ -67,10 +67,10 @@ unsigned int JewelMechanics::calculateStat(
         const Pokemon &p, const STAT i) const {
     unsigned int base = p.getBaseStat(i);
     unsigned int common =
-            (int)((int)(((2.0 * base)
+            (int)((int)(((2 * base)
             + p.getIv(i)
-            + (p.getEv(i) / 4.0)))
-            * (p.getLevel() / 100.0));
+            + (p.getEv(i) / 4)))
+            * (p.getLevel() / 100));
     if (i == S_HP) {
         if (base == 1) {    // base 1 hp => 1 hp total
             return 1;
@@ -100,7 +100,7 @@ inline void multiplyBy(T &value, PRIORITY_MAP &elements) {
 bool JewelMechanics::attemptHit(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target) const {
     ScriptContext *cx = field.getContext();
-    int accuracy = move.getAccuracy(cx) * 100;
+    int accuracy = round(move.getAccuracy(cx) * 100);
 
     int level0 = user.getStatLevel(S_ACCURACY);
     if (!user.getTransformedStatLevel(&user, &target, S_ACCURACY, &level0)) {
