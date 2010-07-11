@@ -42,6 +42,12 @@
 using namespace std;
 using namespace boost;
 
+// Support forward compatibility with the development version of Spidermonkey.
+#ifndef JS_TYPED_ROOTING_API
+#define JS_AddObjectRoot(cx, rp) JS_AddRoot(cx, rp)
+#define JS_RemoveObjectRoot(cx, rp) JS_RemoveRoot(cx, rp)
+#endif
+
 namespace shoddybattle {
 
 /* The class of the global object. */
@@ -469,13 +475,13 @@ ScriptObject &ScriptObject::operator=(const ScriptObject &rhs) {
 }
 
 bool ScriptContext::makeRoot(ScriptObject *sobj) {
-    void **obj = sobj->getObjectRef();
+    JSObject **obj = reinterpret_cast<JSObject **>(sobj->getObjectRef());
     if (!obj) {
         return false;
     }
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
-    JS_AddRoot(cx, obj);
+    JS_AddObjectRoot(cx, obj);
     JS_EndRequest(cx);
 #if ENABLE_ROOT_COUNT
     lock_guard<mutex> guard(m_machine->m_impl->rootLock);
@@ -485,11 +491,11 @@ bool ScriptContext::makeRoot(ScriptObject *sobj) {
 }
 
 void ScriptContext::removeRoot(ScriptObject *sobj) {
-    void **obj = sobj->getObjectRef();
+    JSObject **obj = reinterpret_cast<JSObject **>(sobj->getObjectRef());
     if (obj) {
         JSContext *cx = (JSContext *)m_p;
         JS_BeginRequest(cx);
-        JS_RemoveRoot(cx, obj);
+        JS_RemoveObjectRoot(cx, obj);
         JS_EndRequest(cx);
         // We own this ScriptObject, so delete it.
         delete sobj;
