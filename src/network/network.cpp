@@ -470,8 +470,10 @@ public:
 
 class InvalidTeamMessage : public OutMessage {
 public:
-    InvalidTeamMessage(const string &user, const vector<int> &cls) : OutMessage(INVALID_TEAM) {
+    InvalidTeamMessage(const string &user, const int teamSize, const vector<int> &cls):
+            OutMessage(INVALID_TEAM) {
         *this << user;
+        *this << (unsigned char)teamSize;
         *this << (int16_t)cls.size();
         vector<int>::const_iterator i = cls.begin();
         for (; i != cls.end(); ++i) {
@@ -1069,7 +1071,7 @@ private:
         }
         vector<int> violations;
         if (!m_server->validateTeam(cx, team, clauses, violations)) {
-            sendMessage(InvalidTeamMessage(opponent, violations));
+            sendMessage(InvalidTeamMessage(opponent, size, violations));
             return;
         }
         
@@ -1119,7 +1121,7 @@ private:
         }      
         vector<int> violations;
         if (!m_server->validateTeam(cx, challenge->teams[0], clauses, violations)) {
-            sendMessage(InvalidTeamMessage(opponent, violations));
+            sendMessage(InvalidTeamMessage(opponent, size, violations));
             return;
         }
         
@@ -1507,7 +1509,7 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     m_server->fetchClauses(scx, m_metagame->getIdx(), clauses);
     vector<int> violations;
     if (!m_server->validateTeam(scx, team, clauses, violations)) {
-        client->sendMessage(InvalidTeamMessage(string(), violations));
+        client->sendMessage(InvalidTeamMessage(string(), size, violations));
         return false;
     }
     if (m_rated) {
@@ -1813,12 +1815,24 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
     const int partySize = team.size();
     for (int i = 0; i < partySize; ++i) {
         Pokemon::PTR p = team[i];
-        if (!p->validate(cx)) {
+        if (!p->validateLegalPokemon(cx)) {
             violations.push_back(-i - 1);
             pass = false;
         }
-        if (!mech.validateHiddenStats(*p)) {
+        if (!p->validateLearnset(cx)) {
             violations.push_back(-i - 1 - partySize);
+            pass = false;
+        }
+        if (!p->validateMoveCombinations(cx)) {
+            violations.push_back(-i - 1 - (partySize*2));
+            pass = false;
+        }
+        if (!p->validateItem(cx)) {
+            violations.push_back(-i - 1 - (partySize*3));
+            pass = false;
+        }
+        if (!mech.validateHiddenStats(*p)) {
+            violations.push_back(-i - 1 - (partySize*4));
             pass = false;
         }
     }
