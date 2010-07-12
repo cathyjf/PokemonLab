@@ -44,8 +44,12 @@ using namespace boost;
 
 // Support forward compatibility with the development version of Spidermonkey.
 #ifndef JS_TYPED_ROOTING_API
-#define JS_AddObjectRoot(cx, rp) JS_AddRoot(cx, rp)
-#define JS_RemoveObjectRoot(cx, rp) JS_RemoveRoot(cx, rp)
+inline JSBool JS_AddObjectRoot(JSContext *cx, JSObject **rp) {
+    return JS_AddRoot(cx, rp);
+}
+inline JSBool JS_RemoveObjectRoot(JSContext *cx, JSObject **rp) {
+    return JS_RemoveRoot(cx, rp);
+}
 #endif
 
 namespace shoddybattle {
