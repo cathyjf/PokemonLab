@@ -1076,10 +1076,12 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
 
 /**
  * Checks if a pokemon is able to learn the moves it knows
- * Doesn't work yet
  */
 bool Pokemon::validateLearnset(ScriptContext *) {
-    //TODO: Implement this
+    // This only happens if there are illegal moves. This is because
+    // the constructor skips over moves the pokemon can't learn
+    if (m_moves.size() != m_ppUps.size())
+        return false;
     return true;
 }
 /**
@@ -1110,10 +1112,6 @@ bool Pokemon::validateItem(ScriptContext *) {
 bool Pokemon::validateLegalPokemon(ScriptContext *cx) {
     int moveCount = m_moves.size();
     if ((moveCount <= 0) || (moveCount > P_MOVE_COUNT))
-        return false;
-
-    int ppUpCount = m_ppUps.size();
-    if (moveCount != ppUpCount)
         return false;
 
     set<string> moves;
