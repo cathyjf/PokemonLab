@@ -349,8 +349,11 @@ void Channel::commitChannelFlags(CHANNEL_FLAGS flags) {
 }
 
 Channel::FLAGS Channel::handleJoin(ClientPtr client) {
-    return m_impl->server->getRegistry()->getUserFlags(m_impl->id,
+    FLAGS flags = m_impl->server->getRegistry()->getUserFlags(m_impl->id,
             client->getId());
+    //Remove mute on rejoining the channel. Seems too easy to abuse, will possibly remove
+    flags[BAN] = false;
+    return flags;
 }
 
 void Channel::handlePart(ClientPtr /*client*/) {
