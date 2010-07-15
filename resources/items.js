@@ -381,42 +381,21 @@ makeItem({
             return null;
         return [2, 1.3, 0];
     },
-    informBeginExecution: function() {
-        // Cache all HPs here to determine if any attack hit successfully later.
-        // Conveniently, this doesn't consider hitting subs a successful move
-        var subject = this.subject;
-        var field = subject.field;
-
-        this.pokemonHp_ = new Array();
-        for (var i = 0; i < 2; i++) {
-            for (var j = 0; j < field.partySize; j++) {
-                var active = subject.field.getActivePokemon(i, j);
-                if (active != subject)
-                    this.pokemonHp_.push(active.hp);
-            }
-        }
-
-    },
-    informFinishedSubjectExecution : function(move) {
-        // This implementation does not look at self damage, so confusion
-        // doesn't harm this pokemon
-        var subject = this.subject;
-        var field = subject.field;
+    informDamaging : function(move, target) {
+        if (target == this.subject)
+            return;
         if (move.moveClass == MoveClass.OTHER)
             return;
-
-        var index = 0;
-        for (var i = 0; i < 2; i++) {
-            for (var j = 0; j < field.partySize; j++) {
-                var active = subject.field.getActivePokemon(i, j);
-                if (active != subject && active.hp < this.pokemonHp_[index++]) {
-                    var recoil = Math.floor(subject.getStat(Stat.HP) / 10);
-                    if (recoil < 1) recoil = 1;
-                    subject.hp -= recoil;
-                    return;
-                }
-            }
+        this.recoil_ = true;
+    },
+    informFinishedSubjectExecution : function(move) {
+        var subject = this.subject;
+        if (this.recoil_) {
+            var recoil = Math.floor(subject.getStat(Stat.HP) / 10);
+            if (recoil < 1) recoil = 1;
+            subject.hp -= recoil;
         }
+        this.recoil_ = false;
     }
 });
 
@@ -836,16 +815,20 @@ makeItem({
             return delta;
         if (delta < subject.hp)
             return delta;
-        this.use();
+        this.used_ = true;
+
+        // Shedinja
+        if (subject.hp == 1)
+            subject.informDamaged(user, user.getMove(user.turn.move), 0);
         return (maxHp > 1) ? maxHp - 1 : 0;
     },
     use: function() {
-        this.used_ = true;
+        this.subject.field.print(Text.item_messages(10, this.subject, this.name));
+        this.consume();
     },
-    informFinishedExecution: function(subject, move) {
+    informDamaged: function(user, move, damage) {
         if (this.used_) {
-            this.subject.field.print(Text.item_messages(10, this.subject, this.name));
-            this.consume();
+            this.use();
         }
     }
 });

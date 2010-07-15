@@ -852,9 +852,6 @@ void Pokemon::faint() {
  * can cause side effects such as the printing of messages.
  */
 void Pokemon::setHp(int hp) {
-    // TODO: Somehow handle the fact that being hit at 1 HP and saved by
-    //       Focus Band/Sash counts as being hit for the purpose of several
-    //       interactions.
     if (m_fainted) {
         return;
     }
@@ -877,8 +874,6 @@ void Pokemon::setHp(int hp) {
     if (delta > 0) {
         m_damaged = true;
         if (move) {
-            ScriptValue argv[] = { move, this };
-            move->user->sendMessage("informDamaging", 2, argv);
             informDamaged(move->user, move->move, delta);
         }
     }
@@ -909,10 +904,15 @@ MoveObjectPtr Pokemon::getMemory() const {
  * Inform that this pokemon was damaged by a move.
  */
 void Pokemon::informDamaged(Pokemon *user, MoveObjectPtr move, int damage) {
+    // Set m_damaged for the cases where this function is called on its own
+    m_damaged = true;
+
+    ScriptValue argv[] = { move.get(), this };
+    user->sendMessage("informDamaging", 2, argv);
     RECENT_DAMAGE entry = { user, move, damage };
     m_recent.push(entry);
-    ScriptValue argv[] = { user, move.get(), damage };
-    sendMessage("informDamaged", 3, argv);
+    ScriptValue argv2[] = { user, move.get(), damage };
+    sendMessage("informDamaged", 3, argv2);
 }
 
 /**

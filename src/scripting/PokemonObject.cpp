@@ -176,7 +176,7 @@ JSBool popRecentDamage(JSContext *cx,
         JSObject *user = (JSObject *)entry.user->getObject()->getObject();
         JSObject *move = (JSObject *)entry.move->getObject();
         const int damage = entry.damage;
-
+        
         jsval arr[3];
         arr[0] = OBJECT_TO_JSVAL(user);
         arr[1] = OBJECT_TO_JSVAL(move);
@@ -716,6 +716,34 @@ JSBool turnGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     return JS_TRUE;
 }
 
+/**
+ * pokemon.informDamaged(user, move, damage)
+ * This function's primary use is to register damage that didn't result in HP loss.
+ * Do not use if an attack could possibly result in HP loss otherwise it'll get reported twice
+ */
+JSBool informDamaged(JSContext *cx,
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval */*ret*/) {
+    if (!JSVAL_IS_OBJECT(argv[0]) || !JSVAL_IS_OBJECT(argv[1]) || !JSVAL_IS_INT(argv[2])) {
+        return JS_FALSE;
+    }
+
+    JSObject *objPokemon = JSVAL_TO_OBJECT(argv[0]);
+    Pokemon *user = (Pokemon *)JS_GetPrivate(cx, objPokemon);
+
+    ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+    MoveObject moveObj(JSVAL_TO_OBJECT(argv[1]));
+    const MoveTemplate* tpl = moveObj.getTemplate(scx);
+    MoveObjectPtr move = scx->newMoveObject(tpl);
+
+    const int damage = JSVAL_TO_INT(argv[2]);
+
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    p->getField()->informHealthChange(p, damage);
+    p->informDamaged(user, move, damage);
+    
+    return JS_TRUE;
+}
+
 JSPropertySpec turnProperties[] = {
     { "move", TTI_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
     { "target", TTI_TARGET, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
@@ -1005,6 +1033,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getRawStat", getRawStat, 1, 0, 0),
     JS_FS("setRawStat", setRawStat, 2, 0, 0),
     JS_FS("getNatureEffect", getNatureEffect, 1, 0, 0),
+    JS_FS("informDamaged", informDamaged, 3, 0, 0),
     JS_FS_END
 };
 
