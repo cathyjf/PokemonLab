@@ -22,6 +22,8 @@
     </logicalFolder>
     <logicalFolder name="src" displayName="Source Files" projectFiles="true">
       <logicalFolder name="database" displayName="database" projectFiles="true">
+        <itemPath>src/database/Authenticator.cpp</itemPath>
+        <itemPath>src/database/Authenticator.h</itemPath>
         <itemPath>src/database/DatabaseRegistry.cpp</itemPath>
         <itemPath>src/database/DatabaseRegistry.h</itemPath>
         <itemPath>src/database/rijndael.cpp</itemPath>
