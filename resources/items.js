@@ -820,7 +820,7 @@ makeItem({
         // Shedinja
         if (subject.hp == 1)
             subject.informDamaged(user, user.getMove(user.turn.move), 0);
-        return (maxHp > 1) ? maxHp - 1 : 0;
+        return maxHp - 1;
     },
     use: function() {
         this.subject.field.print(Text.item_messages(10, this.subject, this.name));

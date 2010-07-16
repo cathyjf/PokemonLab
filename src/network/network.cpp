@@ -425,6 +425,14 @@ public:
     }
 };
 
+class ChallengeWithdrawn : public OutMessage {
+public:
+    ChallengeWithdrawn(const string &user) : OutMessage(CHALLENGE_WITHDRAWN) {
+        *this << user;
+        finalise();
+    }
+};
+
 class KickBanMessage : public OutMessage {
 public:
     KickBanMessage(const int channel, const string &mod, const string &target, const int date):
@@ -1166,8 +1174,24 @@ private:
         client->insertBattle(field);
     }
 
-    void handleWithdrawChallenge(InMessage & /*msg*/) {
-        // todo
+    void handleWithdrawChallenge(InMessage &msg) {
+        string opponent;
+        msg >> opponent;
+
+        ClientImplPtr client = m_server->getClient(opponent);
+        if (!client) {
+            return;
+        }
+
+        lock_guard<mutex> lock(m_challengeMutex);
+
+        map<string, ChallengePtr>::iterator i = m_challenges.find(client->getName());
+        if (i == m_challenges.end())
+            return;
+
+        m_challenges.erase(i);
+
+        client->sendMessage(ChallengeWithdrawn(m_name));
     }
 
     /**
