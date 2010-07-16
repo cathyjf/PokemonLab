@@ -980,7 +980,19 @@ private:
 
     /**
      * string : opponent
-     * ... [ TODO: other data ] ...
+     * byte   : generation
+     * int32  : partySize
+     * int32  : teamLength
+     * int32  : metagame
+     * if metagame == -1:
+     *     byte   : number of clauses
+     *     for each clause:
+     *         byte   : clause
+     *     byte   : timing
+     *     if timing:
+     *         int32  : pool
+     *         byte   : periods
+     *         int32  : period length
      */
     void handleOutgoingChallenge(InMessage &msg) {
         ChallengePtr challenge(new Challenge());
