@@ -2179,7 +2179,9 @@ makeTwoHitMove(this);
     <snatch/>
 </flags>
 <init>
+<![CDATA[
 this.isEvasionMove_ = true;
+]]>
 </init>
 <use>
 <![CDATA[

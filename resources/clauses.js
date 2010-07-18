@@ -29,10 +29,12 @@
  */
 function Clause(name) {
     this.name = this.id = name;
+    Clause.__count__ += 1;
     this.idx = Clause.__count__ - 1;
     Clause[name] = this;
 }
 
+Clause.__count__ = 0;
 Clause.prototype = new StatusEffect();
 Clause.prototype.type = StatusEffect.TYPE_CLAUSE;
 
