@@ -380,10 +380,7 @@ struct Challenge {
     int teamLength;
     int metagame;
     vector<int> clauses;
-    bool timing;
-    int pool;
-    int periods;
-    int periodLength;
+    TimerOptions timerOptions;
 };
 
 typedef shared_ptr<Challenge> ChallengePtr;
@@ -404,11 +401,11 @@ public:
             for (; i != data.clauses.end(); ++i) {
                 *this << (unsigned char)(*i);
             }
-            *this << (unsigned char)data.timing;
-            if (data.timing) {
-                *this << data.pool;
-                *this << (unsigned char)data.periods;
-                *this << data.periodLength;
+            *this << (unsigned char)data.timerOptions.enabled;
+            if (data.timerOptions.enabled) {
+                *this << data.timerOptions.pool;
+                *this << (unsigned char)data.timerOptions.periods;
+                *this << data.timerOptions.periodLength;
             }
         }
         finalise();
@@ -1020,17 +1017,21 @@ private:
                 challenge->clauses.push_back(clause);
             }
             unsigned char timing;
-            int pool = 0;
-            unsigned char periods = 0;
-            int periodLength = 0;
+            int pool;
+            unsigned char periods;
+            int periodLength;
             msg >> timing;
             if (timing) {
                 msg >> pool >> periods >> periodLength;
+                if ((pool <= 0) || (periods && (periodLength <= 0))) {
+                    sendMessage(ErrorMessage(ErrorMessage::BAD_CHALLENGE, opponent));
+                    return;
+                }
+                challenge->timerOptions.enabled = true;
+                challenge->timerOptions.pool = pool;
+                challenge->timerOptions.periods = periods;
+                challenge->timerOptions.periodLength = periodLength;
             }
-            challenge->timing = timing;
-            challenge->pool = pool;
-            challenge->periods = periods;
-            challenge->periodLength = periodLength;
         }
         
         challenge->generation = (GENERATION)generation;
@@ -1151,6 +1152,22 @@ private:
             return;
         }
         
+        TimerOptions timerOpts;
+        bool validMetagame = false;
+        if (metagame >= 0) {
+            vector<MetagamePtr> metagames = m_server->getMetagames();
+            const int size = metagames.size();
+            if (metagame >= size) {
+                validMetagame = false;
+            } else {
+                timerOpts = metagames[metagame]->getTimerOptions();
+            }
+        }
+        
+        if (!validMetagame && (challenge->timerOptions.enabled)) {
+            timerOpts = challenge->timerOptions;
+        }
+        
         m_challenges.erase(opponent);
         lock.unlock();
 
@@ -1162,6 +1179,7 @@ private:
                 challenge->partySize,
                 challenge->teamLength,
                 clauses,
+                timerOpts,
                 -1,
                 false));
 
@@ -1594,6 +1612,7 @@ void MetagameQueue::startMatches() {
                 m_metagame->getActivePartySize(),
                 m_metagame->getMaxTeamLength(),
                 clauses,
+                m_metagame->getTimerOptions(),
                 m_metagame->getIdx(),
                 m_rated));
         field->beginBattle();
@@ -1894,6 +1913,7 @@ void ServerImpl::handleMatchmaking() {
 
 /** Start the server. */
 void ServerImpl::run() {
+    NetworkBattle::startTimerThread();
     m_registry.startThread();
     m_service.run();
 }

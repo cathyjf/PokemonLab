@@ -157,6 +157,14 @@ private:
     std::vector<unsigned char> m_data;
 };
 
+struct TimerOptions {
+    bool enabled;
+    int pool;
+    int periods;
+    int periodLength;
+    TimerOptions() : enabled(false) { }
+};
+
 }} // namespace shoddybattle::network
 
 #endif

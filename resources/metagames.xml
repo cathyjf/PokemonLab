@@ -43,6 +43,11 @@
         <clause>Strict Damage Clause</clause>
         <clause>Evasion Clause</clause>
     </clauses>
+    <timer>
+        <pool>300</pool>
+        <periods>3</periods>
+        <periodLength>30</periodLength>
+    </timer>
 </metagame>
 
 <metagame>
@@ -62,6 +67,11 @@
         <clause>Strict Damage Clause</clause>
         <clause>Evasion Clause</clause>
     </clauses>
+    <timer>
+        <pool>300</pool>
+        <periods>3</periods>
+        <periodLength>30</periodLength>
+    </timer>
 </metagame>
 
 <!-- This was added to test the challenge options better. Keep it or don't -->
@@ -88,6 +98,11 @@
     <clauses>
         <clause>Strict Damage Clause</clause>
     </clauses>
+    <timer>
+        <pool>300</pool>
+        <periods>3</periods>
+        <periodLength>30</periodLength>
+    </timer>
 </metagame>
 
 </metagames>

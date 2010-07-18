@@ -25,6 +25,7 @@
 #include "MetagameList.h"
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/BattleField.h"
+#include "../network/network.h"
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -51,6 +52,7 @@ struct Metagame::MetagameImpl {
     int m_maxTeamLength;
     set<unsigned int> m_banList;
     vector<string> m_clauses;
+    network::TimerOptions m_timerOptions;
 
     void getMetagame(SpeciesDatabase *, DOMElement *);
 };
@@ -127,6 +129,37 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
             m_clauses.push_back(txt);
         }
     }
+    
+    XMLString::transcode("timer", tempStr, 19);
+    list = node->getElementsByTagName(tempStr);
+    int pool = -1, periods = -1, periodLength = -1; 
+    if (list->getLength() != 0) {
+        DOMElement *timerOpts = (DOMElement *)list->item(0);
+        XMLString::transcode("pool", tempStr, 19);
+        list = timerOpts->getElementsByTagName(tempStr);
+        if (list->getLength() != 0) {
+            const string txt = getTextFromElement((DOMElement *)list->item(0));
+            pool = boost::lexical_cast<int>(txt);
+        }
+        XMLString::transcode("periods", tempStr, 19);
+        list = timerOpts->getElementsByTagName(tempStr);
+        if (list->getLength() != 0) {
+            const string txt = getTextFromElement((DOMElement *)list->item(0));
+            periods = boost::lexical_cast<int>(txt);
+        }
+        XMLString::transcode("periodLength", tempStr, 19);
+        list = timerOpts->getElementsByTagName(tempStr);
+        if (list->getLength() != 0) {
+            const string txt = getTextFromElement((DOMElement *)list->item(0));
+            periodLength = boost::lexical_cast<int>(txt);
+        }
+    }
+    if ((pool > 0) && (periods >= 0) && (periodLength > 0)) {
+        m_timerOptions.enabled = true;
+        m_timerOptions.pool = pool;
+        m_timerOptions.periods = periods;
+        m_timerOptions.periodLength = periodLength;
+    }
 
     m_generation = GEN_PLATINUM; // TODO
 }
@@ -165,6 +198,10 @@ const set<unsigned int> &Metagame::getBanList() const {
 
 const vector<string> &Metagame::getClauses() const {
     return m_impl->m_clauses;
+}
+
+const network::TimerOptions &Metagame::getTimerOptions() const {
+    return m_impl->m_timerOptions;
 }
 
 class MetagameErrorHandler : public HandlerBase {

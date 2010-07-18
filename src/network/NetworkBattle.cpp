@@ -28,6 +28,7 @@
 #include <boost/function.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "NetworkBattle.h"
 #include "ThreadedQueue.h"
 #include "network.h"
@@ -146,8 +147,9 @@ struct NetworkBattleImpl {
     Pokemon *m_selection;
     boost::condition_variable_any m_condition;
     bool m_terminated;
+    Timer m_timer;
 
-    NetworkBattleImpl(Server *server, NetworkBattle *p):
+    NetworkBattleImpl(Server *server, NetworkBattle *p, TimerOptions &t):
             m_server(server),
             m_field(p),
             m_channel(BattleChannelPtr(
@@ -157,7 +159,18 @@ struct NetworkBattleImpl {
             m_victory(false),
             m_turnCount(0),
             m_waiting(false),
-            m_terminated(false) { }
+            m_terminated(false) {
+        if (t.enabled) {
+            m_timer = Timer(t.pool, t.periods, t.periodLength, p);
+            NetworkBattle::addTimer(&m_timer);
+        }
+    }
+    
+    ~NetworkBattleImpl() {
+        if (m_timer.isEnabled()) {
+            NetworkBattle::removeTimer(&m_timer);
+        }
+    }
 
     void beginTurn() {
         ++m_turnCount;
@@ -641,10 +654,11 @@ NetworkBattle::NetworkBattle(Server *server,
         const int partySize,
         const int maxTeamLength,
         vector<StatusObject> &clauses,
+        network::TimerOptions t,
         const int metagame,
         const bool rated) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(
-            new NetworkBattleImpl(server, this));
+            new NetworkBattleImpl(server, this, t));
     m_impl->m_maxTeamLength = maxTeamLength;
     m_impl->m_metagame = metagame;
     m_impl->m_rated = rated;
@@ -1014,6 +1028,49 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     msg << (unsigned char)applied;
     msg.finalise();
     m_impl->broadcast(msg);
+}
+
+
+list<Timer *> NetworkBattle::m_timerList;
+boost::recursive_mutex NetworkBattle::m_timerMutex;
+boost::thread NetworkBattle::m_timerThread;
+
+void NetworkBattle::startTimerThread() {
+    m_timerThread = boost::thread(boost::bind(&NetworkBattle::handleTiming));
+}
+
+void NetworkBattle::handleTiming() {
+    while (true) {
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
+        boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
+        list<Timer *>::iterator i = m_timerList.begin();
+        for (; i != m_timerList.end(); ++i) {
+            (*i)->tick();
+        }
+        lock.unlock();
+    }
+}
+
+void NetworkBattle::addTimer(Timer *t) {
+    boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
+    m_timerList.push_back(t);
+}
+
+void NetworkBattle::removeTimer(Timer *t) {
+    boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
+    m_timerList.remove(t);
+}
+
+void Timer::tick() {
+    if (--m_pool <= 0) {
+        if (--m_periods < 0) {
+            //kick player
+            m_battle->informVictory(0);
+        } else {
+            m_pool = m_periodLength;
+        }
+    }
+    cout << m_pool << " seconds left" << endl;
 }
 
 }} // namespace shoddybattle::network

@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "../network/network.h"
 
 namespace shoddybattle {
 
@@ -53,6 +54,7 @@ public:
     int getMaxTeamLength() const;
     const std::set<unsigned int> &getBanList() const;
     const std::vector<std::string> &getClauses() const;
+    const network::TimerOptions &getTimerOptions() const;
 
 private:
     class MetagameImpl;
