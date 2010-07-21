@@ -24,6 +24,7 @@
 
 #include <vector>
 #include <cmath>
+#include <ctime>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/lexical_cast.hpp>
@@ -125,6 +126,62 @@ typedef vector<PokemonTurn> PARTY_TURN;
 typedef vector<int> PARTY_REQUEST;
 typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
 
+
+struct PlayerTimer {
+    bool stopped;
+    int remaining;
+    int periods;
+    boost::shared_mutex mutex;
+};
+
+class Timer {
+public:
+    Timer() : m_enabled(false) { };
+    Timer(const int pool, const int periods, const int periodLength, 
+            NetworkBattleImpl *battle) :
+            m_enabled(true),
+            m_pool(pool),
+            m_periods(periods),
+            m_periodLength(periodLength),
+            m_battle(battle) { 
+                m_lastTime = time(NULL);
+                for (int i = 0; i < 2; ++i) {
+                    m_players[i].remaining = pool;
+                    m_players[i].periods = periods;
+                    m_players[i].stopped = false;
+                }
+            };
+    bool isEnabled() { return m_enabled; }
+    int getPeriods() { return m_periods; }
+    void tick();
+    void startTimer(const int party);
+    void stopTimer(const int party);
+    int getRemaining(const int party) {
+        boost::unique_lock<boost::shared_mutex> lock(m_players[party].mutex);
+        return m_players[party].remaining;
+    }
+    int getPeriods(const int party) {
+        boost::unique_lock<boost::shared_mutex> lock(m_players[party].mutex);
+        return m_players[party].periods;
+    }
+    void beginTicking() {
+        for (int i = 0; i < 2; ++i) {
+            boost::unique_lock<boost::shared_mutex> lock(m_players[i].mutex);
+            m_players[i].stopped = false;
+        }
+    }
+private:
+    bool m_enabled;
+    int m_pool;
+    int m_periods;
+    int m_periodLength;
+    time_t m_lastTime;
+    NetworkBattleImpl *m_battle;
+    PlayerTimer m_players[2];
+};
+
+typedef boost::shared_ptr<Timer> TimerPtr;
+
 struct NetworkBattleImpl {
     Server *m_server;
     JewelMechanics m_mech;
@@ -147,7 +204,10 @@ struct NetworkBattleImpl {
     Pokemon *m_selection;
     boost::condition_variable_any m_condition;
     bool m_terminated;
-    Timer m_timer;
+    boost::shared_ptr<Timer> m_timer;
+    static list<TimerPtr> m_timerList;
+    static boost::recursive_mutex m_timerMutex;
+    static boost::thread m_timerThread;
 
     NetworkBattleImpl(Server *server, NetworkBattle *p, TimerOptions &t):
             m_server(server),
@@ -161,21 +221,39 @@ struct NetworkBattleImpl {
             m_waiting(false),
             m_terminated(false) {
         if (t.enabled) {
-            m_timer = Timer(t.pool, t.periods, t.periodLength, p);
-            NetworkBattle::addTimer(&m_timer);
+            m_timer = TimerPtr(new Timer(t.pool, t.periods, t.periodLength, this));
+            addTimer(m_timer);
+        } else {
+            m_timer = TimerPtr(new Timer());
         }
     }
     
     ~NetworkBattleImpl() {
-        if (m_timer.isEnabled()) {
-            NetworkBattle::removeTimer(&m_timer);
+        if (m_timer->isEnabled()) {
+            removeTimer(m_timer);
         }
     }
+    
+    static void addTimer(TimerPtr t) {
+        boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
+        m_timerList.push_back(t);
+    }
 
+    static void removeTimer(TimerPtr t) {
+        boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
+        m_timerList.remove(t);
+    }
+    
+    // Called when player number idx's time runs out - just kick them
+    void timeExpired(int idx) {
+        m_channel->part(m_clients[idx]);
+    }
+    
     void beginTurn() {
         ++m_turnCount;
         informBeginTurn();
         requestMoves();
+        m_timer->beginTicking();
     }
     
     void executeTurn(TURN_PTR &ptr) {
@@ -199,6 +277,7 @@ struct NetworkBattleImpl {
 
     Pokemon *requestInactivePokemon(Pokemon *user) {
         const int party = user->getParty();
+        m_timer->startTimer(party);
         if (m_field->getAliveCount(party, true) == 0)
             return NULL;
         m_selection = user;
@@ -224,6 +303,14 @@ struct NetworkBattleImpl {
         OutMessage msg(OutMessage::BATTLE_BEGIN_TURN);
         msg << m_field->getId();
         msg << (int16_t)m_turnCount;
+        bool timing = m_timer->isEnabled();
+        msg << (unsigned char)timing;
+        if (timing) {
+            for (int i = 0; i < 2; ++i) {
+                msg << (int16_t)m_timer->getRemaining(i);
+                msg << (unsigned char)m_timer->getPeriods(i);
+            }
+        }
         msg.finalise();
 
         broadcast(msg);
@@ -259,6 +346,7 @@ struct NetworkBattleImpl {
      * string : second player
      * byte   : active party size
      * byte   : maximum party size
+     * byte   : number of timer periods or -1 if timers are disabled
      *
      * for 0...1:
      *     byte : party size
@@ -290,6 +378,7 @@ struct NetworkBattleImpl {
         msg << m_trainer[0] << m_trainer[1];
         msg << (unsigned char)m_field->getPartySize();
         msg << (unsigned char)m_maxTeamLength;
+        msg << (unsigned char)(m_timer->isEnabled() ? m_timer->getPeriods() : -1);
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
             const Pokemon::ARRAY &team = m_field->getTeam(i);
@@ -502,6 +591,7 @@ struct NetworkBattleImpl {
         for (int i = 0; i < TEAM_COUNT; ++i) {
             if (!m_requests[i].empty()) {
                 requestAction(i);
+                m_timer->startTimer(i);
             }
         }
         return true;
@@ -568,6 +658,12 @@ struct NetworkBattleImpl {
         m_queue.post(turn);
     }
 };
+
+// static member declarations
+list<TimerPtr> NetworkBattleImpl::m_timerList;
+boost::recursive_mutex NetworkBattleImpl::m_timerMutex;
+boost::thread NetworkBattleImpl::m_timerThread;
+
 
 Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     FLAGS ret;
@@ -747,6 +843,9 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
         }
     }
     pturn.push_back(turn);
+
+    m_impl->m_timer->stopTimer(party);
+
     const int size = pturn.size();
     if (size < max) {
         m_impl->requestAction(party);
@@ -1030,48 +1129,65 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     m_impl->broadcast(msg);
 }
 
+namespace {
 
-list<Timer *> NetworkBattle::m_timerList;
-boost::recursive_mutex NetworkBattle::m_timerMutex;
-boost::thread NetworkBattle::m_timerThread;
-
-void NetworkBattle::startTimerThread() {
-    m_timerThread = boost::thread(boost::bind(&NetworkBattle::handleTiming));
-}
-
-void NetworkBattle::handleTiming() {
+void handleTiming() {
     while (true) {
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
-        boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
-        list<Timer *>::iterator i = m_timerList.begin();
-        for (; i != m_timerList.end(); ++i) {
+        boost::this_thread::sleep(boost::posix_time::seconds(3));
+        boost::unique_lock<boost::recursive_mutex> lock(NetworkBattleImpl::m_timerMutex);
+        list<TimerPtr>::iterator i = NetworkBattleImpl::m_timerList.begin();
+        for (; i != NetworkBattleImpl::m_timerList.end(); ++i) {
             (*i)->tick();
         }
-        lock.unlock();
     }
 }
 
-void NetworkBattle::addTimer(Timer *t) {
-    boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
-    m_timerList.push_back(t);
-}
+} // anonymous namespace
 
-void NetworkBattle::removeTimer(Timer *t) {
-    boost::unique_lock<boost::recursive_mutex> lock(m_timerMutex);
-    m_timerList.remove(t);
+void NetworkBattle::startTimerThread() {
+    NetworkBattleImpl::m_timerThread = boost::thread(boost::bind(&handleTiming));
 }
 
 void Timer::tick() {
-    if (--m_pool <= 0) {
-        if (--m_periods < 0) {
-            //kick player
-            m_battle->informVictory(0);
+    time_t now = time(NULL);
+    int delta = now - m_lastTime;
+    m_lastTime = now;
+    for (int i = 0; i < 2; ++i) {
+        PlayerTimer &pt = m_players[i];
+        boost::unique_lock<boost::shared_mutex> lock(pt.mutex);
+        if (pt.stopped) continue;
+        int diff = pt.remaining - delta;
+        if (diff <= 0) {
+            if (pt.periods-- < 0) {
+                m_battle->timeExpired(i);
+                return;
+            }
+            pt.remaining = m_periodLength + diff;
         } else {
-            m_pool = m_periodLength;
+            pt.remaining = diff;
         }
     }
-    cout << m_pool << " seconds left" << endl;
 }
+
+void Timer::startTimer(const int party) {
+    if (!m_enabled) return;
+    PlayerTimer &pt = m_players[party];
+    boost::unique_lock<boost::shared_mutex> lock(pt.mutex);
+    pt.stopped = false;
+}
+
+void Timer::stopTimer(const int party) {
+    if (!m_enabled) return;
+    tick();
+    PlayerTimer &pt = m_players[party];
+    boost::unique_lock<boost::shared_mutex> lock(pt.mutex);
+    pt.stopped = true;
+    // if our pool is expired then we refill the current period
+    if (pt.periods != m_periods) {
+        pt.remaining = m_periodLength;
+    }
+}
+
 
 }} // namespace shoddybattle::network
 

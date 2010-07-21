@@ -288,6 +288,26 @@ public:
 };
 
 /**
+ * byte : type
+ * string : details
+ */
+class ErrorMessage : public OutMessage {
+public:
+    enum TYPE {
+        NONEXISTENT_USER = 0,
+
+        USER_NOT_ONLINE = 1,
+        BAD_CHALLENGE = 2
+    };
+    ErrorMessage(const TYPE type, const string &details = string()):
+            OutMessage(ERROR_MESSAGE) {
+        *this << (unsigned char)type;
+        *this << details;
+        finalise();
+    }
+};
+
+/**
  * Format of one pokemon:
  *
  * int32  : species id
@@ -472,9 +492,19 @@ public:
 
 class UserPersonalMessage : public OutMessage {
 public:
-    UserPersonalMessage(const string& name, const string *msg) : OutMessage(USER_MESSAGE) {
+    UserPersonalMessage(const string& name, const string *msg, 
+            database::DatabaseRegistry::ESTIMATE_LIST &estimates) : OutMessage(USER_MESSAGE) {
+        using database::DatabaseRegistry;
         *this << name;
         *this << *msg;
+
+        *this << (unsigned char)estimates.size();
+        DatabaseRegistry::ESTIMATE_LIST::iterator i = estimates.begin();
+        for (; i != estimates.end(); ++i) {
+            *this << (unsigned char)(i->get<0>());
+            *this << (int)(i->get<1>());
+        }
+
         finalise();
     }
 };
@@ -542,6 +572,7 @@ public:
     void sendChannelList(ClientImplPtr client);
     void sendMetagameList(ClientImplPtr client);
     void getMetagameClauses(const int metagame, vector<string> &clauses);
+    std::vector<MetagamePtr> getMetagames();
     void sendClauseList(ClientImplPtr client);
     void fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
                                             vector<StatusObject> &ret);
@@ -986,15 +1017,15 @@ private:
     /**
      * string : opponent
      * byte   : generation
-     * int32  : partySize
-     * int32  : teamLength
+     * int32  : active party size (1v1, 2v2, etc)
+     * int32  : maximum team length
      * int32  : metagame
      * if metagame == -1:
      *     byte   : number of clauses
      *     for each clause:
-     *         byte   : clause
-     *     byte   : timing
-     *     if timing:
+     *         byte : clause
+     *     byte : is this a timed battle?
+     *     if it is timed:
      *         int32  : pool
      *         byte   : periods
      *         int32  : period length
@@ -1023,7 +1054,9 @@ private:
             msg >> timing;
             if (timing) {
                 msg >> pool >> periods >> periodLength;
-                if ((pool <= 0) || (periods && (periodLength <= 0))) {
+                // arbitrary time limits; probably don't even need to be this big
+                if ((pool <= 0) || (pool > 3600) || (periodLength > 600) 
+                        || (periods > 10) || (periods && (periodLength <= 0))) {
                     sendMessage(ErrorMessage(ErrorMessage::BAD_CHALLENGE, opponent));
                     return;
                 }
@@ -1051,6 +1084,9 @@ private:
         } else if (getId() == client->getId()) {
             return;
         }
+
+        if (getId() == client->m_id)
+            return;
 
         m_challenges[opponent] = challenge;
         client->sendMessage(IncomingChallenge(m_name, *challenge));
@@ -1287,7 +1323,11 @@ private:
         msg >> user;
         ClientImplPtr client = m_server->getClient(user);
         if (client) {
-            sendMessage(UserPersonalMessage(user, client->getPersonalMessage()));
+            const int id = client->getId();
+            std::vector<MetagamePtr> metagames = m_server->getMetagames();
+            database::DatabaseRegistry::ESTIMATE_LIST estimates =
+                    m_server->getRegistry()->getEstimates(id, metagames);
+            sendMessage(UserPersonalMessage(user, client->getPersonalMessage(), estimates));
         }
     }
 
@@ -1445,6 +1485,13 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
     ChannelPtr channel = (id == -1) ? m_server->getMainChannel() : getChannel(id);
     if (!channel)
         return;
+
+    //Escape if the target doesn't exist
+    if (!m_server->getRegistry()->userExists(target)) {
+        sendMessage(ErrorMessage(ErrorMessage::NONEXISTENT_USER));
+        return;
+    }
+
     //takes the max level of the target and any of their alts
     Channel::FLAGS uauth = m_server->getRegistry()->getMaxLevel(channel->getId(), target);
     ClientImplPtr client = m_server->getClient(target);
@@ -1486,6 +1533,9 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
             if (client && client->getChannel(id)) {
                 channel->broadcast(KickBanMessage(channel->getId(), m_name, target, 0));
                 client->partChannel(channel);
+            } else if (!client) {
+                // The user isn't online, so inform the client
+                sendMessage(ErrorMessage(ErrorMessage::USER_NOT_ONLINE));
             }
         } else {
             int ban;
@@ -1646,7 +1696,10 @@ void ServerImpl::getMetagameClauses(const int idx, vector<string> &ret) {
         ret.push_back(clauses[i]);
     }
 }
-    
+
+std::vector<MetagamePtr> ServerImpl::getMetagames() {
+    return m_metagames;
+}
 
 void ServerImpl::sendClauseList(ClientImplPtr client) {
     client->sendMessage(ClauseList(m_clauses));
@@ -2002,3 +2055,4 @@ int main() {
 }
 
 #endif
+

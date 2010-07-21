@@ -30,6 +30,7 @@
 #include <vector>
 #include <boost/tuple/tuple.hpp>
 #include <boost/shared_ptr.hpp>
+#include "../matchmaking/MetagameList.h"
 
 namespace mysqlpp {
 class ConnectionPool;
@@ -64,6 +65,8 @@ public:
     typedef std::map<int, INFO_ELEMENT> CHANNEL_INFO;
     typedef boost::tuple<int, std::string, int> BAN_ELEMENT;
     typedef std::vector<BAN_ELEMENT> BAN_LIST;
+    typedef boost::tuple<int, double> ESTIMATE_ELEMENT;
+    typedef std::vector<ESTIMATE_ELEMENT> ESTIMATE_LIST;
 
     DatabaseRegistry();
 
@@ -167,7 +170,17 @@ public:
      * Get's a user's bans
      */
     const BAN_LIST getBans(const std::string &user);
-    
+
+    /**
+     * Get a user's ladder rating
+     */
+    double getRatingEstimate(const int id, const std::string &ladder);
+
+    /**
+     * Get a user's ladder estimates
+     */
+    ESTIMATE_LIST getEstimates(const int id, std::vector<MetagamePtr> &metagames);
+
     /**
      * Initialise the tables required for a ladder.
      */

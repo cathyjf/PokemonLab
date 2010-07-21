@@ -42,35 +42,13 @@ class Server;
 class Client;
 
 class NetworkBattleImpl;
-
-class Timer {
-public:
-    Timer() : m_enabled(false) { };
-    Timer(const int pool, const int periods, const int periodLength, 
-            NetworkBattle *battle) :
-            m_enabled(true),
-            m_pool(pool),
-            m_periods(periods),
-            m_periodLength(periodLength),
-            m_battle(battle) { };
-    void tick();
-    bool isEnabled() { return m_enabled; }
-private:
-    bool m_enabled;
-    int m_pool;
-    int m_periods;
-    int m_periodLength;
-    NetworkBattle *m_battle;
-};
-
+    
 class NetworkBattle : public BattleField,
         public boost::enable_shared_from_this<NetworkBattle> {
 public:
     typedef boost::shared_ptr<NetworkBattle> PTR;
     
     static void startTimerThread();
-    static void addTimer(Timer *t);
-    static void removeTimer(Timer *t);
     
     NetworkBattle(Server *server,
             boost::shared_ptr<network::Client> *clients,
@@ -107,10 +85,6 @@ public:
     
 private:
     boost::shared_ptr<NetworkBattleImpl> m_impl;
-    static boost::thread m_timerThread;
-    static std::list<Timer *> m_timerList;
-    static boost::recursive_mutex m_timerMutex;
-    static void handleTiming();
 };
 
 }} // namespace shoddybattle::network

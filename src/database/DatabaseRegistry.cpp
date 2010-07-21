@@ -37,6 +37,7 @@
 #include "sha2.h"
 #include "rijndael.h"
 #include "DatabaseRegistry.h"
+#include "../matchmaking/MetagameList.h"
 
 using namespace std;
 using namespace mysqlpp;
@@ -230,6 +231,30 @@ int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     if (result.empty())
         return 0;
     return result[0][0];
+}
+
+double DatabaseRegistry::getRatingEstimate(const int id, const std::string &ladder) {
+    const string table = TABLE_STATS_PREFIX + ladder;
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select estimate from %0 where user = %1");
+    query.parse();
+    StoreQueryResult result = query.store(table, id);
+    if (result.empty())
+        return -1;
+
+    return result[0][0];
+}
+
+DatabaseRegistry::ESTIMATE_LIST DatabaseRegistry::getEstimates(const int id,
+                                        std::vector<MetagamePtr> &metagames) {
+    ESTIMATE_LIST list;
+    vector<MetagamePtr>::iterator i = metagames.begin();
+    for(; i != metagames.end(); ++i) {
+        MetagamePtr p = *i;
+        double estimate = getRatingEstimate(id, p->getId());
+        list.push_back(ESTIMATE_ELEMENT(p->getIdx(), estimate));
+    }
+    return list;
 }
 
 void DatabaseRegistry::initialiseLadder(const std::string &id) {
