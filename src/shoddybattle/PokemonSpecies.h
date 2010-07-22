@@ -65,6 +65,8 @@ class PokemonType;
 typedef std::vector<const PokemonType *> TYPE_LIST;
 
 typedef std::vector<std::string> ABILITY_LIST;
+typedef std::vector<std::string> COMBINATION;
+typedef std::vector<COMBINATION> COMBINATION_LIST;
 
 class MoveDatabase;
 class SpeciesDatabase;
@@ -90,7 +92,8 @@ public:
     const ABILITY_LIST &getAbilities() const { return m_abilities; }
     const MOVE_LIST &getMoveList() const { return m_moves; }
     double getMass() const { return m_mass; }
-    bool hasRestrictedIvs() const;;
+    bool hasRestrictedIvs() const;
+    const COMBINATION_LIST &getIllegalCombinations() const { return m_illegal; }
 
     std::set<std::string> populateMoveList(const MoveDatabase &);
     const MoveTemplate *getMove(const std::string name) const {
@@ -112,6 +115,7 @@ private:
     mutable MOVE_LIST m_moves;
     double m_mass;
     ABILITY_LIST m_abilities;
+    COMBINATION_LIST m_illegal;
     static const std::string m_restricted[];
 };
 

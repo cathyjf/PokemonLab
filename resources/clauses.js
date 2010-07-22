@@ -29,8 +29,8 @@
  */
 function Clause(name) {
     this.name = this.id = name;
+    this.idx = Clause.count_;
     Clause.count_ += 1;
-    this.idx = Clause.count_ - 1;
     Clause[name] = this;
 }
 

@@ -3930,7 +3930,7 @@ makeMassBasedMove(this);
 </init>
 </move>
 
-<move name="Grasswhistle" id="159">
+<move name="GrassWhistle" id="159">
 <type>Grass</type>
 <class>Other</class>
 <power>0</power>

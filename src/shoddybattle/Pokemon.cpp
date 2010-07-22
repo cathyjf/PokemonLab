@@ -1086,10 +1086,40 @@ bool Pokemon::validateLearnset(ScriptContext *) {
 }
 /**
  * Checks a pokemon for legal move combinations.
- * Currently it doesn't work
  */
-bool Pokemon::validateMoveCombinations(ScriptContext *) {
-    //TODO: Implement this
+bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
+    COMBINATION_LIST list = m_species->getIllegalCombinations();
+    COMBINATION_LIST::iterator i = list.begin();
+
+    // This loop is triple nested, but the only loop of
+    // substantional size is the outer one
+    for (; i != list.end(); ++i) {
+        bool match = true;
+        COMBINATION combo = *i;
+        COMBINATION::iterator j = combo.begin();
+        for (; j != combo.end(); ++j) {
+            string move = *j;
+
+            bool found = false;
+            vector<MoveObjectPtr>::iterator k = m_moves.begin();
+            for (; k != m_moves.end(); ++k) {
+                string name = (*k)->getName(cx);
+                if (name == move) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                match = false;
+                break;
+            }
+        }
+
+        if (match) {
+            return false;
+        }
+    }
+
     return true;
 }
 /**

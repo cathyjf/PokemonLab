@@ -106,6 +106,7 @@ struct SPECIES {
     int base[6];
     double mass;
     map<MOVE_ORIGIN, vector<string> > moves;
+    COMBINATION_LIST illegal;
     ABILITY_LIST abilities;
 };
 
@@ -300,6 +301,35 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
             pSpecies->moves[v] = moveVector;
         }
     }
+
+    // illegal moves
+    XMLString::transcode("illegal", tempStr, 19);
+    list = node->getElementsByTagName(tempStr);
+    COMBINATION_LIST illegal;
+    if (list->getLength() != 0) {
+        DOMElement *element = (DOMElement *)list->item(0);
+        XMLString::transcode("combo", tempStr, 19);
+        list = element->getElementsByTagName(tempStr);
+        length = list->getLength();
+        for (int i = 0; i < length; ++i) {
+            DOMElement *moves = (DOMElement *)list->item(i);
+            
+            XMLString::transcode("move", tempStr, 19);
+            vector<string> moveVector;
+            DOMNodeList *list2 = moves->getElementsByTagName(tempStr);
+            int length2 = list2->getLength();
+            for (int j = 0; j < length2; ++j) {
+                DOMElement *move = (DOMElement *)list2->item(j);
+                string strMove = getTextFromElement(move);
+                if (!strMove.empty()) {
+                    moveVector.push_back(strMove);
+                }
+            }
+
+            illegal.push_back(moveVector);
+        }
+        pSpecies->illegal = illegal;
+    }
 }
 
 bool PokemonSpecies::loadSpecies(const string file, SpeciesDatabase &set) {
@@ -348,6 +378,7 @@ PokemonSpecies::PokemonSpecies(void *raw) {
     memcpy(m_base, p->base, sizeof(int) * STAT_COUNT);
     m_moveset = p->moves;
     m_mass = p->mass;
+    m_illegal = p->illegal;
     m_abilities = p->abilities;
     vector<string>::iterator i = p->types.begin();
     for (; i != p->types.end(); ++i) {
