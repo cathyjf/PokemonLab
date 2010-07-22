@@ -74,6 +74,7 @@ namespace shoddybattle { namespace network {
 class ClientImpl;
 class ServerImpl;
 class Channel;
+
 typedef shared_ptr<ClientImpl> ClientImplPtr;
 typedef shared_ptr<ServerImpl> ServerImplPtr;
 
@@ -1790,6 +1791,15 @@ ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
         for (int k = 0; k < size2; ++k) {
             *this << clauses[k];
         }
+        const TimerOptions ops = p->getTimerOptions();
+        if (ops.enabled) {
+            *this << (unsigned char)1;
+            *this << (int16_t)ops.pool;
+            *this << (unsigned char)ops.periods;
+            *this << (int16_t)ops.periodLength;
+        } else {
+            *this << (unsigned char)0;
+        }
     }
     finalise();
 }
@@ -1966,7 +1976,6 @@ void ServerImpl::handleMatchmaking() {
 
 /** Start the server. */
 void ServerImpl::run() {
-    NetworkBattle::startTimerThread();
     m_registry.startThread();
     m_service.run();
 }
@@ -2044,6 +2053,8 @@ int main() {
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");
     server.initialiseClauses();
+    
+    network::NetworkBattle::startTimerThread();
 
     vector<shared_ptr<thread> > threads;
     for (int i = 0; i < 20; ++i) {
