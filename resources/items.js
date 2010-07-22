@@ -481,6 +481,25 @@ makeItem({
     }
 });
 
+makeItem({
+    name : "Custap Berry",
+    berry_ : true,
+    inherentPriority : function() {
+        var threshold = Math.floor(this.subject.getStat(Stat.HP) / 4);
+        if (this.subject.hp <= threshold) {
+            this.used_ = true;
+            return 3;
+        }
+        return 0;
+    },
+    informBeginExecution : function() {
+        if (this.used_) {
+            // TODO: Flavor text
+            this.consume();
+        }
+    }
+});
+
 makeTypeResistingBerry("Babiri Berry", Type.STEEL);
 makeTypeResistingBerry("Charti Berry", Type.ROCK);
 makeTypeResistingBerry("Chilan Berry", Type.FIGHTING);
