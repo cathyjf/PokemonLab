@@ -610,6 +610,7 @@
 8: $1 was hurt by the $2!
 9: The $1 latched on to $2!
 10: $1 hung on using its $2!
+11: $1's $2 let it move first!
 
 [client-messages]
 0: *** $1 sets mode $2 $3

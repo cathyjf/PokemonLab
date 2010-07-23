@@ -420,6 +420,7 @@ makeItem({
         return this.value_;
     },
     informBeginExecution : function() {
+        // TODO: Determine if the user went last. It will not activate then
         if (this.value_ > 0) {
             this.subject.field.print(Text.item_messages(2, this.subject));
         }
@@ -484,19 +485,48 @@ makeItem({
 makeItem({
     name : "Custap Berry",
     berry_ : true,
-    inherentPriority : function() {
+    applyCustap : function() {
+        var subject = this.subject;
         var threshold = Math.floor(this.subject.getStat(Stat.HP) / 4);
-        if (this.subject.hp <= threshold) {
+        if (this.subject.hp > threshold)
+            return;
+        if (subject.getStatus("CustapEffect"))
+            return;
+
+        var effect = new StatusEffect("CustapEffect");
+        effect.inherentPriority = function() {
             this.used_ = true;
             return 3;
+        };
+        effect.switchOut = function() {
+            return true;
+        };
+        effect.informBeginExecution = function() {
+            if (!this.used_) return;
+            
+            // TODO: Determine cases where it will not activate (ie: pursuit)
+            var subject = this.subject;
+            
+            // TODO: Language file
+            var item = (subject.item != null) ? subject.item : "None";
+            subject.field.print(Text.item_messages(11, subject, item));
+            subject.removeStatus(this);
+
+            if (subject.item != null) {
+                subject.item.consume();
+            }
         }
-        return 0;
+        subject.applyStatus(subject, effect);
     },
-    informBeginExecution : function() {
-        if (this.used_) {
-            // TODO: Flavor text
-            this.consume();
-        }
+    switchIn : function() {
+        this.applyCustap();
+    },
+    applyEffect : function() {
+        this.applyCustap();
+        return true;
+    },
+    informDamaged : function(user, move, damage) {
+        this.applyCustap();
     }
 });
 
