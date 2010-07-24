@@ -30,6 +30,7 @@
 #include <set>
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
@@ -290,8 +291,7 @@ public:
         if (!makeRoot(sobj))
             return boost::shared_ptr<T>();
         return boost::shared_ptr<T>(sobj,
-                boost::bind(&ScriptContext::removeRoot,
-                        shared_from_this(), _1));
+                boost::bind(&ScriptContext::removeRoot, m_machine, _1));
     }
 
     StatusObject getAbility(const std::string &) const;
@@ -335,7 +335,7 @@ private:
 
     ScriptContext(void *);
     bool makeRoot(ScriptObject *);
-    void removeRoot(ScriptObject *);
+    static void removeRoot(ScriptMachine *, ScriptObject *);
     ScriptContext(const ScriptContext &);
     ScriptContext &operator=(const ScriptContext &);
 };

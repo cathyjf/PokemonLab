@@ -213,7 +213,7 @@ void StatusObject::transformTeam(ScriptContext *scx, const Pokemon::ARRAY &team)
         return;
     ScriptArrayPtr teamPtr = ScriptArray::newTeamArray(team, scx);
     ScriptValue argv[] = { teamPtr.get() };
-    ScriptValue v = scx->callFunctionByName(this, "transformTeam", 1, argv);
+    scx->callFunctionByName(this, "transformTeam", 1, argv);
 }
 
 void StatusObject::informTargeted(ScriptContext *cx,

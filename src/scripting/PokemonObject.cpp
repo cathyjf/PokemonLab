@@ -732,7 +732,7 @@ JSBool informDamaged(JSContext *cx,
 
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     MoveObject moveObj(JSVAL_TO_OBJECT(argv[1]));
-    const MoveTemplate* tpl = moveObj.getTemplate(scx);
+    const MoveTemplate *tpl = moveObj.getTemplate(scx);
     MoveObjectPtr move = scx->newMoveObject(tpl);
 
     const int damage = JSVAL_TO_INT(argv[2]);

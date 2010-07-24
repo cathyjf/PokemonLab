@@ -1126,12 +1126,15 @@ private:
         }
         
         ScriptContextPtr cx = machine->acquireContext();
+        // This ScriptContext may not be freed in the same thread it was
+        // created - ScriptContextLock is necessary!!
+        ScriptContextLock cxLock(cx);
         vector<StatusObject> clauses;
         int metagame = challenge->metagame;
         if (metagame == -1) {
             m_server->fetchClauses(cx, challenge->clauses, clauses);
         } else {
-            m_server->fetchClauses(cx, challenge->metagame, clauses);
+            m_server->fetchClauses(cx, metagame, clauses);
         }
         vector<int> violations;
         if (!m_server->validateTeam(cx, team, clauses, violations)) {
@@ -1175,7 +1178,10 @@ private:
             challenge->teams[0].resize(challenge->teamLength);
         }
 
-        ScriptContextPtr cx = machine->acquireContext();      
+        ScriptContextPtr cx = machine->acquireContext();
+        // This ScriptContext may not be freed in the same thread it was
+        // created - ScriptContextLock is necessary!!
+        ScriptContextLock cxLock(cx);
         vector<StatusObject> clauses;
         int metagame = challenge->metagame;
         if (metagame == -1) {
@@ -1616,6 +1622,9 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
         return false;
         
     ScriptContextPtr scx = m_server->getMachine()->acquireContext();
+    // This ScriptContext may not be freed in the same thread it was
+    // created - ScriptContextLock is necessary!!
+    ScriptContextLock cxLock(scx);
     vector<StatusObject> clauses;
     m_server->fetchClauses(scx, m_metagame->getIdx(), clauses);
     vector<int> violations;
@@ -1902,6 +1911,7 @@ void ServerImpl::initialiseMatchmaking(const string &file) {
 
 void ServerImpl::initialiseClauses() {
     ScriptContextPtr scx = m_machine.acquireContext();
+    ScriptContextLock lock(scx);
     vector<StatusObject> clauses;
     scx->getClauseList(clauses);
     vector<StatusObject>::iterator i = clauses.begin();

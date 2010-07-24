@@ -28,20 +28,20 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
+#include <queue>
 
 namespace shoddybattle { namespace network {
 
 /**
  * This is a class used for running code on a dispatch thread. Client threads
  * can post messages of type T to the ThreadedQueue, and the ThreadedQueue
- * will call a delegate method on each message. The ThreadedQueue does not
- * actually have any internal storage: attempts to post a message while one is
- * presently being processed while block until the message can be posted.
+ * will call a delegate method on each message.
  */
 template <class T>
 class ThreadedQueue {
 public:
     typedef boost::function<void (T &)> DELEGATE;
+    typedef boost::function<void ()> INITIALISER;
 
     ThreadedQueue(DELEGATE delegate):
             m_impl(new ThreadedQueueImpl(delegate)) {
@@ -49,65 +49,83 @@ public:
                 boost::bind(&ThreadedQueue::process, m_impl));
     }
 
+    ThreadedQueue(INITIALISER f, DELEGATE delegate):
+            m_impl(new ThreadedQueueImpl(delegate)) {
+        m_impl->thread = boost::thread(
+                boost::bind(&ThreadedQueue::initialise, f, m_impl));
+    }
+
     void post(T elem) {
-        boost::unique_lock<boost::mutex> lock(m_impl->mutex);
-        while (!m_impl->empty) {
-            m_impl->condition.wait(lock);
+        {
+            boost::unique_lock<boost::mutex> lock(m_impl->mutex);
+            m_impl->queue.push(elem);
         }
-        m_impl->item = elem;
-        m_impl->empty = false;
-        lock.unlock();
         m_impl->condition.notify_one();
     }
 
     ~ThreadedQueue() {
         if (boost::this_thread::get_id() == m_impl->thread.get_id()) {
+            // We get here if m_impl->thread is at Point B in process().
             m_impl->terminated = true;
             m_impl->thread.detach();
             return;
         }
+        // We get here if m_impl->thread is at Point A in process().
         boost::unique_lock<boost::mutex> lock(m_impl->mutex);
-        if (!m_impl->terminated) {
-            m_impl->terminated = true;
-            while (!m_impl->empty) {
-                m_impl->condition.wait(lock);
-            }
-            m_impl->empty = false;
-            lock.unlock();
-            m_impl->condition.notify_one();
-            m_impl->thread.join();
+        m_impl->terminated = true;
+        while (!m_impl->queue.empty()) {
+            m_impl->condition.wait(lock);
         }
+        lock.unlock();
+        m_impl->condition.notify_one();
+        m_impl->thread.join();
     }
 
     struct ThreadedQueueImpl {
         boost::mutex mutex;
         boost::condition_variable condition;
         bool terminated;
-        bool empty;
         DELEGATE delegate;
-        T item;
+        std::queue<T> queue;
         boost::thread thread;
 
         ThreadedQueueImpl(DELEGATE delegate):
                 terminated(false),
-                empty(true),
                 delegate(delegate) { }
     };
 
 private:
 
+    static void initialise(INITIALISER f,
+            boost::shared_ptr<ThreadedQueueImpl> impl) {
+        f();
+        process(impl);
+    }
+
     static void process(boost::shared_ptr<ThreadedQueueImpl> impl) {
-        boost::unique_lock<boost::mutex> lock(impl->mutex);
         while (!impl->terminated) {
-            while (impl->empty) {
-                impl->condition.wait(lock);
+            boost::unique_lock<boost::mutex> lock(impl->mutex);
+            while (impl->queue.empty()) {
+                impl->condition.wait(lock); // Point A
+                if (impl->terminated) {
+                    // Break out of two levels of while loops. Goto is the most
+                    // transparent way to do this.
+                    goto cleanup;
+                }
             }
-            if (impl->terminated) {
-                return;
-            }
-            impl->delegate(impl->item);
-            impl->empty = true;
+            T item = impl->queue.front();
+            lock.unlock();
+            impl->delegate(item); // Point B
+            lock.lock();
+            impl->queue.pop();
             impl->condition.notify_one();
+        }
+        cleanup:
+        // Run the last entries in the queue.
+        boost::unique_lock<boost::mutex> lock(impl->mutex);
+        while (!impl->queue.empty()) {
+            impl->delegate(impl->queue.front());
+            impl->queue.pop();
         }
     }
 

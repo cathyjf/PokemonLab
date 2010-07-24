@@ -151,8 +151,8 @@ public:
                     m_players[i].stopped = false;
                 }
             };
-    bool isEnabled() { return m_enabled; }
-    int getPeriods() { return m_periods; }
+    bool isEnabled() const { return m_enabled; }
+    int getPeriods() const { return m_periods; }
     void tick();
     void startTimer(const int party);
     void stopTimer(const int party);
@@ -181,6 +181,7 @@ private:
 };
 
 typedef boost::shared_ptr<Timer> TimerPtr;
+typedef list<TimerPtr> TimerList;
 
 struct NetworkBattleImpl {
     Server *m_server;
@@ -204,8 +205,8 @@ struct NetworkBattleImpl {
     Pokemon *m_selection;
     boost::condition_variable_any m_condition;
     bool m_terminated;
-    boost::shared_ptr<Timer> m_timer;
-    static list<TimerPtr> m_timerList;
+    TimerPtr m_timer;
+    static TimerList m_timerList;
     static boost::recursive_mutex m_timerMutex;
     static boost::thread m_timerThread;
 
@@ -247,6 +248,7 @@ struct NetworkBattleImpl {
     // Called when player number idx's time runs out - just kick them
     void timeExpired(int idx) {
         m_channel->part(m_clients[idx]);
+        // Note: 'this' is invalid here. Do not touch 'this'!
     }
     
     void beginTurn() {
@@ -660,7 +662,7 @@ struct NetworkBattleImpl {
 };
 
 // static member declarations
-list<TimerPtr> NetworkBattleImpl::m_timerList;
+TimerList NetworkBattleImpl::m_timerList;
 boost::recursive_mutex NetworkBattleImpl::m_timerMutex;
 boost::thread NetworkBattleImpl::m_timerThread;
 
@@ -1133,11 +1135,12 @@ namespace {
 
 void handleTiming() {
     while (true) {
-        boost::this_thread::sleep(boost::posix_time::seconds(3));
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
         boost::unique_lock<boost::recursive_mutex> lock(NetworkBattleImpl::m_timerMutex);
-        list<TimerPtr>::iterator i = NetworkBattleImpl::m_timerList.begin();
-        for (; i != NetworkBattleImpl::m_timerList.end(); ++i) {
-            (*i)->tick();
+        TimerList::iterator i = NetworkBattleImpl::m_timerList.begin();
+        while (i != NetworkBattleImpl::m_timerList.end()) {
+            TimerList::iterator current = i++;
+            (*current)->tick(); // This might invalidate i.
         }
     }
 }
@@ -1159,7 +1162,10 @@ void Timer::tick() {
         int diff = pt.remaining - delta;
         if (diff <= 0) {
             if (pt.periods-- < 0) {
+                lock.unlock();
                 m_battle->timeExpired(i);
+                // Note: 'this' is invalid here! We must return and not
+                //       touch 'this'.
                 return;
             }
             pt.remaining = m_periodLength + diff;

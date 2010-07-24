@@ -38,6 +38,7 @@
 #include "../shoddybattle/Pokemon.h"
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../moves/PokemonMove.h"
+#include "../network/ThreadedQueue.h"
 
 using namespace std;
 using namespace boost;
@@ -73,6 +74,9 @@ struct GlobalState {
     GlobalState(ScriptMachine *p): moves(*p) { }
 };
 
+typedef network::ThreadedQueue<ScriptObject *> RootQueue;
+typedef shared_ptr<RootQueue> RootQueuePtr;
+
 struct ScriptMachineImpl {
     JSRuntime *runtime;
     JSObject *global;
@@ -81,6 +85,8 @@ struct ScriptMachineImpl {
     ScriptMachine *machine;
     GlobalState *state;
     mutex lock;         // lock for contexts set
+    RootQueuePtr deadRoots;
+    ScriptContextPtr deadRootContext;
 
 #if ENABLE_ROOT_COUNT
     mutex rootLock;     // lock for roots set
@@ -91,6 +97,31 @@ struct ScriptMachineImpl {
             machine(p) {
 #if ENABLE_ROOT_COUNT
         roots = 0;
+#endif
+    }
+
+    void startRootThread() {
+        deadRoots = RootQueuePtr(new RootQueue(
+                boost::bind(&ScriptMachineImpl::initialiseRootThread, this),
+                boost::bind(&ScriptMachineImpl::reclaimRoot, this, _1)));
+    }
+
+    void initialiseRootThread() {
+        deadRootContext = machine->acquireContext();
+    }
+
+    void reclaimRoot(ScriptObject *sobj) {
+        JSObject **obj = reinterpret_cast<JSObject **>(sobj->getObjectRef());
+        assert(obj);
+        JSContext *cx = (JSContext *)deadRootContext->m_p;
+        JS_BeginRequest(cx);
+        JS_RemoveObjectRoot(cx, obj);
+        JS_EndRequest(cx);
+        // We own this ScriptObject, so delete it.
+        delete sobj;
+#if ENABLE_ROOT_COUNT
+        lock_guard<mutex> guard(rootLock);
+        --roots;
 #endif
     }
     
@@ -494,20 +525,8 @@ bool ScriptContext::makeRoot(ScriptObject *sobj) {
     return true;
 }
 
-void ScriptContext::removeRoot(ScriptObject *sobj) {
-    JSObject **obj = reinterpret_cast<JSObject **>(sobj->getObjectRef());
-    if (obj) {
-        JSContext *cx = (JSContext *)m_p;
-        JS_BeginRequest(cx);
-        JS_RemoveObjectRoot(cx, obj);
-        JS_EndRequest(cx);
-        // We own this ScriptObject, so delete it.
-        delete sobj;
-#if ENABLE_ROOT_COUNT
-        lock_guard<mutex> guard(m_machine->m_impl->rootLock);
-        --m_machine->m_impl->roots;
-#endif
-    }
+void ScriptContext::removeRoot(ScriptMachine *machine, ScriptObject *sobj) {
+    machine->m_impl->deadRoots->post(sobj);
 }
 
 shared_ptr<ScriptFunction> ScriptContext::compileFunction(
@@ -663,6 +682,7 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     JS_EndRequest(m_impl->cx);
 
     m_impl->state = new GlobalState(this);
+    m_impl->startRootThread();
 }
 
 ScriptMachine::~ScriptMachine() {
