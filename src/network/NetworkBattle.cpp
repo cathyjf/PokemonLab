@@ -279,13 +279,13 @@ struct NetworkBattleImpl {
 
     Pokemon *requestInactivePokemon(Pokemon *user) {
         const int party = user->getParty();
-        m_timer->startTimer(party);
         if (m_field->getAliveCount(party, true) == 0)
             return NULL;
         m_selection = user;
         m_waiting = m_replacement = true;
         m_requests[party].push_back(user->getSlot());
         requestAction(party);
+        m_timer->startTimer(party);
 
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
         
@@ -1135,12 +1135,12 @@ namespace {
 
 void handleTiming() {
     while (true) {
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
+        boost::this_thread::sleep(boost::posix_time::seconds(3));
         boost::unique_lock<boost::recursive_mutex> lock(NetworkBattleImpl::m_timerMutex);
         TimerList::iterator i = NetworkBattleImpl::m_timerList.begin();
         while (i != NetworkBattleImpl::m_timerList.end()) {
             TimerList::iterator current = i++;
-            (*current)->tick(); // This might invalidate i.
+            (*current)->tick(); // This might invalidate 'current'.
         }
     }
 }
