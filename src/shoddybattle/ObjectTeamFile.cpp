@@ -380,7 +380,8 @@ private:
         int handle = newHandle();
         if (desc->name == "shoddybattle.Pokemon") {
             readPokemon(desc);
-        } else if (desc->name == "mechanics.AdvanceMechanics") {
+        } else if ((desc->name == "mechanics.AdvanceMechanics")
+                || (desc->name == "mechanics.JewelMechanics")) {
             // Only contains a single Random.
             readObject();
         } else if (desc->name == "java.util.Random") {
