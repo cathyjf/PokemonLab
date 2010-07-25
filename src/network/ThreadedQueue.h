@@ -41,7 +41,7 @@ template <class T>
 class ThreadedQueue {
 public:
     typedef boost::function<void (T &)> DELEGATE;
-    typedef boost::function<void ()> INITIALISER;
+    typedef boost::function<void ()> NULLARY;
 
     ThreadedQueue(DELEGATE delegate):
             m_impl(new ThreadedQueueImpl(delegate)) {
@@ -49,10 +49,11 @@ public:
                 boost::bind(&ThreadedQueue::process, m_impl));
     }
 
-    ThreadedQueue(INITIALISER f, DELEGATE delegate):
+    ThreadedQueue(NULLARY initialiser, DELEGATE delegate, NULLARY terminator):
             m_impl(new ThreadedQueueImpl(delegate)) {
         m_impl->thread = boost::thread(
-                boost::bind(&ThreadedQueue::initialise, f, m_impl));
+                boost::bind(&ThreadedQueue::initialise, initialiser,
+                terminator, m_impl));
     }
 
     void post(T elem) {
@@ -96,10 +97,11 @@ public:
 
 private:
 
-    static void initialise(INITIALISER f,
+    static void initialise(NULLARY initialiser, NULLARY terminator,
             boost::shared_ptr<ThreadedQueueImpl> impl) {
-        f();
+        initialiser();
         process(impl);
+        terminator();
     }
 
     static void process(boost::shared_ptr<ThreadedQueueImpl> impl) {

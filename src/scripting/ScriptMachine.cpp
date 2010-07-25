@@ -43,6 +43,8 @@
 using namespace std;
 using namespace boost;
 
+#define ENABLE_ROOT_COUNT 0
+
 // Support forward compatibility with the development version of Spidermonkey.
 #ifndef JS_TYPED_ROOTING_API
 inline JSBool JS_AddObjectRoot(JSContext *cx, JSObject **rp) {
@@ -103,11 +105,16 @@ struct ScriptMachineImpl {
     void startRootThread() {
         deadRoots = RootQueuePtr(new RootQueue(
                 boost::bind(&ScriptMachineImpl::initialiseRootThread, this),
-                boost::bind(&ScriptMachineImpl::reclaimRoot, this, _1)));
+                boost::bind(&ScriptMachineImpl::reclaimRoot, this, _1),
+                boost::bind(&ScriptMachineImpl::terminateRootThread, this)));
     }
 
     void initialiseRootThread() {
         deadRootContext = machine->acquireContext();
+    }
+
+    void terminateRootThread() {
+        deadRootContext.reset();
     }
 
     void reclaimRoot(ScriptObject *sobj) {
@@ -122,6 +129,7 @@ struct ScriptMachineImpl {
 #if ENABLE_ROOT_COUNT
         lock_guard<mutex> guard(rootLock);
         --roots;
+        cout << "There are " << roots << " roots remaining." << endl;
 #endif
     }
     
@@ -615,8 +623,6 @@ ScriptContextPtr ScriptMachine::acquireContext() {
     ScriptContext *context = m_impl->newContext();
     context->m_busy = true;
     contexts.insert(context);
-    // TODO: Should we call setContextThread() here?
-    //       I can't remember why it doesn't.
     return ScriptContextPtr(context,
             boost::bind(&ScriptMachineImpl::releaseContext, m_impl, _1));
 }
@@ -681,12 +687,13 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     JS_DefineFunctions(m_impl->cx, m_impl->global, globalFunctions);
     JS_EndRequest(m_impl->cx);
 
-    m_impl->state = new GlobalState(this);
     m_impl->startRootThread();
+    m_impl->state = new GlobalState(this);
 }
 
 ScriptMachine::~ScriptMachine() {
     delete m_impl->state;
+    m_impl->deadRoots.reset();
     CONTEXT_SET::iterator i = m_impl->contexts.begin();
     for (; i != m_impl->contexts.end(); ++i) {
         ScriptContext *cx = *i;
