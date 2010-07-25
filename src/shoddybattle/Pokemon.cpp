@@ -93,6 +93,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_slot = -1;
     m_acted = false;
     m_revealed = false;
+    m_turn = NULL;
 }
 
 string Pokemon::getToken() const {
