@@ -194,6 +194,7 @@ function makeProtectMove(move) {
                 return false;
             if ((move.accuracy == 0) && move.charge_)
                 return false;
+            // Todo: make perfected accuracy (ex: No Guard) possibly hit in Diamond/Pearl
             field.print(Text.battle_messages_unique(145, this.subject));
             return true;
         };
@@ -1156,6 +1157,8 @@ function makeChargeMove(move, text, vulnerable) {
                 if (target != this.subject)
                     return false;
                 if (vulnerable.indexOf(move.name) != -1)
+                    return false;
+                if (user.getStatus("No Guard"))
                     return false;
                 // TODO: Replace this by something wherein the charge turn
                 //       does not get a chance to be vetoed.

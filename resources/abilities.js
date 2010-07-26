@@ -1755,3 +1755,23 @@ makeAbility({
         this.loaf_ = !this.loaf_;
     }
 });
+
+/*******************
+ * No Guard
+ *******************/
+makeAbility({
+    name: "No Guard",
+    statModifier : function(field, stat, subject, target) {
+        if (stat != Stat.ACCURACY)
+            return null;
+        return [0, 13];
+    }
+});
+
+/*******************
+ * Wonder Guard
+ *******************/
+makeAbility({
+    name: "Wonder Guard",
+    vulnerable_ : ["Beat Up", "Bide", "Doom Desire", "Fire Fang", "Future Sight", "Struggle"]
+});
