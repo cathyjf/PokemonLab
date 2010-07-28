@@ -868,7 +868,7 @@ makeItem({
 
         // Shedinja
         if (subject.hp == 1)
-            subject.informDamaged(user, user.getMove(user.turn.move), 0);
+            subject.informDamaged(user, subject.field.execution, 0);
         return maxHp - 1;
     },
     use: function() {

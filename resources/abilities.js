@@ -1773,5 +1773,17 @@ makeAbility({
  *******************/
 makeAbility({
     name: "Wonder Guard",
-    vulnerable_ : ["Beat Up", "Bide", "Doom Desire", "Fire Fang", "Future Sight", "Struggle"]
+    vulnerable_ : ["Beat Up", "Bide", "Doom Desire", "Fire Fang", "Future Sight", "Struggle"],
+    vetoExecution : function(field, user, target, move) {
+        if (target != this.subject)
+            return false;
+        if (move.moveClass == MoveClass.OTHER)
+            return false;
+        if (this.vulnerable_.indexOf(move.name) != -1)
+            return false;
+        if (field.getEffectiveness(move.type, target) >= 2.0)
+            return false;
+        field.print(Text.ability_messages(54, target));
+        return true;
+    }
 });
