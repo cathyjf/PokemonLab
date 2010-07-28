@@ -1107,6 +1107,7 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
  * int32 : field id
  * byte : party
  * byte : index
+ * byte : type of status
  * byte : effect radius
  * string : message
  * byte : if this status is being applied
@@ -1114,8 +1115,6 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
 void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
         const bool applied) {
     ScriptContext *cx = getContext();
-    if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
-        return;
     string text = effect->toString(cx);
     if (text.empty()) {
         return;
@@ -1124,11 +1123,18 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     msg << getId();
     msg << (unsigned char)p->getParty();
     msg << (unsigned char)p->getPosition();
+    msg << (unsigned char)effect->getType(cx);
     msg << (unsigned char)effect->getRadius(cx);
     msg << text;
     msg << (unsigned char)applied;
     msg.finalise();
-    m_impl->broadcast(msg);
+
+    if (effect->getType(cx) == StatusObject::TYPE_NORMAL) {
+        m_impl->broadcast(msg);
+    } else {
+        ClientPtr client = m_impl->m_clients[p->getParty()];
+        client->sendMessage(msg);
+    }
 }
 
 namespace {
