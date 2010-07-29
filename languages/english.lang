@@ -550,7 +550,7 @@
 10: $1 soaked up rain!
 11: $1 was hurt by the sunlight! //dry skin and solar power
 12: $1's $2 absorbed damage!
-13: $1's Effect Spore $2 $3!
+13: TODO: SOMETHING
 14: $1's Flame Body burned $2!
 15: $1's Flash Fire raised its fire power!
 16: TODO: Flower Gift
@@ -570,7 +570,7 @@
 30: $1's Oblivious prevents attraction!
 31: TODO: Own Tempo
 32: $1's Poison Heal restored health!
-33: $1's Poison Point poisoned $2!
+33: TODO: SOMETHING
 34: $1 is exerting its Pressure!
 35: TODO: Quick feet
 36: $1's Rain Dish restored its health a little!
@@ -581,7 +581,7 @@
 41: $1's Snow Warning whipped up a hailstorm!
 42: $1's $2 blocks $3! //soundproof and cacophony
 43: $1's Speed Boost raised its speed!
-44: $1's Static paralysed $2!
+44: TODO: SOMETHING
 45: TODO: Steadfast
 46: $1 held on with its Sticky Hold!
 47: $1 held Sturdy!
@@ -597,6 +597,9 @@
 57: $1's Dry Skin restored its health a little!
 58: $1 finally got its act together!
 59: $1's $2 raised its $3!
+60: $1's $2 paralysed $3!
+61: $1's $2 poisoned $3!
+62: $1's $2 made $3 fall asleep!
 
 [item-messages]
 0: $1's $2 restored its health a little!

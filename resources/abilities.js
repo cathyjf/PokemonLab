@@ -554,7 +554,7 @@ makeAbility({
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
             if (user.applyStatus(user, new ParalysisEffect())) {
-                subject.field.print(Text.ability_messages(44, subject, user));
+                subject.field.print(Text.ability_messages(60, subject, this, user));
             }
         }
     }
@@ -570,7 +570,7 @@ makeAbility({
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
             if (user.applyStatus(user, new PoisonEffect())) {
-                subject.field.print(Text.ability_messages(33, subject, user));
+                subject.field.print(Text.ability_messages(61, subject, this, user));
             }
         }
     }
@@ -1785,5 +1785,38 @@ makeAbility({
             return false;
         field.print(Text.ability_messages(54, target));
         return true;
+    }
+});
+
+/*******************
+ * Effect Spore
+ *******************/
+makeAbility({
+    name : "Effect Spore",
+    informDamaged : function(user, move, damage) {
+        var subject = this.subject;
+        if ((damage > 0) && move.flags[Flag.CONTACT]
+                && subject.field.random(0.3)) {
+            var number = subject.field.random(0, 2);
+            var message = 0;
+            var effect = null;
+            switch (number) {
+                case 0:
+                    effect = new ParalysisEffect();
+                    message = 60;
+                    break
+                case 1:
+                    effect = new PoisonEffect();
+                    message = 61;
+                    break;
+                case 2:
+                    effect = new SleepEffect();
+                    message = 62;
+                    break;
+            }
+            if (user.applyStatus(user, effect)) {
+                subject.field.print(Text.ability_messages(message, subject, this, user));
+            }
+        }
     }
 });
