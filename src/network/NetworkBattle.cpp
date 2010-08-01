@@ -1123,13 +1123,14 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     msg << getId();
     msg << (unsigned char)p->getParty();
     msg << (unsigned char)p->getPosition();
-    msg << (unsigned char)effect->getType(cx);
+    const int type = effect->getType(cx);
+    msg << (unsigned char)type;
     msg << (unsigned char)effect->getRadius(cx);
     msg << text;
     msg << (unsigned char)applied;
     msg.finalise();
 
-    if (effect->getType(cx) == StatusObject::TYPE_NORMAL) {
+    if (type == StatusObject::TYPE_NORMAL) {
         m_impl->broadcast(msg);
     } else {
         ClientPtr client = m_impl->m_clients[p->getParty()];
