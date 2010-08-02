@@ -70,7 +70,7 @@ unsigned int JewelMechanics::calculateStat(
             (int)((int)(((2 * base)
             + p.getIv(i)
             + (p.getEv(i) / 4)))
-            * (p.getLevel() / 100));
+            * p.getLevel() / 100);
     if (i == S_HP) {
         if (base == 1) {    // base 1 hp => 1 hp total
             return 1;
