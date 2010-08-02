@@ -340,6 +340,25 @@ struct NetworkBattleImpl {
         return m_clients[idx];
     }
 
+    void prepareSpectatorStatuses(const STATUSES &statuses, vector<string> &ids,
+            vector<string> &messages, vector<unsigned char> &radii,
+                    ScriptContext *cx) {
+        STATUSES::const_iterator iter = statuses.begin();
+        for (; iter != statuses.end(); ++iter) {
+            StatusObjectPtr effect = *iter;
+            if (effect->getType(cx) != StatusObject::TYPE_NORMAL) {
+                continue;
+            }
+            string text = effect->toString(cx);
+            if (text.empty()) {
+                continue;
+            }
+            ids.push_back(effect->getId(cx));
+            messages.push_back(text);
+            radii.push_back(effect->getRadius(cx));
+        }
+    }
+    
     /**
      * SPECTATOR_BEGIN
      *
@@ -366,6 +385,7 @@ struct NetworkBattleImpl {
      *                 byte : present hp in [0, 48]
      *                 byte : number of statuses
      *                 for each status
+     *                     string : id
      *                     string : message
      *                     byte   : effect radius
      *                     
@@ -410,27 +430,19 @@ struct NetworkBattleImpl {
                         msg << (unsigned char)total;
 
                         // Not all status get sent, so prepare them first
-                        STATUSES statuses = p->getEffects();
-                        STATUSES::const_iterator iter = statuses.begin();
-                        vector<string> texts;
+                        const STATUSES &statuses = p->getEffects();
+                        vector<string> ids;
+                        vector<string> messages;
                         vector<unsigned char> radii;
-                        for (; iter != statuses.end(); ++iter) {
-                            StatusObjectPtr effect = *iter;
-                            if (effect->getType(cx) != StatusObject::TYPE_NORMAL)
-                                continue;
-                            string text = effect->toString(cx);
-                            if (text.empty())
-                                continue;
+                        prepareSpectatorStatuses(statuses, ids, messages,
+                                radii, cx);
 
-                            texts.push_back(text);
-                            radii.push_back((unsigned char)effect->getRadius(cx));
-                        }
-
-                        //Now write the statuses
-                        const int size = texts.size();
+                        // Now write the statuses
+                        const int size = ids.size();
                         msg << (unsigned char)size;
                         for (int k = 0; k < size; k++) {
-                            msg << texts[k];
+                            msg << ids[k];
+                            msg << messages[k];
                             msg << radii[k];
                         }
                     }
@@ -1104,13 +1116,14 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
 /**
  * BATTLE_STATUS_CHANGE
  *
- * int32 : field id
- * byte : party
- * byte : index
- * byte : type of status
- * byte : effect radius
+ * int32  : field id
+ * byte   : party
+ * byte   : index
+ * byte   : type of status
+ * byte   : effect radius
+ * string : effect id
  * string : message
- * byte : if this status is being applied
+ * byte   : if this status is being applied
  */
 void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
         const bool applied) {
@@ -1126,6 +1139,7 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     const int type = effect->getType(cx);
     msg << (unsigned char)type;
     msg << (unsigned char)effect->getRadius(cx);
+    msg << effect->getId(cx);
     msg << text;
     msg << (unsigned char)applied;
     msg.finalise();
