@@ -537,7 +537,7 @@ makeAbility({
         var subject = this.subject;
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
-            if (user.applyStatus(user, new BurnEffect())) {
+            if (user.applyStatus(subject, new BurnEffect())) {
                 subject.field.print(Text.ability_messages(14, subject, user));
             }
         }
@@ -553,7 +553,7 @@ makeAbility({
         var subject = this.subject;
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
-            if (user.applyStatus(user, new ParalysisEffect())) {
+            if (user.applyStatus(subject, new ParalysisEffect())) {
                 subject.field.print(Text.ability_messages(60, subject, this, user));
             }
         }
@@ -569,7 +569,7 @@ makeAbility({
         var subject = this.subject;
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
-            if (user.applyStatus(user, new PoisonEffect())) {
+            if (user.applyStatus(subject, new PoisonEffect())) {
                 subject.field.print(Text.ability_messages(61, subject, this, user));
             }
         }
