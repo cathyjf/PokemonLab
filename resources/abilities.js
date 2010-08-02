@@ -1599,15 +1599,15 @@ makeAbility({
         var user = this.subject;
         var party = user.party;
         var opponent = user.field.getRandomTarget(1 - party);
-        if (opponent.getRawStat(Stat.ATTACK) > opponent.getRawStat(Stat.SPATTACK))
-            var stat = Stat.ATTACK;
-        else
-            var stat = Stat.SPATTACK;
+        var stat = (opponent.getRawStat(Stat.ATTACK) >
+            opponent.getRawStat(Stat.SPATTACK)) ?
+                Stat.ATTACK : Stat.SPATTACK;
         var effect = new StatChangeEffect(stat, 1);
         effect.silent = true;
         if (user.applyStatus(this.subject, effect)) {
             user.field.print(
-                Text.ability_messages(59, user, user.ability, Text.stats_long(stat)));
+                Text.ability_messages(59, user, user.ability,
+                Text.stats_long(stat)));
         }
     }
 });
@@ -1617,20 +1617,17 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Anticipation",
-    informActivate: function() {
+    informActivate : function() {
         var user = this.subject;
         var party = user.party;
-        var found = false;
         for (var i = 0; i < user.field.partySize; i++) {
-            if (found) break;
             var opponent = user.field.getActivePokemon(1 - party, i);
             for (var j = 0; j < 4; j++) {
                 var move = opponent.getMove(j);
-                if ((move == null) || move.power < 1) continue;
+                if ((move == null) || (move.power < 1)) continue;
                 if (user.field.getEffectiveness(move.type, user) > 1) {
                     user.field.print(Text.ability_messages(2, user));
-                    found = true;
-                    break;
+                    return;
                 }
             }
         }
@@ -1643,10 +1640,10 @@ makeAbility({
 makeAbility({
     name: "Normalize",
     transformEffectiveness: function(moveType, type, target) {
-        if (target != this.subject)
+        if (target != this.subject) {
             return target.field.getEffectiveness(moveType, type);
-        else
-            return target.field.getEffectiveness(Type.NORMAL, type);
+        }
+        return target.field.getEffectiveness(Type.NORMAL, type);
     }
 });
 
@@ -1654,8 +1651,8 @@ makeAbility({
  * Unburden
  *******************/
 makeAbility({
-    name: "Unburden",
-    informLostItem: function(target) {
+    name : "Unburden",
+    informLostItem : function(target) {
         if (target != this.subject)
             return;
         var effect = new StatusEffect("Unburden");
@@ -1675,10 +1672,10 @@ makeAbility({
  * Speed Boost
  *******************/
 makeAbility({
-    name: "Speed Boost",
-    tier: 6,
-    subtier: 2,
-    tick: function() {
+    name : "Speed Boost",
+    tier : 6,
+    subtier : 2,
+    tick : function() {
         var eff = new StatChangeEffect(Stat.SPEED, 1);
         eff.silent = true;
         this.subject.applyStatus(this.subject, eff);
@@ -1690,20 +1687,22 @@ makeAbility({
  * Forewarn
  *******************/
 makeAbility({
-    name: "Forewarn",
-    informActivate: function() {
+    name : "Forewarn",
+    informActivate : function() {
         var party = this.subject.party;
         var move = null;
         for (var i = 0; i < this.subject.field.partySize; i++) {
             var opponent = this.subject.field.getActivePokemon(1 - party, i);
             for (var j = 0; j < 4; j++) {
                 var m = opponent.getMove(j);
-                if ((move == null) || (m.power > move.power))
+                if ((move == null) || (m.power > move.power)) {
                     move = m;
+                }
             }
         }
-        if (move != null) {
-            this.subject.field.print(Text.ability_messages(17, this.subject, move));
+        if (move) {
+            this.subject.field.print(Text.ability_messages(17, this.subject,
+                    move));
         }
     }
 });
@@ -1716,9 +1715,9 @@ makeAbility({
     exceptions_ : [Type.NORMAL, Type.FIGHTING],
     transformEffectiveness : function(moveType, type, target) {
         if ((target != this.subject) &&
-            (type == Type.GHOST) &&
-            (this.exceptions_.indexOf(moveType) != -1)) {
-                return 1.0;
+                (type == Type.GHOST) &&
+                (this.exceptions_.indexOf(moveType) != -1)) {
+            return 1.0;
         }
         return target.field.getTypeEffectiveness(moveType, type);
     }
@@ -1728,11 +1727,11 @@ makeAbility({
  * Truant
  *******************/
 makeAbility({
-    name: "Truant",
-    informActivate: function () {
+    name : "Truant",
+    informActivate : function () {
         this.loaf_ = false;
     },
-    vetoExecution: function(field, user, target, move) {
+    vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
             return false;
         if (this.loaf_)
@@ -1740,9 +1739,9 @@ makeAbility({
 
         return this.loaf_;
     },
-    informFinishedSubjectExecution: function() {
-        // It is impossible to do a tick event after a switch, so the swap is done here
-        // The effect should be the same
+    informFinishedSubjectExecution : function() {
+        // It is impossible to do a tick event after a switch, so the swap is 
+        // done here. The effect should be the same.
         this.loaf_ = !this.loaf_;
     }
 });
@@ -1763,8 +1762,9 @@ makeAbility({
  * Wonder Guard
  *******************/
 makeAbility({
-    name: "Wonder Guard",
-    vulnerable_ : ["Beat Up", "Bide", "Doom Desire", "Fire Fang", "Future Sight", "Struggle"],
+    name : "Wonder Guard",
+    vulnerable_ : ["Beat Up", "Bide", "Doom Desire", "Fire Fang",
+        "Future Sight", "Struggle"],
     vetoExecution : function(field, user, target, move) {
         if (target != this.subject)
             return false;
