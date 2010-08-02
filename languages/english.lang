@@ -542,7 +542,7 @@
 2: $1's Anticipation made it shudder!
 3: $1 is tormented by the foe $2's Bad Dreams!
 4: TODO: Clear Body/hyper cutter/white smoke
-5: $1's Cute Charm infatuated $2!
+5: $1's $2 infatuated $3!
 6: $1's Damp prevents explosions!
 7: $1's Download raised its stats!
 8: $1's Drizzle caused a storm!
@@ -551,7 +551,7 @@
 11: $1 was hurt by the sunlight! //dry skin and solar power
 12: $1's $2 absorbed damage!
 13: TODO: SOMETHING
-14: $1's Flame Body burned $2!
+14: $1's $2 burned $3!
 15: $1's Flash Fire raised its fire power!
 16: TODO: Flower Gift
 17: $1 Forewarn alerted it to $2!

@@ -176,6 +176,23 @@ function makeAbsorbMove(ability, type) {
     });
 }
 
+function makeContactStatusAbility(ability, func) {
+    makeAbility({
+        name : ability,
+        informDamaged : function(user, move, damage) {
+            var subject = this.subject;
+            if ((damage > 0) && move.flags[Flag.CONTACT]
+                    && subject.field.random(0.3)) {
+                var effect = func(subject.field);
+                if (user.applyStatus(subject, new effect[0])) {
+                    subject.field.print(Text.ability_messages(effect[1],
+                            subject, this, user));
+                }
+            }
+        }
+    });
+}
+
 /*******************
  * Volt Absorb
  *******************/
@@ -531,66 +548,38 @@ makeAbility({
 /*******************
  * Flame Body
  *******************/
-makeAbility({
-    name : "Flame Body",
-    informDamaged : function(user, move, damage) {
-        var subject = this.subject;
-        if ((damage > 0) && move.flags[Flag.CONTACT]
-                && subject.field.random(0.3)) {
-            if (user.applyStatus(subject, new BurnEffect())) {
-                subject.field.print(Text.ability_messages(14, subject, user));
-            }
-        }
-    }
+makeContactStatusAbility("Flame Body", function() {
+   return [BurnEffect, 14];
 });
 
 /*******************
  * Static
  *******************/
-makeAbility({
-    name : "Static",
-    informDamaged : function(user, move, damage) {
-        var subject = this.subject;
-        if ((damage > 0) && move.flags[Flag.CONTACT]
-                && subject.field.random(0.3)) {
-            if (user.applyStatus(subject, new ParalysisEffect())) {
-                subject.field.print(Text.ability_messages(60, subject, this, user));
-            }
-        }
-    }
+makeContactStatusAbility("Static", function() {
+    return [ParalysisEffect, 60];
 });
 
 /*******************
  * Poison Point
  *******************/
-makeAbility({
-    name : "Poison Point",
-    informDamaged : function(user, move, damage) {
-        var subject = this.subject;
-        if ((damage > 0) && move.flags[Flag.CONTACT]
-                && subject.field.random(0.3)) {
-            if (user.applyStatus(subject, new PoisonEffect())) {
-                subject.field.print(Text.ability_messages(61, subject, this, user));
-            }
-        }
-    }
+makeContactStatusAbility("Poison Point", function() {
+    return [PoisonEffect, 61];
 });
 
 /*******************
  * Cute Charm
  *******************/
-makeAbility({
-    name : "Cute Charm",
-    informDamaged : function(user, move, damage) {
-        var subject = this.subject;
-        if ((damage > 0) && move.flags[Flag.CONTACT]
-                && subject.field.random(0.3)
-                && isOppositeGender(subject, user)) {
-            if (user.applyStatus(subject, new AttractEffect())) {
-                subject.field.print(Text.ability_messages(5, subject, user));
-            }
-        }
-    }
+makeContactStatusAbility("Cute Charm", function() {
+    return [AttractEffect, 5];
+});
+
+/*******************
+ * Effect Spore
+ *******************/
+makeContactStatusAbility("Effect Spore", function(field) {
+    var effects = [[ParalysisEffect, 60], [PoisonEffect, 61],
+            [SleepEffect, 62]];
+    return effects[field.random(0, 2)];
 });
 
 /*******************
@@ -1787,25 +1776,5 @@ makeAbility({
             return false;
         field.print(Text.ability_messages(54, target));
         return true;
-    }
-});
-
-/*******************
- * Effect Spore
- *******************/
-makeAbility({
-    name : "Effect Spore",
-    effects_ : [[ParalysisEffect, 60], [PoisonEffect, 61], [SleepEffect, 62]],
-    informDamaged : function(user, move, damage) {
-        var subject = this.subject;
-        if ((damage > 0) && move.flags[Flag.CONTACT]
-                && subject.field.random(0.3)) {
-            var number = subject.field.random(0, 2);
-            var entry = this.effects_[number];
-            if (user.applyStatus(subject, new entry[0])) {
-                subject.field.print(Text.ability_messages(entry[1], subject,
-                        this, user));
-            }
-        }
     }
 });
