@@ -1723,11 +1723,13 @@ makeAbility({
  * Scrappy
  *******************/
 makeAbility({
-    name: "Scrappy",
-    transformEffectiveness: function(moveType, type, target) {
-        var exceptions_ = [Type.NORMAL, Type.FIGHTING];
-        if ((target != this.subject) && (type == Type.GHOST) && (moveType in exceptions_)) {
-            return 1.0;
+    name : "Scrappy",
+    exceptions_ : [Type.NORMAL, Type.FIGHTING],
+    transformEffectiveness : function(moveType, type, target) {
+        if ((target != this.subject) &&
+            (type == Type.GHOST) &&
+            (this.exceptions_.indexOf(moveType) != -1)) {
+                return 1.0;
         }
         return target.field.getTypeEffectiveness(moveType, type);
     }
