@@ -586,7 +586,7 @@ makeAbility({
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)
                 && isOppositeGender(subject, user)) {
-            if (user.applyStatus(user, new AttractEffect())) {
+            if (user.applyStatus(subject, new AttractEffect())) {
                 subject.field.print(Text.ability_messages(5, subject, user));
             }
         }
@@ -1793,29 +1793,16 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Effect Spore",
+    effects_ : [[ParalysisEffect, 60], [PoisonEffect, 61], [SleepEffect, 62]],
     informDamaged : function(user, move, damage) {
         var subject = this.subject;
         if ((damage > 0) && move.flags[Flag.CONTACT]
                 && subject.field.random(0.3)) {
             var number = subject.field.random(0, 2);
-            var message = 0;
-            var effect = null;
-            switch (number) {
-                case 0:
-                    effect = new ParalysisEffect();
-                    message = 60;
-                    break
-                case 1:
-                    effect = new PoisonEffect();
-                    message = 61;
-                    break;
-                case 2:
-                    effect = new SleepEffect();
-                    message = 62;
-                    break;
-            }
-            if (user.applyStatus(user, effect)) {
-                subject.field.print(Text.ability_messages(message, subject, this, user));
+            var entry = this.effects_[number];
+            if (user.applyStatus(subject, new entry[0])) {
+                subject.field.print(Text.ability_messages(entry[1], subject,
+                        this, user));
             }
         }
     }
