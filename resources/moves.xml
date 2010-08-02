@@ -9161,18 +9161,18 @@ effect.addLevel();
 </flags>
 <init>
 <![CDATA[
-this.power_ = this.power;
+makeStatusMove(this, [[FlinchEffect, 0.3]]);
+var parent_ = this.use;
+var power_ = this.power;
+this.use = function(field, user, target, targets) {
+    this.power = power_;
+    if (target.getStatus("MinimiseEffect")) {
+        this.power *= 2;
+    }
+    parent_.call(this, field, user, target, targets);
+};
 ]]>
 </init>
-<use>
-<![CDATA[
-this.power = this.power_;
-if (target.getStatus("MinimiseEffect")) {
-    this.power *= 2;
-}
-target.hp -= field.calculate(this, user, target, targets);
-]]>
-</use>
 </move>
 
 <move name="Stone Edge" id="390">
