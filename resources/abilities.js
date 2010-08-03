@@ -1595,7 +1595,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Download",
-    informActivate: function() {
+    informActivate : function() {
         var user = this.subject;
         var party = user.party;
         var opponent = user.field.getRandomTarget(1 - party);
@@ -1638,8 +1638,8 @@ makeAbility({
  * Normalize
  *******************/
 makeAbility({
-    name: "Normalize",
-    transformEffectiveness: function(moveType, type, target) {
+    name : "Normalize",
+    transformEffectiveness : function(moveType, type, target) {
         if (target != this.subject) {
             return target.field.getEffectiveness(moveType, type);
         }
@@ -1655,8 +1655,9 @@ makeAbility({
     informLostItem : function(target) {
         if (target != this.subject)
             return;
-        var effect = new StatusEffect("Unburden");
-        effect.name = "Unburden";
+        if (this.subject.getStatus("UnburdenEffect"))
+            return;
+        var effect = new StatusEffect("UnburdenEffect");
         effect.statModifier = function(field, stat, subject) {
             if (subject != this.subject)
                 return null;
