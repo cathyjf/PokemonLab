@@ -340,9 +340,9 @@ struct NetworkBattleImpl {
         return m_clients[idx];
     }
 
-    void prepareSpectatorStatuses(const STATUSES &statuses, vector<string> &ids,
-            vector<string> &messages, vector<unsigned char> &radii,
-                    ScriptContext *cx) {
+    static void prepareSpectatorStatuses(const STATUSES &statuses, 
+            vector<string> &ids, vector<string> &messages,
+            vector<unsigned char> &radii, ScriptContext *cx) {
         STATUSES::const_iterator iter = statuses.begin();
         for (; iter != statuses.end(); ++iter) {
             StatusObjectPtr effect = *iter;
