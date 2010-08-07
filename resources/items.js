@@ -503,38 +503,9 @@ makeItem({
         };
         effect.informBeginExecution = function() {
             if (!this.used_) return;
-
-            var subject = this.subject;
-            var field = subject.field;
-
-            // Pursuit on fleeing pokemon does not trigger Custap
-            var pursuit = subject.getStatus("PursuitEffect");
-            if (pursuit && pursuit.executed) {
-                return;
-            }
             
-            // If a user moved last, Custap won't activate. However, Pursuit on
-            // a fleeing pokemon does not change the turn ordering, so we must
-            // check if Pursuit triggered.
-            var position = subject.turnPosition;
-            for (var i = 0; i < 2; ++i) {
-                for (var j = 0; j < field.partySize; ++j) {
-                    var p = field.getActivePokemon(i, j);
-                    if (p && p != subject) {
-                        pursuit = p.getStatus("PursuitEffect");
-                        if (pursuit && pursuit.executed &&
-                                p.turnPosition > subject.turnPosition) {
-                            position++;
-                        }
-                    }
-                }
-            }
-
-
-            var fieldSlots = field.partySize * 2;
-            if (position == (fieldSlots-1)) {
-                return;
-            }
+            // TODO: Determine cases where it will not activate (ie: pursuit)
+            var subject = this.subject;
             
             // TODO: Language file
             var item = (subject.item != null) ? subject.item : "None";

@@ -91,8 +91,7 @@ enum POKEMON_TINYID {
     PTI_ABILITY_NAME,
     PTI_TURN,
     PTI_FORCED_TURN,
-    PTI_DAMAGED,
-    PTI_TURN_POSITION
+    PTI_DAMAGED
 };
 
 enum TURN_TINYID {
@@ -964,10 +963,6 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
                 *vp = JSVAL_NULL;
             }
         } break;
-
-        case PTI_TURN_POSITION: {
-            *vp = INT_TO_JSVAL(p->getTurnPosition());
-        } break;
     }
     return JS_TRUE;
 }
@@ -1002,7 +997,6 @@ JSPropertySpec pokemonProperties[] = {
     { "turn", PTI_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "forcedTurn", PTI_FORCED_TURN, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { "damaged", PTI_DAMAGED, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
-    { "turnPosition", PTI_TURN_POSITION, JSPROP_PERMANENT | JSPROP_SHARED, pokemonGet, NULL },
     { 0, 0, 0, 0, 0 }
 };
 
