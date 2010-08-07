@@ -206,6 +206,8 @@ public:
     int getPosition() const { return m_position; }
     int getSlot() const { return m_slot; }
     void setSlot(const int slot) { m_slot = slot; }
+    int getTurnPosition() const { return m_turnPosition; }
+    void setTurnPosition(int position) { m_turnPosition = position; }
     bool isActive() const { return m_slot != -1; }
 
     void faint();
@@ -347,7 +349,10 @@ private:
     ScriptContext *m_cx;
     boost::shared_ptr<ScriptContext> m_scx;
     BattleField *m_field;
-    int m_party, m_position, m_slot;
+    int m_party;
+    int m_position;
+    int m_slot;
+    int m_turnPosition;
 
     STATUSES m_effects;
 

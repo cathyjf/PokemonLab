@@ -530,6 +530,7 @@ void BattleFieldImpl::sortInTurnOrder(vector<Pokemon::PTR> &pokemon,
         TurnOrderEntity &entity = entities[i];
         pokemon[i] = entity.pokemon;
         turns[i] = entity.turn;
+        pokemon[i]->setTurnPosition(i);
     }
 }
 

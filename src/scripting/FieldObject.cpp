@@ -90,6 +90,11 @@ JSBool random(JSContext *cx,
     return JS_TRUE;
 }
 
+/**
+ * field.getActivePokemon(party, slot)
+ *
+ * Gets a specific active Pokemon.
+ */
 JSBool getActivePokemon(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
