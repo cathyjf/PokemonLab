@@ -351,6 +351,8 @@ makeEffect(StatusEffect, {
     vetoExecution : function(field, user, target, move) {
         if (user != this.subject)
             return false;
+        if (user.getStatus("Magic Guard"))
+            return false;
         if (target != null)
             return false;
         if (field.random(0.75))

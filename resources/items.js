@@ -503,6 +503,13 @@ makeItem({
         effect.informBeginExecution = function() {
             if (!this.used_) return;
             var subject = this.subject;
+
+            // Check if Pursuit succeeded on a fleeing opponent
+            var pursuit = subject.getStatus("PursuitEffect");
+            if (pursuit && pursuit.executed) {
+                return;
+            }
+
             if (isMovingLast(subject.field, subject)) return;
             
             // TODO: Language file

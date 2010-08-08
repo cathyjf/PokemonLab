@@ -1779,3 +1779,16 @@ makeAbility({
         return true;
     }
 });
+
+/*******************
+ * Magic Guard
+ *******************/
+makeAbility({
+    name : "Magic Guard",
+    informRecoilDamage : function(recoil) {
+        return (recoil > 0);
+    },
+    transformHealthChange: function(delta, user, indirect) {
+        return (indirect) ? 0 : delta;
+    }
+});
