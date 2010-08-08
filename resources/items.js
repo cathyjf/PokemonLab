@@ -200,7 +200,7 @@ function makeTypeResistingBerry(item, type) {
                 return null;
             if (move.power <= 1)
                 return null;
-            effectiveness = field.getEffectiveness(move.type, target);
+            var effectiveness = field.getEffectiveness(move.type, target);
             if ((effectiveness < 2.0) && (type != Type.NORMAL)) 
                 return null;
             field.print(Text.item_messages(5, target, item, move));
