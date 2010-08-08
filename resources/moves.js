@@ -587,6 +587,7 @@ function makeDelayedAttackMove(move) {
                         this.subject.removeStatus(effect);
                     }
                 } else {
+                    this.subject.sendMessage("forceDirectDamage");
                     this.subject.hp -= damage;
                     effect = this.subject.getStatus("RageEffect");
                     if (effect) {

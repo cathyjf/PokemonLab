@@ -198,6 +198,7 @@ makeEffect(StatusEffect, {
         field.print(Text.status_effects_confusion(4, user));
         var confuse = field.getMove("__confusion");
         var damage = field.calculate(confuse, user, user, 1);
+        user.sendMessage("forceDirectDamage");
         user.hp -= damage;
         return true;
     },

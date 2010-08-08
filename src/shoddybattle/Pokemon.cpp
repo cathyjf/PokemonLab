@@ -182,7 +182,8 @@ void Pokemon::determineLegalActions() {
     }
 
     if (struggle) {
-        setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"), NULL, FORCED_MOVE);
+        setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"),
+                NULL, FORCED_MOVE);
     }
 }
 

@@ -1785,10 +1785,19 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Magic Guard",
+    forcing_ : false,
     informRecoilDamage : function(recoil) {
         return (recoil > 0);
     },
-    transformHealthChange: function(delta, user, indirect) {
-        return (indirect) ? 0 : delta;
+    forceDirectDamage : function() {
+        // Other code sends this message to indicate the next damage should
+        // bypass Magic Guard.
+        this.forcing_ = true;
+    },
+    transformHealthChange : function(delta, user, indirect) {
+        if (this.forcing_) {
+            this.forcing_ = indirect = false;
+        }
+        return indirect ? 0 : delta;
     }
 });

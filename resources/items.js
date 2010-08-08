@@ -863,8 +863,8 @@ makeItem({
 
 makeItem({
     name: "Focus Sash",
-    transformHealthChange: function(delta, user, indirect) {
-        // Multihit moves take Sash into account in their own method
+    transformHealthChange : function(delta, user, indirect) {
+        // Multihit moves take Sash into account in their own method.
         if (indirect || (delta < 0))
             return delta;
 

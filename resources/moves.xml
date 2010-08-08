@@ -662,6 +662,7 @@ if ((delta >= user.hp) || (user.getStatLevel(Stat.ATTACK) == 6)) {
     field.print(Text.battle_messages(0));
     return;
 }
+user.sendMessage("forceDirectDamage");
 user.hp -= delta;
 var effect = new StatChangeEffect(Stat.ATTACK, 12);
 //effect.silent = true;
@@ -6651,6 +6652,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPATTACK, -2), 1, true]]);
 <use>
 <![CDATA[
 var hp = Math.floor((target.hp + user.hp) / 2);
+user.sendMessage("forceDirectDamage");
 user.hp = hp;
 target.hp = hp;
 ]]>
@@ -9235,6 +9237,7 @@ this.type = type_;
 
 var recoil = Math.floor(user.getStat(Stat.HP) / 4);
 if (recoil < 1) recoil = 1;
+user.sendMessage("forceDirectDamage");
 user.hp -= recoil;
 ]]>
 </use>

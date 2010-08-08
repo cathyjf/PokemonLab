@@ -424,7 +424,7 @@ shared_ptr<PokemonParty> *BattleField::getActivePokemon() {
 }
 
 /**
- * Place the active pokemon into a single vector, indepedent of party.
+ * Place the active pokemon into a single vector, independent of party.
  */
 void BattleField::getActivePokemon(Pokemon::ARRAY &v,
         Pokemon::ARRAY *inactive) {
