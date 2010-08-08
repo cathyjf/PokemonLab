@@ -227,7 +227,7 @@ public:
             return NULL;
         return m_forcedTurn.get();
     }
-    FORCED_TYPE getForcedType();
+    FORCED_TYPE getForcedType() const;
     bool isMoveLegal(const int i) const { return m_legalMove[i]; }
     bool isSwitchLegal() const { return m_legalSwitch && m_forcedType != FORCED_ACTION; }
 

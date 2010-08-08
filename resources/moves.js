@@ -129,6 +129,28 @@ function makeEntryHazardMove(move, hazard) {
 }
 
 /**
+ * Determine whether a pokemon is moving last this round, in the sense that
+ * is relevant for the game mechanics. (In particular, slots that were empty
+ * at the start of the round execute no-op turns at the end of the round for
+ * the purpose of this function.)
+ */
+function isMovingLast(field, p) {
+    for (var i = 0; i < 2; ++i) {
+        for (var j = 0; j < field.partySize; ++j) {
+            if (field.getActivePokemon(i, j) == p) {
+                continue;
+            }
+            if (field.getTurn(i, j)) {
+                // Since this slot still has a turn pending, we aren't moving
+                // last this round.
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/**
  * Make a move that has a 50% chance of failure if the user's last action was
  * a successful execution of this type of move, and that also fails if the user
  * is the last pokemon to act this round.
@@ -136,17 +158,7 @@ function makeEntryHazardMove(move, hazard) {
 function makeProtectTypeMove(move, func) {
     move.use = function(field, user, target, targets) {
         // Check if every other pokemon has already moved.
-        var failure = true;
-        for (var i = 0; i < 2; ++i) {
-            for (var j = 0; j < field.partySize; ++j) {
-                var p = field.getActivePokemon(i, j);
-                if (p && p.turn) {
-                    failure = false;
-                    break;
-                }
-            }
-            if (!failure) break;
-        }
+        var failure = isMovingLast(field, user);
         if (!failure) {
             // If the user has the protect flag set then the move has a 50%
             // chance to fail this turn.
@@ -194,7 +206,7 @@ function makeProtectMove(move) {
                 return false;
             if ((move.accuracy == 0) && move.charge_)
                 return false;
-            // Todo: make perfected accuracy (ex: No Guard) possibly hit in Diamond/Pearl
+            // TODO: Make perfect accuracy (e.g. No Guard) possibly hit in DP.
             field.print(Text.battle_messages_unique(145, this.subject));
             return true;
         };
@@ -1037,10 +1049,12 @@ function makeMultipleHitMove(move) {
 		return;
 
             if (hasSash && damage >= target.hp) {
-                if (target.hp == 1)
-                    target.informDamaged(user, user.getMove(user.turn.move), 0);
-                else
+                if (target.hp == 1) {
+                    target.informDamaged(user,
+                            user.getMove(user.turn.move), 0);
+                } else {
                     target.hp = 1;
+                }
                 usedSash = true;
             } else {
                 target.hp -= damage;

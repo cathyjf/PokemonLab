@@ -448,7 +448,7 @@ MoveObjectPtr Pokemon::setForcedTurn(const MoveTemplate *move, Pokemon *p, const
     return m_forcedMove;
 }
 
-Pokemon::FORCED_TYPE Pokemon::getForcedType() {
+Pokemon::FORCED_TYPE Pokemon::getForcedType() const {
     if (!m_forcedMove) {
         return FORCED_NONE;
     }

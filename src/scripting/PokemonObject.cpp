@@ -44,6 +44,10 @@ using namespace std;
 
 namespace shoddybattle {
 
+// This function is defined in this file, but it is also used by
+// FieldObject.cpp.
+jsval getTurnValue(JSContext *, PokemonTurn *);
+
 namespace {
 
 JSClass pokemonClass = {
@@ -579,7 +583,7 @@ JSBool replaceBy(JSContext *cx,
     }
     Pokemon *target = (Pokemon *)JS_GetPrivate(cx, JSVAL_TO_OBJECT(v));
     BattleField *field = p->getField();
-    field->switchPokemon(p, target->getPosition());
+    field->executeSwitchAction(p, target->getPosition());
     return JS_TRUE;
 }
 
@@ -713,6 +717,10 @@ JSBool faint(JSContext *cx,
 
 JSBool turnSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     PokemonTurn *p = (PokemonTurn *)JS_GetPrivate(cx, obj);
+    if (p->type == TT_NOP) {
+        JS_ReportError(cx, "turnSet: Attempt to set fields on a NOP turn.");
+        return JS_FALSE;
+    }
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
         case TTI_MOVE: {
@@ -738,6 +746,12 @@ JSBool turnGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     }
     return JS_TRUE;
 }
+
+JSPropertySpec turnProperties[] = {
+    { "move", TTI_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
+    { "target", TTI_TARGET, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
+    { 0, 0, 0, 0, 0 }
+};
 
 /**
  * pokemon.informDamaged(user, move, damage)
@@ -766,12 +780,6 @@ JSBool informDamaged(JSContext *cx,
     
     return JS_TRUE;
 }
-
-JSPropertySpec turnProperties[] = {
-    { "move", TTI_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
-    { "target", TTI_TARGET, JSPROP_PERMANENT | JSPROP_SHARED, turnGet, turnSet },
-    { 0, 0, 0, 0, 0 }
-};
 
 JSBool pokemonSet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
@@ -965,26 +973,12 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
 
         case PTI_TURN: {
             PokemonTurn *turn = p->getTurn();
-            if (turn) {
-                JSObject *turnobj = JS_NewObject(cx, &turnClass, NULL, NULL);
-                JS_DefineProperties(cx, turnobj, turnProperties);
-                JS_SetPrivate(cx, turnobj, turn);
-                *vp = OBJECT_TO_JSVAL(turnobj);
-            } else {
-                *vp = JSVAL_NULL;
-            }
+            *vp = getTurnValue(cx, turn);
         } break;
 
         case PTI_FORCED_TURN: {
             PokemonTurn *turn = p->getForcedTurn();
-            if (turn) {
-                JSObject *turnobj = JS_NewObject(cx, &turnClass, NULL, NULL);
-                JS_DefineProperties(cx, turnobj, turnProperties);
-                JS_SetPrivate(cx, turnobj, turn);
-                *vp = OBJECT_TO_JSVAL(turnobj);
-            } else {
-                *vp = JSVAL_NULL;
-            }
+            *vp = getTurnValue(cx, turn);
         } break;
     }
     return JS_TRUE;
@@ -1062,6 +1056,16 @@ JSFunctionSpec pokemonFunctions[] = {
 };
 
 } // anonymous namespace
+
+jsval getTurnValue(JSContext *cx, PokemonTurn *turn) {
+    if (!turn) {
+        return JSVAL_NULL;
+    }
+    JSObject *turnobj = JS_NewObject(cx, &turnClass, NULL, NULL);
+    JS_DefineProperties(cx, turnobj, turnProperties);
+    JS_SetPrivate(cx, turnobj, turn);
+    return OBJECT_TO_JSVAL(turnobj);
+}
 
 PokemonObjectPtr ScriptContext::newPokemonObject(Pokemon *p) {
     JSContext *cx = (JSContext *)m_p;

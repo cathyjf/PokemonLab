@@ -285,7 +285,7 @@ function makeSpeciesBoostingItem(item, species, modifiers) {
             if (subject != this.subject)
                 return null;
             var found = false;
-            for (i in species) {
+            for (var i in species) {
                 if (species[i] ==  subject.species) {
                     found = true;
                     break;
@@ -293,7 +293,7 @@ function makeSpeciesBoostingItem(item, species, modifiers) {
             }
             if (!found)
                 return null;
-            for (i in modifiers) {
+            for (var i in modifiers) {
                 if (modifiers[i][0] == stat) {
                     return [modifiers[i][1], 3];
                 }
@@ -415,7 +415,9 @@ makeItem({
         return this.value_;
     },
     informBeginExecution : function() {
-        // TODO: Determine if the user went last. It will not activate then
+        if (isMovingLast(this.subject.field, this.subject)) {
+            return;
+        }
         if (this.value_ > 0) {
             this.subject.field.print(Text.item_messages(2, this.subject));
         }
@@ -431,7 +433,8 @@ makeStatBoostBerry("Salac Berry", Stat.SPEED);
 makeStatBoostBerry("Petaya Berry", Stat.SPATTACK);
 makeStatBoostBerry("Apicot Berry", Stat.SPDEFENCE);
 makePinchBerry("Starf Berry", function() {
-    var stats = [Stat.ATTACK, Stat.DEFENCE, Stat.SPEED, Stat.SPATTACK, Stat.SPDEFENCE];
+    var stats = [Stat.ATTACK, Stat.DEFENCE, Stat.SPEED, Stat.SPATTACK,
+            Stat.SPDEFENCE];
     var field = this.subject.field;
     var stat = stats[field.random(0, stats.length - 1)];
     if (this.subject.getStatLevel(stat) == 6)
@@ -440,7 +443,8 @@ makePinchBerry("Starf Berry", function() {
     effect.silent = true;
     if (!this.subject.applyStatus(this.subject, effect))
         return;
-    field.print(Text.item_messages(3, this.subject, this, Text.stats_long(stat)));
+    field.print(Text.item_messages(3, this.subject, this,
+            Text.stats_long(stat)));
     this.consume();
 });
 
@@ -498,9 +502,8 @@ makeItem({
         };
         effect.informBeginExecution = function() {
             if (!this.used_) return;
-            
-            // TODO: Determine cases where it will not activate (ie: pursuit)
             var subject = this.subject;
+            if (isMovingLast(subject.field, subject)) return;
             
             // TODO: Language file
             var item = (subject.item != null) ? subject.item : "None";
@@ -593,11 +596,15 @@ makeEvadeItem("Lax Incense");
 
 makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"], [[Stat.SPATTACK, 2.0]]);
 makeSpeciesBoostingItem("DeepSeaScale", ["Clamperl"], [[Stat.SPDEFENCE, 2.0]]);
-makeSpeciesBoostingItem("Light Ball", ["Pikachu"], [[Stat.SPATTACK, 2.0], [Stat.ATTACK, 2.0]]);
-makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"], [[Stat.SPATTACK, 1.5], [Stat.SPDEFENCE, 1.5]]);
-makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"], [[Stat.ATTACK, 2.0]]);
+makeSpeciesBoostingItem("Light Ball", ["Pikachu"], [[Stat.SPATTACK, 2.0],
+        [Stat.ATTACK, 2.0]]);
+makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"], [[Stat.SPATTACK, 1.5],
+        [Stat.SPDEFENCE, 1.5]]);
+makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"],
+        [[Stat.ATTACK, 2.0]]);
 //todo: probably have to change these for transform
-makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0], [Stat.SPDEFENCE, 2.0]]);
+makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0],
+        [Stat.SPDEFENCE, 2.0]]);
 makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0]]);
 
 makeStabBoostItem("Adamant Orb", "Dialga");
@@ -674,7 +681,8 @@ makeItem({
             this.subject.field.print(Text.item_messages(0, this.subject, this));
             var delta = Math.floor(max / 16);
         } else {
-            this.subject.field.print(Text.battle_messages_unique(54, this.subject, this));
+            this.subject.field.print(Text.battle_messages_unique(54,
+                    this.subject, this));
             var delta = -Math.floor(max / 8);
         }
         this.subject.hp += delta;
@@ -850,7 +858,7 @@ makeItem({
     name: "Focus Sash",
     transformHealthChange: function(delta, user, indirect) {
         // Multihit moves take Sash into account in their own method
-        if (indirect || delta < 0)
+        if (indirect || (delta < 0))
             return delta;
 
         var subject = this.subject;
@@ -862,12 +870,14 @@ makeItem({
         this.used_ = true;
 
         // Shedinja
-        if (subject.hp == 1)
+        if (subject.hp == 1) {
             subject.informDamaged(user, subject.field.execution, 0);
+        }
         return maxHp - 1;
     },
     use: function() {
-        this.subject.field.print(Text.item_messages(10, this.subject, this.name));
+        this.subject.field.print(Text.item_messages(10, this.subject,
+                this.name));
         this.consume();
     },
     informDamaged: function(user, move, damage) {

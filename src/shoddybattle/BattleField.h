@@ -80,10 +80,13 @@ private:
 
 enum TURN_TYPE {
     TT_MOVE = 0,
-    TT_SWITCH = 1
+    TT_SWITCH = 1,
+    TT_NOP = 2  // "No-op" turn: does nothing when executed.
 };
 
 struct PokemonTurn {
+    static PokemonTurn NOP;
+    
     TURN_TYPE type;
     int id;         // either id of move or the pokemon to which to switch
     int target;  // target of the move
@@ -186,6 +189,21 @@ public:
     bool executeAction(Pokemon *p, const PokemonTurn *turn);
 
     /**
+     * Get the turn pending for a particular slot.
+     */
+    PokemonTurn *getTurn(const int i, const int j);
+
+    /**
+     * Execute a move action.
+     */
+    void executeMoveAction(Pokemon *p, const int id, int targetIdx);
+
+    /**
+     * Switch which pokemon is active.
+     */
+    void executeSwitchAction(Pokemon *, const int);
+
+    /**
      * Process a set of replacements.
      */
     void processReplacements(const std::vector<PokemonTurn> &turn);
@@ -220,7 +238,7 @@ public:
     /**
      * Get the active pokemon.
      */
-    void getActivePokemon(Pokemon::ARRAY &);
+    void getActivePokemon(Pokemon::ARRAY &, Pokemon::ARRAY * = NULL);
     boost::shared_ptr<PokemonParty> *getActivePokemon();
     Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
         return (*getActivePokemon()[i])[j].pokemon;
@@ -276,11 +294,6 @@ public:
      * Obtain the BattleMechanics in use on this BattleField.
      */
     const BattleMechanics *getMechanics() const;
-
-    /**
-     * Switch which pokemon is active.
-     */
-    void switchPokemon(Pokemon *, const int);
 
     /**
      * Withdraw a pokemon.

@@ -38,6 +38,10 @@ using namespace boost;
 
 namespace shoddybattle {
 
+// This function is defined in PokemonObject.cpp, but it is used in this file
+// as well.
+jsval getTurnValue(JSContext *, PokemonTurn *);
+
 namespace {
 
 JSClass fieldClass = {
@@ -115,6 +119,29 @@ JSBool getActivePokemon(JSContext *cx,
     } else {
         *ret = OBJECT_TO_JSVAL((JSObject *)pokemon->getObject()->getObject());
     }
+    return JS_TRUE;
+}
+
+JSBool getTurn(JSContext *cx,
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    int party = 0, idx = 0;
+    JS_ConvertArguments(cx, 2, argv, "ii", &party, &idx);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getTurn: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    if (idx < 0) {
+        JS_ReportError(cx, "getTurn: position must be > 0");
+        return JS_FALSE;
+    }
+    shared_ptr<PokemonParty> p = field->getActivePokemon()[party];
+    const int size = p->getSize();
+    if (idx >= size) {
+        *ret = JSVAL_NULL;
+        return JS_TRUE;
+    }
+    *ret = getTurnValue(cx, field->getTurn(party, idx));
     return JS_TRUE;
 }
 
@@ -588,6 +615,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("requestInactivePokemon", requestInactivePokemon, 1, 0, 0),
     JS_FS("getRandomTarget", getRandomTarget, 1, 0, 0),
     JS_FS("getTrainer", getTrainer, 1, 0, 0),
+    JS_FS("getTurn", getTurn, 2, 0, 0),
     JS_FS_END
 };
 
