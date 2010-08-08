@@ -181,6 +181,11 @@ public:
     void processTurn(std::vector<PokemonTurn> &turn);
 
     /**
+     * Execute an action.
+     */
+    bool executeAction(Pokemon *p, const PokemonTurn *turn);
+
+    /**
      * Process a set of replacements.
      */
     void processReplacements(const std::vector<PokemonTurn> &turn);

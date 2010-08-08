@@ -7299,17 +7299,7 @@ this.beginTurn = function(field, user, target) {
         if (subject != this.target)
             return;
         this.executed = true;
-        this.subject.execute(move, subject);
-        this.subject.setPp(move, this.subject.getPp(move) - 1);
-    };
-    effect.vetoExecution = function(field, user, target, move) {
-        if (target != null)
-            return false;
-        if (user != this.subject)
-            return false;
-        if (!this.executed)
-            return false;
-        return true;
+        this.subject.executeAction(this.subject.turn);
     };
     user.applyStatus(user, effect);
 };

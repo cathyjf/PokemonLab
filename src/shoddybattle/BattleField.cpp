@@ -1065,6 +1065,67 @@ void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
 }
 
 /**
+ * Execute an action.
+ */
+bool BattleField::executeAction(Pokemon *p, const PokemonTurn *turn) {
+    if (!turn || p->isFainted() || !p->isActive()) {
+        // Can't execute anything if we've fainted or become inactive or we
+        // don't have a turn to execute.
+        return false;
+    }
+
+    if (turn->type == TT_MOVE) {
+        p->sendMessage("informBeginExecution", 0, NULL);
+
+        const bool choice = (p->getForcedTurn() == NULL);
+        const int id = turn->id;
+        MoveObjectPtr move = p->getMove(id);
+        Pokemon *target = NULL;
+        TARGET tc = move->getTargetClass(m_impl->context);
+        if (isTargeted(tc)) {
+            int idx = turn->target;
+            if (idx == -1) {
+                target = getRandomTarget(1 - p->getParty());
+            } else {
+                int party = 0;
+                m_impl->decodeIndex(idx, party);
+                Pokemon::PTR t = (*m_impl->active[party])[idx].pokemon;
+                if (!t || t->isFainted()) {
+                    // If this is a single target move and there is no
+                    // target then choose a random target from among
+                    // the available enemies.
+
+                    // TODO: Handle T_ALLY and T_USER_OR_ALLY here.
+                    target = getRandomTarget(1 - p->getParty());
+                } else {
+                    target = t.get();
+                }
+            }
+        }
+
+        p->clearForcedTurn();
+        if (p->executeMove(move, target)) {
+            if (choice) {
+                // Only deduct pp if the move was chosen freely.
+                // TODO: Actually deduct this after the field-wide veto
+                //       check, but before the move is used (matters for
+                //       Mimic).
+                p->deductPp(id);
+            }
+            // Set last move used.
+            p->setLastMove(move);
+            m_impl->lastMove = move;
+        }
+        ScriptValue val[] = { p, move.get() };
+        sendMessage("informFinishedExecution", 2, val);
+    } else {
+        switchPokemon(p, turn->id);
+    }
+    p->setTurn(NULL);
+    return true;
+}
+
+/**
  * Process a turn.
  */
 void BattleField::processTurn(vector<PokemonTurn> &turns) {
@@ -1116,69 +1177,16 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
             }
             move->beginTurn(m_impl->context, this, p.get(), target);
         }
-
     }
 
     // Execute the actions.
     for (int i = 0; i < count; ++i) {
-        Pokemon::PTR p = pokemon[i];
-        const PokemonTurn *turn = ordered[i];
-
-        if (p->isFainted() || !p->isActive()) {
-            // Can't execute anything if we've fainted or become inactive.
-            continue;
-        }
-        
-        if (turn->type == TT_MOVE) {
-            p->sendMessage("informBeginExecution", 0, NULL);
-            
-            const bool choice = (p->getForcedTurn() == NULL);
-            const int id = turn->id;
-            MoveObjectPtr move = p->getMove(id);
-            Pokemon *target = NULL;
-            TARGET tc = move->getTargetClass(m_impl->context);
-            if (isTargeted(tc)) {
-                int idx = turn->target;
-                if (idx == -1) {
-                    target = getRandomTarget(1 - p->getParty());
-                } else {
-                    int party = 0;
-                    m_impl->decodeIndex(idx, party);
-                    Pokemon::PTR t = (*m_impl->active[party])[idx].pokemon;
-                    if (!t || t->isFainted()) {
-                        // If this is a single target move and there is no
-                        // target then choose a random target from among
-                        // the available enemies.
-
-                        // TODO: Handle T_ALLY and T_USER_OR_ALLY here.
-                        target = getRandomTarget(1 - p->getParty());
-                    } else {
-                        target = t.get();
-                    }
-                }
+        Pokemon *p = pokemon[i].get();
+        const PokemonTurn *turn = p->getTurn();
+        if (executeAction(p, turn)) {
+            if (determineVictory()) {
+                return;
             }
-            
-            p->clearForcedTurn();
-            if (p->executeMove(move, target)) {
-                if (choice) {
-                    // Only deduct pp if the move was chosen freely.
-                    // TODO: Actually deduct this after the field-wide veto
-                    //       check, but before the move is used (matters for
-                    //       Mimic).
-                    p->deductPp(id);
-                }
-                // Set last move used.
-                p->setLastMove(move);
-                m_impl->lastMove = move;
-            }
-            ScriptValue val[] = { p.get(), move.get() };
-            sendMessage("informFinishedExecution", 2, val);
-        } else {
-            switchPokemon(p.get(), turn->id);
-        }
-        p->setTurn(NULL);
-        if (determineVictory()) {
-            return;
         }
     }
 
