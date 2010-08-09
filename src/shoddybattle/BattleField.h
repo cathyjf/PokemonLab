@@ -184,9 +184,9 @@ public:
     void processTurn(std::vector<PokemonTurn> &turn);
 
     /**
-     * Execute an action.
+     * Execute pokemon's pending action.
      */
-    bool executeAction(Pokemon *p, const PokemonTurn *turn);
+    bool executePendingAction(Pokemon *p);
 
     /**
      * Get the turn pending for a particular slot.
@@ -194,12 +194,12 @@ public:
     PokemonTurn *getTurn(const int i, const int j);
 
     /**
-     * Execute a move action.
+     * Execute a pokemon's pending's move action.
      */
-    void executeMoveAction(Pokemon *p, const int id, int targetIdx);
+    void executePendingMoveAction(Pokemon *);
 
     /**
-     * Switch which pokemon is active.
+     * Execute a switch action.
      */
     void executeSwitchAction(Pokemon *, const int);
 

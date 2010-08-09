@@ -674,24 +674,15 @@ JSBool execute(JSContext *cx,
 }
 
 /**
- * pokemon.executeAction(turn)
+ * pokemon.executePendingAction()
  *
- * The parameter is a turn object.
+ * Execute the pokemon's pending action immediately.
  */
-JSBool executeAction(JSContext *cx,
+JSBool executePendingAction(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     BattleField *field = p->getField();
-    if (!JSVAL_IS_OBJECT(argv[0])) {
-        return JS_FALSE;
-    }
-    JSObject *turnobj = JSVAL_TO_OBJECT(argv[0]);
-    PokemonTurn *turn = (PokemonTurn *)JS_GetInstancePrivate(cx,
-            turnobj, &turnClass, NULL);
-    if (!turn) {
-        return JS_FALSE;
-    }
-    const bool executed = field->executeAction(p, turn);
+    const bool executed = field->executePendingAction(p);
     *ret = BOOLEAN_TO_JSVAL(executed);
     return JS_TRUE;
 }
@@ -1051,7 +1042,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("setRawStat", setRawStat, 2, 0, 0),
     JS_FS("getNatureEffect", getNatureEffect, 1, 0, 0),
     JS_FS("informDamaged", informDamaged, 3, 0, 0),
-    JS_FS("executeAction", executeAction, 1, 0, 0),
+    JS_FS("executePendingAction", executePendingAction, 0, 0, 0),
     JS_FS_END
 };
 

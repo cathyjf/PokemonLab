@@ -1079,15 +1079,18 @@ void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
 /**
  * Execute a move action.
  */
-void BattleField::executeMoveAction(Pokemon *p, const int id,
-        int targetIdx) {
+void BattleField::executePendingMoveAction(Pokemon *p) {
+    PokemonTurn *turn = p->getTurn();
+    // Note that the following line can change the fields of *turn.
     p->sendMessage("informBeginExecution", 0, NULL);
 
     const bool choice = (p->getForcedTurn() == NULL);
+    const int id = turn->id;
     MoveObjectPtr move = p->getMove(id);
     Pokemon *target = NULL;
     TARGET tc = move->getTargetClass(m_impl->context);
     if (isTargeted(tc)) {
+        int targetIdx = turn->target;
         if (targetIdx == -1) {
             target = getRandomTarget(1 - p->getParty());
         } else {
@@ -1127,11 +1130,12 @@ void BattleField::executeMoveAction(Pokemon *p, const int id,
 /**
  * Execute an action.
  */
-bool BattleField::executeAction(Pokemon *p, const PokemonTurn *turn) {
+bool BattleField::executePendingAction(Pokemon *p) {
+    PokemonTurn *turn = p->getTurn();
     const bool execute = turn && !p->isFainted() && p->isActive();
     if (execute) {
         if (turn->type == TT_MOVE) {
-            executeMoveAction(p, turn->id, turn->target);
+            executePendingMoveAction(p);
         } else {
             executeSwitchAction(p, turn->id);
         }
@@ -1200,9 +1204,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
 
     // Execute the actions.
     for (int i = 0; i < count; ++i) {
-        Pokemon *p = pokemon[i].get();
-        const PokemonTurn *turn = p->getTurn();
-        if (executeAction(p, turn)) {
+        if (executePendingAction(pokemon[i].get())) {
             if (determineVictory()) {
                 return;
             }
