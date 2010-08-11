@@ -1040,6 +1040,16 @@ private:
         msg >> opponent >> generation >> partySize >> teamLength;
         int metagame;
         msg >> metagame;
+
+        // Check for bad challenge info
+        vector<MetagamePtr> metagames = m_server->getMetagames();
+        const int metagameCount = metagames.size();
+        if ((partySize < 1) || (teamLength < 1) || (metagame < -1) ||
+                (metagame >= metagameCount)) {
+            sendMessage(ErrorMessage(ErrorMessage::BAD_CHALLENGE, opponent));
+            return;
+        }
+
         if (metagame == -1) {
             unsigned char clauseCount;
             msg >> clauseCount;
@@ -1085,9 +1095,6 @@ private:
         } else if (getId() == client->getId()) {
             return;
         }
-
-        if (getId() == client->m_id)
-            return;
 
         m_challenges[opponent] = challenge;
         client->sendMessage(IncomingChallenge(m_name, *challenge));
