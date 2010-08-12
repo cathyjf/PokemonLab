@@ -522,7 +522,8 @@
 			<move>Safeguard</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="1" name="Ivysaur">
 	<type>Grass</type>
@@ -1044,7 +1045,8 @@
 			<move>Safeguard</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="2" name="Venusaur">
 	<type>Grass</type>
@@ -1560,7 +1562,8 @@
 			<move>Safeguard</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="3" name="Charmander">
 	<type>Fire</type>
@@ -2147,7 +2150,8 @@
 			<move>Dragon Dance</move>
 			<move>Metal Claw</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="4" name="Charmeleon">
 	<type>Fire</type>
@@ -2734,7 +2738,8 @@
 			<move>Dragon Dance</move>
 			<move>Metal Claw</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="5" name="Charizard">
 	<type>Fire</type>
@@ -3158,7 +3163,8 @@
 			<move>Dragon Dance</move>
 			<move>Metal Claw</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="6" name="Squirtle">
 	<type>Water</type>
@@ -4205,7 +4211,8 @@
 			<move>Yawn</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="7" name="Wartortle">
 	<type>Water</type>
@@ -5252,7 +5259,8 @@
 			<move>Yawn</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="8" name="Blastoise">
 	<type>Water</type>
@@ -6313,7 +6321,8 @@
 			<move>Yawn</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="9" name="Caterpie">
 	<type>Bug</type>
@@ -6491,7 +6500,8 @@
 			<move>Tackle</move>
 			<move>Morning Sun</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="12" name="Weedle">
 	<type>Bug</type>
@@ -6664,7 +6674,8 @@
 			<move>Poison Sting</move>
 			<move>Baton Pass</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="15" name="Pidgey">
 	<type>Normal</type>
@@ -6780,7 +6791,8 @@
 			<move>Faint Attack</move>
 			<move>Foresight</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="16" name="Pidgeotto">
 	<type>Normal</type>
@@ -6913,7 +6925,8 @@
 			<move>Faint Attack</move>
 			<move>Foresight</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="17" name="Pidgeot">
 	<type>Normal</type>
@@ -7044,7 +7057,8 @@
 			<move>Faint Attack</move>
 			<move>Foresight</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="18" name="Rattata">
 	<type>Normal</type>
@@ -7162,7 +7176,8 @@
 			<move>Me First</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="19" name="Raticate">
 	<type>Normal</type>
@@ -7316,7 +7331,8 @@
 			<move>Uproar</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="20" name="Spearow">
 	<type>Normal</type>
@@ -7537,7 +7553,8 @@
 			<move>Quick Attack</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="21" name="Fearow">
 	<type>Normal</type>
@@ -7761,7 +7778,8 @@
 			<move>Quick Attack</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="22" name="Ekans">
 	<type>Poison</type>
@@ -7908,7 +7926,8 @@
 			<move>Switcheroo</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="23" name="Arbok">
 	<type>Poison</type>
@@ -8090,7 +8109,8 @@
 			<move>Switcheroo</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="24" name="Pikachu">
 	<type>Electric</type>
@@ -8792,7 +8812,8 @@
 			<move>Yawn</move>
 			<move>Fly</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="25" name="Raichu">
 	<type>Electric</type>
@@ -9498,7 +9519,8 @@
 			<move>Yawn</move>
 			<move>Fly</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="26" name="Sandshrew">
 	<type>Ground</type>
@@ -9648,7 +9670,8 @@
 			<move>Night Slash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="27" name="Sandslash">
 	<type>Ground</type>
@@ -9803,7 +9826,8 @@
 			<move>Night Slash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="28" name="Nidoran-f">
 	<type>Poison</type>
@@ -9932,7 +9956,8 @@
 			<move>Skull Bash</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="29" name="Nidorina">
 	<type>Poison</type>
@@ -10061,7 +10086,8 @@
 			<move>Skull Bash</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="30" name="Nidoqueen">
 	<type>Poison</type>
@@ -10260,7 +10286,8 @@
 			<move>Toxic Spikes</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="31" name="Nidoran-m">
 	<type>Poison</type>
@@ -10374,7 +10401,8 @@
 			<move>Head Smash</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="32" name="Nidorino">
 	<type>Poison</type>
@@ -10488,7 +10516,8 @@
 			<move>Head Smash</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="33" name="Nidoking">
 	<type>Poison</type>
@@ -10678,7 +10707,8 @@
 			<move>Toxic Spikes</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="34" name="Clefairy">
 	<type>Normal</type>
@@ -11033,7 +11063,8 @@
 			<move>Mimic</move>
 			<move>Splash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="35" name="Clefable">
 	<type>Normal</type>
@@ -11391,7 +11422,8 @@
 			<move>Mimic</move>
 			<move>Splash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="36" name="Vulpix">
 	<type>Fire</type>
@@ -11554,7 +11586,8 @@
 			<move>Power Swap</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="37" name="Ninetales">
 	<type>Fire</type>
@@ -11724,7 +11757,8 @@
 			<move>Power Swap</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="38" name="Jigglypuff">
 	<type>Normal</type>
@@ -11951,7 +11985,8 @@
 			<move>Present</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="39" name="Wigglytuff">
 	<type>Normal</type>
@@ -12182,7 +12217,8 @@
 			<move>Present</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="40" name="Zubat">
 	<type>Poison</type>
@@ -12357,7 +12393,8 @@
 			<move>Nasty Plot</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="41" name="Golbat">
 	<type>Poison</type>
@@ -12535,7 +12572,8 @@
 			<move>Nasty Plot</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="42" name="Oddish">
 	<type>Grass</type>
@@ -12696,7 +12734,8 @@
 			<move>Razor Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="43" name="Gloom">
 	<type>Grass</type>
@@ -12859,7 +12898,8 @@
 			<move>Razor Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="44" name="Vileplume">
 	<type>Grass</type>
@@ -13040,7 +13080,8 @@
 			<move>Razor Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="45" name="Paras">
 	<type>Bug</type>
@@ -13334,7 +13375,8 @@
 			<move>Screech</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="46" name="Parasect">
 	<type>Bug</type>
@@ -13615,7 +13657,8 @@
 			<move>Screech</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="47" name="Venonat">
 	<type>Bug</type>
@@ -13740,7 +13783,8 @@
 			<move>Screech</move>
 			<move>Toxic Spikes</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="48" name="Venomoth">
 	<type>Bug</type>
@@ -13904,7 +13948,8 @@
 			<move>Screech</move>
 			<move>Toxic Spikes</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="49" name="Diglett">
 	<type>Ground</type>
@@ -14013,7 +14058,8 @@
 			<move>Reversal</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="50" name="Dugtrio">
 	<type>Ground</type>
@@ -14159,7 +14205,8 @@
 			<move>Uproar</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="51" name="Meowth">
 	<type>Normal</type>
@@ -14419,7 +14466,8 @@
 			<move>Tail Whip</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="52" name="Persian">
 	<type>Normal</type>
@@ -14687,7 +14735,8 @@
 			<move>Tail Whip</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="53" name="Psyduck">
 	<type>Water</type>
@@ -14974,7 +15023,8 @@
 			<move>Yawn</move>
 			<move>Mud Sport</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="54" name="Golduck">
 	<type>Water</type>
@@ -15316,7 +15366,8 @@
 			<move>Yawn</move>
 			<move>Mud Sport</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="55" name="Mankey">
 	<type>Fighting</type>
@@ -15481,7 +15532,8 @@
 			<move>Encore</move>
 			<move>Snore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="56" name="Primeape">
 	<type>Fighting</type>
@@ -15652,7 +15704,8 @@
 			<move>Encore</move>
 			<move>Snore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="57" name="Growlithe">
 	<type>Fire</type>
@@ -15771,7 +15824,8 @@
 			<move>Thrash</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="58" name="Arcanine">
 	<type>Fire</type>
@@ -15899,7 +15953,8 @@
 			<move>Thrash</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="59" name="Poliwag">
 	<type>Water</type>
@@ -16138,7 +16193,8 @@
 			<move>Sweet Scent</move>
 			<move>Encore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="60" name="Poliwhirl">
 	<type>Water</type>
@@ -16500,7 +16556,8 @@
 			<move>Sweet Scent</move>
 			<move>Encore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="61" name="Poliwrath">
 	<type>Water</type>
@@ -16878,7 +16935,8 @@
 			<move>Sweet Scent</move>
 			<move>Encore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="62" name="Abra">
 	<type>Psychic</type>
@@ -17074,7 +17132,8 @@
 			<move>Power Trick</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="63" name="Kadabra">
 	<type>Psychic</type>
@@ -17282,7 +17341,8 @@
 			<move>Power Trick</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="64" name="Alakazam">
 	<type>Psychic</type>
@@ -17494,7 +17554,8 @@
 			<move>Power Trick</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="65" name="Machop">
 	<type>Fighting</type>
@@ -17749,7 +17810,8 @@
 			<move>Encore</move>
 			<move>SmellingSalt</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="66" name="Machoke">
 	<type>Fighting</type>
@@ -18004,7 +18066,8 @@
 			<move>Encore</move>
 			<move>SmellingSalt</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="67" name="Machamp">
 	<type>Fighting</type>
@@ -18262,7 +18325,8 @@
 			<move>Encore</move>
 			<move>SmellingSalt</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="68" name="Bellsprout">
 	<type>Grass</type>
@@ -18466,7 +18530,8 @@
 			<move>Reflect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="69" name="Weepinbell">
 	<type>Grass</type>
@@ -18699,7 +18764,8 @@
 			<move>Reflect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="70" name="Victreebel">
 	<type>Grass</type>
@@ -18960,7 +19026,8 @@
 			<move>Reflect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="71" name="Tentacool">
 	<type>Water</type>
@@ -19155,7 +19222,8 @@
 			<move>Muddy Water</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="72" name="Tentacruel">
 	<type>Water</type>
@@ -19352,7 +19420,8 @@
 			<move>Muddy Water</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="73" name="Geodude">
 	<type>Rock</type>
@@ -19541,7 +19610,8 @@
 			<move>Hammer Arm</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="74" name="Graveler">
 	<type>Rock</type>
@@ -19730,7 +19800,8 @@
 			<move>Hammer Arm</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="75" name="Golem">
 	<type>Rock</type>
@@ -19938,7 +20009,8 @@
 			<move>Hammer Arm</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="76" name="Ponyta">
 	<type>Fire</type>
@@ -20047,7 +20119,8 @@
 			<move>Morning Sun</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="77" name="Rapidash">
 	<type>Fire</type>
@@ -20179,7 +20252,8 @@
 			<move>Thrash</move>
 			<move>Baton Pass</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="78" name="Slowpoke">
 	<type>Water</type>
@@ -20339,7 +20413,8 @@
 			<move>Me First</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="79" name="Slowbro">
 	<type>Water</type>
@@ -20537,7 +20612,8 @@
 			<move>Me First</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="80" name="Magnemite">
 	<type>Electric</type>
@@ -20962,7 +21038,8 @@
 			<move>Yawn</move>
 			<move>Leaf Blade</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="83" name="Doduo">
 	<type>Normal</type>
@@ -21123,7 +21200,8 @@
 			<move>Mirror Move</move>
 			<move>Supersonic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="84" name="Dodrio">
 	<type>Normal</type>
@@ -21304,7 +21382,8 @@
 			<move>Mirror Move</move>
 			<move>Supersonic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="85" name="Seel">
 	<type>Water</type>
@@ -21474,7 +21553,8 @@
 			<move>Helping Hand</move>
 			<move>Spit Up</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="86" name="Dewgong">
 	<type>Water</type>
@@ -21652,7 +21732,8 @@
 			<move>Helping Hand</move>
 			<move>Spit Up</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="87" name="Grimer">
 	<type>Poison</type>
@@ -21949,7 +22030,8 @@
 			<move>Haze</move>
 			<move>Swallow</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="88" name="Muk">
 	<type>Poison</type>
@@ -22254,7 +22336,8 @@
 			<move>Haze</move>
 			<move>Swallow</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="89" name="Shellder">
 	<type>Water</type>
@@ -22434,7 +22517,8 @@
 			<move>Rock Blast</move>
 			<move>Screech</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="90" name="Cloyster">
 	<type>Water</type>
@@ -22626,7 +22710,8 @@
 			<move>Rock Blast</move>
 			<move>Screech</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="91" name="Gastly">
 	<type>Ghost</type>
@@ -22797,7 +22882,8 @@
 			<move>Haze</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="92" name="Haunter">
 	<type>Ghost</type>
@@ -22972,7 +23058,8 @@
 			<move>Haze</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="93" name="Gengar">
 	<type>Ghost</type>
@@ -23278,7 +23365,8 @@
 			<move>Haze</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="94" name="Onix">
 	<type>Rock</type>
@@ -23417,7 +23505,8 @@
 			<move>Defense Curl</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="95" name="Drowzee">
 	<type>Psychic</type>
@@ -23729,7 +23818,8 @@
 			<move>Wish</move>
 			<move>Guard Swap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="96" name="Hypno">
 	<type>Psychic</type>
@@ -24063,7 +24153,8 @@
 			<move>Baton Pass</move>
 			<move>Guard Swap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="97" name="Krabby">
 	<type>Water</type>
@@ -24208,7 +24299,8 @@
 			<move>Tickle</move>
 			<move>Agility</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="98" name="Kingler">
 	<type>Water</type>
@@ -24357,7 +24449,8 @@
 			<move>Tickle</move>
 			<move>Agility</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="99" name="Voltorb">
 	<type>Electric</type>
@@ -24784,7 +24877,8 @@
 			<move>Lucky Chant</move>
 			<move>Nature Power</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="102" name="Exeggutor">
 	<type>Grass</type>
@@ -25084,7 +25178,8 @@
 			<move>Lucky Chant</move>
 			<move>Nature Power</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="103" name="Cubone">
 	<type>Ground</type>
@@ -25420,7 +25515,8 @@
 			<move>Skull Bash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="104" name="Marowak">
 	<type>Ground</type>
@@ -25795,7 +25891,8 @@
 			<move>Skull Bash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="105" name="Hitmonlee">
 	<type>Fighting</type>
@@ -25982,7 +26079,8 @@
 			<move>Uproar</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="106" name="Hitmonchan">
 	<type>Fighting</type>
@@ -26120,7 +26218,8 @@
 			<move>Uproar</move>
 			<move>Metronome</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="107" name="Lickitung">
 	<type>Normal</type>
@@ -26493,7 +26592,8 @@
 			<move>Hammer Arm</move>
 			<move>SmellingSalt</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="108" name="Koffing">
 	<type>Poison</type>
@@ -26595,7 +26695,8 @@
 			<move>Grudge</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="109" name="Weezing">
 	<type>Poison</type>
@@ -26702,7 +26803,8 @@
 			<move>Grudge</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="110" name="Rhyhorn">
 	<type>Ground</type>
@@ -26882,7 +26984,8 @@
 			<move>Thunder Fang</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="111" name="Rhydon">
 	<type>Ground</type>
@@ -27202,7 +27305,8 @@
 			<move>Thunder Fang</move>
 			<move>Helping Hand</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="112" name="Chansey">
 	<type>Normal</type>
@@ -27594,7 +27698,8 @@
 			<move>Sweet Kiss</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="113" name="Tangela">
 	<type>Grass</type>
@@ -27823,7 +27928,8 @@
 			<move>Nature Power</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="114" name="Kangaskhan">
 	<type>Normal</type>
@@ -28173,7 +28279,8 @@
 			<move>Stomp</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="115" name="Horsea">
 	<type>Water</type>
@@ -28423,7 +28530,8 @@
 			<move>Octazooka</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="116" name="Seadra">
 	<type>Water</type>
@@ -28675,7 +28783,8 @@
 			<move>Octazooka</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="117" name="Goldeen">
 	<type>Water</type>
@@ -28804,7 +28913,8 @@
 			<move>Psybeam</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="118" name="Seaking">
 	<type>Water</type>
@@ -28936,7 +29046,8 @@
 			<move>Psybeam</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="119" name="Staryu">
 	<type>Water</type>
@@ -29167,7 +29278,8 @@
 			<move>Power Gem</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="121" name="Mr. Mime">
 	<type>Psychic</type>
@@ -29884,7 +29996,8 @@
 			<move>Uproar</move>
 			<move>Wake-Up Slap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="122" name="Scyther">
 	<type>Bug</type>
@@ -30041,7 +30154,8 @@
 			<move>Counter</move>
 			<move>Safeguard</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="123" name="Jynx">
 	<type>Ice</type>
@@ -30312,7 +30426,8 @@
 			<move>Wish</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="124" name="Electabuzz">
 	<type>Electric</type>
@@ -30504,7 +30619,8 @@
 			<move>Follow Me</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="125" name="Magmar">
 	<type>Fire</type>
@@ -30777,7 +30893,8 @@
 			<move>Flare Blitz</move>
 			<move>Belly Drum</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="126" name="Pinsir">
 	<type>Bug</type>
@@ -30979,7 +31096,8 @@
 			<move>Helping Hand</move>
 			<move>Feint</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="127" name="Tauros">
 	<type>Normal</type>
@@ -31421,7 +31539,8 @@
 			<move>Tickle</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="131" name="Ditto">
 	<type>Normal</type>
@@ -31572,7 +31691,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="133" name="Vaporeon">
 	<type>Water</type>
@@ -31726,7 +31846,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="134" name="Jolteon">
 	<type>Electric</type>
@@ -31880,7 +32001,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="135" name="Flareon">
 	<type>Fire</type>
@@ -32031,7 +32153,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="136" name="Porygon">
 	<type>Normal</type>
@@ -32316,7 +32439,8 @@
 			<move>Supersonic</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="138" name="Omastar">
 	<type>Rock</type>
@@ -32527,7 +32651,8 @@
 			<move>Supersonic</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="139" name="Kabuto">
 	<type>Rock</type>
@@ -32703,7 +32828,8 @@
 			<move>Flail</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="140" name="Kabutops">
 	<type>Rock</type>
@@ -32929,7 +33055,8 @@
 			<move>Flail</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="141" name="Aerodactyl">
 	<type>Rock</type>
@@ -33095,7 +33222,8 @@
 			<move>Assurance</move>
 			<move>Swift</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="142" name="Snorlax">
 	<type>Normal</type>
@@ -33631,7 +33759,8 @@
 			<move>Double-Edge</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="143" name="Articuno">
 	<type>Ice</type>
@@ -34080,7 +34209,8 @@
 			<move>DragonBreath</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="147" name="Dragonair">
 	<type>Dragon</type>
@@ -34244,7 +34374,8 @@
 			<move>DragonBreath</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="148" name="Dragonite">
 	<type>Dragon</type>
@@ -34482,7 +34613,8 @@
 			<move>Heal Bell</move>
 			<move>ExtremeSpeed</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="149" name="Mewtwo">
 	<type>Psychic</type>
@@ -34928,7 +35060,8 @@
 			<move>Teleport</move>
 			<move>Zap Cannon</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="151" name="Chikorita">
 	<type>Grass</type>
@@ -35179,7 +35312,8 @@
 			<move>Vine Whip</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="152" name="Bayleef">
 	<type>Grass</type>
@@ -35432,7 +35566,8 @@
 			<move>Vine Whip</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="153" name="Meganium">
 	<type>Grass</type>
@@ -35661,7 +35796,8 @@
 			<move>Vine Whip</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="154" name="Cyndaquil">
 	<type>Fire</type>
@@ -35813,7 +35949,8 @@
 			<move>Blast Burn</move>
 			<move>Extrasensory</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="155" name="Quilava">
 	<type>Fire</type>
@@ -35971,7 +36108,8 @@
 			<move>Blast Burn</move>
 			<move>Extrasensory</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="156" name="Typhlosion">
 	<type>Fire</type>
@@ -36173,7 +36311,8 @@
 			<move>Extrasensory</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="157" name="Totodile">
 	<type>Water</type>
@@ -36416,7 +36555,8 @@
 			<move>Hydro Cannon</move>
 			<move>Aqua Jet</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="158" name="Croconaw">
 	<type>Water</type>
@@ -36663,7 +36803,8 @@
 			<move>Hydro Cannon</move>
 			<move>Aqua Jet</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="159" name="Feraligatr">
 	<type>Water</type>
@@ -36900,7 +37041,8 @@
 			<move>Dragon Dance</move>
 			<move>Aqua Jet</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="160" name="Sentret">
 	<type>Normal</type>
@@ -37036,7 +37178,8 @@
 			<move>Covet</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="161" name="Furret">
 	<type>Normal</type>
@@ -37182,7 +37325,8 @@
 			<move>Covet</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="162" name="Hoothoot">
 	<type>Normal</type>
@@ -37404,7 +37548,8 @@
 			<move>FeatherDance</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="163" name="Noctowl">
 	<type>Normal</type>
@@ -37629,7 +37774,8 @@
 			<move>FeatherDance</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="164" name="Ledyba">
 	<type>Bug</type>
@@ -37780,7 +37926,8 @@
 			<move>Refresh</move>
 			<move>Screech</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="165" name="Ledian">
 	<type>Bug</type>
@@ -37940,7 +38087,8 @@
 			<move>Refresh</move>
 			<move>Screech</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="166" name="Spinarak">
 	<type>Bug</type>
@@ -38113,7 +38261,8 @@
 			<move>SonicBoom</move>
 			<move>Snore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="167" name="Ariados">
 	<type>Bug</type>
@@ -38289,7 +38438,8 @@
 			<move>SonicBoom</move>
 			<move>Snore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="168" name="Crobat">
 	<type>Poison</type>
@@ -38470,7 +38620,8 @@
 			<move>Nasty Plot</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="169" name="Chinchou">
 	<type>Water</type>
@@ -38618,7 +38769,8 @@
 			<move>Psybeam</move>
 			<move>Agility</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="170" name="Lanturn">
 	<type>Water</type>
@@ -38773,7 +38925,8 @@
 			<move>Psybeam</move>
 			<move>Agility</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="171" name="Pichu">
 	<type>Electric</type>
@@ -39134,7 +39287,8 @@
 			<move>Follow Me</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="172" name="Cleffa">
 	<type>Normal</type>
@@ -39448,7 +39602,8 @@
 			<move>Mimic</move>
 			<move>Splash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="173" name="Igglybuff">
 	<type>Normal</type>
@@ -39642,7 +39797,8 @@
 			<move>Present</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="174" name="Togepi">
 	<type>Normal</type>
@@ -40024,7 +40180,8 @@
 			<move>Lucky Chant</move>
 			<move>Present</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="175" name="Togetic">
 	<type>Normal</type>
@@ -40443,7 +40600,8 @@
 			<move>Lucky Chant</move>
 			<move>Present</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="176" name="Natu">
 	<type>Psychic</type>
@@ -40642,7 +40800,8 @@
 			<move>Baton Pass</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="177" name="Xatu">
 	<type>Psychic</type>
@@ -40840,7 +40999,8 @@
 			<move>Baton Pass</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="178" name="Mareep">
 	<type>Electric</type>
@@ -40951,7 +41111,8 @@
 			<move>Sand-Attack</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="179" name="Flaaffy">
 	<type>Electric</type>
@@ -41117,7 +41278,8 @@
 			<move>Sand-Attack</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="180" name="Ampharos">
 	<type>Electric</type>
@@ -41290,7 +41452,8 @@
 			<move>Sand-Attack</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="181" name="Bellossom">
 	<type>Grass</type>
@@ -41462,7 +41625,8 @@
 			<move>Razor Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="182" name="Marill">
 	<type>Water</type>
@@ -42288,7 +42452,8 @@
 			<move>Fake Tears</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="183" name="Azumarill">
 	<type>Water</type>
@@ -43118,7 +43283,8 @@
 			<move>Fake Tears</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="184" name="Sudowoodo">
 	<type>Rock</type>
@@ -43411,7 +43577,8 @@
 			<move>Selfdestruct</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="185" name="Politoed">
 	<type>Water</type>
@@ -43826,7 +43993,8 @@
 			<move>Ice Ball</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="186" name="Hoppip">
 	<type>Grass</type>
@@ -43953,7 +44121,8 @@
 			<move>Psych Up</move>
 			<move>Reflect</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="187" name="Skiploom">
 	<type>Grass</type>
@@ -44080,7 +44249,8 @@
 			<move>Psych Up</move>
 			<move>Reflect</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="188" name="Jumpluff">
 	<type>Grass</type>
@@ -44212,7 +44382,8 @@
 			<move>Psych Up</move>
 			<move>Reflect</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="189" name="Aipom">
 	<type>Normal</type>
@@ -44420,7 +44591,8 @@
 			<move>Fake Out</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="190" name="Sunkern">
 	<type>Grass</type>
@@ -44529,7 +44701,8 @@
 			<move>Sweet Scent</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="191" name="Sunflora">
 	<type>Grass</type>
@@ -44649,7 +44822,8 @@
 			<move>Sweet Scent</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="192" name="Yanma">
 	<type>Bug</type>
@@ -44787,7 +44961,8 @@
 			<move>Feint</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="193" name="Wooper">
 	<type>Water</type>
@@ -44956,7 +45131,8 @@
 			<move>Recover</move>
 			<move>Defense Curl</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="194" name="Quagsire">
 	<type>Water</type>
@@ -45159,7 +45335,8 @@
 			<move>Recover</move>
 			<move>Defense Curl</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="195" name="Espeon">
 	<type>Psychic</type>
@@ -45337,7 +45514,8 @@
 			<move>Detect</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="196" name="Umbreon">
 	<type>Dark</type>
@@ -45514,7 +45692,8 @@
 			<move>Detect</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="197" name="Murkrow">
 	<type>Dark</type>
@@ -45780,7 +45959,8 @@
 			<move>Perish Song</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="198" name="Slowking">
 	<type>Water</type>
@@ -46003,7 +46183,8 @@
 			<move>Slack Off</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="199" name="Misdreavus">
 	<type>Ghost</type>
@@ -46192,7 +46373,8 @@
 			<move>Screech</move>
 			<move>Shadow Sneak</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="200" name="Unown">
 	<type>Psychic</type>
@@ -46411,7 +46593,8 @@
 			<move>Razor Wind</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="203" name="Pineco">
 	<type>Bug</type>
@@ -46646,7 +46829,8 @@
 			<move>Swift</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="204" name="Forretress">
 	<type>Bug</type>
@@ -46876,7 +47060,8 @@
 			<move>Swift</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="205" name="Dunsparce">
 	<type>Normal</type>
@@ -47041,7 +47226,8 @@
 			<move>Trump Card</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="206" name="Gligar">
 	<type>Ground</type>
@@ -47295,7 +47481,8 @@
 			<move>Double-Edge</move>
 			<move>Metal Claw</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="207" name="Steelix">
 	<type>Steel</type>
@@ -47430,7 +47617,8 @@
 			<move>Rock Blast</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="208" name="Snubbull">
 	<type>Normal</type>
@@ -47695,7 +47883,8 @@
 			<move>Thunder Fang</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="209" name="Granbull">
 	<type>Normal</type>
@@ -47862,7 +48051,8 @@
 			<move>Close Combat</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="210" name="Qwilfish">
 	<type>Water</type>
@@ -48057,7 +48247,8 @@
 			<move>Flail</move>
 			<move>Swords Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="211" name="Scizor">
 	<type>Bug</type>
@@ -48225,7 +48416,8 @@
 			<move>Counter</move>
 			<move>Safeguard</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="212" name="Shuckle">
 	<type>Bug</type>
@@ -48380,7 +48572,8 @@
 			<move>Sand Tomb</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="213" name="Heracross">
 	<type>Bug</type>
@@ -48572,7 +48765,8 @@
 			<move>Flail</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="214" name="Sneasel">
 	<type>Dark</type>
@@ -48779,7 +48973,8 @@
 			<move>Pursuit</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="215" name="Teddiursa">
 	<type>Normal</type>
@@ -49057,7 +49252,8 @@
 			<move>Yawn</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="216" name="Ursaring">
 	<type>Normal</type>
@@ -49345,7 +49541,8 @@
 			<move>Yawn</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="217" name="Slugma">
 	<type>Fire</type>
@@ -49549,7 +49746,8 @@
 			<move>Swallow</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="218" name="Magcargo">
 	<type>Fire</type>
@@ -49797,7 +49995,8 @@
 			<move>Swallow</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="219" name="Swinub">
 	<type>Ice</type>
@@ -49932,7 +50131,8 @@
 			<move>Icicle Spear</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="220" name="Piloswine">
 	<type>Ice</type>
@@ -50088,7 +50288,8 @@
 			<move>Icicle Spear</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="221" name="Corsola">
 	<type>Water</type>
@@ -50390,7 +50591,8 @@
 			<move>Mud Sport</move>
 			<move>Curse</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="222" name="Remoraid">
 	<type>Water</type>
@@ -50564,7 +50766,8 @@
 			<move>Rock Blast</move>
 			<move>Defense Curl</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="223" name="Octillery">
 	<type>Water</type>
@@ -50727,7 +50930,8 @@
 			<move>Flail</move>
 			<move>Water Spout</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="224" name="Delibird">
 	<type>Ice</type>
@@ -50917,7 +51121,8 @@
 			<move>Fake Out</move>
 			<move>Snore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="225" name="Mantine">
 	<type>Water</type>
@@ -51114,7 +51319,8 @@
 			<move>Twister</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="226" name="Skarmory">
 	<type>Steel</type>
@@ -51320,7 +51526,8 @@
 			<move>Whirlwind</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="227" name="Houndour">
 	<type>Dark</type>
@@ -51509,7 +51716,8 @@
 			<move>Thunder Fang</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="228" name="Houndoom">
 	<type>Dark</type>
@@ -51682,7 +51890,8 @@
 			<move>Reversal</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="229" name="Kingdra">
 	<type>Water</type>
@@ -51948,7 +52157,8 @@
 			<move>Octazooka</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="230" name="Phanpy">
 	<type>Ground</type>
@@ -52050,7 +52260,8 @@
 			<move>Ice Shard</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="231" name="Donphan">
 	<type>Ground</type>
@@ -52173,7 +52384,8 @@
 			<move>Ice Shard</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="232" name="Porygon2">
 	<type>Normal</type>
@@ -52431,7 +52643,8 @@
 			<move>Megahorn</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="234" name="Smeargle">
 	<type>Normal</type>
@@ -53021,7 +53234,8 @@
 			<move>Bullet Punch</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="236" name="Hitmontop">
 	<type>Fighting</type>
@@ -53149,7 +53363,8 @@
 			<move>Bullet Punch</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="237" name="Smoochum">
 	<type>Ice</type>
@@ -53418,7 +53633,8 @@
 			<move>Wish</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="238" name="Elekid">
 	<type>Electric</type>
@@ -53579,7 +53795,8 @@
 			<move>DynamicPunch</move>
 			<move>Feint</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="239" name="Magby">
 	<type>Fire</type>
@@ -53818,7 +54035,8 @@
 			<move>Flare Blitz</move>
 			<move>Belly Drum</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="240" name="Miltank">
 	<type>Normal</type>
@@ -53991,7 +54209,8 @@
 			<move>Punishment</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="241" name="Blissey">
 	<type>Normal</type>
@@ -54388,7 +54607,8 @@
 			<move>Sweet Kiss</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="242" name="Raikou">
 	<type>Electric</type>
@@ -54530,7 +54750,8 @@
 			<move>Zap Cannon</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="243" name="Entei">
 	<type>Fire</type>
@@ -54670,7 +54891,8 @@
 			<move>Howl</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="244" name="Suicune">
 	<type>Water</type>
@@ -54814,7 +55036,8 @@
 			<move>Sheer Cold</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="245" name="Larvitar">
 	<type>Rock</type>
@@ -55106,7 +55329,8 @@
 			<move>Stomp</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="246" name="Pupitar">
 	<type>Rock</type>
@@ -55386,7 +55610,8 @@
 			<move>Stomp</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="247" name="Tyranitar">
 	<type>Rock</type>
@@ -55874,7 +56099,8 @@
 			<move>Stomp</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="248" name="Lugia">
 	<type>Psychic</type>
@@ -56246,7 +56472,8 @@
 			<move>Nasty Plot</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="251" name="Treecko">
 	<type>Grass</type>
@@ -56665,7 +56892,8 @@
 			<move>Leech Seed</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="252" name="Grovyle">
 	<type>Grass</type>
@@ -57058,7 +57286,8 @@
 			<move>Leech Seed</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="253" name="Sceptile">
 	<type>Grass</type>
@@ -57465,7 +57694,8 @@
 			<move>Leech Seed</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="254" name="Torchic">
 	<type>Fire</type>
@@ -57711,7 +57941,8 @@
 			<move>Night Slash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="255" name="Combusken">
 	<type>Fire</type>
@@ -57997,7 +58228,8 @@
 			<move>Night Slash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="256" name="Blaziken">
 	<type>Fire</type>
@@ -58297,7 +58529,8 @@
 			<move>Night Slash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="257" name="Mudkip">
 	<type>Water</type>
@@ -58651,7 +58884,8 @@
 			<move>Uproar</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="258" name="Marshtomp">
 	<type>Water</type>
@@ -59106,7 +59340,8 @@
 			<move>Uproar</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="259" name="Swampert">
 	<type>Water</type>
@@ -59574,7 +59809,8 @@
 			<move>Uproar</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="260" name="Poochyena">
 	<type>Dark</type>
@@ -59786,7 +60022,8 @@
 			<move>Thunder Fang</move>
 			<move>Heal Bell</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="261" name="Mightyena">
 	<type>Dark</type>
@@ -60002,7 +60239,8 @@
 			<move>Thunder Fang</move>
 			<move>Heal Bell</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="262" name="Zigzagoon">
 	<type>Normal</type>
@@ -60119,7 +60357,8 @@
 			<move>Tickle</move>
 			<move>ExtremeSpeed</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="263" name="Linoone">
 	<type>Normal</type>
@@ -60243,7 +60482,8 @@
 			<move>Tickle</move>
 			<move>ExtremeSpeed</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="264" name="Wurmple">
 	<type>Bug</type>
@@ -60400,7 +60640,8 @@
 			<move>Iron Defense</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="267" name="Cascoon">
 	<type>Bug</type>
@@ -60528,7 +60769,8 @@
 			<move>Iron Defense</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="269" name="Lotad">
 	<type>Water</type>
@@ -60674,7 +60916,8 @@
 			<move>Water Gun</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="270" name="Lombre">
 	<type>Water</type>
@@ -60847,7 +61090,8 @@
 			<move>Water Gun</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="271" name="Ludicolo">
 	<type>Water</type>
@@ -61048,7 +61292,8 @@
 			<move>Water Gun</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="272" name="Seedot">
 	<type>Grass</type>
@@ -61211,7 +61456,8 @@
 			<move>Take Down</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="273" name="Nuzleaf">
 	<type>Grass</type>
@@ -61404,7 +61650,8 @@
 			<move>Take Down</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="274" name="Shiftry">
 	<type>Grass</type>
@@ -61585,7 +61832,8 @@
 			<move>Take Down</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="275" name="Taillow">
 	<type>Normal</type>
@@ -61770,7 +62018,8 @@
 			<move>Refresh</move>
 			<move>Whirlwind</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="276" name="Swellow">
 	<type>Normal</type>
@@ -61988,7 +62237,8 @@
 			<move>Refresh</move>
 			<move>Whirlwind</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="277" name="Wingull">
 	<type>Water</type>
@@ -62101,7 +62351,8 @@
 			<move>Sky Attack</move>
 			<move>Aqua Ring</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="278" name="Pelipper">
 	<type>Water</type>
@@ -62226,7 +62477,8 @@
 			<move>Gust</move>
 			<move>Aqua Ring</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="279" name="Ralts">
 	<type>Psychic</type>
@@ -62525,7 +62777,8 @@
 			<move>Sing</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="280" name="Kirlia">
 	<type>Psychic</type>
@@ -62824,7 +63077,8 @@
 			<move>Sing</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="281" name="Gardevoir">
 	<type>Psychic</type>
@@ -63089,7 +63343,8 @@
 			<move>Will-O-Wisp</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="282" name="Surskit">
 	<type>Bug</type>
@@ -63217,7 +63472,8 @@
 			<move>Mud Shot</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="283" name="Masquerain">
 	<type>Bug</type>
@@ -63377,7 +63633,8 @@
 			<move>Mud Shot</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="284" name="Shroomish">
 	<type>Grass</type>
@@ -63498,7 +63755,8 @@
 			<move>Wake-Up Slap</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="285" name="Breloom">
 	<type>Grass</type>
@@ -63665,7 +63923,8 @@
 			<move>Wake-Up Slap</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="286" name="Slakoth">
 	<type>Normal</type>
@@ -63830,7 +64089,8 @@
 			<move>Night Slash</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="287" name="Vigoroth">
 	<type>Normal</type>
@@ -64008,7 +64268,8 @@
 			<move>Night Slash</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="288" name="Slaking">
 	<type>Normal</type>
@@ -64163,7 +64424,8 @@
 			<move>Night Slash</move>
 			<move>DynamicPunch</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="289" name="Nincada">
 	<type>Bug</type>
@@ -64282,7 +64544,8 @@
 			<move>Silver Wind</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="290" name="Ninjask">
 	<type>Bug</type>
@@ -64413,7 +64676,8 @@
 			<move>Faint Attack</move>
 			<move>Gust</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="291" name="Shedinja">
 	<type>Bug</type>
@@ -64606,7 +64870,8 @@
 			<move>Silver Wind</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="292" name="Whismur">
 	<type>Normal</type>
@@ -64848,7 +65113,8 @@
 			<move>Teeter Dance</move>
 			<move>Hammer Arm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="293" name="Loudred">
 	<type>Normal</type>
@@ -65103,7 +65369,8 @@
 			<move>Teeter Dance</move>
 			<move>Hammer Arm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="294" name="Exploud">
 	<type>Normal</type>
@@ -65371,7 +65638,8 @@
 			<move>Teeter Dance</move>
 			<move>Hammer Arm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="295" name="Makuhita">
 	<type>Fighting</type>
@@ -65735,7 +66003,8 @@
 			<move>Refresh</move>
 			<move>Feint</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="296" name="Hariyama">
 	<type>Fighting</type>
@@ -66108,7 +66377,8 @@
 			<move>Refresh</move>
 			<move>Feint</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="297" name="Azurill">
 	<type>Normal</type>
@@ -66291,7 +66561,8 @@
 			<move>Fake Tears</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="298" name="Nosepass">
 	<type>Rock</type>
@@ -66404,7 +66675,8 @@
 			<move>Helping Hand</move>
 			<move>Magnitude</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="299" name="Skitty">
 	<type>Normal</type>
@@ -66552,7 +66824,8 @@
 			<move>Wish</move>
 			<move>Pay Day</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="300" name="Delcatty">
 	<type>Normal</type>
@@ -66775,7 +67048,8 @@
 			<move>Sweet Kiss</move>
 			<move>Pay Day</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="301" name="Sableye">
 	<type>Dark</type>
@@ -67078,7 +67352,8 @@
 			<move>Nasty Plot</move>
 			<move>Helping Hand</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="302" name="Mawile">
 	<type>Steel</type>
@@ -67415,7 +67690,8 @@
 			<move>Thunder Fang</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="303" name="Aron">
 	<type>Steel</type>
@@ -67588,7 +67864,8 @@
 			<move>Dragon Rush</move>
 			<move>Stomp</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="304" name="Lairon">
 	<type>Steel</type>
@@ -67762,7 +68039,8 @@
 			<move>Dragon Rush</move>
 			<move>Stomp</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="305" name="Aggron">
 	<type>Steel</type>
@@ -68053,7 +68331,8 @@
 			<move>Dragon Rush</move>
 			<move>Stomp</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="306" name="Meditite">
 	<type>Fighting</type>
@@ -68408,7 +68687,8 @@
 			<move>Foresight</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="307" name="Medicham">
 	<type>Fighting</type>
@@ -68770,7 +69050,8 @@
 			<move>Foresight</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="308" name="Electrike">
 	<type>Electric</type>
@@ -68901,7 +69182,8 @@
 			<move>Switcheroo</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="309" name="Manectric">
 	<type>Electric</type>
@@ -69045,7 +69327,8 @@
 			<move>Uproar</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="310" name="Plusle">
 	<type>Electric</type>
@@ -69285,7 +69568,8 @@
 			<move>Wish</move>
 			<move>Water Sport</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="311" name="Minun">
 	<type>Electric</type>
@@ -69526,7 +69810,8 @@
 			<move>Wish</move>
 			<move>Mud Sport</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="312" name="Volbeat">
 	<type>Bug</type>
@@ -69669,7 +69954,8 @@
 			<move>Encore</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="313" name="Illumise">
 	<type>Bug</type>
@@ -69782,7 +70068,8 @@
 			<move>Baton Pass</move>
 			<move>Growth</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="314" name="Roselia">
 	<type>Grass</type>
@@ -70108,7 +70395,8 @@
 			<move>Water Sport</move>
 			<move>Sweet Kiss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="315" name="Gulpin">
 	<type>Poison</type>
@@ -70296,7 +70584,8 @@
 			<move>Smog</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="316" name="Swalot">
 	<type>Poison</type>
@@ -70490,7 +70779,8 @@
 			<move>Smog</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="317" name="Carvanha">
 	<type>Water</type>
@@ -70592,7 +70882,8 @@
 			<move>Thrash</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="318" name="Sharpedo">
 	<type>Water</type>
@@ -70709,7 +71000,8 @@
 			<move>Thrash</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="319" name="Wailmer">
 	<type>Water</type>
@@ -70816,7 +71108,8 @@
 			<move>Aqua Ring</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="320" name="Wailord">
 	<type>Water</type>
@@ -70928,7 +71221,8 @@
 			<move>Aqua Ring</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="321" name="Numel">
 	<type>Fire</type>
@@ -71084,7 +71378,8 @@
 			<move>Yawn</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="322" name="Camerupt">
 	<type>Fire</type>
@@ -71280,7 +71575,8 @@
 			<move>Yawn</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="323" name="Torkoal">
 	<type>Fire</type>
@@ -71415,7 +71711,8 @@
 			<move>Skull Bash</move>
 			<move>Selfdestruct</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="324" name="Spoink">
 	<type>Psychic</type>
@@ -71558,7 +71855,8 @@
 			<move>Mirror Coat</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="325" name="Grumpig">
 	<type>Psychic</type>
@@ -71762,7 +72060,8 @@
 			<move>Mirror Coat</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="326" name="Spinda">
 	<type>Normal</type>
@@ -72006,7 +72305,8 @@
 			<move>Wish</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="327" name="Trapinch">
 	<type>Ground</type>
@@ -72135,7 +72435,8 @@
 			<move>Flail</move>
 			<move>Mud Shot</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="328" name="Vibrava">
 	<type>Ground</type>
@@ -72282,7 +72583,8 @@
 			<move>Flail</move>
 			<move>Mud Shot</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="329" name="Flygon">
 	<type>Ground</type>
@@ -72441,7 +72743,8 @@
 			<move>Flail</move>
 			<move>Mud Shot</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="330" name="Cacnea">
 	<type>Grass</type>
@@ -72683,7 +72986,8 @@
 			<move>Magical Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="331" name="Cacturne">
 	<type>Grass</type>
@@ -72948,7 +73252,8 @@
 			<move>Magical Leaf</move>
 			<move>Teeter Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="332" name="Swablu">
 	<type>Normal</type>
@@ -73168,7 +73473,8 @@
 			<move>Haze</move>
 			<move>Rage</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="333" name="Altaria">
 	<type>Dragon</type>
@@ -73390,7 +73696,8 @@
 			<move>Haze</move>
 			<move>Rage</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="334" name="Zangoose">
 	<type>Normal</type>
@@ -73741,7 +74048,8 @@
 			<move>Razor Wind</move>
 			<move>Refresh</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="335" name="Seviper">
 	<type>Poison</type>
@@ -73874,7 +74182,8 @@
 			<move>Switcheroo</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="336" name="Lunatone">
 	<type>Rock</type>
@@ -74231,7 +74540,8 @@
 			<move>Flail</move>
 			<move>Take Down</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="339" name="Whiscash">
 	<type>Water</type>
@@ -74382,7 +74692,8 @@
 			<move>Flail</move>
 			<move>Take Down</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="340" name="Corphish">
 	<type>Water</type>
@@ -74528,7 +74839,8 @@
 			<move>Water Sport</move>
 			<move>Dragon Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="341" name="Crawdaunt">
 	<type>Water</type>
@@ -74686,7 +74998,8 @@
 			<move>Water Sport</move>
 			<move>Dragon Dance</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="342" name="Baltoy">
 	<type>Ground</type>
@@ -75037,7 +75350,8 @@
 			<move>Tickle</move>
 			<move>Psych Up</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="345" name="Cradily">
 	<type>Rock</type>
@@ -75191,7 +75505,8 @@
 			<move>Tickle</move>
 			<move>Psych Up</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="346" name="Anorith">
 	<type>Rock</type>
@@ -75356,7 +75671,8 @@
 			<move>Screech</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="347" name="Armaldo">
 	<type>Rock</type>
@@ -75547,7 +75863,8 @@
 			<move>Screech</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="348" name="Feebas">
 	<type>Water</type>
@@ -75774,7 +76091,8 @@
 			<move>Mud Sport</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="349" name="Milotic">
 	<type>Water</type>
@@ -76051,7 +76369,8 @@
 			<move>Mud Sport</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="350" name="Castform">
 	<type>Normal</type>
@@ -76201,7 +76520,8 @@
 			<move>Lucky Chant</move>
 			<move>Amnesia</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="351" name="Kecleon">
 	<type>Normal</type>
@@ -76498,7 +76818,8 @@
 			<move>Recover</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="352" name="Shuppet">
 	<type>Ghost</type>
@@ -76645,7 +76966,8 @@
 			<move>Pursuit</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="353" name="Banette">
 	<type>Ghost</type>
@@ -76838,7 +77160,8 @@
 			<move>Pursuit</move>
 			<move>Helping Hand</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="354" name="Duskull">
 	<type>Ghost</type>
@@ -76999,7 +77322,8 @@
 			<move>Memento</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="355" name="Dusclops">
 	<type>Ghost</type>
@@ -77250,7 +77574,8 @@
 			<move>Memento</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="356" name="Tropius">
 	<type>Grass</type>
@@ -77446,7 +77771,8 @@
 			<move>Razor Wind</move>
 			<move>Slam</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="357" name="Chimecho">
 	<type>Psychic</type>
@@ -77647,7 +77973,8 @@
 			<move>Hypnosis</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="358" name="Absol">
 	<type>Dark</type>
@@ -77908,7 +78235,8 @@
 			<move>Punishment</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="359" name="Wynaut">
 	<type>Psychic</type>
@@ -78091,7 +78419,8 @@
 			<move>Weather Ball</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="361" name="Glalie">
 	<type>Ice</type>
@@ -78282,7 +78611,8 @@
 			<move>Weather Ball</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="362" name="Spheal">
 	<type>Ice</type>
@@ -78424,7 +78754,8 @@
 			<move>Aqua Ring</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="363" name="Sealeo">
 	<type>Ice</type>
@@ -78568,7 +78899,8 @@
 			<move>Aqua Ring</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="364" name="Walrein">
 	<type>Ice</type>
@@ -78719,7 +79051,8 @@
 			<move>Aqua Ring</move>
 			<move>Charm</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="365" name="Clamperl">
 	<type>Water</type>
@@ -78841,7 +79174,8 @@
 			<move>Supersonic</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="366" name="Huntail">
 	<type>Water</type>
@@ -78983,7 +79317,8 @@
 			<move>Supersonic</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="367" name="Gorebyss">
 	<type>Water</type>
@@ -79120,7 +79455,8 @@
 			<move>Supersonic</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="368" name="Relicanth">
 	<type>Water</type>
@@ -79257,7 +79593,8 @@
 			<move>Water Sport</move>
 			<move>Muddy Water</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="369" name="Luvdisc">
 	<type>Water</type>
@@ -79380,7 +79717,8 @@
 			<move>Aqua Jet</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="370" name="Bagon">
 	<type>Dragon</type>
@@ -79553,7 +79891,8 @@
 			<move>Thrash</move>
 			<move>Dragon Rush</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="371" name="Shelgon">
 	<type>Dragon</type>
@@ -79709,7 +80048,8 @@
 			<move>Thrash</move>
 			<move>Dragon Rush</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="372" name="Salamence">
 	<type>Dragon</type>
@@ -79891,7 +80231,8 @@
 			<move>Thrash</move>
 			<move>Dragon Rush</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="373" name="Beldum">
 	<type>Steel</type>
@@ -81185,7 +81526,8 @@
 			<move>Draco Meteor</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="385" name="Deoxys">
 	<type>Psychic</type>
@@ -81402,7 +81744,8 @@
 			<move>Meteor Mash</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="386" name="Deoxys-f">
 	<type>Psychic</type>
@@ -82032,7 +82375,8 @@
 			<move>Swallow</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="390" name="Grotle">
 	<type>Grass</type>
@@ -82218,7 +82562,8 @@
 			<move>Swallow</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="391" name="Torterra">
 	<type>Grass</type>
@@ -82422,7 +82767,8 @@
 			<move>Swallow</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="392" name="Chimchar">
 	<type>Fire</type>
@@ -83156,7 +83502,8 @@
 			<move>Pursuit</move>
 			<move>Sand-Attack</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="399" name="Staravia">
 	<type>Normal</type>
@@ -83269,7 +83616,8 @@
 			<move>Pursuit</move>
 			<move>Sand-Attack</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="400" name="Staraptor">
 	<type>Normal</type>
@@ -83385,7 +83733,8 @@
 			<move>Pursuit</move>
 			<move>Sand-Attack</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="401" name="Bidoof">
 	<type>Normal</type>
@@ -84091,7 +84440,8 @@
 			<move>Sleep Powder</move>
 			<move>Spikes</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="409" name="Roserade">
 	<type>Grass</type>
@@ -84421,7 +84771,8 @@
 			<move>Water Sport</move>
 			<move>Sweet Kiss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="410" name="Cranidos">
 	<type>Rock</type>
@@ -84575,7 +84926,8 @@
 			<move>Hammer Arm</move>
 			<move>Slam</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="411" name="Rampardos">
 	<type>Rock</type>
@@ -84740,7 +85092,8 @@
 			<move>Hammer Arm</move>
 			<move>Slam</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="412" name="Shieldon">
 	<type>Rock</type>
@@ -84869,7 +85222,8 @@
 			<move>Curse</move>
 			<move>Focus Energy</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="413" name="Bastiodon">
 	<type>Rock</type>
@@ -85006,7 +85360,8 @@
 			<move>Curse</move>
 			<move>Focus Energy</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="414" name="Burmy">
 	<type>Bug</type>
@@ -85834,7 +86189,8 @@
 			<move>Nature Power</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="425" name="Cherrim">
 	<type>Grass</type>
@@ -85928,7 +86284,8 @@
 			<move>Nature Power</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="426" name="Shellos">
 	<type>Water</type>
@@ -86134,7 +86491,8 @@
 			<move>Sludge</move>
 			<move>Yawn</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="427" name="Gastrodon">
 	<type>Water</type>
@@ -86355,7 +86713,8 @@
 			<move>Sludge</move>
 			<move>Yawn</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="428" name="Ambipom">
 	<type>Normal</type>
@@ -94937,7 +95296,8 @@
 			<move>Seismic Toss</move>
 			<move>Slam</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="429" name="Drifloon">
 	<type>Ghost</type>
@@ -95089,7 +95449,8 @@
 			<move>Haze</move>
 			<move>Memento</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="430" name="Drifblim">
 	<type>Ghost</type>
@@ -95244,7 +95605,8 @@
 			<move>Haze</move>
 			<move>Memento</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="431" name="Buneary">
 	<type>Normal</type>
@@ -95649,7 +96011,8 @@
 			<move>Screech</move>
 			<move>Shadow Sneak</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="434" name="Honchkrow">
 	<type>Dark</type>
@@ -95923,7 +96286,8 @@
 			<move>Perish Song</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="435" name="Glameow">
 	<type>Normal</type>
@@ -96224,7 +96588,8 @@
 			<move>Future Sight</move>
 			<move>Hypnosis</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="438" name="Stunky">
 	<type>Poison</type>
@@ -96875,7 +97240,8 @@
 			<move>Hypnosis</move>
 			<move>Nasty Plot</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="444" name="Happiny">
 	<type>Normal</type>
@@ -96985,7 +97351,8 @@
 			<move>Mud Bomb</move>
 			<move>Present</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="445" name="Chatot">
 	<type>Normal</type>
@@ -97097,7 +97464,8 @@
 			<move>Night Shade</move>
 			<move>Supersonic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="446" name="Spiritomb">
 	<type>Ghost</type>
@@ -97193,7 +97561,8 @@
 			<move>Imprison</move>
 			<move>SmokeScreen</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="447" name="Gible">
 	<type>Dragon</type>
@@ -97316,7 +97685,8 @@
 			<move>Metal Claw</move>
 			<move>Thrash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="448" name="Gabite">
 	<type>Dragon</type>
@@ -97440,7 +97810,8 @@
 			<move>Metal Claw</move>
 			<move>Thrash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="449" name="Garchomp">
 	<type>Dragon</type>
@@ -97578,7 +97949,8 @@
 			<move>Metal Claw</move>
 			<move>Thrash</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="450" name="Munchlax">
 	<type>Normal</type>
@@ -97736,7 +98108,8 @@
 			<move>Double-Edge</move>
 			<move>Whirlwind</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="451" name="Riolu">
 	<type>Fighting</type>
@@ -97877,7 +98250,8 @@
 			<move>Aura Sphere</move>
 			<move>Sky Uppercut</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="452" name="Lucario">
 	<type>Fighting</type>
@@ -98314,7 +98688,8 @@
 			<move>Slash</move>
 			<move>Whirlwind</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="456" name="Drapion">
 	<type>Poison</type>
@@ -98478,7 +98853,8 @@
 			<move>Slash</move>
 			<move>Whirlwind</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="457" name="Croagunk">
 	<type>Poison</type>
@@ -98650,7 +99026,8 @@
 			<move>Meditate</move>
 			<move>Wake-Up Slap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="458" name="Toxicroak">
 	<type>Poison</type>
@@ -98828,7 +99205,8 @@
 			<move>Meditate</move>
 			<move>Wake-Up Slap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="459" name="Carnivine">
 	<type>Grass</type>
@@ -98941,7 +99319,8 @@
 			<move>Slam</move>
 			<move>Stun Spore</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="460" name="Finneon">
 	<type>Water</type>
@@ -99066,7 +99445,8 @@
 			<move>Splash</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="461" name="Lumineon">
 	<type>Water</type>
@@ -99193,7 +99573,8 @@
 			<move>Splash</move>
 			<move>Tickle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="462" name="Mantyke">
 	<type>Water</type>
@@ -99313,7 +99694,8 @@
 			<move>Twister</move>
 			<move>Water Sport</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="463" name="Snover">
 	<type>Grass</type>
@@ -99419,7 +99801,8 @@
 			<move>Skull Bash</move>
 			<move>Stomp</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="464" name="Abomasnow">
 	<type>Grass</type>
@@ -99541,7 +99924,8 @@
 			<move>Skull Bash</move>
 			<move>Stomp</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="465" name="Weavile">
 	<type>Dark</type>
@@ -99757,7 +100141,8 @@
 			<move>Pursuit</move>
 			<move>Nightmare</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="466" name="Magnezone">
 	<type>Electric</type>
@@ -105181,7 +105566,8 @@
 			<move>Seismic Toss</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="468" name="Rhyperior">
 	<type>Ground</type>
@@ -105505,7 +105891,8 @@
 			<move>Thunder Fang</move>
 			<move>Helping Hand</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="469" name="Tangrowth">
 	<type>Grass</type>
@@ -105932,7 +106319,8 @@
 			<move>Nature Power</move>
 			<move>Power Swap</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="470" name="Electivire">
 	<type>Electric</type>
@@ -106133,7 +106521,8 @@
 			<move>Follow Me</move>
 			<move>Uproar</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="471" name="Magmortar">
 	<type>Fire</type>
@@ -106415,7 +106804,8 @@
 			<move>Flare Blitz</move>
 			<move>Belly Drum</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="472" name="Togekiss">
 	<type>Normal</type>
@@ -106823,7 +107213,8 @@
 			<move>Lucky Chant</move>
 			<move>Present</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="473" name="Yanmega">
 	<type>Bug</type>
@@ -107044,7 +107435,8 @@
 			<move>Whirlwind</move>
 			<move>Wing Attack</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="474" name="Leafeon">
 	<type>Grass</type>
@@ -107201,7 +107593,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="475" name="Glaceon">
 	<type>Ice</type>
@@ -107352,7 +107745,8 @@
 			<move>Detect</move>
 			<move>Mimic</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="476" name="Gliscor">
 	<type>Ground</type>
@@ -107607,7 +108001,8 @@
 			<move>Double-Edge</move>
 			<move>Metal Claw</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="477" name="Mamoswine">
 	<type>Ice</type>
@@ -110600,7 +110995,8 @@
 			<move>Mud Shot</move>
 			<move>Tackle</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="478" name="Porygonz">
 	<type>Normal</type>
@@ -111038,7 +111434,8 @@
 			<move>Sing</move>
 			<move>Wish</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="480" name="Probopass">
 	<type>Rock</type>
@@ -111160,7 +111557,8 @@
 			<move>Helping Hand</move>
 			<move>Magnitude</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="481" name="Dusknoir">
 	<type>Ghost</type>
@@ -111413,7 +111811,8 @@
 			<move>Memento</move>
 			<move>Seismic Toss</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="482" name="Froslass">
 	<type>Ice</type>
@@ -111584,7 +111983,8 @@
 			<move>Weather Ball</move>
 			<move>Sing</move>
 		</combo>
-	</illegal></species>
+	</illegal>
+</species>
 
 <species id="483" name="Rotom">
 	<type>Electric</type>
