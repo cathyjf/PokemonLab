@@ -238,7 +238,7 @@ makeAbility({
             return false;
         if (move.type != Type.FIRE)
             return false;
-        if ((move.power == 0) && (move.name != "Will-o-wisp"))
+        if ((move.power == 0) && (move.name != "Will-O-Wisp"))
             return false;
         if (target.getStatus("FreezeEffect"))
             return false;
@@ -1270,7 +1270,7 @@ makeAbility({
 makeAbility({
     name : "Iron Fist",
     moves_ : ["Ice Punch", "Fire Punch", "Thunderpunch", "Mach Punch",
-              "Focus Punch", "Dizzy Punch", "Dynamicpunch", "Hammer Arm",
+              "Focus Punch", "Dizzy Punch", "DynamicPunch", "Hammer Arm",
               "Mega Punch", "Comet Punch", "Meteor Mash", "Shadow Punch",
               "Drain Punch", "Bullet Punch", "Sky Uppercut"],
     modifier : function(field, user, target, move, critical) {
@@ -1287,7 +1287,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Reckless",
-    moves_ : ["Brave Bird", "Double-edge", "Flare Blitz", "Head Smash",
+    moves_ : ["Brave Bird", "Double-Edge", "Flare Blitz", "Head Smash",
               "Submission", "Take Down", "Volt Tackle", "Wood Hammer",
               "Jump Kick", "Hi Jump Kick"],
     modifier : function(field, user, target, move, critical) {

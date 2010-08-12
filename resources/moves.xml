@@ -204,7 +204,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.SPDEFENCE, 2));
 </use>
 </move>
 
-<move name="Ancientpower" id="10">
+<move name="AncientPower" id="10">
 <type>Rock</type>
 <class>Special</class>
 <power>60</power>
@@ -1059,7 +1059,7 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
 </init>
 </move>
 
-<move name="Bubblebeam" id="45">
+<move name="BubbleBeam" id="45">
 <type>Water</type>
 <class>Special</class>
 <power>65</power>
@@ -2191,7 +2191,7 @@ user.applyStatus(user, new StatChangeEffect(Stat.EVASION, 1));
 </use>
 </move>
 
-<move name="Double-edge" id="95">
+<move name="Double-Edge" id="95">
 <type>Normal</type>
 <class>Physical</class>
 <power>120</power>
@@ -2211,7 +2211,7 @@ makeRecoilMove(this, 3);
 </init>
 </move>
 
-<move name="Doubleslap" id="96">
+<move name="DoubleSlap" id="96">
 <type>Normal</type>
 <class>Physical</class>
 <power>15</power>
@@ -2340,7 +2340,7 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
 </init>
 </move>
 
-<move name="Dragonbreath" id="103">
+<move name="DragonBreath" id="103">
 <type>Dragon</type>
 <class>Special</class>
 <power>60</power>
@@ -2420,7 +2420,7 @@ this.use = function(field, user, target, targets) {
 </flags>
 </move>
 
-<move name="Dynamicpunch" id="107">
+<move name="DynamicPunch" id="107">
 <type>Fighting</type>
 <class>Physical</class>
 <power>100</power>
@@ -2766,7 +2766,7 @@ makeStatusMove(this, [[FlinchEffect, 0.1]]);
 </init>
 </move>
 
-<move name="Extremespeed" id="120">
+<move name="ExtremeSpeed" id="120">
 <type>Normal</type>
 <class>Physical</class>
 <priority>1</priority>
@@ -2897,7 +2897,7 @@ if (damage >= target.hp) {
 </use>
 </move>
 
-<move name="Featherdance" id="126">
+<move name="FeatherDance" id="126">
 <type>Flying</type>
 <class>Other</class>
 <power>0</power>
@@ -8668,7 +8668,7 @@ makeStatusMove(this, [[PoisonEffect, 0.3]]);
 </init>
 </move>
 
-<move name="Smellingsalt" id="369">
+<move name="SmellingSalt" id="369">
 <type>Normal</type>
 <class>Physical</class>
 <power>60</power>
@@ -8721,7 +8721,7 @@ makeStatusMove(this, [[PoisonEffect, 0.4]]);
 </init>
 </move>
 
-<move name="Smokescreen" id="371">
+<move name="SmokeScreen" id="371">
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -8838,7 +8838,7 @@ this.use = function(field, user, target, targets) {
 </init>
 </move>
 
-<move name="Sonicboom" id="376">
+<move name="SonicBoom" id="376">
 <type>Normal</type>
 <class>Special</class>
 <power>1</power>
@@ -10511,7 +10511,7 @@ makeRecoilMove(this, 3);
 </init>
 </move>
 
-<move name="Wake-up Slap" id="446">
+<move name="Wake-Up Slap" id="446">
 <type>Fighting</type>
 <class>Physical</class>
 <power>60</power>
@@ -10711,7 +10711,7 @@ makeRandomSwitchMove(this);
 </init>
 </move>
 
-<move name="Will-o-wisp" id="455">
+<move name="Will-O-Wisp" id="455">
 <type>Fire</type>
 <class>Other</class>
 <power>0</power>
