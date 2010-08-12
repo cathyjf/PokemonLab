@@ -565,15 +565,15 @@ public:
     void initialiseChannels();
     void initialiseMatchmaking(const string &);
     void initialiseClauses();
-    bool validateTeam(ScriptContextPtr, Pokemon::ARRAY &, vector<StatusObject> &, 
-                                                                    vector<int> &);
+    bool validateTeam(ScriptContextPtr, Pokemon::ARRAY &,
+            vector<StatusObject> &, vector<int> &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
     ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     void sendMetagameList(ClientImplPtr client);
     void getMetagameClauses(const int metagame, vector<string> &clauses);
-    std::vector<MetagamePtr> getMetagames();
+    const vector<MetagamePtr> &getMetagames() const { return m_metagames; }
     void sendClauseList(ClientImplPtr client);
     void fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
                                             vector<StatusObject> &ret);
@@ -1042,7 +1042,7 @@ private:
         msg >> metagame;
 
         // Check for bad challenge info
-        vector<MetagamePtr> metagames = m_server->getMetagames();
+        const vector<MetagamePtr> &metagames = m_server->getMetagames();
         const int metagameCount = metagames.size();
         if ((partySize < 1) || (teamLength < 1) || (metagame < -1) ||
                 (metagame >= metagameCount)) {
@@ -1205,7 +1205,7 @@ private:
         TimerOptions timerOpts;
         bool validMetagame = false;
         if (metagame >= 0) {
-            vector<MetagamePtr> metagames = m_server->getMetagames();
+            const vector<MetagamePtr> &metagames = m_server->getMetagames();
             const int size = metagames.size();
             if (metagame >= size) {
                 validMetagame = false;
@@ -1338,7 +1338,7 @@ private:
         ClientImplPtr client = m_server->getClient(user);
         if (client) {
             const int id = client->getId();
-            std::vector<MetagamePtr> metagames = m_server->getMetagames();
+            const vector<MetagamePtr> &metagames = m_server->getMetagames();
             database::DatabaseRegistry::ESTIMATE_LIST estimates =
                     m_server->getRegistry()->getEstimates(id, metagames);
             sendMessage(UserPersonalMessage(user, client->getPersonalMessage(), estimates));
@@ -1712,10 +1712,6 @@ void ServerImpl::getMetagameClauses(const int idx, vector<string> &ret) {
     for (int i = 0; i < size; ++i) {
         ret.push_back(clauses[i]);
     }
-}
-
-std::vector<MetagamePtr> ServerImpl::getMetagames() {
-    return m_metagames;
 }
 
 void ServerImpl::sendClauseList(ClientImplPtr client) {

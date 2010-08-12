@@ -246,9 +246,9 @@ double DatabaseRegistry::getRatingEstimate(const int id, const std::string &ladd
 }
 
 DatabaseRegistry::ESTIMATE_LIST DatabaseRegistry::getEstimates(const int id,
-                                        std::vector<MetagamePtr> &metagames) {
+        const std::vector<MetagamePtr> &metagames) {
     ESTIMATE_LIST list;
-    vector<MetagamePtr>::iterator i = metagames.begin();
+    vector<MetagamePtr>::const_iterator i = metagames.begin();
     for(; i != metagames.end(); ++i) {
         MetagamePtr p = *i;
         double estimate = getRatingEstimate(id, p->getId());
