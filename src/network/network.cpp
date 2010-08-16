@@ -1506,15 +1506,17 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         return;
     }
 
-    //takes the max level of the target and any of their alts
-    Channel::FLAGS uauth = m_server->getRegistry()->getMaxLevel(channel->getId(), target);
+    Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
+    Channel::FLAGS uauth = channel->getStatusFlags(m_server->getClient(target));
     ClientImplPtr client = m_server->getClient(target);
     if (id == -1) {
-        //global ban
-        //only administrators in the main channel can global ban
-        Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
-        if (!auth[Channel::PROTECTED] || uauth[Channel::PROTECTED])
+        // Global ban
+        if (!auth[Channel::PROTECTED] || uauth[Channel::PROTECTED]) {
+            // Only administrators in the main channel can global ban
+            // Administrators can't be banned
             return;
+        }
+        
         int ban;
         int setter;
         m_server->getRegistry()->getBan(id, target, ban, setter);
@@ -1536,12 +1538,13 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         }
         channel->writeLog(msg);
     } else {
-        Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
         string ip = m_server->getRegistry()->getIp(target);
-        if ((!auth[Channel::OP] || uauth[Channel::PROTECTED]) && !((m_ip == ip) && (date == 0)))
-            //Stop here if the user doesn't have the authority, but let everyone kick their own
-            //alts or themselves
+        if ((!auth[Channel::OP] || uauth[Channel::PROTECTED]) &&
+                !((m_ip == ip) && (date == 0))) {
+            // Stop here if the user doesn't have the authority, but let
+            // everyone kick their own alts or themselves
             return;
+        }
         if (date == 0) { 
             //0 date means kick
             if (client && client->getChannel(id)) {
