@@ -1507,7 +1507,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
     }
 
     Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
-    Channel::FLAGS uauth = channel->getStatusFlags(m_server->getClient(target));
+    Channel::FLAGS uauth = channel->getUserFlags(target);
     ClientImplPtr client = m_server->getClient(target);
     if (id == -1) {
         // Global ban

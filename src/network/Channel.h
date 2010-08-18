@@ -137,6 +137,8 @@ public:
 
     virtual void writeLog(const std::string &);
 
+    virtual Channel::FLAGS getUserFlags(const std::string &);
+
     virtual ~Channel() { }
 
 private:

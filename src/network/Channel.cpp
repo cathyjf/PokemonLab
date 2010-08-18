@@ -448,6 +448,10 @@ void Channel::broadcast(const OutMessage &msg, ClientPtr client) {
     }
 }
 
+Channel::FLAGS Channel::getUserFlags(const string &user) {
+    return m_impl->server->getRegistry()->getUserFlags(getId(), user);
+}
+
 }} // namespace shoddybattle::network
 
 

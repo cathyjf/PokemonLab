@@ -222,6 +222,18 @@ void DatabaseRegistry::setUserFlags(const int channel, const int idx,
     }
 }
 
+int DatabaseRegistry::getUserFlags(const int channel, const string &user) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query("select flags from channel");
+    query << channel << " join users on channel" << channel;
+    query << ".id=users.id where name=%0q";
+    query.parse();
+    StoreQueryResult result = query.store(user);
+    if (result.empty())
+        return 0;
+    return result[0][0];
+}
+
 int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query("select flags from channel");

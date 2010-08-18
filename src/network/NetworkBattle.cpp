@@ -107,6 +107,11 @@ public:
         return m_mutex;
     }
 
+    Channel::FLAGS getUserFlags(const string &user) {
+        CLIENT_MAP::value_type client = getClient(user);
+        return (client.first) ? client.second : 0;
+    }
+
 private:
     BattleChannel(Server *server,
             NetworkBattleImpl *field,

@@ -122,6 +122,11 @@ public:
     /**
      * Get a user's flags on a channel.
      */
+    int getUserFlags(const int channel, const std::string &user);
+
+    /**
+     * Get a user's flags on a channel.
+     */
     int getUserFlags(const int channel, const int idx);
 
     /**
