@@ -1202,7 +1202,7 @@ private:
             return;
         }
         
-        TimerOptions timerOpts;
+        TimerOptions timerOpts = TimerOptions();
         bool validMetagame = false;
         if (metagame >= 0) {
             const vector<MetagamePtr> &metagames = m_server->getMetagames();

@@ -362,6 +362,22 @@ private:
     Pokemon &operator=(const Pokemon &);
 };
 
+template <class T>
+void Pokemon::removeStatuses(STATUSES &effects, T predicate) {
+    bool removed = false;
+    do {
+        for (STATUSES::iterator i = effects.begin();
+                i != effects.end(); ++i) {
+            if (!predicate(*i))
+                continue;
+
+            effects.erase(i);
+            removed = true;
+            break;
+        }
+    } while (removed && !(removed = false));
+}
+
 }
 
 #endif

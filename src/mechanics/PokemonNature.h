@@ -34,7 +34,7 @@ class PokemonNature {
 public:
 
     /** Obtain an arbitrary nature by index. **/
-    static const PokemonNature *const getNature(const int idx) {
+    static const PokemonNature *getNature(const int idx) {
         return &m_natures[idx];
     }
 

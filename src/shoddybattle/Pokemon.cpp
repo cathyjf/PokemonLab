@@ -656,22 +656,6 @@ void Pokemon::removeStatuses() {
             boost::bind(&StatusObject::isRemovable, _1, m_cx));
 }
 
-template <class T>
-void Pokemon::removeStatuses(STATUSES &effects, T predicate) {
-    bool removed = false;
-    do {
-        for (STATUSES::iterator i = effects.begin();
-                i != effects.end(); ++i) {
-            if (!predicate(*i))
-                continue;
-
-            effects.erase(i);
-            removed = true;
-            break;
-        }
-    } while (removed && !(removed = false));
-}
-
 /**
  * Return whether the pokemon has the specified ability.
  */

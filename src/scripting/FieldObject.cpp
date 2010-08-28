@@ -132,7 +132,7 @@ JSBool getTurn(JSContext *cx,
         return JS_FALSE;
     }
     if (idx < 0) {
-        JS_ReportError(cx, "getTurn: position must be > 0");
+        JS_ReportError(cx, "getTurn: position must be >= 0");
         return JS_FALSE;
     }
     shared_ptr<PokemonParty> p = field->getActivePokemon()[party];

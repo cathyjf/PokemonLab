@@ -189,6 +189,9 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
             mc = MC_PHYSICAL;
         } else if (cls == "Other") {
             mc = MC_OTHER;
+        } else {
+            cout << "Error: Invalid move class: " << cls << endl;
+            mc = MC_OTHER;
         }
         pMove->moveClass = mc;
     }
@@ -371,7 +374,7 @@ MoveDatabase::~MoveDatabase() {
 
 } // namespace shoddybattle
 
-#if 0
+#if 1
 
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/Pokemon.h"
@@ -396,6 +399,8 @@ int main() {
     loadTeam("/home/Catherine/gengarteam", *species, team[0]);
     loadTeam("/home/Catherine/toxicorb", *species, team[1]);
 
+    //team[1].erase(team[1].begin() + 1, team[1].end());
+
     vector<StatusObject> clauses;
     //cx->getClauseList(clauses);
     /**for (int i = 0; i < clauses.size(); ++i) {
@@ -407,56 +412,64 @@ int main() {
 
     BattleField field;
     JewelMechanics mechanics;
-    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 2,
+    field.initialise(&mechanics, GEN_PLATINUM, &machine, team, trainer, 1,
             clauses);
 
-    field.getActivePokemon(0, 0)->setMove(0, "Attract", 5, 5);
+    field.getActivePokemon(0, 0)->setMove(0, "Encore", 5, 5);
     field.getActivePokemon(0, 0)->setMove(1, "Tackle", 5, 5);
-    field.getActivePokemon(0, 0)->setMove(2, "Bubble", 5, 5);
+    field.getActivePokemon(0, 0)->setMove(2, "Belly Drum", 5, 5);
 
-    field.getActivePokemon(0, 1)->setMove(0, "Trick Room", 3, 3);
-    field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5, 5);
+    //field.getActivePokemon(0, 1)->setMove(0, "Confuse Ray", 3, 3);
+    //field.getActivePokemon(0, 1)->setMove(1, "Spit Up", 5, 5);
 
-    field.getActivePokemon(1, 0)->setMove(0, "Earthquake", 5, 5);
+    field.getActivePokemon(1, 0)->setMove(0, "Confuse Ray", 5, 5);
+    field.getActivePokemon(1, 0)->setMove(1, "Tackle", 5, 5);
 
-    field.getActivePokemon(1, 1)->setMove(0, "Tackle", 5, 5);
-    field.getActivePokemon(1, 1)->setMove(1, "Splash", 5, 5);
+    //field.getActivePokemon(1, 1)->setMove(0, "Protect", 5, 5);
+    //field.getActivePokemon(1, 1)->setMove(1, "Splash", 5, 5);
 
-    field.getActivePokemon(0, 0)->setItem("Leftovers");
-    field.getActivePokemon(0, 1)->setItem("Leftovers");
-    field.getActivePokemon(1, 0)->setItem("Leftovers");
-    field.getActivePokemon(1, 1)->setItem("Leftovers");
+    field.getActivePokemon(0, 0)->setItem("Quick Claw");
+    //field.getActivePokemon(0, 1)->setItem("Quick Claw");
+    field.getActivePokemon(1, 0)->setItem("Quick Claw");
+    //field.getActivePokemon(1, 1)->setItem("Quick Claw");
 
-    field.getActivePokemon(0, 0)->setAbility("Intimidate");
-    field.getActivePokemon(0, 1)->setAbility("Levitate");
+    field.getActivePokemon(0, 0)->setAbility("Magic Guard");
+    //field.getActivePokemon(0, 1)->setAbility("Levitate");
     field.getActivePokemon(1, 0)->setAbility("Flash Fire");
-    field.getActivePokemon(1, 1)->setAbility("Synchronize");
+    //field.getActivePokemon(1, 1)->setAbility("Synchronize");
 
     field.beginBattle();
 
     vector<PokemonTurn> turns;
     //turns.push_back(PokemonTurn(TT_SWITCH, 5));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 3));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
-    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
     turns.push_back(PokemonTurn(TT_MOVE, 0, 1));
+    turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    //turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
+    //turns.push_back(PokemonTurn(TT_MOVE, 0, 0));
 
     time_t initial = clock();
 
     field.processTurn(turns);
-    cout << "   ----" << endl;
+    cout << endl << endl;
+
+    turns[1] = PokemonTurn(TT_MOVE, 1, 0);
+
     //turns[0] = PokemonTurn(TT_MOVE, 1, 1);
     //turns[3] = PokemonTurn(TT_MOVE, 1, 1);
 
 
     field.processTurn(turns);
-    cout << "   ----" << endl;
+    cout << endl << endl;
     //turns[0] = PokemonTurn(TT_SWITCH, 2);
 
     field.processTurn(turns);
+    cout << endl << endl;
 
     field.processTurn(turns);
-    cout << "   ----" << endl;
+    cout << endl << endl;
+
+    field.processTurn(turns);
+    cout << endl << endl;
     //field.processTurn(turns);
     //field.processTurn(turns);
     //field.processTurn(turns);

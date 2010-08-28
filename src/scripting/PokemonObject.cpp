@@ -679,7 +679,7 @@ JSBool execute(JSContext *cx,
  * Execute the pokemon's pending action immediately.
  */
 JSBool executePendingAction(JSContext *cx,
-        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
+        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     BattleField *field = p->getField();
     const bool executed = field->executePendingAction(p);
@@ -746,12 +746,16 @@ JSPropertySpec turnProperties[] = {
 
 /**
  * pokemon.informDamaged(user, move, damage)
- * This function's primary use is to register damage that didn't result in HP loss.
- * Do not use if an attack could possibly result in HP loss otherwise it'll get reported twice
+ * 
+ * This function's primary use is to register damage that didn't result in HP
+ * loss. Do not use if an attack could possibly result in HP loss or
+ * it will be reported twice.
  */
 JSBool informDamaged(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval */*ret*/) {
-    if (!JSVAL_IS_OBJECT(argv[0]) || !JSVAL_IS_OBJECT(argv[1]) || !JSVAL_IS_INT(argv[2])) {
+    if (!JSVAL_IS_OBJECT(argv[0]) ||
+            !JSVAL_IS_OBJECT(argv[1]) ||
+            !JSVAL_IS_INT(argv[2])) {
         return JS_FALSE;
     }
 
@@ -890,7 +894,8 @@ JSBool pokemonGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
         } break;
         
         case PTI_FIELD: {
-            *vp = OBJECT_TO_JSVAL((JSObject *)p->getField()->getObject()->getObject());
+            ScriptObject *obj = p->getField()->getObject();
+            *vp = OBJECT_TO_JSVAL((JSObject *)obj->getObject());
         } break;
 
         case PTI_PARTY: {
