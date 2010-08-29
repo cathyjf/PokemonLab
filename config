@@ -1,0 +1,14 @@
+# Config file for Pokemon Lab.
+
+[server]
+port=8446
+threads=20
+log=log.txt
+
+[mysql]
+name=shoddybattle2
+host=localhost
+port=3306
+user=root
+# Comment out the password line for no password.
+#password=
