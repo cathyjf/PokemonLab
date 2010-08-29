@@ -170,7 +170,7 @@ int initialise(int argc, char **argv, bool &daemon) {
         pid_t pid = daemon_pid_file_is_running();
         if (pid >= 0) {
             cout << "The server daemon is already running on PID " << pid
-                  << " according to the PID file." << endl;
+                    << ".\nTry shoddybattle2 --server.kill to kill it.\n";
             return 1;
         }
         if (daemon_retval_init() < 0) {
@@ -278,16 +278,18 @@ int main(int argc, char **argv) {
     bool daemon = false;
     try {
         const int ret = initialise(argc, argv, daemon);
-        if (daemon && (ret != EXIT_SUCCESS)) {
-            daemon_retval_send(ret);
+        if (daemon) {
+            if (ret) {
+                daemon_retval_send(ret);
+            }
+            daemon_pid_file_remove();
         }
-        daemon_pid_file_remove();
         return ret;
     } catch (...) {
         if (daemon) {
             daemon_retval_send(1); // error condition
+            daemon_pid_file_remove();
         }
-        daemon_pid_file_remove();
         throw; // rethrow exception
     }
 }
