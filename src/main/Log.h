@@ -96,10 +96,6 @@ private:
     boost::shared_ptr<LogImpl> m_impl;
 };
 
-inline std::ostream &endl(std::ostream &s) {
-    return std::endl<char, std::char_traits<char> >(s);
-}
-
 }
 
 #endif
