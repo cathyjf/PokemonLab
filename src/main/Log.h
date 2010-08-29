@@ -35,7 +35,7 @@ class LogFile;
 
 /**
  * This class provides a callable member, Log::out(), which should be used
- * everywhere in place of cout. Writing to this streams is thread safe, unlike
+ * everywhere in place of cout. Writing to this stream is thread safe, unlike
  * cout. Additionally, the messages will be written to dated log files with
  * a timestamp prefix.
  * 

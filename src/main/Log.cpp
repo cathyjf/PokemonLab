@@ -73,6 +73,7 @@ protected:
         if (m_log.m_impl->mode & MODE_CONSOLE) {
             cout << text << flush;
         }
+        setp(NULL, NULL);
         return 0;
     }
 private:
