@@ -53,12 +53,10 @@
 <metagame>
     <name>Uber</name>
     <id>uber</id>
-    <description>Uber metagame with everything allowed except for Wobbuffet and son.</description>
+    <description>Uber metagame.</description>
     <party-size>1</party-size>
     <team-length>6</team-length>
     <ban-list>
-        <pokemon>Wobbuffet</pokemon>
-        <pokemon>Wynaut</pokemon>
     </ban-list>
     <clauses>
         <clause>Classic Sleep Clause</clause>

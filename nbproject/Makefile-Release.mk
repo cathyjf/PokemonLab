@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o \
 	${OBJECTDIR}/src/shoddybattle/BattleField.o \
 	${OBJECTDIR}/src/text/Text.o \
+	${OBJECTDIR}/src/main/main.o \
 	${OBJECTDIR}/src/shoddybattle/SimpleBattle.o \
 	${OBJECTDIR}/src/database/rijndael.o \
 	${OBJECTDIR}/src/matchmaking/MetagameList.o \
@@ -62,8 +63,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time
-CXXFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time
+CCFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon
+CXXFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -121,6 +122,11 @@ ${OBJECTDIR}/src/text/Text.o: nbproject/Makefile-${CND_CONF}.mk src/text/Text.cp
 	${MKDIR} -p ${OBJECTDIR}/src/text
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/text/Text.o src/text/Text.cpp
+
+${OBJECTDIR}/src/main/main.o: nbproject/Makefile-${CND_CONF}.mk src/main/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/main.o src/main/main.cpp
 
 ${OBJECTDIR}/src/shoddybattle/SimpleBattle.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/SimpleBattle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle

@@ -31,6 +31,9 @@
         <itemPath>src/database/sha2.c</itemPath>
         <itemPath>src/database/sha2.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f1" displayName="main" projectFiles="true">
+        <itemPath>src/main/main.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="matchmaking" displayName="matchmaking" projectFiles="true">
         <itemPath>src/matchmaking/MetagameList.cpp</itemPath>
         <itemPath>src/matchmaking/MetagameList.h</itemPath>
@@ -114,7 +117,7 @@
             <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>
           </preprocessorList>
@@ -147,7 +150,7 @@
             <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
