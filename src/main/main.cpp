@@ -270,6 +270,7 @@ int initialise(int argc, char **argv, bool &daemon) {
     }
 
     server.run(); // block
+    return EXIT_SUCCESS;
 }
 
 }
