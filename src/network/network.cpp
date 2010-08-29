@@ -61,6 +61,7 @@
 #include "../matchmaking/MetagameList.h"
 #include "../network/Channel.h"
 #include "../mechanics/JewelMechanics.h"
+#include "../main/Log.h"
 
 using namespace std;
 using namespace boost;
@@ -2003,7 +2004,7 @@ void ServerImpl::handleMatchmaking() {
 }
 
 void ServerImpl::handleSignal(int signum) {
-    cout << "Program " << strsignal(signum) << "; terminating...\n";
+    Log::out() << "Program " << strsignal(signum) << "; terminating..." << endl;
     m_blockingServer->stop();
 }
 
@@ -2043,7 +2044,7 @@ void ServerImpl::stop() {
 void ServerImpl::removeClient(ClientImplPtr client) {
     // TODO: other removal logic
     client->disconnect();
-    cout << "Client from " << client->getIp() << " disconnected." << endl;
+    Log::out() << "Client from " << client->getIp() << " disconnected." << endl;
 
     lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
@@ -2074,7 +2075,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
             m_clients.insert(client);
         }
         client->start();
-        cout << "Accepted client from " << client->getIp() << "." << endl;
+        Log::out() << "Accepted client from " << client->getIp() << "." << endl;
         WelcomeMessage msg(2,
                 "Test Server",
                 "Welcome to code name Shoddy Battle 2!");

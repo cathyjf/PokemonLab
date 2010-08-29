@@ -28,6 +28,7 @@
 #include "../mechanics/BattleMechanics.h"
 #include "../scripting/ScriptMachine.h"
 #include "../text/Text.h"
+#include "../main/Log.h"
 #include <iostream>
 #include <list>
 #include <cmath>
@@ -643,13 +644,13 @@ void BattleField::print(const TextMessage &msg) {
     }
     string message = m_impl->machine->getText(
             msg.getCategory(), msg.getMessage(), argc, argv);
-    cout << message << endl;
+    Log::out() << message << endl;
 }
 
 void BattleField::informSendOut(Pokemon *p) {
     const int party = p->getParty();
     const string trainer = m_impl->active[party]->getName();
-    cout << trainer << " sent out " << p->getName()
+    Log::out() << trainer << " sent out " << p->getName()
             << " (lvl " << p->getLevel() << " " << p->getSpeciesName() << ")"
             << "!" << endl;
 }
@@ -657,23 +658,23 @@ void BattleField::informSendOut(Pokemon *p) {
 void BattleField::informWithdraw(Pokemon *p) {
     const int party = p->getParty();
     const string trainer = m_impl->active[party]->getName();
-    cout << trainer << " withdrew " << p->getName() << "!" << endl;
+    Log::out() << trainer << " withdrew " << p->getName() << "!" << endl;
 }
 
 void BattleField::informUseMove(Pokemon *p, MoveObject *move) {
-    cout << p->getName() << " used "
+    Log::out() << p->getName() << " used "
             << move->getName(m_impl->context) << "!" << endl;
 }
 
 void BattleField::informHealthChange(Pokemon *p, const int delta) {
     const int numerator = floor(48.0 * (double)delta
             / (double)p->getRawStat(S_HP) + 0.5);
-    cout << p->getName() << " lost " << numerator << "/48 of its health!"
+    Log::out() << p->getName() << " lost " << numerator << "/48 of its health!"
             << endl;
 }
 
 void BattleField::informFainted(Pokemon *p) {
-    cout << p->getName() << " fainted!" << endl;
+    Log::out() << p->getName() << " fainted!" << endl;
 }
 
 void BattleField::informStatusChange(Pokemon *, StatusObject *, const bool) {
@@ -1020,9 +1021,9 @@ bool BattleField::determineVictory() {
 void BattleField::informVictory(const int party) {
     if (party != -1) {
         PokemonParty &obj = *m_impl->active[party];
-        cout << obj.getName() << " wins!" << endl;
+        Log::out() << obj.getName() << " wins!" << endl;
     } else {
-        cout << "It's a draw!" << endl;
+        Log::out() << "It's a draw!" << endl;
     }
 }
 

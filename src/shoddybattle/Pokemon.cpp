@@ -34,6 +34,7 @@
 #include "../mechanics/JewelMechanics.h"
 #include "../text/Text.h"
 #include "../scripting/ScriptMachine.h"
+#include "../main/Log.h"
 #include "BattleField.h"
 #include "ObjectTeamFile.h"
 
@@ -535,7 +536,7 @@ bool Pokemon::executeMove(MoveObjectPtr move,
     //       transforming targets for Follow Me and friends.
 
     if (move->getFlag(m_cx, F_UNIMPLEMENTED)) {
-        cout << "But it's unimplemented..." << endl;
+        Log::out() << "But it's unimplemented..." << endl;
         m_acted = true;
         return false;
     }
@@ -943,7 +944,7 @@ void Pokemon::setAbility(const string &name) {
     if (!ability.isNull()) {
         setAbility(&ability);
     } else {
-        cout << "No such ability: " << name << "." << endl;
+        Log::out() << "No such ability: " << name << "." << endl;
     }
 }
 
@@ -965,7 +966,7 @@ void Pokemon::setItem(const string &name) {
     if (!item.isNull()) {
         setItem(&item);
     } else {
-        //cout << "No such item: " << name << "." << endl;
+        //Log::out() << "No such item: " << name << "." << endl;
     }
 }
 

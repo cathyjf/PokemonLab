@@ -38,6 +38,7 @@
 #include "../mechanics/PokemonType.h"
 #include "../moves/PokemonMove.h"
 #include "../scripting/ScriptMachine.h"
+#include "../main/Log.h"
 
 using namespace std;
 using namespace xercesc;
@@ -117,9 +118,9 @@ class ShoddyHandler : public HandlerBase {
     void fatalError(const SAXParseException& e) {
         const XMLFileLoc line = e.getLineNumber();
         const XMLFileLoc column = e.getColumnNumber();
-        cout << "Error at (" << line << "," << column << ")." << endl;
+        Log::out() << "Error at (" << line << "," << column << ")." << endl;
         char *message = XMLString::transcode(e.getMessage());
-        cout << message << endl;
+        Log::out() << message << endl;
         XMLString::release(&message);
     }
 };
@@ -207,7 +208,7 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
         } else if (txt == "none") {
             gender = G_NONE;
         } else {
-            cout << "Unknown gender: " << txt << endl;
+            Log::out() << "Unknown gender: " << txt << endl;
         }
         pSpecies->gender = gender;
     }
@@ -357,7 +358,7 @@ bool PokemonSpecies::loadSpecies(const string file, SpeciesDatabase &set) {
         SPECIES species;
         getSpecies(item, &species);
         if (set.m_set.find(species.id) != set.m_set.end()) {
-            cout << "Warning: Duplicate species ID: " << species.id << endl;
+            Log::out() << "Warning: Duplicate species ID: " << species.id << endl;
             continue;
         }
         PokemonSpecies *p = new PokemonSpecies((void *)&species);
@@ -384,7 +385,7 @@ PokemonSpecies::PokemonSpecies(void *raw) {
     for (; i != p->types.end(); ++i) {
         const PokemonType *type = PokemonType::getByCanonicalName(*i);
         if (type == NULL) {
-            cout << "Unknown type: " << *i << endl;
+            Log::out() << "Unknown type: " << *i << endl;
             continue;
         }
         m_types.push_back(type);
@@ -426,18 +427,18 @@ void SpeciesDatabase::verifyAbilities(ScriptMachine *machine) const {
             abilities.insert(*j);
         }
     }
-    cout << "Unimplemented abilities:" << endl;
+    Log::out() << "Unimplemented abilities:" << endl;
     int implemented = 0;
     ScriptContextPtr cx = machine->acquireContext();
     set<string>::const_iterator j = abilities.begin();
     for (; j != abilities.end(); ++j) {
         if (cx->getAbility(*j).isNull()) {
-            cout << "    " << *j << endl;
+            Log::out() << "    " << *j << endl;
         } else {
             ++implemented;
         }
     }
-    cout << implemented << " / " << abilities.size()
+    Log::out() << implemented << " / " << abilities.size()
             << " abilities implemented." << endl;
 }
 
@@ -455,17 +456,17 @@ using namespace shoddybattle;
     SpeciesDatabase set("resources/species.xml");
     clock_t finish = clock();
     clock_t delta = finish - start;
-    cout << "Processed species.xml in " << delta << " nanoseconds." << endl;
+    Log::out() << "Processed species.xml in " << delta << " nanoseconds." << endl;
 
     const PokemonSpecies *p = set.getSpecies("Rhydon");
     if (p) {
         MOVESET moveset = p->getMoveset();
         for (int i = 0; i < ORIGIN_COUNT; ++i) {
-            cout << originNames[i].first << ":" << endl;
+            Log::out() << originNames[i].first << ":" << endl;
             const vector<string> &moves = moveset[(MOVE_ORIGIN)i];
             vector<string>::const_iterator j = moves.begin();
             for (; j != moves.end(); ++j) {
-                cout << "    " << *j << endl;
+                Log::out() << "    " << *j << endl;
             }
         }
     }

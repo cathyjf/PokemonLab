@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include "ObjectTeamFile.h"
+#include "../main/Log.h"
 
 using namespace std;
 
@@ -537,31 +538,31 @@ int main(int argc, char **argv) {
         vector<POKEMON>::iterator i = pokemon.begin();
         for (; i != pokemon.end(); ++i) {
             POKEMON &p = *i;
-            cout << "Level " << p.level << " " << p.species
+            Log::out() << "Level " << p.level << " " << p.species
                     << " (#" << p.speciesId << ")" << endl;
-            cout << "Nickname: " << p.nickname << endl;
-            cout << "Nature: " << text.getText(SC_NATURE, p.nature) << endl;
-            cout << "Ability: " << p.ability << endl;
-            cout << "Item: " << p.item << endl;
-            cout << "IVs: ";
+            Log::out() << "Nickname: " << p.nickname << endl;
+            Log::out() << "Nature: " << text.getText(SC_NATURE, p.nature) << endl;
+            Log::out() << "Ability: " << p.ability << endl;
+            Log::out() << "Item: " << p.item << endl;
+            Log::out() << "IVs: ";
             for (int i = 0; i < P_STAT_COUNT; ++i) {
-                cout << p.iv[i] << ", ";
+                Log::out() << p.iv[i] << ", ";
             }
-            cout << endl;
-            cout << "EVs: ";
+            Log::out() << endl;
+            Log::out() << "EVs: ";
             for (int i = 0; i < P_STAT_COUNT; ++i) {
-                cout << p.ev[i] << ", ";
+                Log::out() << p.ev[i] << ", ";
             }
-            cout << endl;
+            Log::out() << endl;
 
-            cout << "Moves:" << endl;
+            Log::out() << "Moves:" << endl;
             for (int i = 0; i < P_MOVE_COUNT; ++i) {
-                cout << "   " << p.moves[i] << " (" << p.ppUp[i] << " pp ups)"
+                Log::out() << "   " << p.moves[i] << " (" << p.ppUp[i] << " pp ups)"
                         << endl;
             }
 
-            cout << endl;
-            cout << endl;
+            Log::out() << endl;
+            Log::out() << endl;
         }
     }
     return 0;

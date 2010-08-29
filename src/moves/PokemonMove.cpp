@@ -36,6 +36,7 @@
 #include "PokemonMove.h"
 #include "../mechanics/PokemonType.h"
 #include "../scripting/ScriptMachine.h"
+#include "../main/Log.h"
 
 using namespace std;
 using namespace xercesc;
@@ -127,9 +128,9 @@ class SpeciesHandler : public HandlerBase {
     void fatalError(const SAXParseException& e) {
         const XMLFileLoc line = e.getLineNumber();
         const XMLFileLoc column = e.getColumnNumber();
-        cout << "Error at (" << line << "," << column << ")." << endl;
+        Log::out() << "Error at (" << line << "," << column << ")." << endl;
         char *message = XMLString::transcode(e.getMessage());
-        cout << message << endl;
+        Log::out() << message << endl;
         XMLString::release(&message);
     }
 };
@@ -190,7 +191,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
         } else if (cls == "Other") {
             mc = MC_OTHER;
         } else {
-            cout << "Error: Invalid move class: " << cls << endl;
+            Log::out() << "Error: Invalid move class: " << cls << endl;
             mc = MC_OTHER;
         }
         pMove->moveClass = mc;
@@ -271,7 +272,7 @@ void getMove(DOMElement *node, MoveTemplateImpl *pMove,
     } else if (strTarget == "User or ally") {
         tc = T_USER_OR_ALLY;
     } else {
-        cout << "Unknown target class: " << strTarget << endl;
+        Log::out() << "Unknown target class: " << strTarget << endl;
     }
     pMove->targetClass = tc;
 
@@ -337,7 +338,7 @@ void MoveDatabase::loadMoves(const string file) {
 
     ScriptContextPtr cx = m_machine.acquireContext();
 
-    cout << "Unimplemented moves:" << endl;
+    Log::out() << "Unimplemented moves:" << endl;
 
     int implemented = 0;
     int length = list->getLength();
@@ -349,14 +350,14 @@ void MoveDatabase::loadMoves(const string file) {
         if (!move->flags[F_UNIMPLEMENTED]) {
             ++implemented;
         } else {
-            cout << "    " << move->name << endl;
+            Log::out() << "    " << move->name << endl;
         }
 
         MoveTemplate *pMove = new MoveTemplate(move);
         m_data.insert(MOVE_DATABASE::value_type(move->name, pMove));
         m_intData.insert(INT_MOVE_DATABASE::value_type(move->id, move->name));
     }
-    cout << implemented << " / " << length << " moves implemented." << endl;
+    Log::out() << implemented << " / " << length << " moves implemented." << endl;
 }
 
 MoveDatabase::~MoveDatabase() {
@@ -365,7 +366,7 @@ MoveDatabase::~MoveDatabase() {
     for (; i != m_data.end(); ++i) {
         MoveTemplate *move = i->second;
         if (move == NULL) {
-            //cout << "Missing move: " << i->first << endl;
+            //Log::out() << "Missing move: " << i->first << endl;
             continue;
         }
         delete move;
@@ -405,7 +406,7 @@ int main() {
     //cx->getClauseList(clauses);
     /**for (int i = 0; i < clauses.size(); ++i) {
         StatusObject clause = clauses[i];
-        cout << "Clause: " << clause.getName(cx.get()) << endl;
+        Log::out() << "Clause: " << clause.getName(cx.get()) << endl;
     }**/
 
     const string trainer[] = { "Catherine", "bearzly" };
@@ -450,7 +451,7 @@ int main() {
     time_t initial = clock();
 
     field.processTurn(turns);
-    cout << endl << endl;
+    Log::out() << endl << endl;
 
     turns[1] = PokemonTurn(TT_MOVE, 1, 0);
 
@@ -459,24 +460,24 @@ int main() {
 
 
     field.processTurn(turns);
-    cout << endl << endl;
+    Log::out() << endl << endl;
     //turns[0] = PokemonTurn(TT_SWITCH, 2);
 
     field.processTurn(turns);
-    cout << endl << endl;
+    Log::out() << endl << endl;
 
     field.processTurn(turns);
-    cout << endl << endl;
+    Log::out() << endl << endl;
 
     field.processTurn(turns);
-    cout << endl << endl;
+    Log::out() << endl << endl;
     //field.processTurn(turns);
     //field.processTurn(turns);
     //field.processTurn(turns);
 
     time_t final = clock();
     double delta = (double)(final - initial) / (double)CLOCKS_PER_SEC;
-    cout << delta << " seconds to process the turn." << endl;
+    Log::out() << delta << " seconds to process the turn." << endl;
 
     field.getContext()->gc();
 }

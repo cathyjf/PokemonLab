@@ -35,6 +35,7 @@
 #include "../shoddybattle/BattleField.h"
 #include "../mechanics/PokemonNature.h"
 #include "../mechanics/JewelMechanics.h"
+#include "../main/Log.h"
 
 using namespace std;
 using namespace boost;
@@ -53,23 +54,23 @@ public:
             Pokemon::PTR p = *i;
             p->determineLegalActions();
             while (true) {
-                cout << "What will " << p->getName() << " do?" << endl;
-                cout << "    1 - Attack" << endl;
+                Log::out() << "What will " << p->getName() << " do?" << endl;
+                Log::out() << "    1 - Attack" << endl;
                 const bool canSwitch = p->isSwitchLegal();
                 if (canSwitch) {
-                    cout << "    2 - Switch" << endl;
+                    Log::out() << "    2 - Switch" << endl;
                 }
                 int option;
                 cin >> option;
                 if (option == 1) {
-                    cout << "Use which of " << p->getName()
+                    Log::out() << "Use which of " << p->getName()
                             << "'s moves?" << endl;
                     const int count = p->getMoveCount();
                     const char *num[] = { "1", "2", "3", "4", "5", "6" };
                     bool legal[] = { false, false, false, false };
                     for (int j = 0; j < count; ++j) {
                         if (legal[j] = p->isMoveLegal(j)) {
-                            cout << "    " << num[j] << " - "
+                            Log::out() << "    " << num[j] << " - "
                                     << p->getMove(j)->getName(cx)
                                     << endl;
                         }
@@ -82,12 +83,12 @@ public:
                         TARGET t = p->getMove(move)->getTargetClass(cx);
                         int target = -1;
                         if (t == T_NONUSER) {
-                            cout << "Target which enemy?" << endl;
+                            Log::out() << "Target which enemy?" << endl;
                             int pt = 1 - p->getParty();
                             PokemonParty &party = *getActivePokemon()[pt];
                             const int size = party.getSize();
                             for (int k = 0; k < size; ++k) {
-                                cout << "    " << num[k] << " - "
+                                Log::out() << "    " << num[k] << " - "
                                         << party[k].pokemon->getName()
                                         << endl;
                             }
@@ -103,7 +104,7 @@ public:
                         break;
                     }
                 } else if (canSwitch && (option == 2)) {
-                    cout << "Not done yet. Try attack." << endl;
+                    Log::out() << "Not done yet. Try attack." << endl;
                 }
             }
         }

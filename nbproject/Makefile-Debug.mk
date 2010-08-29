@@ -35,12 +35,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
 	${OBJECTDIR}/src/scripting/StatusObject.o \
 	${OBJECTDIR}/src/mechanics/stat.o \
+	${OBJECTDIR}/src/main/LogFile.o \
 	${OBJECTDIR}/src/scripting/FieldObject.o \
 	${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o \
 	${OBJECTDIR}/src/shoddybattle/BattleField.o \
 	${OBJECTDIR}/src/text/Text.o \
 	${OBJECTDIR}/src/main/main.o \
 	${OBJECTDIR}/src/shoddybattle/SimpleBattle.o \
+	${OBJECTDIR}/src/main/Log.o \
 	${OBJECTDIR}/src/database/rijndael.o \
 	${OBJECTDIR}/src/matchmaking/MetagameList.o \
 	${OBJECTDIR}/src/network/NetworkBattle.o \
@@ -103,6 +105,11 @@ ${OBJECTDIR}/src/mechanics/stat.o: nbproject/Makefile-${CND_CONF}.mk src/mechani
 	${RM} $@.d
 	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/stat.o src/mechanics/stat.cpp
 
+${OBJECTDIR}/src/main/LogFile.o: nbproject/Makefile-${CND_CONF}.mk src/main/LogFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/LogFile.o src/main/LogFile.cpp
+
 ${OBJECTDIR}/src/scripting/FieldObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/FieldObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
@@ -132,6 +139,11 @@ ${OBJECTDIR}/src/shoddybattle/SimpleBattle.o: nbproject/Makefile-${CND_CONF}.mk 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
 	${RM} $@.d
 	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/SimpleBattle.o src/shoddybattle/SimpleBattle.cpp
+
+${OBJECTDIR}/src/main/Log.o: nbproject/Makefile-${CND_CONF}.mk src/main/Log.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/Log.o src/main/Log.cpp
 
 ${OBJECTDIR}/src/database/rijndael.o: nbproject/Makefile-${CND_CONF}.mk src/database/rijndael.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/database

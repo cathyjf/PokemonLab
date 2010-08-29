@@ -26,6 +26,7 @@
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../shoddybattle/BattleField.h"
 #include "../network/network.h"
+#include "../main/Log.h"
 
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -109,7 +110,7 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
             string txt = getTextFromElement(pokemon);
             const PokemonSpecies *p = species->getSpecies(txt);
             if (!p) {
-                cout << "Unknown species: " << txt << endl;
+                Log::out() << "Unknown species: " << txt << endl;
             } else {
                 m_banList.insert(p->getSpeciesId());
             }
@@ -211,9 +212,9 @@ class MetagameErrorHandler : public HandlerBase {
     void fatalError(const SAXParseException& e) {
         const XMLFileLoc line = e.getLineNumber();
         const XMLFileLoc column = e.getColumnNumber();
-        cout << "Error at (" << line << "," << column << ")." << endl;
+        Log::out() << "Error at (" << line << "," << column << ")." << endl;
         char *message = XMLString::transcode(e.getMessage());
-        cout << message << endl;
+        Log::out() << message << endl;
         XMLString::release(&message);
     }
 };

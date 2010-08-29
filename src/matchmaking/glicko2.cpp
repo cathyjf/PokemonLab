@@ -23,6 +23,7 @@
  */
 
 #include "glicko2.h"
+#include "../main/Log.h"
 #include <cmath>
 
 using namespace std;
@@ -205,7 +206,7 @@ double getRatingEstimate(const double rating, const double deviation) {
 
 int main() {
     using namespace shoddybattle::glicko2;
-    cout << getRatingEstimate(1918.558883, 74.43201955) << endl;
+    Log::out() << getRatingEstimate(1918.558883, 74.43201955) << endl;
 }
 
 #endif

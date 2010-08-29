@@ -37,6 +37,8 @@
 #include "../database/DatabaseRegistry.h"
 #include "../database/Authenticator.h"
 #include "../network/NetworkBattle.h"
+#include "Log.h"
+#include "LogFile.h"
 
 using namespace std;
 using namespace shoddybattle;
@@ -45,6 +47,12 @@ namespace fs = boost::filesystem;
 
 namespace {
 
+enum {
+    INIT_SUCCESS = 0,
+    INIT_MISC_FAILURE = 1,
+    INIT_COULD_NOT_WRITE_LOG = 2
+};
+
 string pidFile;
 
 const char *getPidFileName() {
@@ -52,7 +60,7 @@ const char *getPidFileName() {
 }
 
 int initialise(int argc, char **argv, bool &daemon) {
-    string configFile, logFile;
+    string configFile;
     int port, databasePort, workerThreads;
     string databaseName, databaseHost, databaseUser, databasePassword;
     string authParameter;
@@ -64,9 +72,6 @@ int initialise(int argc, char **argv, bool &daemon) {
                 "run the server as a daemon")
             ("server.kill",
                 "kill a running server daemon")
-            ("server.log",
-                po::value<string>(&logFile),
-                "log file for server output")
             ("server.port",
                 po::value<int>(&port)->default_value(
                      8446),
@@ -118,13 +123,13 @@ int initialise(int argc, char **argv, bool &daemon) {
         po::store(po::command_line_parser(argc, argv).
                 options(desc).positional(p).run(), vm);
     } catch (po::error &e) {
-        cout << "Error reading command line: " << e.what() << endl;
-        return 1;
+        Log::out() << "Error reading command line: " << e.what() << endl;
+        return INIT_MISC_FAILURE;
     }
     po::notify(vm);
 
     if (vm.count("help")) {
-        cout << "Usage: shoddybattle2 [options] [config-file = config]" << endl
+        Log::out() << "Usage: shoddybattle2 [options] [config-file = config]" << endl
              << "   Reads the specified config file first, or the file named"
                 " config in the\n   program's directory, and then reads"
                 " extra options from the command line." << endl
@@ -135,14 +140,15 @@ int initialise(int argc, char **argv, bool &daemon) {
     if (vm.count("config-file")) {
         ifstream file(configFile.c_str());
         if (!file.is_open()) {
-            cout << "Error: Config file " << configFile << " not found.\n";
-            return 1;
+            Log::out() << "Error: Config file " << configFile << " not found."
+                 << endl;
+            return INIT_MISC_FAILURE;
         }
         try {
             po::store(po::parse_config_file(file, desc), vm);
         } catch (po::error &e) {
-            cout << "Error reading config file: " << e.what() << endl;
-            return 1;
+            Log::out() << "Error reading config file: " << e.what() << endl;
+            return INIT_MISC_FAILURE;
         }
         po::notify(vm);
     }
@@ -152,7 +158,7 @@ int initialise(int argc, char **argv, bool &daemon) {
 
     if (serverDetach || serverKill) {
         fs::path path = (fs::initial_path() / argv[0]).remove_filename();
-        path = path.normalize() / "shoddybattle.pid";
+        path = path.normalize() / "shoddybattle2.pid";
         pidFile = path.string();
         daemon_pid_file_proc = getPidFileName;
         const string baseDir = path.remove_filename().file_string();
@@ -160,78 +166,71 @@ int initialise(int argc, char **argv, bool &daemon) {
         if (serverKill) {
             const int ret = daemon_pid_file_kill_wait(SIGTERM, 10);
             if (ret < 0) {
-                cout << "Failed to kill the server daemon."
+                Log::out() << "Failed to kill the server daemon."
                      << endl;
-                return 1;
+                return INIT_MISC_FAILURE;
             }
-            return EXIT_SUCCESS;
+            Log::out() << "Successfully killed the server daemon." << endl;
+            return INIT_SUCCESS;
         }
 
         pid_t pid = daemon_pid_file_is_running();
         if (pid >= 0) {
-            cout << "The server daemon is already running on PID " << pid
-                    << ".\nTry shoddybattle2 --server.kill to kill it.\n";
-            return 1;
+            Log::out() << "The server daemon is already running on PID " << pid
+                    << ".\nTry shoddybattle2 --server.kill to kill it."
+                    << endl;
+            return INIT_MISC_FAILURE;
         }
         if (daemon_retval_init() < 0) {
-            cout << "Failed to create pipe." << endl;
-            return 1;
-        }
-        if (!vm.count("server.log")) {
-            cout << "Warning: Since you have not specified a log file, you "
-                    "will not be able to see the output of the server daemon."
-                 << endl;
+            Log::out() << "Failed to create pipe." << endl;
+            return INIT_MISC_FAILURE;
         }
         if ((pid = daemon_fork()) < 0) {
             daemon_retval_done();
-            return 1;
+            return INIT_MISC_FAILURE;
         }
         if (pid) {
             // This is the parent process.
             const int ret = daemon_retval_wait(20);
             if (ret < 0) {
-                cout << "Received no response from the daemon." << endl;
-                return 1;
+                Log::out() << "Received no response from the daemon." << endl;
+                return INIT_MISC_FAILURE;
             }
-            if (ret == 2) {
-                cout << "Failed to open the specified log for write access."
+            if (ret == INIT_COULD_NOT_WRITE_LOG) {
+                Log::out() << "Failed to open the specified log for write access."
                         << endl;
-                return 1;
+                return INIT_MISC_FAILURE;
             }
             if (ret) {
-                cout << "The server encountered an error while trying to "
+                Log::out() << "The server encountered an error while trying to "
                         "startup. Check the log file for details on the error."
                      << endl;
-                return 1;
+                return INIT_MISC_FAILURE;
             }
 
-            cout << "Successfully started the daemon as PID " << pid
+            Log::out() << "Successfully started the daemon as PID " << pid
                  << "." << endl;
-            return 0;
+            return INIT_SUCCESS;
         } else {
             // This is the daemon process.
             
             // This technique isn't advised, but I'm going to do it anyway
             // to allow paths relative to the program's location.
             chdir(baseDir.c_str());
+
+            // Write logs to the log directory when running as a daemon.
+            Log::out.setMode(Log::MODE_FILE);
+            
             // Set this flag to indicate that we need to send a message back to
             // the parent process.
             daemon = true;
-            if (!logFile.empty()) {
-                if (!freopen(logFile.c_str(), "w", stdout)) {
-                    return 2;
-                }
-                if (!freopen(logFile.c_str(), "w", stderr)) {
-                    return 2;
-                }
-            }
             if (daemon_close_all(-1) < 0) {
-                cout << "Failed to close all file descriptors." << endl;
-                return 1;
+                Log::out() << "Failed to close all file descriptors." << endl;
+                return INIT_MISC_FAILURE;
             }
             if (daemon_pid_file_create() < 0) {
-                cout << "Failed to create a PID file." << endl;
-                return 1;
+                Log::out() << "Failed to create a PID file." << endl;
+                return INIT_MISC_FAILURE;
             }
         }
     }
@@ -269,7 +268,12 @@ int initialise(int argc, char **argv, bool &daemon) {
         daemon_retval_send(0); // started up successfully
     }
 
-    server.run(); // block
+    // This call will block until the process receives one of SIGTERM and
+    // friends, at which point this function will be able to end gracefully.
+    server.run();
+
+    for_each(threads.begin(), threads.end(),
+            boost::bind(&boost::thread::join, _1));
     return EXIT_SUCCESS;
 }
 
@@ -288,6 +292,12 @@ int main(int argc, char **argv) {
         return ret;
     } catch (...) {
         if (daemon) {
+            // Record the exception in the log.
+            Log::out() << "Terminating due to an uncaught exception." << endl;
+            LogFile &logFile = Log::out.getLogFile();
+            logFile.close();
+            freopen(logFile.getCurrentLogFileName().c_str(), "a", stderr);
+            
             daemon_retval_send(1); // error condition
             daemon_pid_file_remove();
         }

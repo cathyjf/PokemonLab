@@ -39,6 +39,7 @@
 #include "../shoddybattle/PokemonSpecies.h"
 #include "../moves/PokemonMove.h"
 #include "../network/ThreadedQueue.h"
+#include "../main/Log.h"
 
 using namespace std;
 using namespace boost;
@@ -129,7 +130,7 @@ struct ScriptMachineImpl {
 #if ENABLE_ROOT_COUNT
         lock_guard<mutex> guard(rootLock);
         --roots;
-        cout << "There are " << roots << " roots remaining." << endl;
+        Log::out() << "There are " << roots << " roots remaining." << endl;
 #endif
     }
     
@@ -313,7 +314,7 @@ static JSBool loadText(JSContext *cx,
     try {
         scx->getMachine()->loadText(str, lookup);
     } catch (SyntaxException e) {
-        cout << "loadText: Syntax error on line " << e.getLine() << endl;
+        Log::out() << "loadText: Syntax error on line " << e.getLine() << endl;
     }
     return JS_TRUE;
 }
@@ -336,7 +337,7 @@ static JSBool printFunction(JSContext *cx,
     }
         
     char *str = JS_GetStringBytes(jsstr);
-    cout << str << endl;
+    Log::out() << str << endl;
     return JS_TRUE;
 }
 
@@ -575,7 +576,7 @@ void ScriptContext::runFile(const string file) {
     // Read in the whole file.
     ifstream is(file.c_str());
     if (!is.is_open()) {
-        cout << "Cannot find script " << file << endl;
+        Log::out() << "Cannot find script " << file << endl;
         return;
     }
     is.seekg(0, ios::end);
@@ -698,7 +699,7 @@ ScriptMachine::~ScriptMachine() {
     for (; i != m_impl->contexts.end(); ++i) {
         ScriptContext *cx = *i;
         if (cx->isBusy()) {
-            cout << "Error: Busy context in ~ScriptMachine()." << endl;
+            Log::out() << "Error: Busy context in ~ScriptMachine()." << endl;
         }
         JS_SetContextThread((JSContext *)cx->m_p);
         JS_DestroyContext((JSContext *)cx->m_p);
@@ -723,7 +724,7 @@ int main() {
     args.push_back("x");
     ScriptFunction func = cx->compileFunction(args, "print(x + 5);", "test.js", 1);
     if (!func.isNull()) {
-        cout << "Not null!" << endl;
+        Log::out() << "Not null!" << endl;
     }
     machine.releaseContext(cx);
 }**/

@@ -30,6 +30,7 @@
 #include <fstream>
 #include "Channel.h"
 #include "network.h"
+#include "../main/LogFile.h"
 #include "../database/DatabaseRegistry.h"
 
 using namespace std;
@@ -39,7 +40,7 @@ using namespace boost::posix_time;
 
 namespace shoddybattle { namespace network {
 
-struct Channel::ChannelImpl {
+struct Channel::ChannelImpl : LogFile {
     Server *server;
     int id;       // channel id
     CLIENT_MAP clients;
@@ -47,11 +48,13 @@ struct Channel::ChannelImpl {
     string topic; // channel topic
     CHANNEL_FLAGS flags;
     shared_mutex mutex;
-    date lastDate;
-    ofstream log;
 
     static const char MODES[];
     static const char CHANNEL_MODES[];
+
+    string getLogFileName(const date &d) const {
+        return "logs/chat/" + name + "/" + to_iso_extended_string(d);
+    }
 };
 
 const char Channel::ChannelImpl::MODES[] = "aovbiu";
@@ -165,21 +168,7 @@ string Channel::getChannelModeText(CHANNEL_FLAGS f2, CHANNEL_FLAGS f1) {
 }
 
 void Channel::writeLog(const string &line) {
-    lock_guard<shared_mutex> lock(mutex);
-    const date d = day_clock::local_day();
-    const bool open = m_impl->log.is_open();
-    if (!open || (d.day() != m_impl->lastDate.day())) {
-        if (open) {
-            m_impl->log.close();
-        }
-        m_impl->lastDate = d;
-        const string file = "logs/chat/" + m_impl->name
-                + "/" + to_iso_extended_string(d);
-        m_impl->log.open(file.c_str(), ios_base::app);
-    }
-    const time_duration t = second_clock::local_time().time_of_day();
-    const string prefix = to_simple_string(t);
-    m_impl->log << "(" << prefix << ") " << line << endl;
+    m_impl->LogFile::write(line + "\n");
 }
 
 Channel::FLAGS Channel::getStatusFlags(ClientPtr client) {
