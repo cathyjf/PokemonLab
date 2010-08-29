@@ -559,7 +559,9 @@ class ServerImpl {
 public:
     ServerImpl(Server *, tcp::endpoint &);
     Server *getServer() const { return m_server; }
+    void installSignalHandlers();
     void run();
+    void stop();
     void removeClient(ClientImplPtr client);
     void broadcast(const OutMessage &msg);
     void initialiseChannels();
@@ -598,6 +600,8 @@ private:
     void acceptClient();
     void handleAccept(ClientImplPtr client,
             const boost::system::error_code &error);
+    static void handleSignal(int signum);
+
     class ChannelList : public OutMessage {
     public:
         ChannelList(ServerImpl *);
@@ -628,12 +632,19 @@ private:
     shared_ptr<MetagameList> m_metagameList;
     vector<CLAUSE_PAIR> m_clauses;
     Server *m_server;
-    
+
+    static ServerImpl *m_blockingServer;
 };
+
+ServerImpl *ServerImpl::m_blockingServer = NULL;
 
 Server::Server(const int port) {
     tcp::endpoint endpoint(tcp::v4(), port);
     m_impl = new ServerImpl(this, endpoint);
+}
+
+void Server::installSignalHandlers() {
+    m_impl->installSignalHandlers();
 }
 
 void Server::run() {
@@ -664,7 +675,8 @@ ChannelPtr Server::getMainChannel() const {
     return m_impl->getMainChannel();
 }
 
-bool Server::commitBan(const int id, const string &user, const int auth, const int date) {
+bool Server::commitBan(const int id, const string &user, const int auth,
+        const int date) {
     return m_impl->commitBan(id, user, auth, date);
 }
 
@@ -1990,12 +2002,40 @@ void ServerImpl::handleMatchmaking() {
     }
 }
 
+void ServerImpl::handleSignal(int signum) {
+    cout << "Program " << strsignal(signum) << "; terminating...\n";
+    m_blockingServer->stop();
+}
+
+/**
+ * Install signal handlers which will gracefully end the network service when
+ * the program quits. If for some reason there are multiple ServerImpl objects
+ * in use in the program, this should only be called on one of them, which
+ * is why it is not in the constructor of ServerImpl.
+ *
+ * Also note that this function is not thread safe. No two threads should
+ * be in this function at the same time.
+ *
+ * In the normal startup of Shoddy Battle 2, only one ServerImpl object will
+ * ever be created, so this behaviour is by design.
+ */
+void ServerImpl::installSignalHandlers() {
+    m_blockingServer = this;
+    signal(SIGTERM, handleSignal);
+    signal(SIGINT, handleSignal);
+    signal(SIGHUP, handleSignal);
+}
+
 /** Start the server. */
 void ServerImpl::run() {
     m_registry.startThread();
     m_service.run();
 }
 
+/** Stop the server. */
+void ServerImpl::stop() {
+    m_service.stop();
+}
 
 /**
  * Remove a client.
@@ -2044,42 +2084,3 @@ void ServerImpl::handleAccept(ClientImplPtr client,
 
 
 }} // namespace shoddybattle::network
-
-#if 1
-
-#include "../database/Authenticator.h"
-
-int main() {
-    using namespace shoddybattle;
-
-    network::Server server(8446);
-
-    ScriptMachine *machine = server.getMachine();
-    machine->acquireContext()->runFile("resources/main.js");
-    machine->getSpeciesDatabase()->verifyAbilities(machine);
-
-    database::DatabaseRegistry *registry = server.getRegistry();
-    registry->connect("shoddybattle2", "localhost", "root", "");
-    registry->startThread();
-    registry->setAuthenticator(shared_ptr<database::Authenticator>(
-            new database::DefaultAuthenticator()));
-//    registry->setAuthenticator(shared_ptr<database::Authenticator>(
-//            new database::VBulletinAuthenticator()));
-
-    server.initialiseChannels();
-    server.initialiseMatchmaking("resources/metagames.xml");
-    server.initialiseClauses();
-    
-    network::NetworkBattle::startTimerThread();
-
-    vector<shared_ptr<thread> > threads;
-    for (int i = 0; i < 20; ++i) {
-        threads.push_back(shared_ptr<thread>(
-                new thread(boost::bind(&network::Server::run, &server))));
-    }
-
-    server.run(); // block
-}
-
-#endif
-

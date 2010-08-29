@@ -122,6 +122,7 @@ struct DatabaseRegistry::DatabaseRegistryImpl {
     shared_ptr<Authenticator> authenticator;
     DatabaseRegistryImpl() {
         rand = mt11213b(time(NULL));
+        authenticator = shared_ptr<Authenticator>(new DefaultAuthenticator());
     }
     int getChallenge() {
         lock_guard<mutex> lock(randMutex);

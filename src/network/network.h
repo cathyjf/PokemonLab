@@ -70,6 +70,7 @@ class Server {
 public:
     Server(const int port);
     ~Server();
+    void installSignalHandlers();
     void run();
     database::DatabaseRegistry *getRegistry();
     ScriptMachine *getMachine();
