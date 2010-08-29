@@ -47,12 +47,6 @@ namespace fs = boost::filesystem;
 
 namespace {
 
-enum {
-    INIT_SUCCESS = 0,
-    INIT_MISC_FAILURE = 1,
-    INIT_COULD_NOT_WRITE_LOG = 2
-};
-
 string pidFile;
 
 const char *getPidFileName() {
@@ -124,7 +118,7 @@ int initialise(int argc, char **argv, bool &daemon) {
                 options(desc).positional(p).run(), vm);
     } catch (po::error &e) {
         Log::out() << "Error reading command line: " << e.what() << endl;
-        return INIT_MISC_FAILURE;
+        return EXIT_FAILURE;
     }
     po::notify(vm);
 
@@ -142,13 +136,13 @@ int initialise(int argc, char **argv, bool &daemon) {
         if (!file.is_open()) {
             Log::out() << "Error: Config file " << configFile << " not found."
                  << endl;
-            return INIT_MISC_FAILURE;
+            return EXIT_FAILURE;
         }
         try {
             po::store(po::parse_config_file(file, desc), vm);
         } catch (po::error &e) {
             Log::out() << "Error reading config file: " << e.what() << endl;
-            return INIT_MISC_FAILURE;
+            return EXIT_FAILURE;
         }
         po::notify(vm);
     }
@@ -168,10 +162,10 @@ int initialise(int argc, char **argv, bool &daemon) {
             if (ret < 0) {
                 Log::out() << "Failed to kill the server daemon."
                      << endl;
-                return INIT_MISC_FAILURE;
+                return EXIT_FAILURE;
             }
             Log::out() << "Successfully killed the server daemon." << endl;
-            return INIT_SUCCESS;
+            return EXIT_SUCCESS;
         }
 
         pid_t pid = daemon_pid_file_is_running();
@@ -179,38 +173,33 @@ int initialise(int argc, char **argv, bool &daemon) {
             Log::out() << "The server daemon is already running on PID " << pid
                     << ".\nTry shoddybattle2 --server.kill to kill it."
                     << endl;
-            return INIT_MISC_FAILURE;
+            return EXIT_FAILURE;
         }
         if (daemon_retval_init() < 0) {
             Log::out() << "Failed to create pipe." << endl;
-            return INIT_MISC_FAILURE;
+            return EXIT_FAILURE;
         }
         if ((pid = daemon_fork()) < 0) {
             daemon_retval_done();
-            return INIT_MISC_FAILURE;
+            return EXIT_FAILURE;
         }
         if (pid) {
             // This is the parent process.
             const int ret = daemon_retval_wait(20);
             if (ret < 0) {
                 Log::out() << "Received no response from the daemon." << endl;
-                return INIT_MISC_FAILURE;
-            }
-            if (ret == INIT_COULD_NOT_WRITE_LOG) {
-                Log::out() << "Failed to open the specified log for write access."
-                        << endl;
-                return INIT_MISC_FAILURE;
+                return EXIT_FAILURE;
             }
             if (ret) {
                 Log::out() << "The server encountered an error while trying to "
                         "startup. Check the log file for details on the error."
                      << endl;
-                return INIT_MISC_FAILURE;
+                return EXIT_FAILURE;
             }
 
             Log::out() << "Successfully started the daemon as PID " << pid
                  << "." << endl;
-            return INIT_SUCCESS;
+            return EXIT_SUCCESS;
         } else {
             // This is the daemon process.
             
@@ -226,11 +215,11 @@ int initialise(int argc, char **argv, bool &daemon) {
             daemon = true;
             if (daemon_close_all(-1) < 0) {
                 Log::out() << "Failed to close all file descriptors." << endl;
-                return INIT_MISC_FAILURE;
+                return EXIT_FAILURE;
             }
             if (daemon_pid_file_create() < 0) {
                 Log::out() << "Failed to create a PID file." << endl;
-                return INIT_MISC_FAILURE;
+                return EXIT_FAILURE;
             }
         }
     }

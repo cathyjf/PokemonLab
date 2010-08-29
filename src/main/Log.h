@@ -83,7 +83,7 @@ public:
     // in this function, and for another thread to be writing to the log.
     void setMode(const LOG_MODE mode);
 
-    // Get the underlying LogFile. This is intended to be used ONLY be the
+    // Get the underlying LogFile. This is intended to be used ONLY by the
     // catch (...) handler in main.cpp. Do not call this function from anywhere
     // else.
     LogFile &getLogFile() const;
