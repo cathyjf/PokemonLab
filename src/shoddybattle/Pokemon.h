@@ -363,19 +363,8 @@ private:
 };
 
 template <class T>
-void Pokemon::removeStatuses(STATUSES &effects, T predicate) {
-    bool removed = false;
-    do {
-        for (STATUSES::iterator i = effects.begin();
-                i != effects.end(); ++i) {
-            if (!predicate(*i))
-                continue;
-
-            effects.erase(i);
-            removed = true;
-            break;
-        }
-    } while (removed && !(removed = false));
+void Pokemon::removeStatuses(STATUSES &v, T predicate) {
+    v.erase(std::remove_if(v.begin(), v.end(), predicate), v.end());
 }
 
 }
