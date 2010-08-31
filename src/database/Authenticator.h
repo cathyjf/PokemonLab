@@ -42,25 +42,31 @@ public:
     };
 
     virtual int getSecretStyle() = 0;
-    virtual SECRET_PAIR getSecret(ScopedConnection &, const std::string &) = 0;
-    virtual void finishAuthentication(ScopedConnection &,
-            const std::string &, const bool) { }
+    virtual SECRET_PAIR getSecret(ScopedConnection &,
+            const std::string &userName,
+            const std::string &ipAddress) = 0;
+    virtual bool finishAuthentication(ScopedConnection &,
+            const std::string &, const std::string &, const bool match) {
+        return match;
+    }
     virtual ~Authenticator() { }
 };
 
 class DefaultAuthenticator : public Authenticator {
 public:
     int getSecretStyle() { return SECRET_UNADORNED; }
-    SECRET_PAIR getSecret(ScopedConnection &, const std::string &);
+    SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
+            const std::string &);
 };
 
 class VBulletinAuthenticator : public Authenticator {
 public:
     VBulletinAuthenticator(const std::string &database = "vbulletin");
     int getSecretStyle() { return SECERT_MD5_SALT; }
-    SECRET_PAIR getSecret(ScopedConnection &, const std::string &);
-    void finishAuthentication(ScopedConnection &, const std::string &,
-            const bool);
+    SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
+            const std::string &);
+    bool finishAuthentication(ScopedConnection &, const std::string &,
+            const std::string &, const bool);
 private:
     const std::string m_database;
 };

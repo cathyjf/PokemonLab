@@ -33,8 +33,8 @@ using namespace mysqlpp;
 namespace shoddybattle { namespace database {
 
 SECRET_PAIR DefaultAuthenticator::getSecret(ScopedConnection &conn,
-        const string &user) {
-    Query query = conn->query("select password from users where name = %0q");
+        const string &user, const string &) {
+    Query query = conn->query("SELECT password FROM users WHERE name = %0q");
     query.parse();
     StoreQueryResult result = query.store(user);
     if (result.empty())
@@ -49,11 +49,31 @@ VBulletinAuthenticator::VBulletinAuthenticator(const string &database):
         m_database(database) { }
 
 SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
-        const string &user) {
-    Query query = conn->query("select password, salt from " + m_database +
-            ".user where username = %0q");
+        const string &user, const string &ip) {
+    // First check the strike system to make sure the IP is allowed to
+    // attempt to log in.
+    Query query = conn->query();
+    query << "SELECT count(*) AS strikes,"
+                "unix_timestamp() - MAX(striketime) AS lasttime "
+            "FROM " << m_database << ".strikes "
+            "WHERE strikeip = %0q "
+                "AND striketime > (unix_timestamp() - 3600)";
     query.parse();
-    StoreQueryResult result = query.store(user);
+    StoreQueryResult result = query.store(ip);
+    const int strikes = result[0][0];
+    const int lastTime = result[0][1];
+    // Note: The following arbitrary constants are directly from the vbulletin
+    //       source, and are not configurable values in vbulletin.
+    if ((strikes >= 5) && (lastTime < 900)) {
+        // This IP has attempted to log in too many times.
+        return SECRET_PAIR();
+    }
+    
+    query << "SELECT password, salt "
+            "FROM " << m_database << ".user "
+            "WHERE username = %0q";
+    query.parse();
+    result = query.store(user);
     if (result.empty())
         return SECRET_PAIR();
 
@@ -63,9 +83,36 @@ SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
     return SECRET_PAIR(DatabaseRegistry::getHexHash(secret), salt);
 }
 
-void VBulletinAuthenticator::finishAuthentication(ScopedConnection & /*conn*/,
-        const std::string & /*user*/, const bool /*success*/) {
+bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
+        const std::string &user, const std::string &ip, const bool success) {
+    if (!success) {
+        // Give a strike to the IP.
+        Query query = conn->query();
+        query << "INSERT INTO " << m_database << ".strikes "
+                    "(striketime, strikeip, username) "
+                 "VALUES (unix_timestamp(), %0q, %1q)";
+        query.parse();
+        query.execute(ip, user);
+        return false;
+    }
+
+    Query query = conn->query();
+    query << "SELECT id FROM " << m_database << ".user WHERE username = %0q";
+    query.parse();
+    StoreQueryResult result = query.store(user);
+    if (result.empty()) {
+        // This will happen if the forum account is renamed or deleted at the
+        // "right" time.
+        return false;
+    }
+    const int foreignId = result[0][1];
     
+    query << "INSERT INTO users (name, foreign_id, level, activity, ip) "
+            "VALUES (%0q, %1q, 0, unix_timestamp(), %2q) "
+            "ON DUPLICATE KEY UPDATE name=%0q";
+    query.parse();
+    query.execute(user, foreignId, ip);
+    return true;
 }
 
 }} // namespace shoddybattle::database

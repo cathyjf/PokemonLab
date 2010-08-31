@@ -869,7 +869,7 @@ private:
         }
         unsigned char data[16];
         const database::DatabaseRegistry::CHALLENGE_INFO challenge =
-                m_server->getRegistry()->getAuthChallenge(user, data);
+                m_server->getRegistry()->getAuthChallenge(user, m_ip, data);
         m_challenge = challenge.get<0>();
         if (m_challenge != 0) {
             // user exists
@@ -904,7 +904,7 @@ private:
         }
         database::DatabaseRegistry *registry = m_server->getRegistry();
         database::DatabaseRegistry::AUTH_PAIR auth =
-                registry->isResponseValid(m_name, m_challenge, data);
+                registry->isResponseValid(m_name, m_ip, m_challenge, data);
         m_challenge = 0;
 
         if (!auth.first) {

@@ -39,6 +39,11 @@
 #include "DatabaseRegistry.h"
 #include "../matchmaking/MetagameList.h"
 
+/**
+ * Warning: The code in here is terrible and it should be improved at some
+ *          point. The database schema is also terrible.
+ */
+
 using namespace std;
 using namespace mysqlpp;
 using namespace boost;
@@ -387,20 +392,15 @@ void DatabaseRegistry::postLadderMatch(const string &ladder,
     query.execute();
 }
 
-DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
+DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(
+        const string &name,
+        const string &ip,
         const int challenge,
         const unsigned char *response) {
-    ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select id from users where name = %0q");
-    query.parse();
-    StoreQueryResult result = query.store(name);
-    if (result.empty())
-        return DatabaseRegistry::AUTH_PAIR(false, -1);
-
     const int responseInt = challenge + 1;
-    const int id = result[0][0];
 
-    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name);
+    ScopedConnection conn(m_impl->pool);
+    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name, ip);
     const string key = fromHex(secret.first);
 
     unsigned char data[16];
@@ -419,14 +419,29 @@ DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(const string name,
     rijndael_encrypt(&ctx, middle, correct);
 
     const bool match = (memcmp(response, correct, 16) == 0);
-    m_impl->authenticator->finishAuthentication(conn, name, match);
+    if (!m_impl->authenticator->finishAuthentication(conn, name, ip, match)) {
+        return DatabaseRegistry::AUTH_PAIR(false, -1);
+    }
+
+    int id = -1;
+    if (match) {
+        Query query = conn->query("select id from users where name = %0q");
+        query.parse();
+        StoreQueryResult result = query.store(name);
+        if (result.empty()) {
+            // It should be impossible to get here.
+            return DatabaseRegistry::AUTH_PAIR(false, -1);
+        }
+        id = result[0][0];
+    }
+    
     return DatabaseRegistry::AUTH_PAIR(match, id);
 }
 
 DatabaseRegistry::CHALLENGE_INFO DatabaseRegistry::getAuthChallenge(
-        const string name, unsigned char *challenge) {
+        const string &name, const string &ip, unsigned char *challenge) {
     ScopedConnection conn(m_impl->pool);
-    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name);
+    const SECRET_PAIR secret = m_impl->authenticator->getSecret(conn, name, ip);
     if (secret.first.empty())
         return CHALLENGE_INFO();
 

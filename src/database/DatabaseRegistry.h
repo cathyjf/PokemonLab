@@ -92,7 +92,8 @@ public:
     /**
      * Get an authentication challenge for the given user.
      */
-    CHALLENGE_INFO getAuthChallenge(const std::string name,
+    CHALLENGE_INFO getAuthChallenge(const std::string &name,
+            const std::string &ip,
             unsigned char *challenge);
 
     /**
@@ -103,7 +104,8 @@ public:
     /**
      * Determine whether the response to the challenge is valid.
      */
-    AUTH_PAIR isResponseValid(const std::string name,
+    AUTH_PAIR isResponseValid(const std::string &name,
+            const std::string &ip,
             const int challenge,
             const unsigned char *response);
 
@@ -143,13 +145,15 @@ public:
      * Gets a user's ban length on a channel and the authority
      * of the setter
      */
-    void getBan(const int channel, const std::string &user, int &date, int &flags);
+    void getBan(const int channel, const std::string &user, int &date,
+            int &flags);
     
     /**
      * Sets the ban for a user on a channel
      * Returns if the user was unbanned
      */
-    bool setBan(const int channel, const std::string &user, const int flags, const long date);
+    bool setBan(const int channel, const std::string &user, const int flags,
+            const long date);
     
     /**
      * Gets the maximum level of a user (including their alts)
