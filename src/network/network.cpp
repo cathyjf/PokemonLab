@@ -1509,11 +1509,12 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
     string target;
     int date;
     msg >> id >> target >> date;
-    ChannelPtr channel = (id == -1) ? m_server->getMainChannel() : getChannel(id);
+    ChannelPtr channel = (id == -1) ?
+            m_server->getMainChannel() : getChannel(id);
     if (!channel)
         return;
 
-    //Escape if the target doesn't exist
+    // Escape if the target doesn't exist.
     if (!m_server->getRegistry()->userExists(target)) {
         sendMessage(ErrorMessage(ErrorMessage::NONEXISTENT_USER));
         return;
@@ -1537,11 +1538,11 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         string msg;
         if (unban && (ban > 0)) {
             msg = "[unban global] " + m_name + " -> " + target;
-            //Inform the invoker that the user was unbanned
+            // Inform the invoker that the user was unbanned.
             sendMessage(KickBanMessage(channel->getId(), m_name, target, -1));
         } else if (!unban) {
             msg = "[ban global] " + getBanString(m_name, target, date);
-            //if they're online, disconnect them from the server
+            // If they're online, disconnect them from the server.
             if (client) {
                 m_server->broadcast(KickBanMessage(-1, m_name, target, date));
                 m_server->removeClient(client);
@@ -1555,23 +1556,24 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         if ((!auth[Channel::OP] || uauth[Channel::PROTECTED]) &&
                 !((m_ip == ip) && (date == 0))) {
             // Stop here if the user doesn't have the authority, but let
-            // everyone kick their own alts or themselves
+            // everyone kick their own alts or themselves.
             return;
         }
         if (date == 0) { 
             //0 date means kick
             if (client && client->getChannel(id)) {
-                channel->broadcast(KickBanMessage(channel->getId(), m_name, target, 0));
+                channel->broadcast(KickBanMessage(channel->getId(), m_name,
+                        target, 0));
                 client->partChannel(channel);
             } else if (!client) {
-                // The user isn't online, so inform the client
+                // The user isn't online, so inform the client.
                 sendMessage(ErrorMessage(ErrorMessage::USER_NOT_ONLINE));
             }
         } else {
             int ban;
             int setter;
             m_server->getRegistry()->getBan(id, target, ban, setter);
-            //can't change ban made by user with a higher level
+            // Can't change ban made by user with a higher level.
             Channel::FLAGS flags = setter;
             if (!auth[Channel::PROTECTED] && flags[Channel::PROTECTED])
                 return;
@@ -1580,17 +1582,21 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
             if (unban) {
                 if (ban > 0) {
                     msg = "[unban] " + m_name + " -> " + target;
-                    sendMessage(KickBanMessage(channel->getId(), m_name, target, -1));
+                    sendMessage(KickBanMessage(channel->getId(), m_name,
+                            target, -1));
                 }
             } else {
                 //kick the client from the channel if they're there
                 msg = "[ban] " + getBanString(m_name, target, date);
                 if (client && client->getChannel(id)) {
-                    channel->broadcast(KickBanMessage(channel->getId(), m_name, target, date));
+                    channel->broadcast(KickBanMessage(channel->getId(), m_name,
+                            target, date));
                     client->partChannel(channel);
                 } else {
-                    //only inform the invoker of success if the user is not online
-                    sendMessage(KickBanMessage(channel->getId(), m_name, target, date));
+                    // Only inform the invoker of success if the user is not
+                    // online.
+                    sendMessage(KickBanMessage(channel->getId(), m_name,
+                            target, date));
                 }
             }
             channel->writeLog(msg);
@@ -1598,8 +1604,10 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
     }
 }
 
-string ClientImpl::getBanString(const string &mod, const string &user, const int date) {
-    return mod + " -> " + user + " " + to_iso_extended_string(from_time_t(date));
+string ClientImpl::getBanString(const string &mod, const string &user,
+        const int date) {
+    return mod + " -> " + user + " " + to_iso_extended_string(
+            from_time_t(date));
 }
 
 void ClientImpl::disconnect() {

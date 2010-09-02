@@ -109,7 +109,7 @@ public:
 
     Channel::FLAGS getUserFlags(const string &user) {
         CLIENT_MAP::value_type client = getClient(user);
-        return (client.first) ? client.second : 0;
+        return client.first ? client.second : 0;
     }
 
 private:
@@ -227,7 +227,8 @@ struct NetworkBattleImpl {
             m_waiting(false),
             m_terminated(false) {
         if (t.enabled) {
-            m_timer = TimerPtr(new Timer(t.pool, t.periods, t.periodLength, this));
+            m_timer = TimerPtr(new Timer(t.pool, t.periods, t.periodLength,
+                    this));
             addTimer(m_timer);
         } else {
             m_timer = TimerPtr(new Timer());
@@ -430,8 +431,8 @@ struct NetworkBattleImpl {
                     if (!fainted) {
                         const int hp = p->getRawStat(S_HP);
                         const int present = p->getHp();
-                        const int total =
-                                floor(48.0 * (double)present / (double)hp + 0.5);
+                        const int total = floor(48.0 * (double)present /
+                                (double)hp + 0.5);
                         msg << (unsigned char)total;
 
                         // Not all status get sent, so prepare them first
@@ -690,7 +691,8 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     if (p) {
         FLAGS flags = p->getStatusFlags(client);
         if (flags[OP]) {
-            // This user is a main chat op, so the user gets +ao (protected ops).
+            // This user is a main chat op, so the user gets +ao
+            // (protected ops).
             ret[PROTECTED] = true;
             ret[OP] = true;
         }
@@ -787,7 +789,6 @@ NetworkBattle::NetworkBattle(Server *server,
     }
 
     // Encode some metadata into the channel topic.
-    // TODO: Add ladder etc.
     const string topic = m_impl->m_trainer[0] + ","
             + m_impl->m_trainer[1] + ","
             + boost::lexical_cast<string>(generation) + ","
@@ -823,8 +824,9 @@ int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
         count = 2;
     }
     for (int i =  0; i < count; ++i) {
-        if (m_impl->m_clients[i] == client)
+        if (m_impl->m_clients[i] == client) {
             return i;
+        }
     }
     return -1;
 }
@@ -1162,7 +1164,8 @@ namespace {
 void handleTiming() {
     while (true) {
         boost::this_thread::sleep(boost::posix_time::seconds(3));
-        boost::unique_lock<boost::recursive_mutex> lock(NetworkBattleImpl::m_timerMutex);
+        boost::unique_lock<boost::recursive_mutex> lock(
+                NetworkBattleImpl::m_timerMutex);
         TimerList::iterator i = NetworkBattleImpl::m_timerList.begin();
         while (i != NetworkBattleImpl::m_timerList.end()) {
             TimerList::iterator current = i++;
@@ -1174,7 +1177,8 @@ void handleTiming() {
 } // anonymous namespace
 
 void NetworkBattle::startTimerThread() {
-    NetworkBattleImpl::m_timerThread = boost::thread(boost::bind(&handleTiming));
+    NetworkBattleImpl::m_timerThread = boost::thread(
+            boost::bind(&handleTiming));
 }
 
 void Timer::tick() {

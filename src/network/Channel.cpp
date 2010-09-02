@@ -27,7 +27,10 @@
 #include <boost/thread/shared_mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/integer_traits.hpp>
 #include <fstream>
+#include <queue>
+#include <exception>
 #include "Channel.h"
 #include "network.h"
 #include "../main/LogFile.h"
@@ -40,22 +43,97 @@ using namespace boost::posix_time;
 
 namespace shoddybattle { namespace network {
 
+namespace {
+
+template <class T, T sentinel = -1, T initial = sentinel>
+class UniqueIdVendor {
+public:
+    class UniqueIdVendorException : public runtime_error {
+    public:
+        UniqueIdVendorException(const string &s): runtime_error(s) { }
+    };
+
+    UniqueIdVendor(): m_current(initial) { }
+    
+    // Acquire an unused ID, or throw an exception if no more IDs exist.
+    T acquire() {
+        // First check the collection of released IDs.
+        {
+            lock_guard<mutex> lock(m_releasedMutex);
+            if (!m_released.empty()) {
+                T ret = m_released.front();
+                m_released.pop();
+                return ret;
+            }
+        }
+        lock_guard<mutex> lock(m_reservedMutex);
+        do {
+            if (m_current == integer_traits<T>::const_max) {
+                throw UniqueIdVendorException("No free ID to acquire.");
+            }
+            ++m_current;
+        } while (m_reserved.find(m_current) != m_reserved.end());
+        return m_current;
+    }
+    
+    // Reserve a particular ID. This ID will not be returned by subsequent
+    // calls to acquireId. The ID must be available to be acquired. This
+    // function not verify whether the ID is available.
+    //
+    // Acquires a new ID instead if the given ID is the sentinel value.
+    T acquire(const T &id) {
+        if (id == sentinel) {
+            return acquire();
+        }
+        lock_guard<mutex> lock(m_reservedMutex);
+        m_reserved.insert(id);
+        return id;
+    }
+
+    // Release an ID.
+    void release(const T &id) {
+        lock_guard<mutex> lock(m_releasedMutex);
+        m_released.push(id);
+    }
+
+private:
+    T m_current;
+    set<T> m_reserved;
+    mutex m_reservedMutex;
+    queue<T> m_released;
+    mutex m_releasedMutex;
+};
+
+}
+
 struct Channel::ChannelImpl : LogFile {
     Server *server;
-    int id;       // channel id
+    int32_t id;     // channel id
     CLIENT_MAP clients;
-    string name;  // name of this channel (e.g. #main)
-    string topic; // channel topic
+    string name;    // name of this channel (e.g. #main)
+    string topic;   // channel topic
     CHANNEL_FLAGS flags;
     shared_mutex mutex;
 
     static const char MODES[];
     static const char CHANNEL_MODES[];
 
+    static UniqueIdVendor<int32_t> idVendor;
+
+    ChannelImpl(const int32_t &i) {
+        id = idVendor.acquire(i);
+    }
+
+    ~ChannelImpl() {
+        idVendor.release(id);
+    }
+
     string getLogFileName(const date &d) const {
         return "logs/chat/" + name + "/" + to_iso_extended_string(d);
     }
 };
+
+UniqueIdVendor<int32_t> Channel::ChannelImpl::idVendor;
 
 const char Channel::ChannelImpl::MODES[] = "aovbiu";
 const char Channel::ChannelImpl::CHANNEL_MODES[] = "mi";
@@ -129,12 +207,11 @@ Channel::Channel(Server *server,
         const std::string &topic,
         Channel::CHANNEL_FLAGS flags,
         const int id) {
-    m_impl = shared_ptr<ChannelImpl>(new ChannelImpl());
+    m_impl = shared_ptr<ChannelImpl>(new ChannelImpl(id));
     m_impl->server = server;
     m_impl->name = name;
     m_impl->topic = topic;
     m_impl->flags = flags;
-    m_impl->id = id;
 }
 
 namespace {
@@ -244,13 +321,7 @@ string Channel::getTopic() {
 }
 
 int32_t Channel::getId() const {
-    // assume that pointers are 32-bit
-    // todo: use something less hacky than this for ids
-    if (getChannelType() == Type::ORDINARY)
-        return m_impl->id;
-    int64_t point = (int64_t)this;
-    int32_t id = (int32_t)(point);
-    return id;
+    return m_impl->id;
 }
 
 bool Channel::join(ClientPtr client) {
@@ -292,9 +363,9 @@ bool Channel::join(ClientPtr client) {
 
 bool Channel::handleBan(ClientPtr client) {
     int ban, flags;
-    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban ,flags);
+    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban, flags);
     if (ban < time(NULL)) {
-        //ban expired; remove it
+        // ban expired; remove it
         m_impl->server->commitBan(m_impl->id, client->getName(), 0, 0);
         return false;
     } else {
@@ -338,7 +409,8 @@ void Channel::commitChannelFlags(CHANNEL_FLAGS flags) {
 Channel::FLAGS Channel::handleJoin(ClientPtr client) {
     FLAGS flags = m_impl->server->getRegistry()->getUserFlags(m_impl->id,
             client->getId());
-    //Remove mute on rejoining the channel. Seems too easy to abuse, will possibly remove
+    // Remove mute on rejoining the channel. Seems too easy to abuse, will
+    // possibly remove.
     flags[BAN] = false;
     return flags;
 }
@@ -414,8 +486,9 @@ bool Channel::setMode(ClientPtr setter, const string &user,
         // TODO: the other modes
     }
 
-    if (flags == target.second)
+    if (flags == target.second) {
         return false;
+    }
 
     setStatusFlags(setter->getName(), target.first, flags);
     return true;
