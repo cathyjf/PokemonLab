@@ -123,7 +123,8 @@ int initialise(int argc, char **argv, bool &daemon) {
     po::notify(vm);
 
     if (vm.count("help")) {
-        Log::out() << "Usage: shoddybattle2 [options] [config-file = config]" << endl
+        Log::out() << "Usage: shoddybattle2 [options] [config-file = config]"
+             << endl
              << "   Reads the specified config file first, or the file named"
                 " config in the\n   program's directory, and then reads"
                 " extra options from the command line." << endl

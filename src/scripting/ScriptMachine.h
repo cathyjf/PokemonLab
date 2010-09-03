@@ -151,6 +151,7 @@ public:
     MoveObject(void *p, const MoveTemplate *temp = NULL):
             ScriptObject(p), m_template(temp) { }
 
+    const MoveTemplate *getTemplate() const;
     const MoveTemplate *getTemplate(ScriptContext *) const;
 
     std::string getName(ScriptContext *) const;

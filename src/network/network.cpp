@@ -241,10 +241,7 @@ public:
         *this << name;
         *this << message;
 
-        // TODO: Retrieve this from the authenticator, the registry, or a properties file
-        // The problem with retrieving this from the authenticator is that currently
-        // the registry handles registering, so it doesn't make sense unless registering
-        // is moved to the authenticator.
+        // Whether registrations are allowed.
         *this << (unsigned char)true;
         finalise();
     }

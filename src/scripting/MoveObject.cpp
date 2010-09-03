@@ -170,6 +170,10 @@ void MoveObject::use(ScriptContext *scx, BattleField *field,
     }
 }
 
+const MoveTemplate *MoveObject::getTemplate() const {
+    return m_template;
+}
+
 const MoveTemplate *MoveObject::getTemplate(ScriptContext *scx) const {
     if (m_template)
         return m_template;

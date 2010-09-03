@@ -64,7 +64,11 @@ public:
         m_impl->condition.notify_one();
     }
 
-    ~ThreadedQueue() {
+    void join() {
+        boost::lock_guard<boost::mutex> lock(m_impl->joinMutex);
+        if (m_impl->terminated) {
+            return;
+        }
         if (boost::this_thread::get_id() == m_impl->thread.get_id()) {
             // We get here if m_impl->thread is at Point B in process().
             m_impl->terminated = true;
@@ -72,18 +76,23 @@ public:
             return;
         }
         // We get here if m_impl->thread is at Point A in process().
-        boost::unique_lock<boost::mutex> lock(m_impl->mutex);
+        boost::unique_lock<boost::mutex> lock2(m_impl->mutex);
         m_impl->terminated = true;
         while (!m_impl->queue.empty()) {
-            m_impl->condition.wait(lock);
+            m_impl->condition.wait(lock2);
         }
-        lock.unlock();
+        lock2.unlock();
         m_impl->condition.notify_one();
         m_impl->thread.join();
     }
 
+    ~ThreadedQueue() {
+        join();
+    }
+
     struct ThreadedQueueImpl {
         boost::mutex mutex;
+        boost::mutex joinMutex;
         boost::condition_variable condition;
         bool terminated;
         DELEGATE delegate;

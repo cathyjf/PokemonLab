@@ -135,7 +135,10 @@ public:
     // variable size message
     OutMessage(const TYPE type) {
         m_data.push_back((unsigned char)type);
-        m_data.resize(HEADER_SIZE, 0);    // insert in 0 size for now
+        // Insert zero size into the header to start off with. The correct size
+        // is inserted by calling the finalise() method after writing data
+        // to the message.
+        m_data.resize(HEADER_SIZE, 0);
     }
 
     // fixed size message

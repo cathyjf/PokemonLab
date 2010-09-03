@@ -25,19 +25,28 @@
 #include <vector>
 #include <cmath>
 #include <ctime>
+#include <fstream>
+#include <boost/regex.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "NetworkBattle.h"
 #include "ThreadedQueue.h"
 #include "network.h"
 #include "Channel.h"
 #include "../mechanics/JewelMechanics.h"
+#include "../mechanics/PokemonNature.h"
 #include "../scripting/ScriptMachine.h"
+#include "../text/Text.h"
 
 using namespace std;
+namespace fs = boost::filesystem;
+namespace gc = boost::gregorian; // (gc for gregorian calendar)
+namespace pt = boost::posix_time;
 
 namespace shoddybattle { namespace network {
 
@@ -46,91 +55,9 @@ class BattleChannel;
 
 typedef boost::shared_ptr<BattleChannel> BattleChannelPtr;
 
-/**
- * In Shoddy Battle 2, every battle is also a channel. The participants in
- * the battle are initially granted +o. Anybody with +o or higher on the main
- * chat is granted +ao in every battle.
- *
- * The initial participants of a battle join the battle directly, but all
- * spectators join the channel rather than the underlying battle. When the
- * NetworkBattle broadcasts a message, it is sent to everybody in the channel.
- * Indeed, most features related to battles are actually associated to the
- * channel.
- *
- * The name of the channel contains the participants in the battle; the topic
- * encodes the ladder, if any, on which the battle is taking place and
- * possibly other metadata.
- *
- * When the channel becomes completely empty, or if a set amount of time
- * passes without another message being posted, the channel is destroyed.
- */
-class BattleChannel : public Channel {
-public:
-
-    static BattleChannelPtr createChannel(Server *server,
-            NetworkBattleImpl *field) {
-        BattleChannelPtr p(new BattleChannel(server, field,
-                string(), string(),
-                CHANNEL_FLAGS()));
-        p->setName(boost::lexical_cast<string>(p->getId()));
-        return p;
-    }
-
-    Type::TYPE getChannelType() const {
-        return Type::BATTLE;
-    }
-
-    void commitStatusFlags(ClientPtr /*client*/, FLAGS /*flags*/) {
-        // does nothing in a BattleChannel
-    }
-
-    bool join(ClientPtr client);
-
-    FLAGS handleJoin(ClientPtr client);
-
-    void handlePart(ClientPtr client);
-
-    bool handleBan() const {
-        // Banned users cannot join a battle.
-        return true;
-    }
-
-    void handleFinalise() {
-        m_server->removeChannel(shared_from_this());
-    }
-
-    void informBattleTerminated() {
-        m_field = NULL;
-    }
-
-    boost::recursive_mutex &getMutex() {
-        return m_mutex;
-    }
-
-    Channel::FLAGS getUserFlags(const string &user) {
-        CLIENT_MAP::value_type client = getClient(user);
-        return client.first ? client.second : 0;
-    }
-
-private:
-    BattleChannel(Server *server,
-            NetworkBattleImpl *field,
-            const string &name,
-            const string &topic,
-            CHANNEL_FLAGS flags):
-                Channel(server, name, topic, flags),
-                m_server(server),
-                m_field(field) { }
-
-    Server *m_server;
-    NetworkBattleImpl *m_field;
-    boost::recursive_mutex m_mutex;
-};
-
 typedef vector<PokemonTurn> PARTY_TURN;
 typedef vector<int> PARTY_REQUEST;
 typedef boost::shared_ptr<PARTY_TURN> TURN_PTR;
-
 
 struct PlayerTimer {
     bool stopped;
@@ -188,6 +115,202 @@ private:
 typedef boost::shared_ptr<Timer> TimerPtr;
 typedef list<TimerPtr> TimerList;
 
+class BattleLogMessage;
+
+namespace {
+
+// An entity that should be written to the battle log. This class intentionally
+// has a very short name. If an entity is not given a name, it will be written
+// only to the network, not to the battle log.
+template <class T>
+class Entity {
+public:
+    Entity(const T &v, const string &name = string()):
+            m_value(v), m_name(name) { }
+protected:
+    friend class network::BattleLogMessage;
+    const T &m_value;
+    string m_name;
+};
+
+template <class T>
+class ArrayEntity : public Entity<T> {
+public:
+    ArrayEntity(const T &v, const string &name, const int idx):
+            Entity<T>(v, name) {
+        Entity<T>::m_name += "[" + boost::lexical_cast<string>(idx) + "]";
+    }
+};
+
+// Encode a value for inclusion in the log.
+template <class T>
+string getLogValue(const T &v) {
+    return boost::lexical_cast<string>(v);
+}
+
+template <>
+string getLogValue(const unsigned char &v) {
+    return boost::lexical_cast<string>(static_cast<int>(v));
+}
+
+template <>
+string getLogValue(const string &v) {
+    boost::regex pattern1("\\\\");  // literal backslash
+    boost::regex pattern2("\"");    // literal double quote
+    string ret = boost::regex_replace(v, pattern1, "\\\\\\\\",
+            boost::format_perl);
+    ret = boost::regex_replace(ret, pattern2, "\\\\\"",
+            boost::format_perl);
+    return "\"" + ret + "\"";
+}
+
+}
+
+/**
+ * Battle logs will be written in a text format whose structure is similar to
+ * the information contained the raw network messages, so we write both the
+ * raw network message and the battle log at the same time using this class.
+ */
+class BattleLogMessage {
+public:
+    BattleLogMessage(const OutMessage::TYPE &type, const string &name):
+            m_msg(type) {
+        m_log = "[" + name + "]  ";
+    }
+    template <class T>
+    BattleLogMessage &operator<<(const Entity<T> &val) {
+        m_msg << val.m_value;
+        if (!val.m_name.empty()) {
+            m_log += val.m_name + "=" + getLogValue(val.m_value) + ", ";
+        }
+        return *this;
+    }
+    BattleLogMessage &operator<<(const NetworkBattle *p) {
+        m_msg << p->getId();
+        return *this;
+    }
+    void finalise() {
+        m_msg.finalise();
+        m_log = m_log.erase(m_log.size() - 2);
+    }
+    const OutMessage &getMsg() const {
+        return m_msg;
+    }
+    const string &getLog() const {
+        return m_log;
+    }
+private:
+    OutMessage m_msg;
+    string m_log;
+};
+
+class BattleLog {
+public:
+    BattleLog() {
+        boost::lock_guard<boost::mutex> lock(m_mutex);
+        m_date = to_iso_extended_string(gc::day_clock::local_day());
+        const string dir = "logs/battles/" + m_date + "/";
+        fs::create_directories(dir);
+        const pt::time_duration t =
+                pt::second_clock::local_time().time_of_day();
+        const string prefix = pt::to_simple_string(t);
+        int suffix = -1;
+        string file;
+        do {
+            ++suffix;
+            m_id = prefix;
+            if (suffix != 0) {
+                m_id += "-" + boost::lexical_cast<string>(suffix);
+            }
+            file = dir + m_id;
+        } while (fs::exists(file));
+        m_file.open(file.c_str());
+    }
+    const string getId() const {
+        return m_date + "-" + m_id;
+    }
+    void write(const string &str, const bool timestamp = true) {
+        if (timestamp) {
+            const pt::time_duration t =
+                    pt::second_clock::local_time().time_of_day();
+            m_file << "(" <<  pt::to_simple_string(t) << ") ";
+        }
+        m_file << str << flush;
+    }
+    BattleLog &operator<<(const BattleLogMessage &msg) {
+        write(msg.getLog() + "\n");
+        return *this;
+    }
+private:
+    string m_date, m_id;
+    ofstream m_file;
+    static boost::mutex m_mutex;
+};
+
+class BattleChannel : public Channel {
+public:
+
+    static BattleChannelPtr createChannel(Server *server,
+            NetworkBattleImpl *field);
+
+    Type::TYPE getChannelType() const {
+        return Type::BATTLE;
+    }
+
+    void commitStatusFlags(ClientPtr /*client*/, FLAGS /*flags*/) {
+        // does nothing in a BattleChannel
+    }
+
+    bool join(ClientPtr client);
+
+    FLAGS handleJoin(ClientPtr client);
+
+    void handlePart(ClientPtr client);
+
+    bool handleBan() const {
+        // Banned users cannot join a battle.
+        return true;
+    }
+
+    void handleFinalise() {
+        m_server->removeChannel(shared_from_this());
+    }
+
+    void informBattleTerminated() {
+        m_field = NULL;
+    }
+
+    boost::recursive_mutex &getMutex() {
+        return m_mutex;
+    }
+
+    Channel::FLAGS getUserFlags(const string &user) {
+        CLIENT_MAP::value_type client = getClient(user);
+        return client.first ? client.second : 0;
+    }
+
+    void writeLog(const string &msg) {
+        m_log.write("[chat] " + msg);
+    }
+
+private:
+    BattleChannel(Server *server,
+            NetworkBattleImpl *field,
+            const string &name,
+            const string &topic,
+            CHANNEL_FLAGS flags):
+                Channel(server, name, topic, flags),
+                m_server(server),
+                m_field(field) { }
+
+    Server *m_server;
+    NetworkBattleImpl *m_field;
+    BattleLog m_log;
+    boost::recursive_mutex m_mutex;
+};
+
+boost::mutex BattleLog::m_mutex;
+
 struct NetworkBattleImpl {
     Server *m_server;
     JewelMechanics m_mech;
@@ -200,7 +323,6 @@ struct NetworkBattleImpl {
     vector<ClientPtr> m_clients;
     vector<PARTY_TURN> m_turns;
     vector<PARTY_REQUEST> m_requests;
-    ThreadedQueue<TURN_PTR> m_queue;
     boost::recursive_mutex m_mutex;
     bool m_replacement;
     bool m_victory;
@@ -211,6 +333,14 @@ struct NetworkBattleImpl {
     boost::condition_variable_any m_condition;
     bool m_terminated;
     TimerPtr m_timer;
+    BattleLog *m_log;
+
+    // Note: This ThreadedQueue object MUST be the last member delcared in
+    //       in this class. No other instance members should be declared in the
+    //       source file after this one. This is to ensure that ~ThreadedQueue
+    //       runs before any other destructors.
+    ThreadedQueue<TURN_PTR> m_queue;
+
     static TimerList m_timerList;
     static boost::recursive_mutex m_timerMutex;
     static boost::thread m_timerThread;
@@ -220,12 +350,12 @@ struct NetworkBattleImpl {
             m_field(p),
             m_channel(BattleChannelPtr(
                 BattleChannel::createChannel(server, this))),
-            m_queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)),
             m_replacement(false),
             m_victory(false),
             m_turnCount(0),
             m_waiting(false),
-            m_terminated(false) {
+            m_terminated(false),
+            m_queue(boost::bind(&NetworkBattleImpl::executeTurn, this, _1)) {
         if (t.enabled) {
             m_timer = TimerPtr(new Timer(t.pool, t.periods, t.periodLength,
                     this));
@@ -308,20 +438,22 @@ struct NetworkBattleImpl {
     }
 
     void informBeginTurn() {
-        OutMessage msg(OutMessage::BATTLE_BEGIN_TURN);
-        msg << m_field->getId();
-        msg << (int16_t)m_turnCount;
-        bool timing = m_timer->isEnabled();
-        msg << (unsigned char)timing;
+        BattleLogMessage msg(OutMessage::BATTLE_BEGIN_TURN, "begin_turn");
+        msg << m_field;
+        msg << Entity<int16_t>(m_turnCount, "turn_count");
+        // The timer information isn't worth logging.
+        const bool timing = m_timer->isEnabled();
+        msg << Entity<unsigned char>(timing);
         if (timing) {
             for (int i = 0; i < 2; ++i) {
-                msg << (int16_t)m_timer->getRemaining(i);
-                msg << (unsigned char)m_timer->getPeriods(i);
+                msg << Entity<int16_t>(m_timer->getRemaining(i));
+                msg << Entity<unsigned char>(m_timer->getPeriods(i));
             }
         }
         msg.finalise();
+        *m_log << msg;
 
-        broadcast(msg);
+        broadcast(msg.getMsg());
     }
 
     void cancelAction(const int party) {
@@ -335,7 +467,7 @@ struct NetworkBattleImpl {
         requestAction(party);
     }
 
-    void broadcast(OutMessage &msg, ClientPtr client = ClientPtr()) {
+    void broadcast(const OutMessage &msg, ClientPtr client = ClientPtr()) {
         m_channel->broadcast(msg, client);
     }
 
@@ -344,6 +476,69 @@ struct NetworkBattleImpl {
         if (size <= idx)
             return ClientPtr();
         return m_clients[idx];
+    }
+
+    void writeLogPokemon(ostringstream &ss, const Pokemon::PTR p) {
+        ss << p->getName() << endl;
+        ss << p->getSpeciesId() << " ("
+                << getLogValue(p->getSpeciesName()) << ")" << endl;
+        ss << p->getAbilityName() << endl;
+        ss << p->getItemName() << endl;
+        const PokemonNature *nature = p->getNature();
+        const Text *text = m_field->getScriptMachine()->getText();
+        const int natureId = nature->getInternalValue();
+        ss << natureId << " ("
+                << getLogValue(text->getText(1, natureId, 0, NULL))
+                << ")" << endl;
+        ss << p->getGender() << endl;
+        for (int i = 0; i < STAT_COUNT; ++i) {
+            ss << p->getIv(static_cast<STAT>(i)) << "/";
+        }
+        ss << endl;
+        for (int i = 0; i < STAT_COUNT; ++i) {
+            ss << p->getEv(static_cast<STAT>(i)) << "/";
+        }
+        ss << endl;
+        const int moves = p->getMoveCount();
+        for (int i = 0; i < moves; ++i) {
+            MoveObjectPtr move = p->getMove(i);
+            const MoveTemplate *tpl = move->getTemplate();
+            if (tpl) {
+                ss << tpl->getId() << " ("
+                        << getLogValue(tpl->getName()) << ")" << endl;
+            }
+        }
+    }
+
+    void writeLogHeader() {
+        ostringstream ret;
+        string trainer0 = m_trainer[0];
+        string trainer1 = m_trainer[1];
+        if (trainer0 > trainer1) {
+            // Show the users in alphabetical order on the first line.
+            swap(trainer0, trainer1);
+        }
+        ret << getLogValue(trainer0) << " v. " << getLogValue(trainer1) << endl;
+        ret << "Battle ID: " << m_log->getId() << endl << endl;
+        for (int i = 0; i < TEAM_COUNT; ++i) {
+            ClientPtr client = m_clients[i];
+            ret << "Player " << i << ": "
+                    << getLogValue(m_trainer[i]) << ", "
+                    << client->getId() << ", "
+                    << client->getIp() << endl;
+        }
+        ret << endl;
+        for (int i = 0; i < TEAM_COUNT; ++i) {
+            Pokemon::ARRAY team = m_field->getTeam(i);
+            const int size = team.size();
+            for (int j = 0; j < size; ++j) {
+                ret << "[pokemon] party=" << i << ", idx=" << j << endl;
+                writeLogPokemon(ret, team[j]);
+                ret << endl;
+            }
+        }
+        ret << "~~~~~~~~~~" << endl << endl;
+        m_log->write(ret.str(), false);
     }
 
     static void prepareSpectatorStatuses(const STATUSES &statuses, 
@@ -406,7 +601,8 @@ struct NetworkBattleImpl {
         msg << m_trainer[0] << m_trainer[1];
         msg << (unsigned char)m_field->getPartySize();
         msg << (unsigned char)m_maxTeamLength;
-        msg << (unsigned char)(m_timer->isEnabled() ? m_timer->getPeriods() : -1);
+        msg << (unsigned char)(m_timer->isEnabled() ?
+                m_timer->getPeriods() : -1);
 
         for (int i = 0; i < TEAM_COUNT; ++i) {
             const Pokemon::ARRAY &team = m_field->getTeam(i);
@@ -684,6 +880,15 @@ TimerList NetworkBattleImpl::m_timerList;
 boost::recursive_mutex NetworkBattleImpl::m_timerMutex;
 boost::thread NetworkBattleImpl::m_timerThread;
 
+BattleChannelPtr BattleChannel::createChannel(Server *server,
+        NetworkBattleImpl *field) {
+    BattleChannelPtr p(new BattleChannel(server, field,
+            string(), string(),
+            CHANNEL_FLAGS()));
+    p->setName(boost::lexical_cast<string>(p->getId()));
+    field->m_log = &p.get()->m_log;
+    return p;
+}
 
 Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
     FLAGS ret;
@@ -800,6 +1005,7 @@ NetworkBattle::NetworkBattle(Server *server,
 
     initialise(&m_impl->m_mech, generation, server->getMachine(),
             teams, &m_impl->m_trainer[0], partySize, clauses);
+    m_impl->writeLogHeader();
 }
 
 int32_t NetworkBattle::getId() const {
@@ -900,20 +1106,21 @@ Pokemon *NetworkBattle::requestInactivePokemon(Pokemon *pokemon) {
 void NetworkBattle::print(const TextMessage &text) {
     if (!isNarrationEnabled())
         return;
-    
-    OutMessage msg(OutMessage::BATTLE_PRINT);
-    msg << getId();
-    msg << (unsigned char)text.getCategory();
-    msg << (int16_t)text.getMessage();
+
+    BattleLogMessage msg(OutMessage::BATTLE_PRINT, "print");
+    msg << this;
+    msg << Entity<unsigned char>(text.getCategory(), "category");
+    msg << Entity<int16_t>(text.getMessage(), "message");
     const vector<string> &args = text.getArgs();
     const int count = args.size();
-    msg << (unsigned char)count;
+    msg << Entity<unsigned char>(count);
     for (int i = 0; i < count; ++i) {
-        msg << args[i];
+        msg << ArrayEntity<string>(args[i], "token", i);
     }
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
 }
 
 /**
@@ -923,14 +1130,17 @@ void NetworkBattle::print(const TextMessage &text) {
  * int16 : party id (or -1 for a draw)
  */
 void NetworkBattle::informVictory(const int party) {
+    m_impl->m_queue.join();
+    
     m_impl->m_victory = true;
 
-    OutMessage msg(OutMessage::BATTLE_VICTORY);
-    msg << getId();
-    msg << (int16_t)party;
+    BattleLogMessage msg(OutMessage::BATTLE_VICTORY, "victory");
+    msg << this;
+    msg << Entity<int16_t>(party, "party");
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
 
     if (m_impl->m_rated) {
         m_impl->m_server->postLadderMatch(m_impl->m_metagame,
@@ -951,15 +1161,16 @@ void NetworkBattle::informVictory(const int party) {
  * int16 : move id
  */
 void NetworkBattle::informUseMove(Pokemon *pokemon, MoveObject *move) {
-    OutMessage msg(OutMessage::BATTLE_USE_MOVE);
-    msg << getId();
-    msg << (unsigned char)pokemon->getParty();
-    msg << (unsigned char)pokemon->getSlot();
-    msg << pokemon->getName();
-    msg << (int16_t)move->getTemplate(getContext())->getId();
+    BattleLogMessage msg(OutMessage::BATTLE_USE_MOVE, "use_move");
+    msg << this;
+    msg << Entity<unsigned char>(pokemon->getParty(), "party");
+    msg << Entity<unsigned char>(pokemon->getSlot(), "slot");
+    msg << Entity<string>(pokemon->getName(), "nickname");
+    msg << Entity<int16_t>(move->getTemplate(getContext())->getId(), "move");
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
 }
 
 /**
@@ -971,14 +1182,15 @@ void NetworkBattle::informUseMove(Pokemon *pokemon, MoveObject *move) {
  * string : pokemon [nick]name
  */
 void NetworkBattle::informWithdraw(Pokemon *pokemon) {
-    OutMessage msg(OutMessage::BATTLE_WITHDRAW);
-    msg << getId();
-    msg << (unsigned char)pokemon->getParty();
-    msg << (unsigned char)pokemon->getSlot();
-    msg << pokemon->getName();
+    BattleLogMessage msg(OutMessage::BATTLE_WITHDRAW, "withdraw");
+    msg << this;
+    msg << Entity<unsigned char>(pokemon->getParty(), "party");
+    msg << Entity<unsigned char>(pokemon->getSlot(), "slot");
+    msg << Entity<string>(pokemon->getName(), "nickname");
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
 }
 
 /**
@@ -994,18 +1206,19 @@ void NetworkBattle::informWithdraw(Pokemon *pokemon) {
  * byte   : level
  */
 void NetworkBattle::informSendOut(Pokemon *pokemon) {
-    OutMessage msg(OutMessage::BATTLE_SEND_OUT);
-    msg << getId();
-    msg << (unsigned char)pokemon->getParty();
-    msg << (unsigned char)pokemon->getSlot();
-    msg << (unsigned char)pokemon->getPosition();
-    msg << pokemon->getName();
-    msg << (int16_t)pokemon->getSpeciesId();
-    msg << (unsigned char)pokemon->getGender();
-    msg << (unsigned char)pokemon->getLevel();
+    BattleLogMessage msg(OutMessage::BATTLE_SEND_OUT, "send_out");
+    msg << this;
+    msg << Entity<unsigned char>(pokemon->getParty(), "party");
+    msg << Entity<unsigned char>(pokemon->getSlot(), "slot");
+    msg << Entity<unsigned char>(pokemon->getPosition(), "idx");
+    msg << Entity<string>(pokemon->getName(), "nickname");
+    msg << Entity<int16_t>(pokemon->getSpeciesId(), "species");
+    msg << Entity<unsigned char>(pokemon->getGender(), "gender");
+    msg << Entity<unsigned char>(pokemon->getLevel(), "level");
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
     m_impl->updateBattlePokemon();
 }
 
@@ -1015,21 +1228,22 @@ void NetworkBattle::informSendOut(Pokemon *pokemon) {
  * int32  : field id
  * byte   : party
  * byte   : slot
- * int16  : delta health in [0, 48]
- * int16  : new total health [0, 48]
+ * int16  : delta health in [0, denominator]
+ * int16  : new total health [0, denominator]
  * int16  : denominator
  */
-class BattleHealthChange : public OutMessage {
+class BattleHealthChange : public BattleLogMessage {
 public:
-    BattleHealthChange(const int fid, const int party, const int slot,
+    BattleHealthChange(const NetworkBattle *p, const int party, const int slot,
             const int delta, const int total, const int denominator):
-                OutMessage(BATTLE_HEALTH_CHANGE) {
-        *this << (int32_t)fid;
-        *this << (unsigned char)party;
-        *this << (unsigned char)slot;
-        *this << (int16_t)delta;
-        *this << (int16_t)total;
-        *this << (int16_t)denominator;
+                BattleLogMessage(OutMessage::BATTLE_HEALTH_CHANGE,
+                        "health_change") {
+        *this << p;
+        *this << Entity<unsigned char>(party, "party");
+        *this << Entity<unsigned char>(slot, "slot");
+        *this << Entity<int16_t>(delta, "delta");
+        *this << Entity<int16_t>(total, "total");
+        *this << Entity<int16_t>(denominator, "denominator");
         finalise();
     }
 };
@@ -1045,13 +1259,14 @@ void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
     ClientPtr client = m_impl->m_clients[party];
 
     // Send the approximate health change to everybody except the person who
-    // controls the pokemon.
-    BattleHealthChange msg(getId(), party, slot, delta, total, 48);
-    m_impl->broadcast(msg, client);
+    // controls the pokemon. Don't write this message to the log.
+    BattleHealthChange msg(this, party, slot, delta, total, 48);
+    m_impl->broadcast(msg.getMsg(), client);
 
     // Send the owner of the pokemon exact health change information.
-    BattleHealthChange msg2(getId(), party, slot, raw, present, hp);
-    client->sendMessage(msg2);
+    BattleHealthChange msg2(this, party, slot, raw, present, hp);
+    *m_impl->m_log << msg2;
+    client->sendMessage(msg2.getMsg());
 }
 
 /**
@@ -1064,6 +1279,7 @@ void NetworkBattle::informHealthChange(Pokemon *pokemon, const int raw) {
  */
 void NetworkBattle::informSetPp(Pokemon *pokemon,
         const int move, const int pp) {
+    // Don't bother logging this message.
     OutMessage msg(OutMessage::BATTLE_SET_PP);
     msg << getId();
     msg << (unsigned char)pokemon->getPosition();
@@ -1087,6 +1303,7 @@ void NetworkBattle::informSetPp(Pokemon *pokemon,
  */
 void NetworkBattle::informSetMove(Pokemon *pokemon, const int idx,
         const int move, const int pp, const int maxPp) {
+    // Don't bother logging this message.
     OutMessage msg(OutMessage::BATTLE_SET_MOVE);
     msg << getId();
     msg << (unsigned char)pokemon->getPosition();
@@ -1109,14 +1326,15 @@ void NetworkBattle::informSetMove(Pokemon *pokemon, const int idx,
  * string : pokemon [nick]name
  */
 void NetworkBattle::informFainted(Pokemon *pokemon) {
-    OutMessage msg(OutMessage::BATTLE_FAINTED);
-    msg << getId();
-    msg << (unsigned char)pokemon->getParty();
-    msg << (unsigned char)pokemon->getSlot();
-    msg << pokemon->getName();
+    BattleLogMessage msg(OutMessage::BATTLE_FAINTED, "fainted");
+    msg << this;
+    msg << Entity<unsigned char>(pokemon->getParty(), "party");
+    msg << Entity<unsigned char>(pokemon->getSlot(), "slot");
+    msg << Entity<string>(pokemon->getName(), "nickname");
     msg.finalise();
+    *m_impl->m_log << msg;
 
-    m_impl->broadcast(msg);
+    m_impl->broadcast(msg.getMsg());
     m_impl->updateBattlePokemon();
 }
 
@@ -1131,6 +1349,9 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
  * string : effect id
  * string : message
  * byte   : if this status is being applied
+ *
+ * TODO: This function should send { message_category, message_id, ... } for
+ *       the effect message rather than a string of the message!
  */
 void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
         const bool applied) {
@@ -1139,23 +1360,25 @@ void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
     if (text.empty()) {
         return;
     }
-    OutMessage msg(OutMessage::BATTLE_STATUS_CHANGE);
-    msg << getId();
-    msg << (unsigned char)p->getParty();
-    msg << (unsigned char)p->getPosition();
+    BattleLogMessage msg(OutMessage::BATTLE_STATUS_CHANGE, "status_change");
+    msg << this;
+    msg << Entity<unsigned char>(p->getParty(), "party");
+    msg << Entity<unsigned char>(p->getPosition(), "idx");
     const int type = effect->getType(cx);
-    msg << (unsigned char)type;
-    msg << (unsigned char)effect->getRadius(cx);
-    msg << effect->getId(cx);
-    msg << text;
-    msg << (unsigned char)applied;
+    msg << Entity<unsigned char>(type, "type");
+    msg << Entity<unsigned char>(effect->getRadius(cx), "radius");
+    msg << Entity<string>(effect->getId(cx), "id");
+    msg << Entity<string>(text, "message");
+    msg << Entity<unsigned char>(applied, "applied");
     msg.finalise();
 
     if (type == StatusObject::TYPE_NORMAL) {
-        m_impl->broadcast(msg);
+        *m_impl->m_log << msg;
+        m_impl->broadcast(msg.getMsg());
     } else {
+        // Don't write to the log in this case because it's just noise.
         ClientPtr client = m_impl->m_clients[p->getParty()];
-        client->sendMessage(msg);
+        client->sendMessage(msg.getMsg());
     }
 }
 
@@ -1163,7 +1386,7 @@ namespace {
 
 void handleTiming() {
     while (true) {
-        boost::this_thread::sleep(boost::posix_time::seconds(3));
+        boost::this_thread::sleep(pt::seconds(3));
         boost::unique_lock<boost::recursive_mutex> lock(
                 NetworkBattleImpl::m_timerMutex);
         TimerList::iterator i = NetworkBattleImpl::m_timerList.begin();

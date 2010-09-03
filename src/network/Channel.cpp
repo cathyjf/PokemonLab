@@ -77,8 +77,8 @@ public:
     }
     
     // Reserve a particular ID. This ID will not be returned by subsequent
-    // calls to acquireId. The ID must be available to be acquired. This
-    // function not verify whether the ID is available.
+    // calls to acquire. The ID must be available to be acquired. This
+    // function does not verify whether the ID is available.
     //
     // Acquires a new ID instead if the given ID is the sentinel value.
     T acquire(const T &id) {

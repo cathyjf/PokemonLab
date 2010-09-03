@@ -944,7 +944,7 @@ void Pokemon::setAbility(const string &name) {
     if (!ability.isNull()) {
         setAbility(&ability);
     } else {
-        Log::out() << "No such ability: " << name << "." << endl;
+        //Log::out() << "No such ability: " << name << "." << endl;
     }
 }
 
@@ -1085,12 +1085,12 @@ bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
         COMBINATION combo = *i;
         COMBINATION::iterator j = combo.begin();
         for (; j != combo.end(); ++j) {
-            string move = *j;
+            const string move = *j;
 
             bool found = false;
             vector<MoveObjectPtr>::iterator k = m_moves.begin();
             for (; k != m_moves.end(); ++k) {
-                string name = (*k)->getName(cx);
+                const string name = (*k)->getName(cx);
                 if (name == move) {
                     found = true;
                     break;
@@ -1114,7 +1114,7 @@ bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
  * Currently it doesn't work
  */
 bool Pokemon::validateItem(ScriptContext *) {
-    //TODO: Implement this
+    // TODO: Implement this
     return true;
 }
 
@@ -1134,16 +1134,18 @@ bool Pokemon::validateLegalPokemon(ScriptContext *cx) {
     set<string> moves;
     vector<MoveObjectPtr>::iterator i = m_moves.begin();
     for (; i != m_moves.end(); ++i) {
-        string name = (*i)->getName(cx);
-        if (moves.count(name))
+        const string name = (*i)->getName(cx);
+        if (moves.count(name)) {
             return false;
+        }
         moves.insert(name);
     }
     
     vector<int>::iterator j = m_ppUps.begin();
     for (; j != m_ppUps.end(); ++j) {
-        if ((*j < 0) || (*j > 3))
+        if ((*j < 0) || (*j > 3)) {
             return false;
+        }
     }
 
     ABILITY_LIST abilityList = m_species->getAbilities();
@@ -1155,12 +1157,14 @@ bool Pokemon::validateLegalPokemon(ScriptContext *cx) {
             break;
         }
     }
-    if (!found)
+    if (!found) {
         return false;
+    }
 
-    int genders = m_species->getPossibleGenders();
-    if (!(m_gender && (m_gender & genders)) && (m_gender || genders))
+    const int genders = m_species->getPossibleGenders();
+    if (!(m_gender && (m_gender & genders)) && (m_gender || genders)) {
         return false;
+    }
 
     return true;
 }
