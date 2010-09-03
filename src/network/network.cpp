@@ -555,7 +555,7 @@ typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
 public:
-    ServerImpl(Server *, tcp::endpoint &);
+    ServerImpl(Server *, tcp::endpoint &, const string &, const string &);
     Server *getServer() const { return m_server; }
     void installSignalHandlers();
     void run();
@@ -629,6 +629,7 @@ private:
     thread m_matchmaking;
     shared_ptr<MetagameList> m_metagameList;
     vector<CLAUSE_PAIR> m_clauses;
+    const WelcomeMessage m_welcomeMessage;
     Server *m_server;
 
     static ServerImpl *m_blockingServer;
@@ -636,9 +637,9 @@ private:
 
 ServerImpl *ServerImpl::m_blockingServer = NULL;
 
-Server::Server(const int port) {
+Server::Server(const int port, const string &name, const string &welcome) {
     tcp::endpoint endpoint(tcp::v4(), port);
-    m_impl = new ServerImpl(this, endpoint);
+    m_impl = new ServerImpl(this, endpoint, name, welcome);
 }
 
 void Server::installSignalHandlers() {
@@ -1848,9 +1849,11 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
     finalise();
 }
 
-ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
-        m_acceptor(m_service, endpoint, true),
-        m_server(server) {
+ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint,
+        const string &name, const string &welcome):
+            m_acceptor(m_service, endpoint, true),
+            m_server(server),
+            m_welcomeMessage(2, name, welcome) {
     acceptClient();
 }
 
@@ -2081,10 +2084,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         }
         client->start();
         Log::out() << "Accepted client from " << client->getIp() << "." << endl;
-        WelcomeMessage msg(2,
-                "Test Server",
-                "Welcome to code name Shoddy Battle 2!");
-        client->sendMessage(msg);
+        client->sendMessage(m_welcomeMessage);
     }
 }
 

@@ -56,6 +56,7 @@ const char *getPidFileName() {
 int initialise(int argc, char **argv, bool &daemon) {
     string configFile;
     int port, databasePort, workerThreads;
+    string serverName, welcomeFile, welcomeMessage;
     string databaseName, databaseHost, databaseUser, databasePassword;
     string authParameter;
 
@@ -66,6 +67,13 @@ int initialise(int argc, char **argv, bool &daemon) {
                 "run the server as a daemon")
             ("server.kill",
                 "kill a running server daemon")
+            ("server.name",
+                po::value<string>(&serverName)->default_value(
+                     "Test Server"),
+                "server name")
+            ("server.welcome",
+                po::value<string>(&welcomeFile),
+                "welcome message file")
             ("server.port",
                 po::value<int>(&port)->default_value(
                      8446),
@@ -148,6 +156,21 @@ int initialise(int argc, char **argv, bool &daemon) {
         po::notify(vm);
     }
 
+    if (vm.count("server.welcome")) {
+        ifstream file(welcomeFile.c_str());
+        if (!file.is_open()) {
+            Log::out() << "Error: Welcome file " << configFile << " not found."
+                 << endl;
+            return EXIT_FAILURE;
+        }
+        file.seekg(0, ios::end);
+        const int length = file.tellg();
+        file.seekg(0, ios::beg);
+        char text[length];
+        file.read(text, length);
+        welcomeMessage = text;
+    }
+
     const bool serverDetach = vm.count("server.detach");
     const bool serverKill = vm.count("server.kill");
 
@@ -225,7 +248,7 @@ int initialise(int argc, char **argv, bool &daemon) {
         }
     }
 
-    network::Server server(port);
+    network::Server server(port, serverName, welcomeMessage);
     server.installSignalHandlers();
 
     ScriptMachine *machine = server.getMachine();

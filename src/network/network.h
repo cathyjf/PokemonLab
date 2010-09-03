@@ -68,7 +68,7 @@ protected:
 
 class Server {
 public:
-    Server(const int port);
+    Server(const int port, const std::string &, const std::string &);
     ~Server();
     void installSignalHandlers();
     void run();
