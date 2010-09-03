@@ -290,7 +290,7 @@ public:
     }
 
     void writeLog(const string &msg) {
-        m_log.write("[chat] " + msg);
+        m_log.write("[chat] " + msg + "\n");
     }
 
 private:
