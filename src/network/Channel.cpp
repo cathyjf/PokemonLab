@@ -419,6 +419,11 @@ void Channel::handlePart(ClientPtr /*client*/) {
 
 }
 
+void Channel::sendMessage(const string &message) {
+    broadcast(ChannelMessage(shared_from_this(), string(), message));
+    writeLog(message);
+}
+
 void Channel::sendMessage(const string &message, ClientPtr client) {
     FLAGS flags = getStatusFlags(client);
     if (flags[PROTECTED]

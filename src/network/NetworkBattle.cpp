@@ -664,6 +664,7 @@ struct NetworkBattleImpl {
      * byte   : party
      * int16  : metagame (-1 for a direct challenge)
      * byte   : rated
+     * string : unique battle ID
      */
     void sendBattleBegin(const int party) {
         const int32_t id = m_field->getId();
@@ -673,6 +674,7 @@ struct NetworkBattleImpl {
         msg << id << opponent << ((unsigned char)party);
         msg << (int16_t)m_metagame;
         msg << (unsigned char)m_rated;
+        msg << m_log->getId();
         msg.finalise();
         m_clients[party]->sendMessage(msg);
     }

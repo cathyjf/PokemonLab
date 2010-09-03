@@ -111,6 +111,8 @@ public:
 
     std::string getTopic();
 
+    void sendMessage(const std::string &message);
+
     void sendMessage(const std::string &message, ClientPtr client);
 
     bool setMode(ClientPtr, const std::string &, const int, const bool);
