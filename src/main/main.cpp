@@ -166,8 +166,9 @@ int initialise(int argc, char **argv, bool &daemon) {
         file.seekg(0, ios::end);
         const int length = file.tellg();
         file.seekg(0, ios::beg);
-        char text[length];
+        char text[length + 1];
         file.read(text, length);
+        text[length] = '\0';
         welcomeMessage = text;
     }
 
