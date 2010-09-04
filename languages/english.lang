@@ -614,6 +614,7 @@
 9: The $1 latched on to $2!
 10: $1 hung on using its $2!
 11: $1's $2 let it move first!
+12: $1 became fully charged due to its Power Herb!
 
 [client-messages]
 0: *** $1 sets mode $2 $3

@@ -1142,18 +1142,20 @@ function makeRecoilMove(move, divisor) {
  */
 function makeChargeMove(move, text, vulnerable) {
     var execute = getParentUse(move);
-    var accuracy_ = move.accuracy;
-    move.accuracy = 0;
+    move.accuracy_ = move.accuracy;
     move.charge_ = true;
     move.prepareSelf = function(field, user, target) {
         if (user.getStatus("ChargeMoveEffect"))
+            return;
+        this.accuracy = 0;
+        if (user.sendMessage("informSkipChargeTurn", this))
             return;
         field.print(text(user));
         if (this.additional) {
             this.additional(user);
         }
         var move_ = user.setForcedMove(this, target, false);
-        move_.accuracy = accuracy_;
+        move_.accuracy = this.accuracy_;
         var effect = new StatusEffect("ChargeMoveEffect");
         effect.move = this;
         effect.turns = 2;

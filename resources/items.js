@@ -163,11 +163,11 @@ function makeHealingBerry(item, func) {
     makeItem({
         name: item,
         berry_: true,
-        condition: function() {
+        condition : function() {
             var threshold = Math.floor(this.subject.getStat(Stat.HP) / 2);
             return (this.subject.hp <= threshold);
         },
-        use: function(user) {
+        use : function(user) {
             user.field.print(Text.item_messages(0, user, this));
             user.hp += func(user);
             this.consume();
@@ -862,7 +862,7 @@ makeItem({
 });
 
 makeItem({
-    name: "Focus Sash",
+    name : "Focus Sash",
     transformHealthChange : function(delta, user, indirect) {
         // Multihit moves take Sash into account in their own method.
         if (indirect || (delta < 0))
@@ -882,14 +882,33 @@ makeItem({
         }
         return maxHp - 1;
     },
-    use: function() {
+    use : function() {
         this.subject.field.print(Text.item_messages(10, this.subject,
                 this.name));
         this.consume();
     },
-    informDamaged: function(user, move, damage) {
+    informDamaged : function(user, move, damage) {
         if (this.used_) {
             this.use();
         }
+    }
+});
+
+makeItem({
+    name : "Power Herb",
+    informSkipChargeTurn : function(move) {
+        this.subject.field.print(Text.item_messages(12, this.subject));
+        if (move.additional) {
+            move.additional(this.subject);
+        }
+        move.accuracy = move.accuracy_;
+        var effect = new StatusEffect("ChargeMoveEffect");
+        effect.turns = 0;
+        effect.informFinishedSubjectExecution = function() {
+            this.subject.removeStatus(this);
+        };
+        this.subject.applyStatus(this.subject, effect);
+        this.consume();
+        return true;
     }
 });
