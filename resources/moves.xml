@@ -4829,7 +4829,7 @@ makeMultipleHitMove(this);
 </flags>
 <init>
 <![CDATA[
-makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 0.1]]);
+makeStatusMove(this, [[new StatChangeEffect(Stat.SPEED, -1), 1.0]]);
 ]]>
 </init>
 </move>
