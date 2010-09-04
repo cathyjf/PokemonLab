@@ -53,6 +53,11 @@ HoldItem.prototype.consume = function() {
     effect.item_ = this.id;
     this.subject.removeStatus(this);
 };
+HoldItem.prototype.unapplyEffect = function() {
+    if (this.subject.fainted)
+        return;
+    this.subject.sendMessage("informLostItem");
+};
 HoldItem.prototype.getState = function() {
     if (!this.subject || (this.state != StatusEffect.STATE_ACTIVE))
         return this.state;

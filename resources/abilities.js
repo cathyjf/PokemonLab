@@ -1660,9 +1660,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Unburden",
-    informLostItem : function(target) {
-        if (target != this.subject)
-            return;
+    informLostItem : function() {
         if (this.subject.getStatus("UnburdenEffect"))
             return;
         var effect = new StatusEffect("UnburdenEffect");
