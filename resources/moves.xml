@@ -506,11 +506,11 @@ makeStatusMove(this, [[new StatChangeEffect(Stat.ATTACK, -1), 0.1]]);
     <memorable/>
     <flinch/>
 </flags>
-<use>
+<init>
 <![CDATA[
 makeRevengeMove(this);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Barrage" id="24">
