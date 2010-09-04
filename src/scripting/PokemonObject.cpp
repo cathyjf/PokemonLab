@@ -670,6 +670,12 @@ JSBool execute(JSContext *cx,
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
     MoveObjectPtr ptr(&move, nullDeleter());
     p->executeMove(ptr, target, false);
+    if (!ptr.unique()) {
+        // If ptr got copied into some other data structure, we have a big
+        // problem since the program will crash if it tries to dereference it.
+        JS_ReportError(cx, "execute: MoveObjectPtr was copied (disaster!)");
+        return JS_FALSE;
+    }
     return JS_TRUE;
 }
 
