@@ -193,7 +193,7 @@ function makeTypeResistingBerry(item, type) {
     makeItem({
         name : item,
         berry_ : true,
-        modifier: function(field, user, target, move, critical) {
+        modifier : function(field, user, target, move, critical) {
             if (target != this.subject)
                 return null;
             if (type != move.type)
@@ -215,6 +215,8 @@ function makeFeedbackDamageBerry(item, moveclass) {
         name : item,
         berry_ : true,
         informDamaged : function(user, move, damage) {
+            if (this.subject == user)
+                return;
             if (move.moveClass != moveclass)
                 return;
             user.field.print(Text.item_messages(6, user, this.subject, this));

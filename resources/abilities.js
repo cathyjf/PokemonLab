@@ -181,6 +181,8 @@ function makeContactStatusAbility(ability, func) {
         name : ability,
         informDamaged : function(user, move, damage) {
             var subject = this.subject;
+            if (subject == user)
+                return;
             if ((damage > 0) && move.flags[Flag.CONTACT]
                     && subject.field.random(0.3)) {
                 var effect = func(subject.field);
@@ -519,6 +521,8 @@ makeAbility({
     name : "Aftermath",
     informDamaged : function(user, move, damage) {
         var subject = this.subject;
+        if (subject == user)
+            return;
         if ((subject.hp <= 0) && (damage > 0)
                 && move.flags[Flag.CONTACT]) {
             subject.field.print(Text.ability_messages(0, user, subject));
@@ -536,6 +540,8 @@ makeAbility({
     name : "Rough Skin",
     informDamaged : function(user, move, damage) {
         var subject = this.subject;
+        if (subject == user)
+            return;
         if ((damage > 0) && move.flags[Flag.CONTACT]) {
             subject.field.print(Text.ability_messages(37, user, subject));
             var delta = Math.floor(user.getStat(Stat.HP) / 8);
@@ -589,6 +595,8 @@ makeAbility({
     name : "Color Change",
     informDamaged : function(user, move, damage) {
         var subject = this.subject;
+        if (subject == user)
+            return;
         if ((damage > 0) && (move.name != "Pain Split")
                 && !subject.isType(move.type)) {
             subject.setTypes([move.type]);
