@@ -1804,6 +1804,9 @@ makeAbility({
         if (this.forcing_) {
             this.forcing_ = indirect = false;
         }
+        if (delta < 0) {
+            return delta;
+        }
         return indirect ? 0 : delta;
     }
 });
