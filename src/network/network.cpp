@@ -783,7 +783,7 @@ public:
     bool isPhantom() const {
         // No synchronisation used because reading m_lastActivity should be
         // atomic.
-        return ((time(NULL) - 5/*20*/) > m_lastActivity);
+        return ((time(NULL) - 120) > m_lastActivity);
     }
     
 private:
@@ -2052,7 +2052,7 @@ void ServerImpl::handleMatchmaking() {
 
 void ServerImpl::handlePhantomClients() {
     while (true) {
-        this_thread::sleep(posix_time::seconds(/*60*/1));
+        this_thread::sleep(posix_time::seconds(60));
         vector<ClientImplPtr> phantoms;
         shared_lock<shared_mutex> lock(m_clientMutex);
         for (CLIENT_LIST::iterator i = m_clients.begin();
