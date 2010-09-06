@@ -452,8 +452,9 @@ public:
 
 class KickBanMessage : public OutMessage {
 public:
-    KickBanMessage(const int channel, const string &mod, const string &target, const int date):
-            OutMessage(KICK_BAN_MESSAGE) {
+    KickBanMessage(const int channel, const string &mod, const string &target,
+            const int date):
+                OutMessage(KICK_BAN_MESSAGE) {
         *this << channel;
         *this << mod;
         *this << target;
@@ -472,7 +473,8 @@ public:
         finalise();
     }
     UserDetailMessage(const string& name, const string &ip, vector<string> &aliases, 
-                            database::DatabaseRegistry::BAN_LIST &bans) : OutMessage(USER_DETAILS) {
+            database::DatabaseRegistry::BAN_LIST &bans) :
+                OutMessage(USER_DETAILS) {
         using database::DatabaseRegistry;
         *this << name;
         *this << ip;
@@ -493,7 +495,8 @@ public:
 class UserPersonalMessage : public OutMessage {
 public:
     UserPersonalMessage(const string& name, const string *msg, 
-            database::DatabaseRegistry::ESTIMATE_LIST &estimates) : OutMessage(USER_MESSAGE) {
+            database::DatabaseRegistry::ESTIMATE_LIST &estimates) :
+                OutMessage(USER_MESSAGE) {
         using database::DatabaseRegistry;
         *this << name;
         *this << *msg;
@@ -511,8 +514,9 @@ public:
 
 class InvalidTeamMessage : public OutMessage {
 public:
-    InvalidTeamMessage(const string &user, const int teamSize, const vector<int> &cls):
-            OutMessage(INVALID_TEAM) {
+    InvalidTeamMessage(const string &user, const int teamSize,
+            const vector<int> &cls):
+                OutMessage(INVALID_TEAM) {
         *this << user;
         *this << (unsigned char)teamSize;
         *this << (int16_t)cls.size();
@@ -691,6 +695,7 @@ public:
     ClientImpl(io_service &service, ServerImpl *server):
             m_authenticated(false),
             m_challenge(0),
+            m_lastActivity(time(NULL)),
             m_service(service),
             m_socket(service),
             m_server(server) { }
