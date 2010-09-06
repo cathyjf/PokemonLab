@@ -73,9 +73,10 @@ function makeStatusImmuneAbility(ability, immune) {
         transformStatus : function(subject, status) {
             if (subject != this.subject)
                 return status;
-            for (i in immune) {
-                if (immune[i] == status.id)
+            for (var i in immune) {
+                if (immune[i] == status.id) {
                     return null;
+                }
             }
             return status;
         },
