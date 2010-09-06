@@ -843,7 +843,7 @@ private:
         }
     }
 
-    void handleError(const boost::system::error_code & /*error*/) {
+    void handleError(const boost::system::error_code &error) {
         m_server->removeClient(shared_from_this());
     }
 
@@ -1009,7 +1009,7 @@ private:
         lock_guard<shared_mutex> lock(m_channelMutex);
         CHANNEL_LIST::iterator i = m_channels.begin();
         for (; i != m_channels.end(); ++i) {
-            Channel::FLAGS flags= (*i)->getStatusFlags(shared_from_this());
+            Channel::FLAGS flags = (*i)->getStatusFlags(shared_from_this());
             if (flags[Channel::OP] || flags[Channel::PROTECTED]) {
                 auth = true;
                 break;
@@ -1233,6 +1233,7 @@ private:
         lock.unlock();
 
         ClientPtr clients[] = { shared_from_this(), client };
+        shared_ptr<void> monitor;
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 challenge->teams,
@@ -1242,15 +1243,16 @@ private:
                 clauses,
                 timerOpts,
                 -1,
-                false));
+                false,
+                monitor));
 
         lock2.unlock();
-
-        
 
         field->beginBattle();
         insertBattle(field);
         client->insertBattle(field);
+        // monitor goes out of scope here and clients become able to part
+        // the battle.
     }
 
     void handleWithdrawChallenge(InMessage &msg) {
@@ -1264,7 +1266,8 @@ private:
 
         lock_guard<mutex> lock(m_challengeMutex);
 
-        map<string, ChallengePtr>::iterator i = m_challenges.find(client->getName());
+        map<string, ChallengePtr>::iterator i = m_challenges.find(
+                client->getName());
         if (i == m_challenges.end())
             return;
 
@@ -1352,7 +1355,8 @@ private:
             const vector<MetagamePtr> &metagames = m_server->getMetagames();
             database::DatabaseRegistry::ESTIMATE_LIST estimates =
                     m_server->getRegistry()->getEstimates(id, metagames);
-            sendMessage(UserPersonalMessage(user, client->getPersonalMessage(), estimates));
+            sendMessage(UserPersonalMessage(user, client->getPersonalMessage(),
+                    estimates));
         }
     }
 
@@ -1694,6 +1698,7 @@ void MetagameQueue::startMatches() {
         vector<StatusObject> clauses;
         m_server->fetchClauses(m_server->getMachine()->acquireContext(), 
                                             m_metagame->getIdx(), clauses);
+        shared_ptr<void> monitor;
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 teams,
@@ -1703,10 +1708,12 @@ void MetagameQueue::startMatches() {
                 clauses,
                 m_metagame->getTimerOptions(),
                 m_metagame->getIdx(),
-                m_rated));
+                m_rated,
+                monitor));
         field->beginBattle();
         q1.first->insertBattle(field);
         q2.first->insertBattle(field);
+        // monitor goes out of scope here.
     }
     m_clients.clear();
     m_queue.clear();
@@ -1985,15 +1992,15 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
             pass = false;
         }
         if (!p->validateMoveCombinations(cx)) {
-            violations.push_back(-i - 1 - (partySize*2));
+            violations.push_back(-i - 1 - (partySize * 2));
             pass = false;
         }
         if (!p->validateItem(cx)) {
-            violations.push_back(-i - 1 - (partySize*3));
+            violations.push_back(-i - 1 - (partySize * 3));
             pass = false;
         }
         if (!mech.validateHiddenStats(*p)) {
-            violations.push_back(-i - 1 - (partySize*4));
+            violations.push_back(-i - 1 - (partySize * 4));
             pass = false;
         }
     }
@@ -2050,7 +2057,6 @@ void ServerImpl::stop() {
  * Remove a client.
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
-    // TODO: other removal logic
     client->disconnect();
     Log::out() << "Client from " << client->getIp() << " disconnected." << endl;
 

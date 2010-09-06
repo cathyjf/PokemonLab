@@ -334,11 +334,6 @@ struct NetworkBattleImpl {
     bool m_terminated;
     TimerPtr m_timer;
     BattleLog *m_log;
-
-    // Note: This ThreadedQueue object MUST be the last member delcared in
-    //       in this class. No other instance members should be declared in the
-    //       source file after this one. This is to ensure that ~ThreadedQueue
-    //       runs before any other destructors.
     ThreadedQueue<TURN_PTR> m_queue;
 
     static TimerList m_timerList;
@@ -366,6 +361,9 @@ struct NetworkBattleImpl {
     }
     
     ~NetworkBattleImpl() {
+        // We join the queue explicitly to avoid any doubt about when its
+        // destructor will run.
+        m_queue.join();
         if (m_timer->isEnabled()) {
             removeTimer(m_timer);
         }
@@ -395,11 +393,18 @@ struct NetworkBattleImpl {
     }
     
     void executeTurn(TURN_PTR &ptr) {
-        // NOTE: This variable 'p' ensures that 'this' object lives at least
-        //       until the end of this function.
+        // If this turn results in the end of the battle then this reference to
+        // m_field will be the last one, so ~NetworkBattle, and hence
+        // ~NetworkBattleImpl, will run at the end of this function.
         NetworkBattle::PTR p = m_field->shared_from_this();
 
         boost::unique_lock<boost::recursive_mutex> lock(m_mutex);
+        if (m_terminated) {
+            // If ~NetworkBattle runs on another thread, there may still be
+            // a turn left to execute, but we don't actually want it to
+            // execute.
+            return;
+        }
         m_lock = &lock;
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
         ScriptContextLock cxLock(cx);
@@ -411,7 +416,7 @@ struct NetworkBattleImpl {
         if (!m_victory && !requestReplacements()) {
             beginTurn();
         }
-    }
+    } // ~NetworkBattle will run here if the battle ended this turn.
 
     Pokemon *requestInactivePokemon(Pokemon *user) {
         const int party = user->getParty();
@@ -913,13 +918,15 @@ Channel::FLAGS BattleChannel::handleJoin(ClientPtr client) {
 }
 
 bool BattleChannel::join(ClientPtr client) {
+    // We acquire BattleChannel's mutex before Channel's mutex, since we are
+    // going to lock both at once.
     boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
 
     // If the battle has ended then more clients may not join.
     if (!m_field)
         return false;
 
-    if (!Channel::join(client))
+    if (!Channel::join(client)) // locks Channel's mutex
         return false;
     if (m_field->m_field->getParty(client) == -1) {
         m_field->prepareSpectator(client);
@@ -932,6 +939,8 @@ void BattleChannel::handlePart(ClientPtr client) {
     NetworkBattleImpl *impl = NULL;
     boost::recursive_mutex *m = NULL;
     {
+        // Channel's mutex is not locked at this point, so acquiring this lock
+        // is safe.
         boost::lock_guard<boost::recursive_mutex> lock(m_mutex);
         if (!m_field)
             return;
@@ -953,7 +962,8 @@ void BattleChannel::handlePart(ClientPtr client) {
         // handleForfeit() has already unlocked *m.
         lock2.release();
     }
-}
+} // ~NetworkBattle will run here if the client parting was a participant
+  // in the battle.
 
 void NetworkBattle::terminate() {
     NetworkBattle::PTR p = shared_from_this();
@@ -980,7 +990,8 @@ NetworkBattle::NetworkBattle(Server *server,
         vector<StatusObject> &clauses,
         network::TimerOptions t,
         const int metagame,
-        const bool rated) {
+        const bool rated,
+        boost::shared_ptr<void> &monitor) {
     m_impl = boost::shared_ptr<NetworkBattleImpl>(
             new NetworkBattleImpl(server, this, t));
     m_impl->m_maxTeamLength = maxTeamLength;
@@ -988,11 +999,20 @@ NetworkBattle::NetworkBattle(Server *server,
     m_impl->m_rated = rated;
     m_impl->m_turns.resize(TEAM_COUNT);
     m_impl->m_requests.resize(TEAM_COUNT);
+
+    // Don't allow clients to part the battle until monitor goes out of scope.
+    // Note that the BattleChannel's mutex is always locked before the parent
+    // Channel's mutex, if both are going to be locked.
+    boost::recursive_mutex &m = m_impl->m_channel->getMutex();
+    m.lock();
+    monitor = boost::shared_ptr<void>(&m,
+            boost::bind(&boost::recursive_mutex::unlock, _1));
+
     for (int i = 0; i < TEAM_COUNT; ++i) {
         ClientPtr client = clients[i];
         m_impl->m_trainer.push_back(client->getName());
         m_impl->m_clients.push_back(client);
-        client->joinChannel(m_impl->m_channel);
+        client->joinChannel(m_impl->m_channel); // locks Channel's mutex
     }
 
     // Encode some metadata into the channel topic.
@@ -1003,9 +1023,9 @@ NetworkBattle::NetworkBattle(Server *server,
             + boost::lexical_cast<string>(maxTeamLength) + ","
             + boost::lexical_cast<string>(metagame) + ","
             + boost::lexical_cast<string>(int(rated));
-    m_impl->m_channel->setTopic(topic);
+    m_impl->m_channel->setTopic(topic); // locks Channel's mutex
 
-    initialise(&m_impl->m_mech, generation, server->getMachine(),
+    BattleField::initialise(&m_impl->m_mech, generation, server->getMachine(),
             teams, &m_impl->m_trainer[0], partySize, clauses);
     m_impl->writeLogHeader();
 }
@@ -1021,8 +1041,8 @@ void NetworkBattle::beginBattle() {
     }
     BattleField::beginBattle();
     m_impl->beginTurn();
-    m_impl->m_server->addChannel(m_impl->m_channel);
     getContext()->clearContextThread();
+    m_impl->m_server->addChannel(m_impl->m_channel);
 }
 
 int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
@@ -1131,9 +1151,7 @@ void NetworkBattle::print(const TextMessage &text) {
  * int32 : field id
  * int16 : party id (or -1 for a draw)
  */
-void NetworkBattle::informVictory(const int party) {
-    m_impl->m_queue.join();
-    
+void NetworkBattle::informVictory(const int party) {   
     m_impl->m_victory = true;
 
     BattleLogMessage msg(OutMessage::BATTLE_VICTORY, "victory");

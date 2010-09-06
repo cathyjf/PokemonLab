@@ -25,10 +25,11 @@
 #ifndef _THREADED_QUEUE_H_
 #define _THREADED_QUEUE_H_
 
+#include <memory>
+#include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
-#include <queue>
+#include <boost/noncopyable.hpp>
 
 namespace shoddybattle { namespace network {
 
@@ -38,112 +39,41 @@ namespace shoddybattle { namespace network {
  * will call a delegate method on each message.
  */
 template <class T>
-class ThreadedQueue {
+class ThreadedQueue : boost::noncopyable {
 public:
     typedef boost::function<void (T &)> DELEGATE;
-    typedef boost::function<void ()> NULLARY;
 
     ThreadedQueue(DELEGATE delegate):
-            m_impl(new ThreadedQueueImpl(delegate)) {
-        m_impl->thread = boost::thread(
-                boost::bind(&ThreadedQueue::process, m_impl));
-    }
-
-    ThreadedQueue(NULLARY initialiser, DELEGATE delegate, NULLARY terminator):
-            m_impl(new ThreadedQueueImpl(delegate)) {
-        m_impl->thread = boost::thread(
-                boost::bind(&ThreadedQueue::initialise, initialiser,
-                terminator, m_impl));
+            m_delegate(delegate),
+            m_work(new boost::asio::io_service::work(m_service)),
+            m_thread(boost::bind(&boost::asio::io_service::run, &m_service)) {
     }
 
     void post(T elem) {
-        {
-            boost::unique_lock<boost::mutex> lock(m_impl->mutex);
-            m_impl->queue.push(elem);
-        }
-        m_impl->condition.notify_one();
+        m_service.post(boost::bind(m_delegate, elem));
+    }
+
+    template <class U> void post(U elem) {
+        m_service.post(elem);
     }
 
     void join() {
-        boost::lock_guard<boost::mutex> lock(m_impl->joinMutex);
-        if (m_impl->terminated) {
-            return;
-        }
-        if (boost::this_thread::get_id() == m_impl->thread.get_id()) {
-            // We get here if m_impl->thread is at Point B in process().
-            m_impl->terminated = true;
-            m_impl->thread.detach();
-            return;
-        }
-        // We get here if m_impl->thread is at Point A in process().
-        boost::unique_lock<boost::mutex> lock2(m_impl->mutex);
-        m_impl->terminated = true;
-        while (!m_impl->queue.empty()) {
-            m_impl->condition.wait(lock2);
-        }
-        lock2.unlock();
-        m_impl->condition.notify_one();
-        m_impl->thread.join();
+        m_work.reset();
+        m_thread.join();
     }
 
     ~ThreadedQueue() {
         join();
     }
 
-    struct ThreadedQueueImpl {
-        boost::mutex mutex;
-        boost::mutex joinMutex;
-        boost::condition_variable condition;
-        bool terminated;
-        DELEGATE delegate;
-        std::queue<T> queue;
-        boost::thread thread;
-
-        ThreadedQueueImpl(DELEGATE delegate):
-                terminated(false),
-                delegate(delegate) { }
-    };
-
 private:
-
-    static void initialise(NULLARY initialiser, NULLARY terminator,
-            boost::shared_ptr<ThreadedQueueImpl> impl) {
-        initialiser();
-        process(impl);
-        terminator();
-    }
-
-    static void process(boost::shared_ptr<ThreadedQueueImpl> impl) {
-        while (!impl->terminated) {
-            boost::unique_lock<boost::mutex> lock(impl->mutex);
-            while (impl->queue.empty()) {
-                impl->condition.wait(lock); // Point A
-                if (impl->terminated) {
-                    // Break out of two levels of while loops. Goto is the most
-                    // transparent way to do this.
-                    goto cleanup;
-                }
-            }
-            T item = impl->queue.front();
-            lock.unlock();
-            impl->delegate(item); // Point B
-            lock.lock();
-            impl->queue.pop();
-            impl->condition.notify_one();
-        }
-        cleanup:
-        // Run the last entries in the queue.
-        boost::unique_lock<boost::mutex> lock(impl->mutex);
-        while (!impl->queue.empty()) {
-            impl->delegate(impl->queue.front());
-            impl->queue.pop();
-        }
-    }
-
-    boost::shared_ptr<ThreadedQueueImpl> m_impl;
+    DELEGATE m_delegate;
+    // Note: Do not change the order of the following three declarations.
+    boost::asio::io_service m_service;
+    std::auto_ptr<boost::asio::io_service::work> m_work;
+    boost::thread m_thread;
 };
 
 }} // namespace shoddybattle::network
 
 #endif
-

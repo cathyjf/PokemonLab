@@ -363,7 +363,8 @@ bool Channel::join(ClientPtr client) {
 
 bool Channel::handleBan(ClientPtr client) {
     int ban, flags;
-    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban, flags);
+    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban,
+            flags);
     if (ban < time(NULL)) {
         // ban expired; remove it
         m_impl->server->commitBan(m_impl->id, client->getName(), 0, 0);
@@ -384,8 +385,10 @@ void Channel::part(ClientPtr client) {
         upgrade_to_unique_lock<shared_mutex> exclusive(lock);
         m_impl->clients.erase(client);
     }
-    handlePart(client);
+    // Unlock the mutex before calling handlePart in case handlePart locks
+    // another mutex, resulting in a possible deadlock.
     lock.unlock();
+    handlePart(client);
     const string name = client->getName();
     broadcast(ChannelJoinPart(shared_from_this(), name, false));
 

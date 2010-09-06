@@ -105,9 +105,9 @@ struct ScriptMachineImpl {
 
     void startRootThread() {
         deadRoots = RootQueuePtr(new RootQueue(
-                boost::bind(&ScriptMachineImpl::initialiseRootThread, this),
-                boost::bind(&ScriptMachineImpl::reclaimRoot, this, _1),
-                boost::bind(&ScriptMachineImpl::terminateRootThread, this)));
+                boost::bind(&ScriptMachineImpl::reclaimRoot, this, _1)));
+        deadRoots->post(boost::bind(
+                &ScriptMachineImpl::initialiseRootThread, this));
     }
 
     void initialiseRootThread() {
@@ -115,6 +115,12 @@ struct ScriptMachineImpl {
     }
 
     void terminateRootThread() {
+        deadRoots->post(boost::bind(
+                &ScriptMachineImpl::terminateRootThreadJob, this));
+        deadRoots.reset();
+    }
+    
+    void terminateRootThreadJob() {
         deadRootContext.reset();
     }
 
@@ -653,7 +659,7 @@ static JSFunctionSpec globalFunctions[] = {
 ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     m_impl = new ScriptMachineImpl(this);
 
-    m_impl->runtime = JS_NewRuntime(8L * 1024L * 1024L);
+    m_impl->runtime = JS_NewRuntime(100L * 1024L * 1024L);
     if (m_impl->runtime == NULL) {
         delete m_impl;
         throw ScriptMachineException();
@@ -694,7 +700,7 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
 
 ScriptMachine::~ScriptMachine() {
     delete m_impl->state;
-    m_impl->deadRoots.reset();
+    m_impl->terminateRootThread();
     CONTEXT_SET::iterator i = m_impl->contexts.begin();
     for (; i != m_impl->contexts.end(); ++i) {
         ScriptContext *cx = *i;

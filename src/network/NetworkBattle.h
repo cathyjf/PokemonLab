@@ -59,7 +59,8 @@ public:
             std::vector<StatusObject> &clauses,
             TimerOptions t,
             const int metagame,
-            const bool rated);
+            const bool rated,
+            boost::shared_ptr<void> &monitor);
 
     int getParty(boost::shared_ptr<network::Client> client) const;
 
