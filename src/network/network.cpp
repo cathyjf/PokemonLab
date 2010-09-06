@@ -695,10 +695,6 @@ public:
             m_socket(service),
             m_server(server) { }
 
-    ~ClientImpl() {
-        cout << "In ~ClientImpl." << endl;
-    }
-
     tcp::socket &getSocket() {
         return m_socket;
     }
