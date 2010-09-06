@@ -381,6 +381,8 @@ makeItem({
             return null;
         if (move.name == "__confusion")
             return null;
+        if (move.delayedAttack_)
+            return null;
         return [2, 1.3, 0];
     },
     informDamaging : function(move, target) {
