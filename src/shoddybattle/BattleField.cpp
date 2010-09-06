@@ -907,6 +907,9 @@ void BattleField::tickEffects() {
         }
 
         Pokemon::PTR subject = i->subject;
+        if (subject->isFainted()) {
+            continue;
+        }
         StatusObject *effect = i->effect;
         effect->setSubject(cx, subject.get());
         effect->tick(cx);
