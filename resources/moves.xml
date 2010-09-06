@@ -9326,12 +9326,11 @@ effect.transformHealthChange = function(delta, user, indirect) {
     if (this.takeDamage(delta)) {
         var this_ = this;
         var effect_ = new StatusEffect("SubstituteUnapplyEffect");
-        effect_.singleton = false;
-        effect_.informFinishedSubjectExecution = function() {
-            this_.subject.removeStatus(this_);
+        effect_.informFinishedExecution = function() {
+            this.subject.removeStatus(this_);
             this.subject.removeStatus(this);
         };
-        user.applyStatus(user, effect_);
+        this.subject.applyStatus(this.subject, effect_);
     }
     return 0;
 };
