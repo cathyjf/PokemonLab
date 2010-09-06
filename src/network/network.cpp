@@ -159,7 +159,8 @@ public:
         BAN_MESSAGE = 14,
         USER_INFO_MESSAGE = 15,
         USER_PERSONAL_MESSAGE = 16,
-        USER_MESSAGE_REQUEST = 17
+        USER_MESSAGE_REQUEST = 17,
+        CLIENT_ACTIVITY = 18
     };
 
     InMessage() {
@@ -585,7 +586,6 @@ public:
     bool authenticateClient(ClientImplPtr client);
     void addChannel(ChannelPtr);
     void removeChannel(ChannelPtr);
-    void handleMatchmaking();
     MetagameQueuePtr getMetagameQueue(const int metagame, const bool rated) {
         return m_queues[METAGAME_PAIR(metagame, rated)];
     }
@@ -598,6 +598,8 @@ private:
     void acceptClient();
     void handleAccept(ClientImplPtr client,
             const boost::system::error_code &error);
+    void handleMatchmaking();
+    void handlePhantomClients();
     static void handleSignal(int signum);
 
     class ChannelList : public OutMessage {
@@ -627,6 +629,7 @@ private:
     vector<MetagamePtr> m_metagames;
     map<METAGAME_PAIR, MetagameQueuePtr> m_queues;
     thread m_matchmaking;
+    thread m_phantomClientWorker;
     shared_ptr<MetagameList> m_metagameList;
     vector<CLAUSE_PAIR> m_clauses;
     const WelcomeMessage m_welcomeMessage;
@@ -771,6 +774,12 @@ public:
     
     void loadPersonalMessage() {
         m_server->loadPersonalMessage(m_name, m_message);
+    }
+
+    bool isPhantom() const {
+        // No synchronisation used because reading m_lastActivity should be
+        // atomic.
+        return ((time(NULL) - 120) > m_lastActivity);
     }
     
 private:
@@ -1360,11 +1369,16 @@ private:
         }
     }
 
+    void handleActivityMessage(InMessage &msg) {
+        // No need to do anything.
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
     int m_challenge; // for challenge-response authentication
     string m_message;
+    int m_lastActivity;
 
     map<string, ChallengePtr> m_challenges;
     mutex m_challengeMutex;
@@ -1406,7 +1420,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleBanMessage,
     &ClientImpl::handleRequestUserInfo,
     &ClientImpl::handlePersonalMessage,
-    &ClientImpl::handlePersonalMessageRequest
+    &ClientImpl::handlePersonalMessageRequest,
+    &ClientImpl::handleActivityMessage
 };
 
 const int ClientImpl::MESSAGE_COUNT =
@@ -1421,6 +1436,11 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
         return;
     }
 
+    // Update the client's last activity. We do this without any
+    // synchronisation because reading and writing an int is atomic on both
+    // x86 and x86-64.
+    m_lastActivity = time(NULL);
+    
     const int type = (int)m_msg.getType();
     if ((type > 2) && !m_authenticated) {
         m_server->removeClient(shared_from_this());
@@ -1613,6 +1633,7 @@ string ClientImpl::getBanString(const string &mod, const string &user,
 }
 
 void ClientImpl::disconnect() {
+    m_socket.close();
     lock_guard<shared_mutex> lock(m_channelMutex);
     CHANNEL_LIST::iterator i = m_channels.begin();
     for (; i != m_channels.end(); ++i) {
@@ -1859,9 +1880,11 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
 ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint,
         const string &name, const string &welcome):
             m_acceptor(m_service, endpoint, true),
-            m_server(server),
-            m_welcomeMessage(2, name, welcome) {
+            m_welcomeMessage(2, name, welcome),
+            m_server(server) {
     acceptClient();
+    m_phantomClientWorker = boost::thread(boost::bind(
+            &ServerImpl::handlePhantomClients, this));
 }
 
 bool ServerImpl::authenticateClient(ClientImplPtr client) {
@@ -2015,6 +2038,23 @@ void ServerImpl::handleMatchmaking() {
         for (; i != m_queues.end(); ++i) {
             i->second->startMatches();
         }
+    }
+}
+
+void ServerImpl::handlePhantomClients() {
+    while (true) {
+        this_thread::sleep(posix_time::seconds(60));
+        vector<ClientImplPtr> phantoms;
+        shared_lock<shared_mutex> lock(m_clientMutex);
+        for (CLIENT_LIST::iterator i = m_clients.begin();
+                i != m_clients.end(); ++i) {
+            if ((*i)->isPhantom()) {
+                phantoms.push_back(*i);
+            }
+        }
+        lock.unlock();
+        for_each(phantoms.begin(), phantoms.end(),
+                boost::bind(&ServerImpl::removeClient, this, _1));
     }
 }
 
