@@ -695,6 +695,10 @@ public:
             m_socket(service),
             m_server(server) { }
 
+    ~ClientImpl() {
+        cout << "In ~ClientImpl." << endl;
+    }
+
     tcp::socket &getSocket() {
         return m_socket;
     }
@@ -779,7 +783,7 @@ public:
     bool isPhantom() const {
         // No synchronisation used because reading m_lastActivity should be
         // atomic.
-        return ((time(NULL) - 120) > m_lastActivity);
+        return ((time(NULL) - 5/*20*/) > m_lastActivity);
     }
     
 private:
@@ -1633,8 +1637,13 @@ string ClientImpl::getBanString(const string &mod, const string &user,
 }
 
 void ClientImpl::disconnect() {
-    m_socket.close();
     lock_guard<shared_mutex> lock(m_channelMutex);
+    // The channel mutex is sneakily used to synchronise this "if open, close"
+    // check.
+    if (m_socket.is_open()) {
+        m_socket.close();
+        Log::out() << "Client from " << getIp() << " disconnected." << endl;
+    }
     CHANNEL_LIST::iterator i = m_channels.begin();
     for (; i != m_channels.end(); ++i) {
         (*i)->part(shared_from_this());
@@ -2043,7 +2052,7 @@ void ServerImpl::handleMatchmaking() {
 
 void ServerImpl::handlePhantomClients() {
     while (true) {
-        this_thread::sleep(posix_time::seconds(60));
+        this_thread::sleep(posix_time::seconds(/*60*/1));
         vector<ClientImplPtr> phantoms;
         shared_lock<shared_mutex> lock(m_clientMutex);
         for (CLIENT_LIST::iterator i = m_clients.begin();
@@ -2098,7 +2107,6 @@ void ServerImpl::stop() {
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
     client->disconnect();
-    Log::out() << "Client from " << client->getIp() << " disconnected." << endl;
 
     lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
