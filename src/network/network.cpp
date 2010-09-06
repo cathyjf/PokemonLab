@@ -1641,7 +1641,7 @@ void ClientImpl::disconnect() {
     // The channel mutex is sneakily used to synchronise this "if open, close"
     // check.
     if (m_socket.is_open()) {
-        m_socket.close();
+        m_socket.close(placeholders::error);
         Log::out() << "Client from " << getIp() << " disconnected." << endl;
     }
     CHANNEL_LIST::iterator i = m_channels.begin();
