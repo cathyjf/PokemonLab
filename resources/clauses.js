@@ -60,6 +60,8 @@ function makeClassicEffectClause(clause, id, description) {
             if (status.id != id)
                 return status;
             var party = subject.party;
+            if (status.inducer && (status.inducer.party == party))
+                return status;
             var length = subject.field.getPartySize(party);
             for (var i = 0; i < length; ++i) {
                 var p = subject.field.getPokemon(party, i);
