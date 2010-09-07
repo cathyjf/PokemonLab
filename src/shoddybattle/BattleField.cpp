@@ -911,6 +911,9 @@ void BattleField::tickEffects() {
             continue;
         }
         StatusObject *effect = i->effect;
+        if (!effect->isActive(cx)) {
+            continue;
+        }
         effect->setSubject(cx, subject.get());
         effect->tick(cx);
 
