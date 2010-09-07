@@ -816,7 +816,7 @@ bool effectComparator(const bool descendingSpeed,
         const bool cmp = e1.speed > e2.speed;
         return descendingSpeed ? cmp : !cmp;
     }
-    return e1.subtier < e1.subtier;
+    return e1.subtier < e2.subtier;
 }
 
 } // anonymous namespace
