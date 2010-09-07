@@ -130,38 +130,45 @@ makeEffect(StatusEffect, {
  * The afflicted pokemon has a 50% chance of failing to attack on its turn.
  * The effect ends when the inducer leaves the field.
  */
-makeEffect(StatusEffect, {
-    id : "AttractEffect",
-    name : Text.status_effects_attract(0),
-    vetoTier : 9,
-    applyEffect : function() {
-        var field = this.subject.field;
-        if (!isOppositeGender(this.inducer, this.subject)) {
-            return false;
-        }
-        field.print(Text.status_effects_attract(3, this.subject, this.inducer));
-        if (this.subject.sendMessage("informAttracted", this.inducer)) {
-            return false;
-        }
-        return true;
-    },
-    informWithdraw : function(subject) {
+makeEffect(StatusEffect, function() {
+    var informPokemonRemoved = function(subject) {
         if (subject == this.inducer) {
             this.subject.removeStatus(this);
         }
-    },
-    vetoExecution : function(field, user, target, move) {
-        if (target != null)
-            return false;
-        if (user != this.subject)
-            return false;
-        field.print(Text.status_effects_attract(1, this.subject, this.inducer));
-        if (field.random(0.5))
-            return false;
-        field.print(Text.status_effects_attract(2, this.subject));
-        return true;
-    }
-});
+    };
+    return {
+        id : "AttractEffect",
+        name : Text.status_effects_attract(0),
+        vetoTier : 9,
+        applyEffect : function() {
+            var field = this.subject.field;
+            if (!isOppositeGender(this.inducer, this.subject)) {
+                return false;
+            }
+            field.print(Text.status_effects_attract(3, this.subject,
+                    this.inducer));
+            if (this.subject.sendMessage("informAttracted", this.inducer)) {
+                return false;
+            }
+            return true;
+        },
+        vetoExecution : function(field, user, target, move) {
+            if (target != null)
+                return false;
+            if (user != this.subject)
+                return false;
+            field.print(Text.status_effects_attract(1, this.subject,
+                    this.inducer));
+            if (field.random(0.5))
+                return false;
+            field.print(Text.status_effects_attract(2, this.subject));
+            return true;
+        },
+        informWithdraw : informPokemonRemoved,
+        informReplacePokemon : informPokemonRemoved,
+        informBatonPass : informPokemonRemoved
+    };
+}());
 
 
 /**

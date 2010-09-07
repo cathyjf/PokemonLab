@@ -830,6 +830,8 @@ void Pokemon::faint() {
         m_field->informHealthChange(this, delta);
     }
     m_field->informFainted(this);
+    ScriptValue argv[] = { this };
+    m_field->sendMessage("informReplacePokemon", 1, argv);
     // TODO: Clear memory at end of move execution instead.
     clearMemory();
 }

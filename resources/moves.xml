@@ -589,6 +589,7 @@ this.effects_.forEach(function(i) {
 });
 var slot = user.position;
 user.switchOut();
+field.sendMessage("informBatonPass", user);
 selection.sendOut(slot);
 ]]>
 </use>
