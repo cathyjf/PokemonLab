@@ -659,7 +659,7 @@ static JSFunctionSpec globalFunctions[] = {
 ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     m_impl = new ScriptMachineImpl(this);
 
-    m_impl->runtime = JS_NewRuntime(100L * 1024L * 1024L);
+    m_impl->runtime = JS_NewRuntime(512L * 1024L * 1024L);
     if (m_impl->runtime == NULL) {
         delete m_impl;
         throw ScriptMachineException();
