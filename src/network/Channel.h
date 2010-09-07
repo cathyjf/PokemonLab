@@ -141,6 +141,8 @@ public:
 
     virtual Channel::FLAGS getUserFlags(const std::string &);
 
+    virtual void getBan(const std::string &user, int &date, int &flags);
+
     virtual ~Channel() { }
 
 private:

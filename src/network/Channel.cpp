@@ -522,6 +522,11 @@ Channel::FLAGS Channel::getUserFlags(const string &user) {
     return m_impl->server->getRegistry()->getUserFlags(getId(), user);
 }
 
+void Channel::getBan(const string &user, int &date, int &flags) {
+    Server *server = m_impl->server;
+    server->getRegistry()->getBan(getId(), user, date, flags);
+}
+
 }} // namespace shoddybattle::network
 
 
