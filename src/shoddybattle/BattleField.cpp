@@ -572,7 +572,6 @@ void BattleField::executeSwitchAction(Pokemon *p, const int idx) {
  */
 void BattleField::withdrawPokemon(Pokemon *p) {
     if (p->isFainted()) {
-        //TODO: call switchOut() instead?
         p->setSlot(-1);
         return;
     }
@@ -616,7 +615,6 @@ StatusObjectPtr BattleField::applyStatus(StatusObject *effect) {
     if (!applied) {
         return StatusObjectPtr();
     }
-    // TODO: Call a function to inform that the effect was applied.
     m_impl->effects.push_back(ret);
     return ret;
 }
@@ -716,39 +714,6 @@ bool BattleField::vetoSwitch(Pokemon *subject) {
     }
     return false;
 }
-
-/**
- * Determine whether to veto the execution of a move. A single effect wanting
- * to veto the execution is enough to do so.
- */
-/**bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
-        MoveObject *move) {
-    if (user->vetoExecution(user, target, move))
-        return true;
-    
-    vector<Pokemon *> pokemon;
-    for (int i = 0; i < TEAM_COUNT; ++i) {
-        for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
-            if (p && !p->isFainted()) {
-                Pokemon *pp = p.get();
-                if (pp != user) {
-                    pokemon.push_back(pp);
-                }
-            }
-        }
-    }
-
-    sortBySpeed(pokemon);
-    for (vector<Pokemon *>::iterator i = pokemon.begin();
-            i != pokemon.end(); ++i) {
-        if ((*i)->vetoExecution(user, target, move)) {
-            return true;
-        }
-    }
-    return false;
-}**/
 
 namespace {
 
@@ -890,6 +855,15 @@ void BattleField::tickEffects() {
                 }
             }
         }
+    }
+
+    // Determine what order to sort pokemon by speed for the purpose of end
+    // of turn effects. This is recalculated here in case the value changed
+    // during the turn. We send the message to a pokemon known to be alive.
+    if (!effects.empty()) {
+        Pokemon::PTR p = effects[0].subject;
+        ScriptValue v = p->sendMessage("informSpeedSort", 0, NULL);
+        m_impl->descendingSpeed = v.failed() ? true : v.getBool();
     }
 
     sort(effects.begin(), effects.end(), boost::bind(effectComparator,
