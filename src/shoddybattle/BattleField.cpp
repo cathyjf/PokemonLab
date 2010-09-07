@@ -577,7 +577,7 @@ void BattleField::withdrawPokemon(Pokemon *p) {
     }
     informWithdraw(p);
     ScriptValue argv[] = { p };
-    sendMessage("informWithdraw", 1, argv)
+    sendMessage("informWithdraw", 1, argv);
     p->switchOut(); // Note: clears slot.
 }
 
