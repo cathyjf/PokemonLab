@@ -762,8 +762,9 @@ makeItem({
     name : "Destiny Knot",
     informAttracted : function(inducer) {
         //todo: message?
-        if (!inducer.getStatus("AttractEffect"))
+        if (!inducer.getStatus("AttractEffect")) {
             inducer.applyStatus(this.subject, new AttractEffect());
+        }
         return false;
     }
 });

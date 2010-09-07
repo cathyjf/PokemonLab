@@ -136,6 +136,9 @@ makeEffect(StatusEffect, {
     vetoTier : 9,
     applyEffect : function() {
         var field = this.subject.field;
+        if (!isOppositeGender(this.inducer, this.subject)) {
+            return false;
+        }
         field.print(Text.status_effects_attract(3, this.subject, this.inducer));
         if (this.subject.sendMessage("informAttracted", this.inducer)) {
             return false;

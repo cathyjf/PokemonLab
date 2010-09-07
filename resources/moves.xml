@@ -449,15 +449,11 @@ makeStatusMove(this, [[FlinchEffect, 0.3]]);
     <reflect/>
     <memorable/>
 </flags>
-<use>
+<init>
 <![CDATA[
-if (target.getStatus("AttractEffect") || !isOppositeGender(user, target)) {
-    field.print(Text.battle_messages(0));
-    return;
-}
-target.applyStatus(user, new AttractEffect());
+makeStatusMove(this, [[AttractEffect]]);
 ]]>
-</use>
+</init>
 </move>
 
 <move name="Aura Sphere" id="21">
