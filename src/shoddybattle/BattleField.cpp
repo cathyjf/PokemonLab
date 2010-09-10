@@ -857,7 +857,8 @@ void BattleField::tickEffects() {
         if (!(*i)->isActive(cx))
             continue;
 
-        cx->callFunctionByName(i->get(), "beginTick", 0, NULL);
+        ScriptValue argv[] = { this };
+        cx->callFunctionByName(i->get(), "beginTick", 1, argv);
     }
 
     vector<EffectEntity> effects;
@@ -941,6 +942,7 @@ void BattleField::tickEffects() {
         StatusObject *effect = i->effect;
         if (!effect->isActive(cx))
             continue;
+
         ScriptValue argv[] = { this };
         cx->callFunctionByName(effect, "endTick", 1, argv);
     }

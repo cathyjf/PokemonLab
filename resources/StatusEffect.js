@@ -146,10 +146,10 @@ StatusEffect.prototype = {
     },
 
     // Called before field effects are ticked.
-    beginTick : function() { },
+    beginTick : function(field) { },
 
     // Called after field effects are ticked.
-    endTick : function() { },
+    endTick : function(field) { },
 
     // Called at the end of every pokemon's turn.
     informFinishedExecution : function(subject, move) {

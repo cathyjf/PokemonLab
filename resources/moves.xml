@@ -10783,9 +10783,9 @@ effect.tick = function() {
     if (hp < 1) hp = 1;
     this.subject.hp += hp;
 };
-effect.endTick = function() {
+effect.endTick = function(field) {
     if (--this.turns <= 0) {
-        this.subject.field.removeStatus(this);
+        field.removeStatus(this);
     }
 };
 field.print(Text.battle_messages_unique(77, user));

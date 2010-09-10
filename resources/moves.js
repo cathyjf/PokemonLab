@@ -594,9 +594,9 @@ function makeDelayedAttackMove(move) {
                 field.print(Text.battle_messages(2, user, this.subject));
             }
         };
-        effect.endTick = function() {
+        effect.endTick = function(field) {
             if (--this.turns <= 0) {
-                this.subject.field.removeStatus(this);
+                field.removeStatus(this);
             }
         };
         field.applyStatus(effect);
@@ -827,7 +827,7 @@ function makePartyBuffMove(move, moveClass) {
                 return;
             // TODO: Fix this message to reference the trainer's name.
             field.print(Text.battle_messages_unique(80, move));
-            this.subject.field.removeStatus(this);
+            field.removeStatus(this);
         };
         effect.modifier = function(field, user, target, move, critical) {
             if (target.party != this.party_)

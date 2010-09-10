@@ -232,10 +232,10 @@ makeEffect(StatusEffect, {
     informFinished : function(field) {
         field.print(Text.battle_messages_unique(25));
     },
-    endTick : function() {
+    endTick : function(field) {
         if (--this.turns_ == 0) {
-            getGlobalController(this.subject.field).removeGlobalEffect(
-                    this.subject.field, GlobalEffect.TRICK_ROOM);
+            getGlobalController(field).removeGlobalEffect(
+                    field, GlobalEffect.TRICK_ROOM);
         }
     }
 });
@@ -280,10 +280,10 @@ makeEffect(StatusEffect, {
     informFinished : function(field) {
         field.print(Text.battle_messages_unique(115));
     },
-    endTick : function() {
+    endTick : function(field) {
         if (--this.turns_ == 0) {
-            getGlobalController(this.subject.field).removeGlobalEffect(
-                    this.subject.field, GlobalEffect.GRAVITY);
+            getGlobalController(field).removeGlobalEffect(
+                    field, GlobalEffect.GRAVITY);
         }
     }
 });
