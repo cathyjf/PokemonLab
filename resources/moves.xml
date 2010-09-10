@@ -3487,10 +3487,12 @@ this.use = function(field, user, target, targets) {
         if (user.item.berry_ || (id == "White Herb") || (id == "Mental Herb")) {
             field.print(Text.battle_messages_unique(147, target,
                     user, user.item));
-            user.item.use(target);
+            user.item.use(target); // consumes item
         }
     }
-    user.item = null;
+    if (user.item) {
+        user.item.consume();
+    }
 };
 ]]>
 </init>
@@ -6420,7 +6422,7 @@ this.use = function(field, user, target, targets) {
         return;
     }
     target.hp -= field.calculate(this, user, target, targets);
-    user.item = null;
+    user.item.consume();
 };
 ]]>
 </init>
@@ -7502,7 +7504,7 @@ makeRecoveryMove(this);
 </flags>
 <use>
 <![CDATA[
-var effect = user.getStatus("ConsumedItemEffect");
+var effect = user.getStatus("ItemConsumedEffect");
 if (user.item || !effect) {
     field.print(Text.battle_messages(0));
     return;
