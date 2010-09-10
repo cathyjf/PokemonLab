@@ -32,10 +32,16 @@ makeEffect(StatusEffect, {
     tick : function() {
         if (!this.ticked_) {
             this.ticked_ = true;
-            if (this.tickField(this.subject.field))
+            if (this.tickField(this.subject.field)) {
                 return;
+            }
         }
         this.tickPokemon();
+    },
+    endTick : function(field) {
+        if (!this.ticked_) {
+            this.tickField(field);
+        }
     },
     tickField : function() { },
     tickPokemon : function() { }
@@ -50,8 +56,8 @@ makeEffect(GlobalEffect, {
     },
     tickField : function(field) {
         if ((this.turns_ != -1) && (--this.turns_ == 0)) {
-            var effect = getGlobalController(this.subject);
-            effect.removeGlobalEffect(this.subject, this.idx_);
+            var effect = getGlobalController(field);
+            effect.removeGlobalEffect(field, this.idx_);
             return true;
         }
         this.tickWeather(field);
@@ -73,8 +79,8 @@ makeEffect(GlobalEffect, {
     tickPokemon : function() {
         if (this.subject.field.sendMessage("informWeatherEffects"))
             return;
-        var flags = getGlobalController(this.subject).flags;
         var subject = this.subject;
+        var flags = getGlobalController(subject.field).flags;
         if (subject.sendMessage("informWeatherHealing", flags))
             return;
         if (flags[GlobalEffect.SAND] ||
@@ -208,8 +214,8 @@ makeEffect(StatusEffect, {
     removeUser : function() {
         if (--this.users_ <= 0) {
             this.users_ = 0;
-            getGlobalController(this.subject).removeGlobalEffect(
-                    this.subject, GlobalEffect.UPROAR);
+            getGlobalController(this.subject.field).removeGlobalEffect(
+                    this.subject.field, GlobalEffect.UPROAR);
         }
     }
 });
@@ -228,8 +234,8 @@ makeEffect(StatusEffect, {
     },
     endTick : function() {
         if (--this.turns_ == 0) {
-            getGlobalController(this.subject).removeGlobalEffect(
-                    this.subject, GlobalEffect.TRICK_ROOM);
+            getGlobalController(this.subject.field).removeGlobalEffect(
+                    this.subject.field, GlobalEffect.TRICK_ROOM);
         }
     }
 });
@@ -276,8 +282,8 @@ makeEffect(StatusEffect, {
     },
     endTick : function() {
         if (--this.turns_ == 0) {
-            getGlobalController(this.subject).removeGlobalEffect(
-                    this.subject, GlobalEffect.GRAVITY);
+            getGlobalController(this.subject.field).removeGlobalEffect(
+                    this.subject.field, GlobalEffect.GRAVITY);
         }
     }
 });
@@ -287,14 +293,14 @@ makeEffect(StatusEffect, {
     ctor : function() {
         this.flags = [false, false, false, false, false, false, false, false];
     },
-    removeGlobalEffect : function(user, idx) {
+    removeGlobalEffect : function(field, idx) {
         if (!this.flags[idx])
             return;
         this.flags[idx] = false;
-        var effect = user.getStatus(GlobalEffect.EFFECTS[idx]);
+        var effect = field.getStatus(GlobalEffect.EFFECTS[idx]);
         if (effect) {
-            effect.informFinished(user.field);
-            user.field.removeStatus(effect);
+            effect.informFinished(field);
+            field.removeStatus(effect);
         }
     },
     applyGlobalEffect : function(user, idx) {
@@ -317,7 +323,7 @@ makeEffect(StatusEffect, {
             return null;
         }
         for (var i = GlobalEffect.RAIN; i <= GlobalEffect.FOG; ++i) {
-            this.removeGlobalEffect(user, i);
+            this.removeGlobalEffect(user.field, i);
         }
         var effect = this.applyGlobalEffect(user, idx);
         effect.informApplied(user);
@@ -347,15 +353,16 @@ function getGlobalEffect(idx) {
     return this[GlobalEffect.EFFECTS[idx]];
 }
 
-function getGlobalController(user) {
-    var effect = user.getStatus("GlobalEffectController");
-    if (effect)
+function getGlobalController(field) {
+    var effect = field.getStatus("GlobalEffectController");
+    if (effect) {
         return effect;
-    return user.field.applyStatus(new GlobalEffectController());
+    }
+    return field.applyStatus(new GlobalEffectController());
 }
 
 function isWeatherActive(user, idx) {
     if (user.field.sendMessage("informWeatherEffects"))
         return false;
-    return getGlobalController(user).flags[idx];
+    return getGlobalController(user.field).flags[idx];
 }

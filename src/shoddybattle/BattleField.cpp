@@ -618,6 +618,13 @@ StatusObjectPtr BattleField::applyStatus(StatusObject *effect) {
 }
 
 /**
+ * Find a status effect applied to the field by ID.
+ */
+StatusObjectPtr BattleField::getStatus(const string &id) {
+    return Pokemon::getStatus(m_impl->effects, m_impl->context, id);
+}
+
+/**
  * Remove a status effect from the field.
  */
 void BattleField::removeStatus(StatusObject *effect) {
@@ -805,6 +812,12 @@ struct EffectEntity {
     int subtier;
 };
 
+struct FieldEffectEntity {
+    StatusObject *effect;
+    double tier;
+    int subtier;
+};
+
 bool effectComparator(const bool descendingSpeed,
         const EffectEntity &e1, const EffectEntity &e2) {
     if (e1.tier != e2.tier) {
@@ -814,7 +827,21 @@ bool effectComparator(const bool descendingSpeed,
         const bool cmp = e1.speed > e2.speed;
         return descendingSpeed ? cmp : !cmp;
     }
-    return e1.subtier < e2.subtier;
+    if (e1.subtier != e2.subtier) {
+        return e1.subtier < e2.subtier;
+    }
+    return &e1 < &e2; // arbitrary but stable
+}
+
+bool fieldEffectComparator(const FieldEffectEntity &e1,
+        const FieldEffectEntity &e2) {
+    if (e1.tier != e2.tier) {
+        return (e1.tier < e2.tier);
+    }
+    if (e1.subtier != e2.subtier) {
+        return e1.subtier < e2.subtier;
+    }
+    return &e1 < &e2; // arbitrary but stable
 }
 
 } // anonymous namespace
@@ -896,12 +923,26 @@ void BattleField::tickEffects() {
         }
     }
 
+    vector<FieldEffectEntity> fieldEffects;
     for (STATUSES::const_iterator i = m_impl->effects.begin();
             i != m_impl->effects.end(); ++i) {
         if (!(*i)->isActive(cx))
             continue;
+        FieldEffectEntity entity = { i->get(), (*i)->getTier(cx),
+                (*i)->getSubtier(cx) };
+        fieldEffects.push_back(entity);
+    }
 
-        cx->callFunctionByName(i->get(), "endTick", 0, NULL);
+    sort(fieldEffects.begin(), fieldEffects.end(),
+            boost::bind(fieldEffectComparator, _1, _2));
+
+    for (vector<FieldEffectEntity>::const_iterator i = fieldEffects.begin();
+            i != fieldEffects.end(); ++i) {
+        StatusObject *effect = i->effect;
+        if (!effect->isActive(cx))
+            continue;
+        ScriptValue argv[] = { this };
+        cx->callFunctionByName(effect, "endTick", 1, argv);
     }
 
     for (int i = 0; i < TEAM_COUNT; ++i) {

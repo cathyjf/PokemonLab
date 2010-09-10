@@ -831,7 +831,7 @@ makeStatusMove(this, [[FreezeEffect, 0.1]]);
 var accuracy_ = this.accuracy;
 this.attemptHit = function(field, user, target) {
     this.accuracy = accuracy_;
-    var flags = getGlobalController(user).getFlags();
+    var flags = getGlobalController(field).getFlags();
     if (flags[GlobalEffect.HAIL]) {
         this.accuracy = 0;
         // TODO: maybe apply effect for x0 instead...
@@ -3956,7 +3956,7 @@ makeStatusMove(this, [[SleepEffect]]);
 <init>
 <![CDATA[
 this.prepareSelf = function(field, user) {
-    var effect = getGlobalController(user);
+    var effect = getGlobalController(field);
     if (effect.flags[GlobalEffect.GRAVITY]) {
         field.print(Text.battle_messages(0));
         return;
@@ -7311,7 +7311,7 @@ if (switching) {
 }
 target.hp -= field.calculate(this, user, target, targets);
 if (target.fainted && switching && (user.party == field.host)) {
-    getGlobalController(user).simulateBufferOverflow();
+    getGlobalController(field).simulateBufferOverflow();
 }
 ]]>
 </use>
@@ -8821,7 +8821,7 @@ var parent = this.use;
 var power_ = this.power;
 this.use = function(field, user, target, targets) {
     this.power = power_;
-    var flags = getGlobalController(user).getFlags();
+    var flags = getGlobalController(field).getFlags();
     if (flags[GlobalEffect.RAIN]
             || flags[GlobalEffect.SAND]
             || flags[GlobalEffect.HAIL]) {
@@ -9920,7 +9920,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.3]]);
 var accuracy_ = this.accuracy;
 this.attemptHit = function(field, user, target) {
     this.accuracy = accuracy_;
-    var flags = getGlobalController(user).getFlags();
+    var flags = getGlobalController(field).getFlags();
     if (flags[GlobalEffect.RAIN]) {
         this.accuracy = 0;
         // TODO: maybe apply effect for x0 instead...
@@ -10199,9 +10199,9 @@ makeItemSwitchMove(this);
 <init>
 <![CDATA[
 this.prepareSelf = function(field, user) {
-    var effect = getGlobalController(user);
+    var effect = getGlobalController(field);
     if (effect.flags[GlobalEffect.TRICK_ROOM]) {
-        effect.removeGlobalEffect(user, GlobalEffect.TRICK_ROOM);
+        effect.removeGlobalEffect(field, GlobalEffect.TRICK_ROOM);
     } else {
         effect.applyGlobalEffect(user, GlobalEffect.TRICK_ROOM);
         field.print(Text.battle_messages_unique(24, user));
@@ -10417,7 +10417,7 @@ this.prepareSelf = function(field, user) {
     user.applyStatus(user, effect);
     effect = user.getStatus("UproarEffect");
     if (!effect) {
-        effect = getGlobalController(user).applyGlobalEffect(user,
+        effect = getGlobalController(field).applyGlobalEffect(user,
                 GlobalEffect.UPROAR);
     }
     ++effect.users_;
@@ -10653,7 +10653,7 @@ this.prepareSelf = function(field, user) {
     // TODO (NOTE): More mechanics made up by me.
     this.type = type_;
     this.power = power_;
-    var flags = getGlobalController(user).getFlags();
+    var flags = getGlobalController(field).getFlags();
     if (flags[GlobalEffect.SUN]) {
         this.type = Type.FIRE;
     } else if (flags[GlobalEffect.RAIN]) {

@@ -326,6 +326,11 @@ public:
     boost::shared_ptr<StatusObject> applyStatus(StatusObject *);
 
     /**
+     * Find a status effect applied to the field by ID.
+     */
+    boost::shared_ptr<StatusObject> getStatus(const std::string &);
+
+    /**
      * Remove a status effect from the field.
      */
     void removeStatus(StatusObject *);

@@ -63,13 +63,12 @@ enum FIELD_TINYID {
 };
 
 /**
- *      field.random(lower, upper)
- *          Generate a random integer in the range [lower, upper], distributed
- *          according to a uniform distribution.
+ *  field.random(lower, upper)
+ *      Generate a random integer in the range [lower, upper], distributed
+ *      according to a uniform distribution.
  *
- *      field.random(chance)
- *          Return a boolean with the given chance of being true.
- *
+ *  field.random(chance)
+ *      Return a boolean with the given chance of being true.
  */
 JSBool random(JSContext *cx,
         JSObject *obj, uintN argc, jsval *argv, jsval *ret) {
@@ -251,6 +250,28 @@ JSBool applyStatus(JSContext *cx,
         *ret = JSVAL_NULL;
     }
 
+    return JS_TRUE;
+}
+
+/**
+ * field.getStatus(id)
+ */
+JSBool getStatus(JSContext *cx,
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        JS_ReportError(cx, "getStatus: parameter must be a string");
+        return JS_FALSE;
+    }
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    StatusObjectPtr sobj = field->getStatus(str);
+    if (sobj) {
+        *ret = OBJECT_TO_JSVAL((JSObject *)sobj->getObject());
+    } else {
+        *ret = JSVAL_NULL;
+    }
+    
     return JS_TRUE;
 }
 
@@ -604,6 +625,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("print", print, 1, 0, 0),
     JS_FS("getActivePokemon", getActivePokemon, 2, 0, 0),
     JS_FS("applyStatus", applyStatus, 1, 0, 0),
+    JS_FS("getStatus", getStatus, 1, 0, 0),
     JS_FS("removeStatus", removeStatus, 1, 0, 0),
     JS_FS("sendMessage", sendMessage, 1, 0, 0),
     JS_FS("getPartySize", getPartySize, 1, 0, 0),

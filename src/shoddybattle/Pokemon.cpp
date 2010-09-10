@@ -377,15 +377,20 @@ void Pokemon::clearMemory() {
 /**
  * Get a status effect by ID.
  */
-StatusObjectPtr Pokemon::getStatus(const string &id) {
-    for (STATUSES::iterator i = m_effects.begin(); i != m_effects.end(); ++i) {
-        if ((*i)->getId(m_cx) != id)
+StatusObjectPtr Pokemon::getStatus(STATUSES &effects,
+        ScriptContext *cx, const string &id) {
+    for (STATUSES::iterator i = effects.begin(); i != effects.end(); ++i) {
+        if ((*i)->getId(cx) != id)
             continue;
 
-        if (!(*i)->isRemovable(m_cx))
+        if (!(*i)->isRemovable(cx))
             return *i;
     }
     return StatusObjectPtr();
+}
+
+StatusObjectPtr Pokemon::getStatus(const string &id) {
+    return getStatus(m_effects, m_cx, id);
 }
 
 /**

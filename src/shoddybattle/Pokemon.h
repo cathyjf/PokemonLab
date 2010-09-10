@@ -125,6 +125,8 @@ public:
     const STATUSES &getEffects() const { return m_effects; }
     boost::shared_ptr<StatusObject> applyStatus(Pokemon *, StatusObject *);
     void removeStatus(StatusObject *);
+    static boost::shared_ptr<StatusObject> getStatus(STATUSES &,
+            ScriptContext *, const std::string &);
     boost::shared_ptr<StatusObject> getStatus(const std::string &);
     boost::shared_ptr<StatusObject> getStatus(const int lock);
     void getModifiers(Pokemon *, Pokemon *,
@@ -229,7 +231,9 @@ public:
     }
     FORCED_TYPE getForcedType() const;
     bool isMoveLegal(const int i) const { return m_legalMove[i]; }
-    bool isSwitchLegal() const { return m_legalSwitch && m_forcedType != FORCED_ACTION; }
+    bool isSwitchLegal() const {
+        return m_legalSwitch && m_forcedType != FORCED_ACTION;
+    }
 
     struct RECENT_DAMAGE {
         Pokemon *user;

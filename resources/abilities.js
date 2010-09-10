@@ -144,7 +144,7 @@ function makeWeatherAbility(ability, idx, text) {
         name : ability,
         informActivate : function() {
             this.subject.field.print(text(this.subject));
-            var controller = getGlobalController(this.subject);
+            var controller = getGlobalController(this.subject.field);
             var effect = controller.applyWeather(this.subject, idx);
             if (!effect) {
                 effect = this.subject.getStatus(GlobalEffect.EFFECTS[idx]);
