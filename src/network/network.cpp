@@ -1447,7 +1447,8 @@ void ClientImpl::handleReadBody(const boost::system::error_code &error) {
     m_lastActivity = time(NULL);
     
     const int type = (int)m_msg.getType();
-    if ((type > 2) && !m_authenticated) {
+    if ((type > 2) && (type != InMessage::CLIENT_ACTIVITY) &&
+            !m_authenticated) {
         m_server->removeClient(shared_from_this());
         return;
     }
