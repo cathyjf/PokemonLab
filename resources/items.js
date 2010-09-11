@@ -224,6 +224,8 @@ function makeFeedbackDamageBerry(item, moveclass) {
         name : item,
         berry_ : true,
         informDamaged : function(user, move, damage) {
+            if (this.subject.fainted)
+                return;
             if (this.subject == user)
                 return;
             if (move.moveClass != moveclass)
