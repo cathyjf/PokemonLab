@@ -416,7 +416,7 @@ makeAbility({
             return null;
         if ((stat != Stat.ATTACK) && (stat != Stat.SPEED))
             return null;
-        return [0.5, 1];
+        return [0.5, 7];
     }
 });
 
@@ -917,7 +917,7 @@ makeAbility({
             return null;
         if (!isWeatherActive(subject, GlobalEffect.SUN))
             return null;
-        return [2, 1];
+        return [2, 2];
     }
 });
 
@@ -1133,8 +1133,8 @@ makeAbility({
         if (subject.getStatus(StatusEffect.SPECIAL_EFFECT) == null)
             return null;
 
-        // 50% speed increase; priority of 1 (ability modifier)
-        return [1.5, 1];
+        // 50% speed increase; priority of 6
+        return [1.5, 6];
     }
 });
 
@@ -1670,7 +1670,7 @@ makeAbility({
                 return null;
             if (stat != Stat.SPEED)
                 return null;
-            return [2, 1];
+            return [2, 8];
         }
         this.subject.applyStatus(this.subject, effect);
     }

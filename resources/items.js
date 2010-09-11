@@ -302,7 +302,11 @@ function makeSpeciesBoostingItem(item, species, modifiers) {
                 return null;
             for (var i in modifiers) {
                 if (modifiers[i][0] == stat) {
-                    return [modifiers[i][1], 3];
+                    var position = 3;
+                    if (modifiers[i].size > 2) {
+                        position = modifiers[i][2];
+                    }
+                    return [modifiers[i][1], position];
                 }
             }
             return null;
@@ -371,7 +375,7 @@ makeChoiceItem("Choice Scarf", function(field, stat, subject) {
         return null;
     if (stat != Stat.SPEED)
         return null;
-    return [1.5, 2];
+    return [1.5, 4];
 });
 
 makeItem({
@@ -621,7 +625,7 @@ makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"],
 //todo: probably have to change these for transform
 makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0],
         [Stat.SPDEFENCE, 2.0]]);
-makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0]]);
+makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0, 5]]);
 
 makeStabBoostItem("Adamant Orb", "Dialga");
 makeStabBoostItem("Lustrous Orb", "Palkia");

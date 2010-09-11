@@ -9741,8 +9741,8 @@ this.prepareSelf = function(field, user) {
             return null;
         if (stat != Stat.SPEED)
             return null;
-        // doubles speed, priority of 4
-        return [2, 4];
+        // doubles speed, priority of 9
+        return [2, 9];
     };
     field.print(Text.battle_messages_unique(138, user));
     field.applyStatus(effect);

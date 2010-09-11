@@ -378,8 +378,8 @@ makeEffect(StatusEffect, {
             return null;
         if (this.subject.sendMessage("informParalysisMod"))
             return null;
-        // reduces speed to 25%, priority of 3
-        return [0.25, 3];
+        // reduces speed to 25%, priority of 6
+        return [0.25, 6];
     }
 });
 
