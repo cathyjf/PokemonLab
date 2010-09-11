@@ -540,7 +540,7 @@ public:
             m_rand(mt11213b(time(NULL))) { }
             
     bool queueClient(ClientImplPtr, Pokemon::ARRAY &);
-
+    void removeClient(ClientImplPtr);
     void startMatches();
 
 private:
@@ -1624,6 +1624,19 @@ string ClientImpl::getBanString(const string &mod, const string &user,
 }
 
 void ClientImpl::disconnect() {
+    {
+        // Withdraw any oustanding challenges.
+        lock_guard<mutex> lock(m_challengeMutex);
+        map<string, ChallengePtr>::const_iterator i = m_challenges.begin();
+        for (; i != m_challenges.end(); ++i) {
+            ClientImplPtr opponent = m_server->getClient(i->first);
+            if (opponent) {
+                // The opponent may actually have become disconnected by this
+                // point, but it doesn't matter because this call is safe.
+                opponent->sendMessage(ChallengeWithdrawn(m_name));
+            }
+        }
+    } // unlocks m_challengeMutex
     lock_guard<shared_mutex> lock(m_channelMutex);
     // The channel mutex is sneakily used to synchronise this "if open, close"
     // check.
@@ -1688,6 +1701,11 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     }
     m_queue.push_back(QUEUE_ENTRY(client, team));
     return true;
+}
+
+void MetagameQueue::removeClient(ClientImplPtr client) {
+    lock_guard<mutex> lock(m_mutex);
+    m_clients.erase(client);
 }
 
 void MetagameQueue::startMatches() {
@@ -2094,8 +2112,16 @@ void ServerImpl::stop() {
  * Remove a client.
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
+    // Remove the client from any metagame queues that the client may be in.
+    map<pair<int, bool>, MetagameQueuePtr>::iterator i = m_queues.begin();
+    for (; i != m_queues.end(); ++i) {
+        i->second->removeClient(client);
+    }
+
+    // Disconnect the client.
     client->disconnect();
 
+    // Remove the client from the list of clients.
     lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
 }
