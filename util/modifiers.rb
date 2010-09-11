@@ -11,10 +11,8 @@ Dir.glob("../resources/*.{js,xml}") { |f| File.open(f) { |io|
     }
 }}
 
-results.each { |a, b|
+results.sort.each { |a, b|
     puts "#{a}:"
-    (b.sort { |x, y| x[0] <=> y[0] }).each { |a, b|
-        puts "    #{a}: #{b.join(', ')}"
-    }
+    b.sort.each { |a, b| puts "    #{a}: #{b.join(', ')}" }
     puts
 }
