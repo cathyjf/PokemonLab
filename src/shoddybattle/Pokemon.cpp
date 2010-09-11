@@ -559,7 +559,10 @@ bool Pokemon::executeMove(MoveObjectPtr move,
     m_field->getTargetList(tc, targets, this, target);
 
     if (tc == T_NONE) {
+        BattleField::EXECUTION entry = { this, move };
+        m_field->pushExecution(entry);
         move->use(m_cx, m_field, this, targets[0], 0);
+        m_field->popExecution();
         m_acted = true;
         return true;
     }
