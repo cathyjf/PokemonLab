@@ -130,7 +130,7 @@ function makeStatLevelProtectionAbility(ability, predicate) {
 function makeFilterAbility(ability) {
     makeAbility({
         name : ability,
-        // @stat 3, 0, Filter
+        // @mod 3, 0, Filter
         modifier : function(field, user, target, move, critical) {
             if (target != this.subject)
                 return null;
