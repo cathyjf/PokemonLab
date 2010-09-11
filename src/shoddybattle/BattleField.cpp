@@ -1095,6 +1095,9 @@ void BattleField::processReplacements(const std::vector<PokemonTurn> &turns) {
         const PokemonTurn *turn = ordered[i];
 
         executeSwitchAction(p.get(), turn->id);
+        if (determineVictory()) {
+            return;
+        }
     }
 }
 
