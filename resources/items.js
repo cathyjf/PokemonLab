@@ -734,7 +734,7 @@ makeItem({
             return null;
         if (stat != Stat.ACCURACY)
             return null;
-        return [1.1, 3];
+        return [1.1, 9];
     }
 });
 
