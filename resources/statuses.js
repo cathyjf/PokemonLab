@@ -249,6 +249,7 @@ makeEffect(StatusEffect, {
         this.subject.field.print(Text.status_effects_burn(2, this.subject));
         this.subject.hp -= damage;
     },
+    // @mod 1, 0, Burn
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -371,6 +372,7 @@ makeEffect(StatusEffect, {
         field.print(Text.status_effects_paralysis(2, user));
         return true;
     },
+    // @stat SPEED, 6, Paralysis
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;

@@ -140,6 +140,7 @@ makeEffect(WeatherEffect, {
         }
         WeatherEffect.prototype.tickPokemon.call(this);
     },
+    // @mod 1, 3, Rain
     modifier : function(field, user, target, move, critical) {
         if (field.sendMessage("informWeatherEffects"))
             return null;
@@ -157,6 +158,7 @@ makeEffect(WeatherEffect, {
     name : Text.weather_sandstorm(0),
     text_ : Text.weather_sandstorm,
     idx_ : GlobalEffect.SAND,
+    // @stat SPDEFENCE, 3, Sand
     statModifier : function(field, stat, subject) {
         if (field.sendMessage("informWeatherEffects"))
             return null;
@@ -173,6 +175,7 @@ makeEffect(WeatherEffect, {
     name : Text.weather_sun(0),
     text_ : Text.weather_sun,
     idx_ : GlobalEffect.SUN,
+    // @mod 1, 4, Sun
     modifier : function(field, user, target, move, critical) {
         if (field.sendMessage("informWeatherEffects"))
             return null;
@@ -261,6 +264,7 @@ makeEffect(StatusEffect, {
     vulnerability : function(user, target) {
         return Type.GROUND;
     },
+    // @stat ACCURACY, 12, Gravity
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;

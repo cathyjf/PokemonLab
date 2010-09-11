@@ -97,6 +97,7 @@ function makeItem(obj) {
 function makeEvadeItem(item) {
     makeItem({
         name : item,
+        // @stat ACCURACY, 8, Evade Items
         statModifier : function(field, stat, subject, target) {
             if (stat != Stat.ACCURACY)
                 return null;
@@ -241,6 +242,7 @@ function makeTypeBoostingItem(item, type) {
     makeItem({
         name : item,
         type_ : type,
+        // @mod 0, 1, Type Boosting Items
         modifier : function(field, user, target, move, critical) {
             if (user != this.subject)
                 return null;
@@ -308,11 +310,7 @@ function makeSpeciesBoostingItem(item, species, modifiers) {
                 return null;
             for (var i in modifiers) {
                 if (modifiers[i][0] == stat) {
-                    var position = 3;
-                    if (modifiers[i].length > 2) {
-                        position = modifiers[i][2];
-                    }
-                    return [modifiers[i][1], position];
+                    return [modifiers[i][1], modifiers[i][2]];
                 }
             }
             return null;
@@ -334,6 +332,7 @@ function makeStatusInducingItem(item, effect) {
 function makeStabBoostItem(item, species) {
     makeItem({
         name: item,
+        // @mod 0, 2, STAB Boosting Items
         modifier: function(field, user, target, move, critical) {
             if (user != this.subject)
                 return null;
@@ -349,6 +348,7 @@ function makeStabBoostItem(item, species) {
 function makeMoveClassBoostingItem(item, class_) {
     makeItem({
         name : item,
+        // @mod 0, 2, Move Class Boosting Items
         modifier : function(field, user, target, move, critical) {
             if (user != this.subject)
                 return null;
@@ -358,8 +358,8 @@ function makeMoveClassBoostingItem(item, class_) {
         }
     });
 }
-            
 
+// @stat ATTACK, 3, Choice Band
 makeChoiceItem("Choice Band", function(field, stat, subject) {
     if (subject != this.subject)
         return null;
@@ -368,6 +368,7 @@ makeChoiceItem("Choice Band", function(field, stat, subject) {
     return [1.5, 3];
 });
 
+// @stat SPATTACK, 3, Choice Specs
 makeChoiceItem("Choice Specs", function(field, stat, subject) {
     if (subject != this.subject)
         return null;
@@ -376,6 +377,7 @@ makeChoiceItem("Choice Specs", function(field, stat, subject) {
     return [1.5, 3];
 });
 
+// @stat SPEED, 4, Choice Scarf
 makeChoiceItem("Choice Scarf", function(field, stat, subject) {
     if (subject != this.subject)
         return null;
@@ -386,6 +388,7 @@ makeChoiceItem("Choice Scarf", function(field, stat, subject) {
 
 makeItem({
     name : "Life Orb",
+    // @mod 2, 0, Life Orb
     modifier : function(field, user, target, move, critical, targets) {
         if (user != this.subject)
             return null;
@@ -620,17 +623,30 @@ makeStatusCureItem("Lum Berry", ["ParalysisEffect", "SleepEffect",
 makeEvadeItem("Brightpowder");
 makeEvadeItem("Lax Incense");
 
-makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"], [[Stat.SPATTACK, 2.0]]);
-makeSpeciesBoostingItem("DeepSeaScale", ["Clamperl"], [[Stat.SPDEFENCE, 2.0]]);
-makeSpeciesBoostingItem("Light Ball", ["Pikachu"], [[Stat.SPATTACK, 2.0],
-        [Stat.ATTACK, 2.0]]);
-makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"], [[Stat.SPATTACK, 1.5],
-        [Stat.SPDEFENCE, 1.5]]);
+// @stat SPATTACK, 3, DeepSeaTooth
+makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"],
+        [[Stat.SPATTACK, 2.0, 3]]);
+// @stat SPDEFENCE, 3, DeepSeaScale
+makeSpeciesBoostingItem("DeepSeaScale", ["Clamperl"],
+        [[Stat.SPDEFENCE, 2.0, 3]]);
+// @stat SPATTACK, 3, Light Ball
+// @stat ATTACK, 3, Light Ball
+makeSpeciesBoostingItem("Light Ball", ["Pikachu"],
+        [[Stat.SPATTACK, 2.0, 3],
+        [Stat.ATTACK, 2.0, 3]]);
+// @stat SPATTACK, 3, Soul Dew
+// @stat SPDEFENCE, 3, Soul Dew
+makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"],
+        [[Stat.SPATTACK, 1.5, 3], [Stat.SPDEFENCE, 1.5, 3]]);
+// @stat ATTACK, 3, Thick Club
 makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"],
-        [[Stat.ATTACK, 2.0]]);
-//todo: probably have to change these for transform
-makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0],
-        [Stat.SPDEFENCE, 2.0]]);
+        [[Stat.ATTACK, 2.0, 3]]);
+// TODO: probably have to change these for transform
+// @stat DEFENCE, 3, Metal Powder
+// @stat SPDEFENCE, 3, Metal Powder
+makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0, 3],
+        [Stat.SPDEFENCE, 2.0, 3]]);
+// @stat SPEED, 5, Quick Powder
 makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0, 5]]);
 
 makeStabBoostItem("Adamant Orb", "Dialga");
@@ -644,6 +660,7 @@ makeMoveClassBoostingItem("Muscle Band", MoveClass.PHYSICAL);
 makeMoveClassBoostingItem("Wise Glasses", MoveClass.SPECIAL);
 makeItem({
     name : "Expert Belt",
+    // @mod 3, 1, Expert Belt
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -729,6 +746,7 @@ makeNegativePriorityItem("Lagging Tail");
 
 makeItem({
     name: "Wide Lens",
+    // @stat ACCURACY, 9, Wide Lens
     statModifier: function(field, stat, subject) {
         if (this.subject != subject)
             return null;
@@ -741,6 +759,7 @@ makeItem({
 makeItem({
     name : "Macho Brace",
     getState : null,
+    // @stat SPEED, 3, Macho Brace
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;

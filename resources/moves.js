@@ -327,6 +327,7 @@ function makeTypeWeakeningMove(move, type) {
             return;
         }
         var effect = new StatusEffect(id);
+        // @mod 0, 3, Type Weakening Moves
         effect.modifier = function(field, user, target, move, critical) {
             if (move.type != type)
                 return null;
@@ -438,6 +439,7 @@ function makeLockOnMove(move) {
                 this.subject.removeStatus(this);
             }
         };
+        // @stat ACCURACY, 13, Lock On
         effect.statModifier = function(field, stat, subject, target) {
             if (stat != Stat.ACCURACY)
                 return null;
@@ -678,6 +680,7 @@ function makeExplosionMove(move) {
     };
     move.use = function(field, user, target, targets) {
         var effect = new StatusEffect("ExplosionEffect");
+        // @stat DEFENCE, 4, Explosion
         effect.statModifier = function(field, stat, subject) {
             if (subject != this.subject)
                 return null;
@@ -829,6 +832,7 @@ function makePartyBuffMove(move, moveClass) {
             field.print(Text.battle_messages_unique(80, move));
             field.removeStatus(this);
         };
+        // @mod 1, 1, Party Buff Moves
         effect.modifier = function(field, user, target, move, critical) {
             if (target.party != this.party_)
                 return null;

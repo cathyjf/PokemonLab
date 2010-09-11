@@ -1260,6 +1260,7 @@ effect.tick = function() {
         this.subject.removeStatus(this);
     }
 };
+// @mod 0, 2, Charge
 effect.modifier = function(field, user, target, move, critical) {
     if (user != this.subject)
         return null;
@@ -4462,6 +4463,7 @@ if ((user == target) || !target.turn || target.getStatus("HelpingHandEffect")) {
     return;
 }
 var effect = new StatusEffect("HelpingHandEffect");
+// @mod 0, -1, Helping Hand
 effect.modifier = function(field, user, target, move, critical) {
     if (user != this.subject)
         return null;
@@ -5694,6 +5696,7 @@ if ((move.moveClass == MoveClass.OTHER) ||
     return;
 }
 var effect = new StatusEffect("MeFirstEffect");
+// @mod 2, 1, Me First
 effect.modifier = function(field, user) {
     if (user != this.subject)
         return null;
@@ -9736,6 +9739,7 @@ this.prepareSelf = function(field, user) {
         field.print(Text.battle_messages_unique(139, this.subject));
         field.removeStatus(this);
     };
+    // @stat SPEED, 9, Tailwind
     effect.statModifier = function(field, stat, subject) {
         if (subject.party != party_)
             return null;

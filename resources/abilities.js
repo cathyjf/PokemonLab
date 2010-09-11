@@ -94,6 +94,7 @@ function makeStatusImmuneAbility(ability, immune) {
 function makeCriticalTypeAbility(ability, type) {
     makeAbility({
         name : ability,
+        // @mod 0, 5, Critical Type Abilities
         modifier : function(field, user, target, move, critical) {
             if (user != this.subject)
                 return null;
@@ -129,6 +130,7 @@ function makeStatLevelProtectionAbility(ability, predicate) {
 function makeFilterAbility(ability) {
     makeAbility({
         name : ability,
+        // @stat 3, 0, Filter
         modifier : function(field, user, target, move, critical) {
             if (target != this.subject)
                 return null;
@@ -248,6 +250,7 @@ makeAbility({
         field.print(Text.ability_messages(15, target));
         if (!target.getStatus("FlashFireEffect")) {
             var effect = new StatusEffect("FlashFireEffect");
+            // @mod 1, 5, Flash Fire
             effect.modifier = function(field, user, target, move, critical) {
                 if (user != this.subject)
                     return null;
@@ -290,6 +293,7 @@ makeWeatherAbility("Sand Stream",
  *******************/
 makeAbility({
     name : "Tinted Lens",
+    // @mod 3, 2, Tinted Lens
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -409,6 +413,8 @@ makeAbility({
             return;
         this.subject.field.print(Text.ability_messages(58, this.subject));
     },
+    // @stat ATTACK, 7, Slow Start
+    // @stat SPEED, 7, Slow Start
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -807,6 +813,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Solar Power",
+    // @stat SPATTACK, 1, Solar Power
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -826,6 +833,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Plus",
+    // @stat SPATTACK, 1, Plus
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -845,6 +853,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Minus",
+    // @stat SPATTACK, 1, Minus
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -864,6 +873,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Huge Power",
+    // @stat ATTACK, 1, Huge Power
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -878,6 +888,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Pure Power",
+    // @stat ATTACK, 1, Pure Power
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -910,6 +921,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Chlorophyll",
+    // @stat SPEED, 2, Chlorophyll
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -926,6 +938,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Swift Swim",
+    // @stat SPEED, 1, Swift Swim
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -942,6 +955,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Sand Veil",
+    // @stat ACCURACY, 3, Sand Veil
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;
@@ -961,6 +975,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Snow Cloak",
+    // @stat ACCURACY, 4, Snow Cloak
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;
@@ -980,6 +995,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Compoundeyes",
+    // @stat ACCURACY, 2, Compoundeyes
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;
@@ -994,6 +1010,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Tangled Feet",
+    // @stat ACCURACY, 7, Tangled Feet
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;
@@ -1010,6 +1027,8 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Hustle",
+    // @stat ACCURACY, 6, Hustle
+    // @stat ATTACK, 1, Hustle
     statModifier : function(field, stat, subject, target) {
         if (subject != this.subject)
             return null;
@@ -1125,6 +1144,7 @@ makeAbility({
         // nullify the paralysis speed mod
         return true;
     },
+    // @stat SPEED, 6, Quick Feet
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -1147,6 +1167,7 @@ makeAbility({
         // nullify the burn attack mod
         return true;
     },
+    // @stat ATTACK, 1, Guts
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -1165,6 +1186,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Marvel Scale",
+    // @stat DEFENCE, 1, Marvel Scale
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
@@ -1189,6 +1211,7 @@ makeAbility({
         this.subject.hp -= damage;
         return true;
     },
+    // @mod 0, 6, Heatproof
     modifier : function(field, user, target, move, critical) {
         if (target != this.subject)
             return null;
@@ -1218,6 +1241,7 @@ makeAbility({
     informSunDamage : function() {
         return true;
     },
+    // @mod 0, 6, Dry Skin
     modifier : function(field, user, target, move, critical) {
         if (target != this.subject)
             return null;
@@ -1247,6 +1271,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Thick Fat",
+    // @mod 0, 6, Thick Fat
     modifier : function(field, user, target, move, critical) {
         if (target != this.subject)
             return null;
@@ -1262,6 +1287,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Technician",
+    // @mod 0, 5, Technician
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -1282,6 +1308,7 @@ makeAbility({
               "Focus Punch", "Dizzy Punch", "DynamicPunch", "Hammer Arm",
               "Mega Punch", "Comet Punch", "Meteor Mash", "Shadow Punch",
               "Drain Punch", "Bullet Punch", "Sky Uppercut"],
+    // @mod 0, 5, Iron Fist
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -1299,6 +1326,7 @@ makeAbility({
     moves_ : ["Brave Bird", "Double-Edge", "Flare Blitz", "Head Smash",
               "Submission", "Take Down", "Volt Tackle", "Wood Hammer",
               "Jump Kick", "Hi Jump Kick"],
+    // @mod 0, 5, Reckless
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -1313,6 +1341,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Rivalry",
+    // @mod 0, 5, Rivalry
     modifier : function(field, user, target, move, critical) {
         if (user != this.subject)
             return null;
@@ -1665,6 +1694,7 @@ makeAbility({
         if (this.subject.getStatus("UnburdenEffect"))
             return;
         var effect = new StatusEffect("UnburdenEffect");
+        // @stat SPEED, 8, Unburden
         effect.statModifier = function(field, stat, subject) {
             if (subject != this.subject)
                 return null;
@@ -1759,6 +1789,7 @@ makeAbility({
  *******************/
 makeAbility({
     name: "No Guard",
+    // @stat ACCURACY, 13, No Guard
     statModifier : function(field, stat, subject, target) {
         if (stat != Stat.ACCURACY)
             return null;
