@@ -303,7 +303,7 @@ function makeSpeciesBoostingItem(item, species, modifiers) {
             for (var i in modifiers) {
                 if (modifiers[i][0] == stat) {
                     var position = 3;
-                    if (modifiers[i].size > 2) {
+                    if (modifiers[i].length > 2) {
                         position = modifiers[i][2];
                     }
                     return [modifiers[i][1], position];
