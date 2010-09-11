@@ -546,8 +546,8 @@ makeItem({
 
 makeTypeResistingBerry("Babiri Berry", Type.STEEL);
 makeTypeResistingBerry("Charti Berry", Type.ROCK);
-makeTypeResistingBerry("Chilan Berry", Type.FIGHTING);
-makeTypeResistingBerry("Chople Berry", Type.NORMAL);
+makeTypeResistingBerry("Chilan Berry", Type.NORMAL);
+makeTypeResistingBerry("Chople Berry", Type.FIGHTING);
 makeTypeResistingBerry("Coba Berry", Type.FLYING);
 makeTypeResistingBerry("Colbur Berry", Type.DARK);
 makeTypeResistingBerry("Haban Berry", Type.DRAGON);
