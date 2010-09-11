@@ -195,6 +195,22 @@ makeEffect(WeatherEffect, {
     idx_ : GlobalEffect.HAIL,
 });
 
+makeEffect(WeatherEffect, {
+    id : "FogEffect",
+    name : Text.weather_fog(0),
+    text_ : Text.weather_fog,
+    idx_ : GlobalEffect.FOG,
+    informFinished : function() { },
+    // @stat ACCURACY, 5, Fog
+    statModifier : function(field, stat, subject) {
+        if (field.sendMessage("informWeatherEffects"))
+            return null;
+        if (stat != Stat.ACCURACY)
+            return null;
+        return [0.6, 5];
+    }
+});
+
 makeEffect(StatusEffect, {
     id : "UproarEffect",
     name : Text.battle_messages_unique(151),

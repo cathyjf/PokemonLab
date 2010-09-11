@@ -189,6 +189,10 @@
 9: Spikes
 10: Stealth Rock
 
+[weather-fog]
+0: Fog
+2: The fog is deep...
+
 [weather-hail]
 0: Hail
 1: Hail began to fall!
@@ -399,6 +403,7 @@
 156: $1's encore ended.
 
 157: $1 flung its $2!
+158: $1 became the centre of attention! // Me First (made up)
 
 [battle-messages-charge]
 0: $1 takes in sunlight!    // Solarbeam
