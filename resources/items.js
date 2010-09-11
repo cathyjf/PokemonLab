@@ -86,7 +86,11 @@ HoldItem.prototype.tick = HoldItem.prototype.checkCondition_;
 function makeItem(obj) {
     var item = new HoldItem(obj.name);
     for (var p in obj) {
-        item[p] = obj[p];
+        if (obj[p]) {
+            item[p] = obj[p];
+        } else {
+            delete item[p];
+        }
     }
 }
 
@@ -734,6 +738,7 @@ makeItem({
 
 makeItem({
     name : "Macho Brace",
+    getState : null,
     statModifier : function(field, stat, subject) {
         if (subject != this.subject)
             return null;
