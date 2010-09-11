@@ -1210,12 +1210,15 @@ function makeCounterMove(move, cls, ratio) {
         while ((recent = user.popRecentDamage()) != null) {
             var move = recent[1];
             if ((cls == undefined) || (move.moveClass == cls)) {
-                var target = recent[0];
-                if (target.party == user.party) {
+                var party = recent[0].party;
+                var position = recent[0].position;
+                if (party == user.party) {
                     break;
                 }
-                if (target.fainted)
-                    return;
+                var target = field.getActivePokemon(party, position);
+                if (!target) {
+                    break;
+                }
                 if (target.isImmune(this)) {
                     field.print(Text.battle_messages(1, target));
                 } else {
