@@ -840,6 +840,9 @@ void Pokemon::faint() {
     m_field->informFainted(this);
     ScriptValue argv[] = { this };
     m_field->sendMessage("informReplacePokemon", 1, argv);
+    // The message has to be sent to this pokemon explicitly, since
+    // BattleField::sendMessage() doesn't send the message to fainted pokemon.
+    sendMessage("informReplacePokemon", 1, argv);
     // TODO: Clear memory at end of move execution instead.
     clearMemory();
 }

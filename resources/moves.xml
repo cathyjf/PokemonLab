@@ -10399,11 +10399,20 @@ this.prepareSelf = function(field, user) {
     };
     effect.unapplyEffect = function() {
         this.subject.clearForcedMove();
-        var effect = this.subject.getStatus("UproarEffect");
+        var effect = field.getStatus("UproarEffect");
         if (effect) {
             effect.removeUser();
         }
-        field.print(Text.battle_messages_unique(153, this.subject));
+        if (!this.subject.fainted) {
+            field.print(Text.battle_messages_unique(153, this.subject));
+        }
+    };
+    // The side effects of unapplyEffect must run when the subject faints, so
+    // this function is necessary.
+    effect.informReplacePokemon = function(subject) {
+        if (subject == this.subject) {
+            this.subject.removeStatus(this);
+        }
     };
     effect.informFreeze = effect.informSleep = function() {
         this.subject.removeStatus(this);
@@ -10419,7 +10428,7 @@ this.prepareSelf = function(field, user) {
         }
     };
     user.applyStatus(user, effect);
-    effect = user.getStatus("UproarEffect");
+    effect = field.getStatus("UproarEffect");
     if (!effect) {
         effect = getGlobalController(field).applyGlobalEffect(user,
                 GlobalEffect.UPROAR);
