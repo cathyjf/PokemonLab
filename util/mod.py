@@ -2,23 +2,26 @@
 import os
 import os.path
 import re
-import itertools
+from collections import defaultdict
 
 RESOURCE_DIR = "../resources"
 
-instances = []
+instances = defaultdict(lambda: defaultdict(list))
 
 for f in os.listdir(RESOURCE_DIR):
     if not re.search(r"\.(js|xml)$", f):
         continue
     for line in open(os.path.join(RESOURCE_DIR, f)).readlines():
-        matches = re.match(r".*@(.*?) (.*?), (.*?), (.*)$", line)
+        matches = re.match(r".*@(.*? .*?), (.*?), (.*)$", line)
         if matches:
-            instances.append(matches.groups())
+            type, pos, name = matches.groups()
+            instances[type][int(pos)].append(name)
+
+for type in sorted(instances.keys()):
+    print type + ":"
+    for pos in sorted(instances[type].keys()):
+        print "  %s: " % pos, ", ".join(instances[type][pos]) 
+        
             
-for key, group in itertools.groupby(sorted(instances), key=lambda x: "%s %s" % (x[0], x[1])):
-    print "%s:" % key
-    for order, effects in itertools.groupby(sorted(group, key=lambda x: int(x[2])), key=lambda x: x[2]):
-        print "  %s:" % order, ", ".join([x[-1] for x in list(effects)])
-    print
+
     
