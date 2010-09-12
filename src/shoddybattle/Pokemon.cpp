@@ -366,7 +366,7 @@ void Pokemon::clearMemory() {
         PokemonParty &party = *active[i];
         const int size = party.getSize();
         for (int j = 0; j < size; ++j) {
-            Pokemon::PTR p = party[j].pokemon;
+            Pokemon::PTR p = party[j];
             if (p) {
                 p->removeMemory(this);
             }

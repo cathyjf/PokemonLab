@@ -179,7 +179,7 @@ ScriptValue PokemonParty::sendMessage(const string &message,
     ScriptValue ret;
     ret.setFailure();
     for (int i = 0; i < m_size; ++i) {
-        Pokemon::PTR p = m_party[i].pokemon;
+        Pokemon::PTR p = m_party[i];
         if (p && !p->isFainted()) {
             ScriptValue v = p->sendMessage(message, argc, argv);
             if (!v.failed()) {
@@ -270,7 +270,7 @@ bool BattleField::isTurnLegal(Pokemon *pokemon,
     if (idx >= m_impl->partySize)
         return false;
 
-    Pokemon::PTR target = (*m_impl->active[party])[idx].pokemon;
+    Pokemon::PTR target = (*m_impl->active[party])[idx];
     if (!target || target->isFainted())
         return false;
 
@@ -341,7 +341,7 @@ Pokemon *BattleField::getRandomTarget(const int partyIdx) const {
     vector<Pokemon::PTR> intermediate;
     PokemonParty &party = *m_impl->active[partyIdx].get();
     for (int i = 0; i < party.getSize(); ++i) {
-        Pokemon::PTR p = party[i].pokemon;
+        Pokemon::PTR p = party[i];
         if (p && !p->isFainted()) {
             intermediate.push_back(p);
         }
@@ -372,7 +372,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
     } else if ((mc == T_ENEMIES) || (mc == T_ENEMY_FIELD)) {
         PokemonParty &party = *active[1 - user->getParty()].get();
         for (int i = 0; i < party.getSize(); ++i) {
-            Pokemon::PTR p = party[i].pokemon;
+            Pokemon::PTR p = party[i];
             if (p && !p->isFainted()) {
                 targets.push_back(p.get());
             }
@@ -389,7 +389,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i].get();
             for (int j = 0; j < party.getSize(); ++j) {
-                Pokemon::PTR p = party[j].pokemon;
+                Pokemon::PTR p = party[j];
                 if (p && !p->isFainted() && (p.get() != user)) {
                     targets.push_back(p.get());
                 }
@@ -400,7 +400,7 @@ void BattleField::getTargetList(TARGET mc, std::vector<Pokemon *> &targets,
         for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i].get();
             for (int j = 0; j < party.getSize(); ++j) {
-                Pokemon::PTR p = party[j].pokemon;
+                Pokemon::PTR p = party[j];
                 if (p && !p->isFainted()) {
                     targets.push_back(p.get());
                 }
@@ -432,7 +432,7 @@ void BattleField::getActivePokemon(Pokemon::ARRAY &v,
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
-            Pokemon::PTR p = party[j].pokemon;
+            Pokemon::PTR p = party[j];
             if (p) {
                 if (!p->isFainted()) {
                     v.push_back(p);
@@ -587,7 +587,7 @@ void BattleField::withdrawPokemon(Pokemon *p) {
 void BattleField::sendOutPokemon(const int party,
         const int slot, const int idx) {
     Pokemon::PTR replacement = m_impl->teams[party][idx];
-    (*m_impl->active[party])[slot].pokemon = replacement;
+    (*m_impl->active[party])[slot] = replacement;
     replacement->setSlot(slot);
     informSendOut(replacement.get());
     m_impl->applyEffects(replacement.get());
@@ -603,8 +603,7 @@ StatusObjectPtr BattleField::applyStatus(StatusObject *effect) {
     bool applied = false;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted() && p->applyStatus(NULL, ret.get())) {
                 applied = true;
             }
@@ -690,8 +689,7 @@ void BattleField::informStatusChange(Pokemon *, StatusObject *, const bool) {
 bool BattleField::vetoSelection(Pokemon *user, MoveObject *move) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted() && p->vetoSelection(user, move)) {
                 return true;
             }
@@ -707,8 +705,7 @@ bool BattleField::vetoSwitch(Pokemon *subject) {
     ScriptValue args[] = { subject };
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 ScriptValue v = p->sendMessage("vetoSwitch", 1, args);
                 if (!v.failed() && v.getBool()) {
@@ -748,8 +745,7 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
     Pokemon::ARRAY pokemon;
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 pokemon.push_back(p);
             }
@@ -771,8 +767,7 @@ bool BattleField::vetoExecution(Pokemon *user, Pokemon *target,
  */
 void BattleField::beginBattle(const int party) {
     for (int i = 0; i < m_impl->partySize; ++i) {
-        PokemonSlot &slot = (*m_impl->active[party])[i];
-        Pokemon::PTR p = slot.pokemon;
+        Pokemon::PTR p = (*m_impl->active[party])[i];
         if (p) {
             p->setSlot(i);
             informSendOut(p.get());
@@ -859,7 +854,7 @@ void BattleField::tickEffects() {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
-            Pokemon::PTR p = party[j].pokemon;
+            Pokemon::PTR p = party[j];
             if (p && !p->isFainted()) {
                 const STATUSES &statuses = p->getEffects();
                 STATUSES::const_iterator k = statuses.begin();
@@ -944,7 +939,7 @@ void BattleField::tickEffects() {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
-            Pokemon::PTR p = party[j].pokemon;
+            Pokemon::PTR p = party[j];
             if (p && !p->isFainted()) {
                 p->removeStatuses();
             }
@@ -1053,7 +1048,7 @@ void BattleField::getFaintedPokemon(Pokemon::ARRAY &pokemon) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         PokemonParty &party = *m_impl->active[i];
         for (int j = 0; j < m_impl->partySize; ++j) {
-            Pokemon::PTR p = party[j].pokemon;
+            Pokemon::PTR p = party[j];
             if (p && p->isFainted() && (alive[i] > 0)) {
                 pokemon.push_back(p);
                 --alive[i];
@@ -1115,7 +1110,7 @@ void BattleField::executePendingMoveAction(Pokemon *p) {
         } else {
             int party = 0;
             m_impl->decodeIndex(targetIdx, party);
-            Pokemon::PTR t = (*m_impl->active[party])[targetIdx].pokemon;
+            Pokemon::PTR t = (*m_impl->active[party])[targetIdx];
             if (!t || t->isFainted()) {
                 // If this is a single target move and there is no
                 // target then choose a random target from among
@@ -1215,7 +1210,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
             if (idx != -1) { // exactly one target
                 int party = 0;
                 m_impl->decodeIndex(idx, party);
-                target = (*m_impl->active[party])[idx].pokemon.get();
+                target = (*m_impl->active[party])[idx].get();
             }
             move->beginTurn(m_impl->context, this, p.get(), target);
         }
@@ -1254,8 +1249,7 @@ PokemonTurn *BattleField::getTurn(const int i, const int j) {
 void BattleField::transformStatus(Pokemon *subject, StatusObjectPtr *status) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 p->transformStatus(subject, status);
                 if (!*status) {
@@ -1275,8 +1269,7 @@ void BattleField::getModifiers(Pokemon &user, Pokemon &target,
         MODIFIERS &mods) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 p->getModifiers(&user, &target, &obj, critical, targets, mods);
             }
@@ -1293,8 +1286,7 @@ void BattleField::getImmunities(Pokemon *user, Pokemon *target,
         set<const PokemonType *> &vulnerabilities) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 p->getImmunities(user, target, immunities, vulnerabilities);
             }
@@ -1310,8 +1302,7 @@ bool BattleField::getTransformedEffectiveness(const PokemonType *moveType,
         const PokemonType *type, Pokemon *target, double &factor) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 if (p->getTransformedEffectiveness(moveType, type,
                         target, factor)) {
@@ -1331,8 +1322,7 @@ void BattleField::getStatModifiers(STAT stat,
         Pokemon *subject, Pokemon *target, PRIORITY_MAP &mods) {
     for (int i = 0; i < TEAM_COUNT; ++i) {
         for (int j = 0; j < m_impl->partySize; ++j) {
-            PokemonSlot &slot = (*m_impl->active[i])[j];
-            Pokemon::PTR p = slot.pokemon;
+            Pokemon::PTR p = (*m_impl->active[i])[j];
             if (p && !p->isFainted()) {
                 p->getStatModifiers(stat, subject, target, mods);
             }
@@ -1413,8 +1403,7 @@ void BattleFieldImpl::initialise(BattleField *field,
             bound = size;
         }
         for (int j = 0; j < bound; ++j) {
-            PokemonSlot &slot = (*active[i])[j];
-            slot.pokemon = this->teams[i][j];
+            (*active[i])[j] = this->teams[i][j];
         }
     }
     for (int i = 0; i < TEAM_COUNT; ++i) {

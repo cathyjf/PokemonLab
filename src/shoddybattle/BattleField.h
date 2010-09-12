@@ -100,17 +100,13 @@ struct PokemonTurn {
     PokemonTurn(): type(TT_MOVE), id(-1), target(-1) { } // forced turn
 };
 
-struct PokemonSlot {
-    Pokemon::PTR pokemon;
-};
-
 struct PokemonParty {
 public:
     PokemonParty(const int size, const std::string &name):
             m_size(size), m_name(name) {
-        m_party = boost::shared_array<PokemonSlot>(new PokemonSlot[size]);
+        m_party = boost::shared_array<Pokemon::PTR>(new Pokemon::PTR[size]);
     }
-    PokemonSlot &operator[](const int i) {
+    Pokemon::PTR &operator[](const int i) {
         return m_party[i];
     }
     const STATUSES &getEffects() const {
@@ -126,7 +122,7 @@ public:
 private:
     const int m_size;
     const std::string m_name;
-    boost::shared_array<PokemonSlot> m_party;
+    boost::shared_array<Pokemon::PTR> m_party;
     STATUSES m_effects;     // party-specific status effects
 };
 
@@ -241,7 +237,7 @@ public:
     void getActivePokemon(Pokemon::ARRAY &, Pokemon::ARRAY * = NULL);
     boost::shared_ptr<PokemonParty> *getActivePokemon();
     Pokemon::PTR getActivePokemon(int i, int j) { // convenience method
-        return (*getActivePokemon()[i])[j].pokemon;
+        return (*getActivePokemon()[i])[j];
     }
 
     /**

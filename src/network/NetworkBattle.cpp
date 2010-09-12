@@ -717,7 +717,7 @@ struct NetworkBattleImpl {
         for (int i = 0; i < TEAM_COUNT; ++i) {
             PokemonParty &party = *active[i];
             for (int j = 0; j < size; ++j) {
-                Pokemon::PTR p = party[j].pokemon;
+                Pokemon::PTR p = party[j];
                 writeVisualData(msg, p);
             }
         }

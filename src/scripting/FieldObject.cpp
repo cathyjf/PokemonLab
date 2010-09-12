@@ -112,7 +112,7 @@ JSBool getActivePokemon(JSContext *cx,
         *ret = JSVAL_NULL;
         return JS_TRUE;
     }
-    Pokemon::PTR pokemon = (*p)[idx].pokemon;
+    Pokemon::PTR pokemon = (*p)[idx];
     if (!pokemon || pokemon->isFainted()) {
         *ret = JSVAL_NULL;
     } else {
