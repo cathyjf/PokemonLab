@@ -626,26 +626,26 @@ makeEvadeItem("Lax Incense");
 // @stat SPATTACK, 3, DeepSeaTooth
 makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"],
         [[Stat.SPATTACK, 2.0, 3]]);
-// @stat SPDEFENCE, 3, DeepSeaScale
+// @stat SPDEFENCE, 2, DeepSeaScale
 makeSpeciesBoostingItem("DeepSeaScale", ["Clamperl"],
-        [[Stat.SPDEFENCE, 2.0, 3]]);
+        [[Stat.SPDEFENCE, 2.0, 2]]);
 // @stat SPATTACK, 3, Light Ball
 // @stat ATTACK, 3, Light Ball
 makeSpeciesBoostingItem("Light Ball", ["Pikachu"],
         [[Stat.SPATTACK, 2.0, 3],
         [Stat.ATTACK, 2.0, 3]]);
 // @stat SPATTACK, 3, Soul Dew
-// @stat SPDEFENCE, 3, Soul Dew
+// @stat SPDEFENCE, 2, Soul Dew
 makeSpeciesBoostingItem("Soul Dew", ["Latios", "Latias"],
-        [[Stat.SPATTACK, 1.5, 3], [Stat.SPDEFENCE, 1.5, 3]]);
+        [[Stat.SPATTACK, 1.5, 3], [Stat.SPDEFENCE, 1.5, 2]]);
 // @stat ATTACK, 3, Thick Club
 makeSpeciesBoostingItem("Thick Club", ["Cubone", "Marowak"],
         [[Stat.ATTACK, 2.0, 3]]);
 // TODO: probably have to change these for transform
 // @stat DEFENCE, 3, Metal Powder
-// @stat SPDEFENCE, 3, Metal Powder
+// @stat SPDEFENCE, 2, Metal Powder
 makeSpeciesBoostingItem("Metal Powder", ["Ditto"], [[Stat.DEFENCE, 2.0, 3],
-        [Stat.SPDEFENCE, 2.0, 3]]);
+        [Stat.SPDEFENCE, 2.0, 2]]);
 // @stat SPEED, 5, Quick Powder
 makeSpeciesBoostingItem("Quick Powder", ["Ditto"], [[Stat.SPEED, 2.0, 5]]);
 
