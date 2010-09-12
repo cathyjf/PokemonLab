@@ -827,10 +827,7 @@ bool effectComparator(const bool descendingSpeed,
         const bool cmp = e1.speed > e2.speed;
         return descendingSpeed ? cmp : !cmp;
     }
-    if (e1.subtier != e2.subtier) {
-        return e1.subtier < e2.subtier;
-    }
-    return &e1 < &e2; // arbitrary but stable
+    return e1.subtier < e2.subtier;
 }
 
 bool fieldEffectComparator(const FieldEffectEntity &e1,
@@ -838,10 +835,7 @@ bool fieldEffectComparator(const FieldEffectEntity &e1,
     if (e1.tier != e2.tier) {
         return (e1.tier < e2.tier);
     }
-    if (e1.subtier != e2.subtier) {
-        return e1.subtier < e2.subtier;
-    }
-    return &e1 < &e2; // arbitrary but stable
+    return e1.subtier < e2.subtier;
 }
 
 } // anonymous namespace
