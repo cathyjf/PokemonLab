@@ -151,10 +151,7 @@ bool JewelMechanics::isCriticalHit(BattleField &field, MoveObject &move,
     if (term > 4) {
         term = 4;
     }
-    bernoulli_distribution<> dist(CRITICAL_TABLE[term]);
-    variate_generator<GENERATOR &, bernoulli_distribution<> >
-            generator(m_impl->rand, dist);
-    return generator();
+    return getCoinFlip(CRITICAL_TABLE[term]);
 }
 
 inline int multiplyOut(PRIORITY_MAP &elements) {
