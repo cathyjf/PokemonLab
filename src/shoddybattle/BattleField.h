@@ -165,11 +165,6 @@ public:
     int getHost() const;
 
     /**
-     * Begin the battle.
-     */
-    virtual void beginBattle();
-
-    /**
      * Begin the battle for a particular party.
      */
     void beginBattle(const int party);
@@ -346,8 +341,8 @@ public:
     /**
      * Get's the transformed effectiveness of a move type on a target
      */
-    bool getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type,
-                                                        Pokemon *target, double &effectiveness);
+    bool getTransformedEffectiveness(const PokemonType *moveType,
+            const PokemonType *type, Pokemon *target, double &effectiveness);
     
     /**
      * Send a message to the whole field.
@@ -356,13 +351,31 @@ public:
 
     void setNarrationEnabled(const bool);
     bool isNarrationEnabled() const;
+
+    Pokemon *getRandomInactivePokemon(Pokemon *);
+
+    typedef Pokemon::RECENT_MOVE EXECUTION;
+    const EXECUTION *topExecution() const;
+    void pushExecution(const EXECUTION &exec);
+    void popExecution();
+
+    ScriptMachine *getScriptMachine();
+
+    ScriptContext *getContext();
+
+    ScriptObject *getObject();
+
+    GENERATION getGeneration() const;
     
+    /**
+     * Begin the battle.
+     */
+    virtual void beginBattle();
+
     /**
      * Print a message to the BattleField.
      */
     virtual void print(const TextMessage &msg);
-
-    Pokemon *getRandomInactivePokemon(Pokemon *);
 
     /**
      * Request a player to choose an inactive pokemon immediately. The default
@@ -382,19 +395,6 @@ public:
             const int, const int) { }
     virtual void informFainted(Pokemon *);
     virtual void informStatusChange(Pokemon *, StatusObject *, const bool);
-
-    typedef Pokemon::RECENT_MOVE EXECUTION;
-    const EXECUTION *topExecution() const;
-    void pushExecution(const EXECUTION &exec);
-    void popExecution();
-
-    ScriptMachine *getScriptMachine();
-
-    ScriptContext *getContext();
-
-    ScriptObject *getObject();
-
-    GENERATION getGeneration() const;
 
     /**
      * Frees all of the objects held by this BattleField. Do not use any

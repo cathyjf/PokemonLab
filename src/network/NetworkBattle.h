@@ -62,14 +62,13 @@ public:
             const bool rated,
             boost::shared_ptr<void> &monitor);
 
+    int32_t getId() const;
     int getParty(boost::shared_ptr<network::Client> client) const;
-
     void beginBattle();
-    void terminate();
-
     void handleTurn(const int party, const PokemonTurn &turn);
     void handleCancelTurn(const int party);
-
+    
+private:
     Pokemon *requestInactivePokemon(Pokemon *);
     void print(const TextMessage &msg);
     void informVictory(const int);
@@ -81,10 +80,9 @@ public:
     void informSetMove(Pokemon *, const int, const int, const int, const int);
     void informFainted(Pokemon *);
     void informStatusChange(Pokemon *, StatusObject *, const bool);
-
-    int32_t getId() const;
+    void terminate();
     
-private:
+    friend class NetworkBattleImpl;
     boost::shared_ptr<NetworkBattleImpl> m_impl;
 };
 
