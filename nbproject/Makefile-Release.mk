@@ -35,13 +35,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
 	${OBJECTDIR}/src/scripting/StatusObject.o \
 	${OBJECTDIR}/src/mechanics/stat.o \
-	${OBJECTDIR}/src/main/LogFile.o \
 	${OBJECTDIR}/src/scripting/FieldObject.o \
+	${OBJECTDIR}/src/main/LogFile.o \
 	${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o \
 	${OBJECTDIR}/src/shoddybattle/BattleField.o \
 	${OBJECTDIR}/src/text/Text.o \
 	${OBJECTDIR}/src/main/main.o \
-	${OBJECTDIR}/src/shoddybattle/SimpleBattle.o \
 	${OBJECTDIR}/src/main/Log.o \
 	${OBJECTDIR}/src/database/rijndael.o \
 	${OBJECTDIR}/src/matchmaking/MetagameList.o \
@@ -90,15 +89,15 @@ ${OBJECTDIR}/src/database/rijndael.h.gch: nbproject/Makefile-${CND_CONF}.mk src/
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/database/rijndael.h
 
-${OBJECTDIR}/src/database/DatabaseRegistry.h.gch: nbproject/Makefile-${CND_CONF}.mk src/database/DatabaseRegistry.h 
-	${MKDIR} -p ${OBJECTDIR}/src/database
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/database/DatabaseRegistry.h
-
 ${OBJECTDIR}/src/scripting/ObjectWrapper.h.gch: nbproject/Makefile-${CND_CONF}.mk src/scripting/ObjectWrapper.h 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/scripting/ObjectWrapper.h
+
+${OBJECTDIR}/src/database/DatabaseRegistry.h.gch: nbproject/Makefile-${CND_CONF}.mk src/database/DatabaseRegistry.h 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/database/DatabaseRegistry.h
 
 ${OBJECTDIR}/src/scripting/ScriptMachine.h.gch: nbproject/Makefile-${CND_CONF}.mk src/scripting/ScriptMachine.h 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
@@ -140,15 +139,15 @@ ${OBJECTDIR}/src/mechanics/stat.o: nbproject/Makefile-${CND_CONF}.mk src/mechani
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/stat.o src/mechanics/stat.cpp
 
-${OBJECTDIR}/src/main/LogFile.o: nbproject/Makefile-${CND_CONF}.mk src/main/LogFile.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/main
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/LogFile.o src/main/LogFile.cpp
-
 ${OBJECTDIR}/src/scripting/FieldObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/FieldObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/FieldObject.o src/scripting/FieldObject.cpp
+
+${OBJECTDIR}/src/main/LogFile.o: nbproject/Makefile-${CND_CONF}.mk src/main/LogFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/LogFile.o src/main/LogFile.cpp
 
 ${OBJECTDIR}/src/database/Authenticator.h.gch: nbproject/Makefile-${CND_CONF}.mk src/database/Authenticator.h 
 	${MKDIR} -p ${OBJECTDIR}/src/database
@@ -194,11 +193,6 @@ ${OBJECTDIR}/src/main/main.o: nbproject/Makefile-${CND_CONF}.mk src/main/main.cp
 	${MKDIR} -p ${OBJECTDIR}/src/main
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/main.o src/main/main.cpp
-
-${OBJECTDIR}/src/shoddybattle/SimpleBattle.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/SimpleBattle.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/SimpleBattle.o src/shoddybattle/SimpleBattle.cpp
 
 ${OBJECTDIR}/src/mechanics/BattleMechanics.h.gch: nbproject/Makefile-${CND_CONF}.mk src/mechanics/BattleMechanics.h 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics

@@ -88,7 +88,6 @@
         <itemPath>src/shoddybattle/Pokemon.h</itemPath>
         <itemPath>src/shoddybattle/PokemonSpecies.cpp</itemPath>
         <itemPath>src/shoddybattle/PokemonSpecies.h</itemPath>
-        <itemPath>src/shoddybattle/SimpleBattle.cpp</itemPath>
         <itemPath>src/shoddybattle/Team.cpp</itemPath>
         <itemPath>src/shoddybattle/Team.h</itemPath>
       </logicalFolder>
