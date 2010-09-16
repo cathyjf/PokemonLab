@@ -211,7 +211,7 @@ function makeTypeResistingBerry(item, type) {
             if (move.power <= 1)
                 return null;
             var effectiveness = field.getEffectiveness(move.type, target);
-            if ((effectiveness < 2.0) && (type != Type.NORMAL)) 
+            if ((effectiveness < 2.0) && (type != Type.NORMAL))
                 return null;
             field.print(Text.item_messages(5, target, item, move));
             this.consume();
@@ -478,7 +478,7 @@ makeFlavourHealingBerry("Iapapa Berry", Stat.DEFENCE);
 
 makeHealingBerry("Oran Berry", function(p) { return 10; });
 makeHealingBerry("Berry Juice", function(p) { return 20; });
-makeHealingBerry("Sitrus Berry", function(p) { 
+makeHealingBerry("Sitrus Berry", function(p) {
     return Math.floor(p.getStat(Stat.HP) / 4);
 });
 
@@ -533,7 +533,7 @@ makeItem({
             }
 
             if (isMovingLast(subject.field, subject)) return;
-            
+
             // TODO: Language file
             var item = (subject.item != null) ? subject.item : "None";
             subject.field.print(Text.item_messages(11, subject, item));
@@ -905,14 +905,13 @@ makeItem({
     name : "Focus Sash",
     transformHealthChange : function(delta, user, indirect) {
         // Multihit moves take Sash into account in their own method.
-        if (indirect || (delta < 0))
-            return delta;
-
         var subject = this.subject;
         var maxHp = subject.getStat(Stat.HP);
-        if (subject.hp < maxHp)
+        if (indirect)
             return delta;
         if (delta < subject.hp)
+            return delta;
+        if (!this.informFocusItem())
             return delta;
         this.used_ = true;
 
@@ -927,11 +926,59 @@ makeItem({
                 this.name));
         this.consume();
     },
+    informFocusItem : function() {
+        var maxHp = this.subject.getStat(Stat.HP);
+        return this.subject.hp == maxHp;
+    },
+    informFocusTriggered: function() {
+        this.use();
+    },
     informDamaged : function(user, move, damage) {
         if (this.used_) {
-            this.use();
+            this.informFocusTriggered();
         }
     }
+});
+
+makeItem({
+    name : "Focus Band",
+    transformHealthChange : function(delta, user, indirect) {
+        // Multihit moves take Band into account in their own method.
+        var subject = this.subject;
+        if (indirect || this.disabled_ || (delta < subject.hp))
+            return delta;
+        if (subject.field.random(0, 10) != 0)
+            return delta;
+        this.used_ = true;
+
+        // Shedinja
+        if (subject.hp == 1) {
+            subject.informDamaged(user, subject.field.execution, 0);
+        }
+        return subject.hp - 1;
+    },
+    informFocusItem : function(damage) {
+        // "Disabling" the item for the turn is necessary, otherwise the
+        // focus user will have 2 shots to survive certain multi-hit moves
+        if (this.subject.field.random(0, 10) == 0) {
+            this.disabled_ = true;
+            return true;
+        }
+        return false;
+    },
+    informFocusTriggered: function() {
+        this.subject.field.print(Text.item_messages(10, this.subject,
+                this.name));
+    },
+    informDamaged : function(user, move, damage) {
+        if (this.used_) {
+            this.informFocusTriggered();
+        }
+    },
+    informFinishedExecution : function() {
+        this.used_ = false;
+        this.disabled_ = false;
+    },
 });
 
 makeItem({

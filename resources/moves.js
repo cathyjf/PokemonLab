@@ -757,7 +757,7 @@ function makeRampageMove(move) {
     move.prepareSelf = function(field, user) {
         if (user.getStatus("SleepEffect"))
             return;
-        
+
         user.setForcedMove(this, null, false);
 
         if (user.getStatus("RampageEffect"))
@@ -1024,14 +1024,11 @@ function makeTwoHitMove(move) {
  * chance of 5 hits.
  */
 function makeMultipleHitMove(move) {
-	move.use = function(field, user, target, targets) {
+    move.use = function(field, user, target, targets) {
         var hits = user.sendMessage("informMultipleHitMove");
 
-        var hasSash = false;
-        var usedSash = false;
-        var sash = target.getStatus("Focus Sash");
-        if (sash && target.hp == target.getStat(Stat.HP))
-            hasSash = true;
+        var item = target.item;
+        var hasFocus = target.sendMessage("informFocusItem");
 
         if (!hits) {
             var rand = field.random(0, 1000);
@@ -1045,28 +1042,32 @@ function makeMultipleHitMove(move) {
                 hits = 5;
             }
         }
+
         var i = 0;
         for (; i < hits; ++i) {
-            if (target.fainted || usedSash)
+            if (target.fainted) {
                 break;
+            }
             var damage = field.calculate(this, user, target, targets);
-            if (damage == 0)
+            if (damage == 0) {
 		return;
+            }
 
-            if (hasSash && damage >= target.hp) {
+            if (hasFocus && damage >= target.hp) {
                 if (target.hp == 1) {
                     target.informDamaged(user,
                             user.getMove(user.turn.move), 0);
                 } else {
                     target.hp = 1;
                 }
-                usedSash = true;
+                target.sendMessage("informFocusTriggered");
+                i++;
+                break;
             } else {
                 target.hp -= damage;
             }
         }
 
-        if (usedSash) sash.use();
         field.print(Text.battle_messages_unique(0, i));
     };
 }
@@ -1117,7 +1118,7 @@ function makeRecoilMove(move, divisor) {
                 delta = max;
             }
         }
-        
+
         var sgn = (divisor > 0) ? 1 : -1;
         var recoil = sgn * Math.floor(Math.abs(delta / divisor));
         if (user.sendMessage("informRecoilDamage", recoil, move))
