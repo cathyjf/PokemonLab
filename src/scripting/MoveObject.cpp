@@ -44,6 +44,14 @@ using boost::shared_ptr;
 
 namespace shoddybattle {
 
+JSClass moveClass = {
+    "MoveObject",
+    JSCLASS_HAS_PRIVATE,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+};
+
 string MoveObject::getName(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     jsval val;
@@ -200,8 +208,9 @@ JSBool toString(JSContext *cx,
 MoveObjectPtr ScriptContext::newMoveObject(const MoveTemplate *p) {
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
-    JSObject *obj = JS_NewObject(cx, NULL, NULL, NULL);
+    JSObject *obj = JS_NewObject(cx, &moveClass, NULL, NULL);
     MoveObjectPtr ret = addRoot(new MoveObject(obj, p));
+    JS_SetPrivate(cx, obj, ret.get());
 
     JS_DefineFunction(cx, obj, "toString", toString, 0, 0);
     

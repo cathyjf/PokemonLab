@@ -146,7 +146,8 @@ struct MODIFIER {
     int priority;
 };
 
-class MoveObject : public ScriptObject {
+class MoveObject : public ScriptObject,
+        public boost::enable_shared_from_this<MoveObject> {
 public:
     MoveObject(void *p, const MoveTemplate *temp = NULL):
             ScriptObject(p), m_template(temp) { }

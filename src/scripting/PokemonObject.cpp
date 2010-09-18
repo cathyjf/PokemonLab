@@ -650,17 +650,15 @@ JSBool hasAbility(JSContext *cx,
     return JS_TRUE;
 }
 
-struct nullDeleter {
-    void operator()(void const *) const { }
-};
-
 /**
  * pokemon.execute(move, target)
  */
 JSBool execute(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval * /*ret*/) {
     assert(JSVAL_IS_OBJECT(argv[0]));
-    MoveObject move(JSVAL_TO_OBJECT(argv[0]));
+    JSObject *moveObj = JSVAL_TO_OBJECT(argv[0]);
+    MoveObject *pMoveObj = (MoveObject *)JS_GetPrivate(cx, moveObj);
+    MoveObjectPtr move = pMoveObj->shared_from_this();
     Pokemon *target = NULL;
     if (argv[1] != JSVAL_VOID) {
         assert(JSVAL_IS_OBJECT(argv[1]));
@@ -668,14 +666,7 @@ JSBool execute(JSContext *cx,
         target = (Pokemon *)JS_GetPrivate(cx, objp);
     }
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    MoveObjectPtr ptr(&move, nullDeleter());
-    p->executeMove(ptr, target, false);
-    if (!ptr.unique()) {
-        // If ptr got copied into some other data structure, we have a big
-        // problem since the program will crash if it tries to dereference it.
-        JS_ReportError(cx, "execute: MoveObjectPtr was copied (disaster!)");
-        return JS_FALSE;
-    }
+    p->executeMove(move, target, false);
     return JS_TRUE;
 }
 
