@@ -225,7 +225,10 @@ function makeFeedbackDamageBerry(item, moveclass) {
         name : item,
         berry_ : true,
         informDamaged : function(user, move, damage) {
-            if (this.subject.fainted)
+            // Damage feedback berries don't trigger if the user has fainted,
+            // but we can't use this.subject.fainted because faint() isn't
+            // called until after the informDamaged message is processed.
+            if (this.subject.hp <= 0)
                 return;
             if (this.subject == user)
                 return;
