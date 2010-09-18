@@ -160,7 +160,8 @@ public:
         USER_INFO_MESSAGE = 15,
         USER_PERSONAL_MESSAGE = 16,
         USER_MESSAGE_REQUEST = 17,
-        CLIENT_ACTIVITY = 18
+        CLIENT_ACTIVITY = 18,
+        CANCEL_QUEUE = 19
     };
 
     InMessage() {
@@ -1378,6 +1379,18 @@ private:
         // No need to do anything.
     }
 
+    void handleCancelQueue(InMessage &msg) {
+        unsigned char metagame;
+        unsigned char rated;
+        msg >> metagame >> rated;
+        MetagameQueuePtr queue = m_server->getMetagameQueue(metagame, rated);
+        if (!queue) {
+            return;
+        }
+
+        queue->removeClient(shared_from_this());
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -1426,7 +1439,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleRequestUserInfo,
     &ClientImpl::handlePersonalMessage,
     &ClientImpl::handlePersonalMessageRequest,
-    &ClientImpl::handleActivityMessage
+    &ClientImpl::handleActivityMessage,
+    &ClientImpl::handleCancelQueue
 };
 
 const int ClientImpl::MESSAGE_COUNT =
