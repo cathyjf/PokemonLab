@@ -1707,6 +1707,13 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
 void MetagameQueue::removeClient(ClientImplPtr client) {
     lock_guard<mutex> lock(m_mutex);
     m_clients.erase(client);
+    vector<QUEUE_ENTRY>::iterator i = m_queue.begin();
+    for (; i != m_queue.end(); ++i) {
+        if (i->first->getId() == client->getId()) {
+            m_queue.erase(i);
+            break;
+        }
+    }
 }
 
 void MetagameQueue::startMatches() {
