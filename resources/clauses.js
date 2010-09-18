@@ -213,3 +213,16 @@ makeClause({
         }
     }
 });
+
+makeClause({
+    name : "Soul Dew Clause",
+    description : "The item Soul Dew is not allowed",
+    validateTeam : function(team) {
+        for (var i in team) {
+            if (team[i].itemName == "Soul Dew") {
+                return false;
+            }
+        }
+        return true;
+    }
+});

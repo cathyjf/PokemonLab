@@ -94,6 +94,9 @@
         <pokemon>Mew</pokemon>
     </ban-list>
     <clauses>
+        <clause>Species Clause</clause>
+        <clause>Item Clause</clause>
+        <clause>Soul Dew Clause</clause>
         <clause>Strict Damage Clause</clause>
     </clauses>
     <timer>
