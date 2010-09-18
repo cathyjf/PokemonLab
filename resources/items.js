@@ -362,6 +362,18 @@ function makeMoveClassBoostingItem(item, class_) {
     });
 }
 
+function makeWeatherProlongItem(item, weather) {
+    makeItem({
+        name : item,
+        informApplyWeather : function(idx) {
+            if (idx == weather) {
+                return 8;
+            }
+            return false;
+        }
+    });
+}
+
 // @stat ATTACK, 3, Choice Band
 makeChoiceItem("Choice Band", function(field, stat, subject) {
     if (subject != this.subject)
@@ -625,6 +637,11 @@ makeStatusCureItem("Lum Berry", ["ParalysisEffect", "SleepEffect",
 
 makeEvadeItem("Brightpowder");
 makeEvadeItem("Lax Incense");
+
+makeWeatherProlongItem("Damp Rock", GlobalEffect.RAIN);
+makeWeatherProlongItem("Heat Rock", GlobalEffect.SUN);
+makeWeatherProlongItem("Icy Rock", GlobalEffect.HAIL);
+makeWeatherProlongItem("Smooth Rock", GlobalEffect.SAND);
 
 // @stat SPATTACK, 3, DeepSeaTooth
 makeSpeciesBoostingItem("DeepSeaTooth", ["Clamperl"],
