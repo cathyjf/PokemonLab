@@ -265,9 +265,11 @@ effect.tick = function() {
     var delta = Math.floor(max / 16);
     if (this.subject.sendMessage("informRecoilDamage", -delta, move_))
         return;
-    var adjusted = this.subject.sendMessage("informAbsorbHealth", this.subject, delta);
-    if (adjusted)
+    var adjusted = this.subject.sendMessage("informAbsorbHealth",
+            this.subject, delta);
+    if (adjusted) {
         delta = adjusted;
+    }
     field.print(Text.battle_messages_unique(56, this.subject, move_));
     this.subject.hp += delta;
 };

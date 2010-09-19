@@ -182,7 +182,9 @@ void Pokemon::determineLegalActions() {
         }
     }
 
-    if (struggle) {
+    // If the Pokemon cannot select any move legally and it chooses to attack,
+    // it must use Struggle, unless it already has a forced move set.
+    if (struggle && !m_forcedTurn) {
         setForcedTurn(m_machine->getMoveDatabase()->getMove("Struggle"),
                 NULL, FORCED_MOVE);
     }
@@ -241,17 +243,17 @@ void Pokemon::getImmunities(Pokemon *user, Pokemon *target,
 /**
  * Transform the effectiveness of a certain move type on a target
  */
-bool Pokemon::getTransformedEffectiveness(const PokemonType *moveType, const PokemonType *type, 
-                                                                    Pokemon *target, double &effectiveness) {
+bool Pokemon::getTransformedEffectiveness(const PokemonType *moveType,
+        const PokemonType *type, Pokemon *target, double &effectiveness) {
     effectiveness = moveType->getMultiplier(*type);
-    //The behaviour if more than one transform really isn't defined
-    //so I'll just stop after the first one
+    // The behaviour if more than one transform really isn't defined,
+    // so I'll just stop after the first one.
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
         if (!(*i)->isActive(m_cx))
             continue;
-        if ((*i)->transformEffectiveness(m_cx, moveType->getTypeValue(), type->getTypeValue(), 
-                                                                    target, &effectiveness)) {
+        if ((*i)->transformEffectiveness(m_cx, moveType->getTypeValue(),
+                type->getTypeValue(), target, &effectiveness)) {
             return true;
         }
     }
