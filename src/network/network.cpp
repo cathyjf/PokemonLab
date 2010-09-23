@@ -572,7 +572,7 @@ public:
     void initialiseMatchmaking(const string &);
     void initialiseClauses();
     bool validateTeam(ScriptContextPtr, Pokemon::ARRAY &,
-            vector<StatusObject> &, vector<int> &);
+            vector<StatusObject> &, vector<int> &, const set<unsigned int> &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
     ScriptMachine *getMachine() { return &m_machine; }
     ChannelPtr getMainChannel() const { return m_mainChannel; }
@@ -585,6 +585,7 @@ public:
                                             vector<StatusObject> &ret);
     void fetchClauses(ScriptContextPtr scx, const int metagame, 
                                             vector<StatusObject> &ret);
+    void getMetagameBans(const int metagame, set<unsigned int> &bans);
 
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
@@ -1169,8 +1170,12 @@ private:
         } else {
             m_server->fetchClauses(cx, metagame, clauses);
         }
+
+        set<unsigned int> bans;
+        m_server->getMetagameBans(metagame, bans);
+
         vector<int> violations;
-        if (!m_server->validateTeam(cx, team, clauses, violations)) {
+        if (!m_server->validateTeam(cx, team, clauses, violations, bans)) {
             sendMessage(InvalidTeamMessage(opponent, size, violations));
             return;
         }
@@ -1221,9 +1226,14 @@ private:
             m_server->fetchClauses(cx, challenge->clauses, clauses);
         } else {
             m_server->fetchClauses(cx, metagame, clauses);
-        }      
+        }
+
+        set<unsigned int> bans;
+        m_server->getMetagameBans(metagame, bans);
+        
         vector<int> violations;
-        if (!m_server->validateTeam(cx, challenge->teams[0], clauses, violations)) {
+        if (!m_server->validateTeam(cx, challenge->teams[0], clauses, 
+                violations, bans)) {
             sendMessage(InvalidTeamMessage(opponent, size, violations));
             return;
         }
@@ -1348,7 +1358,6 @@ private:
                 machine->getMoveDatabase(),
                 msg,
                 team);
-        // TODO: Verify legality of team.
         queue->queueClient(shared_from_this(), team);
     }
     
@@ -1707,7 +1716,8 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     vector<StatusObject> clauses;
     m_server->fetchClauses(scx, m_metagame->getIdx(), clauses);
     vector<int> violations;
-    if (!m_server->validateTeam(scx, team, clauses, violations)) {
+    if (!m_server->validateTeam(scx, team, clauses, violations,
+            m_metagame->getBanList())) {
         client->sendMessage(InvalidTeamMessage(string(), size, violations));
         return false;
     }
@@ -1825,6 +1835,19 @@ void ServerImpl::fetchClauses(ScriptContextPtr scx, const int metagame,
     vector<string>::iterator i = clauses.begin();
     for (; i != clauses.end(); ++i) {
         ret.push_back(scx->getClause(*i));
+    }
+}
+
+void ServerImpl::getMetagameBans(const int metagame, set<unsigned int> &ret) {
+    const int metagameSize = m_metagames.size();
+    if ((metagame < 0) || (metagame > metagameSize)) {
+        return;
+    }
+    MetagamePtr p = m_metagames[metagame];
+    const set<unsigned int> &bans = p->getBanList();
+    set<unsigned int>::const_iterator i = bans.begin();
+    for (; i != bans.end(); ++i) {
+        ret.insert(*i);
     }
 }
 
@@ -2016,7 +2039,8 @@ void ServerImpl::initialiseClauses() {
 }
 
 bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
-        vector<StatusObject> &clauses, vector<int> &violations) {
+        vector<StatusObject> &clauses, vector<int> &violations,
+        const set<unsigned int> &bans) {
     Pokemon::ARRAY::iterator i = team.begin();
     for (; i != team.end(); ++i) {
         (*i)->initialise(NULL, scx, 0, 0);
@@ -2043,29 +2067,27 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
     const int partySize = team.size();
     for (int i = 0; i < partySize; ++i) {
         Pokemon::PTR p = team[i];
-        if (!p->validateLegalPokemon(cx)) {
-            violations.push_back(-i - 1);
-            pass = false;
+        set<unsigned int> pViolations;
+        p->validate(cx, pViolations);
+
+        set<unsigned int>::iterator j = pViolations.begin();
+        for (; j != pViolations.end(); ++j) {
+            violations.push_back(-i - 1 - (partySize * (*j)));
         }
-        if (!p->validateLearnset(cx)) {
-            violations.push_back(-i - 1 - partySize);
-            pass = false;
-        }
-        if (!p->validateMoveCombinations(cx)) {
-            violations.push_back(-i - 1 - (partySize * 2));
-            pass = false;
-        }
-        if (!p->validateItem(cx)) {
-            violations.push_back(-i - 1 - (partySize * 3));
-            pass = false;
-        }
+
+        // There 6 conditions in Pokemon::validate, impose these additional
+        // restrictions:
+        // 7) Hidden stats
+        // 8) Unbanned pokemon
         if (!mech.validateHiddenStats(*p)) {
-            violations.push_back(-i - 1 - (partySize * 4));
-            pass = false;
+            violations.push_back(-i - 1 - (partySize * 7));
+        }
+        if (bans.count(p->getSpeciesId())) {
+            violations.push_back(-i - 1 - (partySize * 8));
         }
     }
     
-    return pass;
+    return !violations.size();
 }
 
 void ServerImpl::handleMatchmaking() {

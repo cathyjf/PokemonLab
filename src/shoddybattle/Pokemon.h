@@ -95,11 +95,7 @@ public:
     void initialise(BattleField *field, boost::shared_ptr<ScriptContext>,
             const int i, const int j);
 
-    bool validateLearnset(ScriptContext *);
-    bool validateMoveCombinations(ScriptContext *);
-    bool validateItem(ScriptContext *);
-    bool validateLegalPokemon(ScriptContext *);
-    bool validate(ScriptContext *);
+    bool validate(ScriptContext *, std::set<unsigned int> &);
 
     ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 

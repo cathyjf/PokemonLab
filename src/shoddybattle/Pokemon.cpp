@@ -1078,20 +1078,12 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
 }
 
 /**
- * Checks if a pokemon is able to learn the moves it knows
- */
-bool Pokemon::validateLearnset(ScriptContext *) {
-    // This only happens if there are illegal moves. This is because
-    // the constructor skips over moves the pokemon can't learn
-    if (m_moves.size() != m_ppUps.size())
-        return false;
-    return true;
-}
-/**
  * Checks a pokemon for legal move combinations.
  */
-bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
-    COMBINATION_LIST list = m_species->getIllegalCombinations();
+namespace {
+bool validateMoveCombinations(ScriptContext *cx, const PokemonSpecies *species,
+        const vector<MoveObjectPtr> &moves) {
+    COMBINATION_LIST list = species->getIllegalCombinations();
     COMBINATION_LIST::iterator i = list.begin();
 
     // This loop is triple nested, but the only loop of
@@ -1104,8 +1096,8 @@ bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
             const string move = *j;
 
             bool found = false;
-            vector<MoveObjectPtr>::iterator k = m_moves.begin();
-            for (; k != m_moves.end(); ++k) {
+            vector<MoveObjectPtr>::const_iterator k = moves.begin();
+            for (; k != moves.end(); ++k) {
                 const string name = (*k)->getName(cx);
                 if (name == move) {
                     found = true;
@@ -1125,87 +1117,74 @@ bool Pokemon::validateMoveCombinations(ScriptContext *cx) {
 
     return true;
 }
-/**
- * Checks if the held item is legal.
- * Currently it doesn't work
- */
-bool Pokemon::validateItem(ScriptContext *) {
-    // TODO: Implement this
-    return true;
 }
 
 /**
- * This checks for the "obviously you hacked" conditions.
  * It checks the following:
- * 1) Must have 1-4 unique moves
- * 2) Each move must have 0-3 PP ups
- * 3) The species must be able to get the given ability
- * 4) The species must be able to be of the given gender
+ * 0) Must have 1-4 unique moves
+ * 1) The species must be able to learn those moves
+ * 2) The moves must not be an illegal combo
+ * 3) Each move must have 0-3 PP ups
+ * 4) The pokemon must have a valid item
+ * 5) The species must be able to get the given ability
+ * 6) The species must be able to be of the given gender
+ * Whatever is broken is added to violations
  */
-bool Pokemon::validateLegalPokemon(ScriptContext *cx) {
+bool Pokemon::validate(ScriptContext *cx, set<unsigned int> &violations) {
+    // Test Condition 0 - 1-4 UNIQUE moves
     int moveCount = m_moves.size();
-    if ((moveCount <= 0) || (moveCount > P_MOVE_COUNT))
-        return false;
-
+    if ((moveCount <= 0) || (moveCount > P_MOVE_COUNT)) {
+        violations.insert(0);
+    }
     set<string> moves;
     vector<MoveObjectPtr>::iterator i = m_moves.begin();
     for (; i != m_moves.end(); ++i) {
         const string name = (*i)->getName(cx);
         if (moves.count(name)) {
-            return false;
+            violations.insert(0);
+            break;
         }
         moves.insert(name);
     }
-    
+
+    // Test Condition 1 - Legal Learnsets
+    // This only happens if there are illegal moves. This is because
+    // the constructor skips over moves the pokemon can't learn
+    if (m_moves.size() != m_ppUps.size()) {
+        violations.insert(1);
+    }
+
+    // Test Condition 2 - Legal move combinations
+    if (!validateMoveCombinations(cx, m_species, m_moves)) {
+        violations.insert(2);
+    }
+
+    // Test Condition 3 - 0-3 PP ups
     vector<int>::iterator j = m_ppUps.begin();
     for (; j != m_ppUps.end(); ++j) {
         if ((*j < 0) || (*j > 3)) {
-            return false;
+            violations.insert(3);
         }
     }
 
-    ABILITY_LIST abilityList = m_species->getAbilities();
-    bool found = false;
-    ABILITY_LIST::iterator k = abilityList.begin();
-    for (; k != abilityList.end(); ++k) {
-        if (*k == m_abilityName) {
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        return false;
+    // Test Condition 4 - Valid Item
+    // TODO: Implement item validation
+
+    // Test Condition 5 - Ability learnable
+    const ABILITY_LIST &abilities = m_species->getAbilities();
+    ABILITY_LIST::const_iterator ability = 
+        find(abilities.begin(), abilities.end(), m_abilityName);
+    if (*ability != m_abilityName) {
+        violations.insert(5);
     }
 
+    // Test Condition 6 - Legal Gender
     const int genders = m_species->getPossibleGenders();
     if (!(m_gender && (m_gender & genders)) && (m_gender || genders)) {
-        return false;
+        violations.insert(6);
     }
-
-    return true;
-}
-/**
- * A shorthand to calling all the validation methods,
- * therefore it checks the following:
- * 1) Must have 1-4 unique moves
- * 2) The species must be able to learn those moves
- * 3) The moves must not be an illegal combo
- * 4) Each move must have 0-3 PP ups
- * 5) The pokemon must have a valid item
- * 6) The species must be able to get the given ability
- * 7) The species must be able to be of the given gender
- */
-bool Pokemon::validate(ScriptContext *cx) {
-    if (!validateLegalPokemon(cx))
-        return false;
-    if (!validateLearnset(cx))
-        return false;
-    if (!validateMoveCombinations(cx))
-        return false;
-    if (!validateItem(cx))
-        return false;
         
-    return true;
+    return !violations.size();
 }
 
 }
