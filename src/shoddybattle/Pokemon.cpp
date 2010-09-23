@@ -1082,7 +1082,7 @@ void Pokemon::initialise(BattleField *field, ScriptContextPtr cx,
  */
 namespace {
 bool validateMoveCombinations(ScriptContext *cx, const PokemonSpecies *species,
-        const vector<MoveObjectPtr> &moves) {
+        Pokemon *p, const vector<MoveObjectPtr> &moves) {
     COMBINATION_LIST list = species->getIllegalCombinations();
     COMBINATION_LIST::iterator i = list.begin();
 
@@ -1090,9 +1090,12 @@ bool validateMoveCombinations(ScriptContext *cx, const PokemonSpecies *species,
     // substantional size is the outer one
     for (; i != list.end(); ++i) {
         bool match = true;
-        COMBINATION combo = *i;
-        COMBINATION::iterator j = combo.begin();
-        for (; j != combo.end(); ++j) {
+        Combination combo = *i;
+
+        // Check moves
+        vector<string> illegalMoves = combo.moves;
+        vector<string>::iterator j = illegalMoves.begin();
+        for (; j != illegalMoves.end(); ++j) {
             const string move = *j;
 
             bool found = false;
@@ -1109,10 +1112,30 @@ bool validateMoveCombinations(ScriptContext *cx, const PokemonSpecies *species,
                 break;
             }
         }
-
-        if (match) {
-            return false;
+        if (!match) {
+            continue;
         }
+
+        
+        // Check nature/ability/gender
+        if ((combo.ability.size() != 0) &&
+                (p->getAbilityName() != combo.ability)) {
+            continue;
+        }
+        
+        // TODO: Find a way to check nature, until then, all illegals
+        // that involve nature will be ignored
+        if (combo.nature.size() != 0) {
+            continue;
+        }
+        
+        // 0 gender is NONE, pokemon with NONE cannot have any other gender
+        // so we can treat 0 as unspecified
+        if ((combo.gender != 0) && (p->getGender() != combo.gender)) {
+            continue;
+        }
+
+        return false;
     }
 
     return true;
@@ -1155,7 +1178,7 @@ bool Pokemon::validate(ScriptContext *cx, set<unsigned int> &violations) {
     }
 
     // Test Condition 2 - Legal move combinations
-    if (!validateMoveCombinations(cx, m_species, m_moves)) {
+    if (!validateMoveCombinations(cx, m_species, this, m_moves)) {
         violations.insert(2);
     }
 

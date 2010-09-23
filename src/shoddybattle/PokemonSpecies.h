@@ -64,9 +64,15 @@ typedef std::map<int, PokemonSpecies *> SPECIES_SET;
 class PokemonType;
 typedef std::vector<const PokemonType *> TYPE_LIST;
 
+struct Combination {
+    std::string nature;
+    std::string ability;
+    unsigned int gender;
+    std::vector<std::string> moves;
+};
+
 typedef std::vector<std::string> ABILITY_LIST;
-typedef std::vector<std::string> COMBINATION;
-typedef std::vector<COMBINATION> COMBINATION_LIST;
+typedef std::vector<Combination> COMBINATION_LIST;
 
 class MoveDatabase;
 class SpeciesDatabase;

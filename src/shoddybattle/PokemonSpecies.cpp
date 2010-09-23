@@ -165,6 +165,22 @@ string &lowercase(string &str) {
     return str;
 }
 
+int genderFromName(const string &txt) {
+    int gender = 0;
+    if (txt == "both") {
+        gender = G_BOTH;
+    } else if (txt == "male") {
+        gender = G_MALE;
+    } else if (txt == "female") {
+        gender = G_FEMALE;
+    } else if (txt == "none") {
+        gender = G_NONE;
+    } else {
+        Log::out() << "Unknown gender: " << txt << endl;
+    }
+    return gender;
+}
+
 void getSpecies(DOMElement *node, SPECIES *pSpecies) {
     DOMNamedNodeMap *attributes = node->getAttributes();
     XMLCh tempStr[20];
@@ -195,22 +211,10 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
     // gender
     XMLString::transcode("gender", tempStr, 19);
     list = node->getElementsByTagName(tempStr);
-    int gender = 0;
     if (list->getLength() != 0) {
         string txt = getTextFromElement((DOMElement *)list->item(0));
-        lowercase(txt);
-        if (txt == "both") {
-            gender = G_BOTH;
-        } else if (txt == "male") {
-            gender = G_MALE;
-        } else if (txt == "female") {
-            gender = G_FEMALE;
-        } else if (txt == "none") {
-            gender = G_NONE;
-        } else {
-            Log::out() << "Unknown gender: " << txt << endl;
-        }
-        pSpecies->gender = gender;
+        lowercase(txt);        
+        pSpecies->gender = genderFromName(txt);
     }
 
     // stats
@@ -313,21 +317,47 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
         list = element->getElementsByTagName(tempStr);
         length = list->getLength();
         for (int i = 0; i < length; ++i) {
-            DOMElement *moves = (DOMElement *)list->item(i);
-            
+            DOMElement *comboNode = (DOMElement *)list->item(i);
+
+            Combination combo;
             XMLString::transcode("move", tempStr, 19);
-            vector<string> moveVector;
-            DOMNodeList *list2 = moves->getElementsByTagName(tempStr);
+            DOMNodeList *list2 = comboNode->getElementsByTagName(tempStr);
             int length2 = list2->getLength();
             for (int j = 0; j < length2; ++j) {
                 DOMElement *move = (DOMElement *)list2->item(j);
                 string strMove = getTextFromElement(move);
                 if (!strMove.empty()) {
-                    moveVector.push_back(strMove);
+                    combo.moves.push_back(strMove);
                 }
             }
 
-            illegal.push_back(moveVector);
+            // nature
+            XMLString::transcode("nature", tempStr, 19);
+            list2 = comboNode->getElementsByTagName(tempStr);
+            if (list2->getLength() != 0) {
+                string txt = getTextFromElement((DOMElement *)list2->item(0));
+                combo.nature = txt;
+            }
+
+            // ability
+            XMLString::transcode("ability", tempStr, 19);
+            list2 = comboNode->getElementsByTagName(tempStr);
+            if (list2->getLength() != 0) {
+                string txt = getTextFromElement((DOMElement *)list2->item(0));
+                combo.ability = txt;
+            }
+
+            // gender
+            XMLString::transcode("gender", tempStr, 19);
+            list2 = comboNode->getElementsByTagName(tempStr);
+            combo.gender = 0;
+            if (list2->getLength() != 0) {
+                string txt = getTextFromElement((DOMElement *)list2->item(0));
+                lowercase(txt);
+                combo.gender = genderFromName(txt);
+            }
+
+            illegal.push_back(combo);
         }
         pSpecies->illegal = illegal;
     }
