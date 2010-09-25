@@ -1304,7 +1304,7 @@ makeAbility({
  *******************/
 makeAbility({
     name : "Iron Fist",
-    moves_ : ["Ice Punch", "Fire Punch", "Thunderpunch", "Mach Punch",
+    moves_ : ["Ice Punch", "Fire Punch", "ThunderPunch", "Mach Punch",
               "Focus Punch", "Dizzy Punch", "DynamicPunch", "Hammer Arm",
               "Mega Punch", "Comet Punch", "Meteor Mash", "Shadow Punch",
               "Drain Punch", "Bullet Punch", "Sky Uppercut"],

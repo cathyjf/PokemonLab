@@ -20,7 +20,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Worry Seed</move>
 			<move>Seed Bomb</move>
 			<move>Growl</move>
@@ -29,7 +29,7 @@
 			<move>Tackle</move>
 			<move>Take Down</move>
 			<move>Synthesis</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Growth</move>
 			<move>Sweet Scent</move>
 			<move>Double-Edge</move>
@@ -66,7 +66,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -543,7 +543,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Worry Seed</move>
 			<move>Seed Bomb</move>
 			<move>Growl</move>
@@ -552,7 +552,7 @@
 			<move>Tackle</move>
 			<move>Take Down</move>
 			<move>Synthesis</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Growth</move>
 			<move>Sweet Scent</move>
 			<move>Double-Edge</move>
@@ -589,7 +589,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -1066,7 +1066,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Worry Seed</move>
 			<move>Seed Bomb</move>
 			<move>Growl</move>
@@ -1076,7 +1076,7 @@
 			<move>Petal Dance</move>
 			<move>Take Down</move>
 			<move>Synthesis</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Growth</move>
 			<move>Sweet Scent</move>
 			<move>Double-Edge</move>
@@ -1118,7 +1118,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Frenzy Plant</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -1597,7 +1597,7 @@
 		<moves origin="tutor">
 			<move>Quick Attack</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Howl</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -2377,7 +2377,7 @@
 		<moves origin="tutor">
 			<move>Quick Attack</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Howl</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -3165,7 +3165,7 @@
 			<move>Quick Attack</move>
 			<move>Substitute</move>
 			<move>Twister</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Howl</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -3221,7 +3221,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Blast Burn</move>
 			<move>Substitute</move>
@@ -6990,7 +6990,7 @@
 			<move>Stun Spore</move>
 			<move>Tailwind</move>
 			<move>Morning Sun</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Whirlwind</move>
 		</moves>
 		<moves origin="tutor">
@@ -7030,7 +7030,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -7208,7 +7208,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -8736,7 +8736,7 @@
 			<move>Thunderbolt</move>
 			<move>Feint</move>
 			<move>Nasty Plot</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Tail Whip</move>
 			<move>Thunder Wave</move>
 			<move>Teeter Dance</move>
@@ -8746,7 +8746,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Volt Tackle</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
@@ -8808,7 +8808,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Charge</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Reversal</move>
 			<move>Wish</move>
 			<move>Bide</move>
@@ -9876,7 +9876,7 @@
 			<move>Thunderbolt</move>
 			<move>Feint</move>
 			<move>Nasty Plot</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Tail Whip</move>
 			<move>Thunder Wave</move>
 			<move>Teeter Dance</move>
@@ -9886,7 +9886,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Volt Tackle</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
@@ -9952,7 +9952,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Charge</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Reversal</move>
 			<move>Wish</move>
 			<move>Bide</move>
@@ -11609,7 +11609,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -12071,7 +12071,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -12286,7 +12286,7 @@
 			<move>Substitute</move>
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Dream Eater</move>
 			<move>Swagger</move>
@@ -12356,7 +12356,7 @@
 			<move>Swagger</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -12645,7 +12645,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Uproar</move>
 			<move>Dream Eater</move>
@@ -12719,7 +12719,7 @@
 			<move>Swagger</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -13195,7 +13195,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -13333,7 +13333,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -13389,7 +13389,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -13561,7 +13561,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -13630,7 +13630,7 @@
 			<move>Swagger</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -14137,7 +14137,7 @@
 			<move>Absorb</move>
 			<move>Mega Drain</move>
 			<move>Petal Dance</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Sweet Scent</move>
 			<move>Lucky Chant</move>
 		</moves>
@@ -14166,7 +14166,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -14299,7 +14299,7 @@
 			<move>Absorb</move>
 			<move>Mega Drain</move>
 			<move>Petal Dance</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Sweet Scent</move>
 			<move>Lucky Chant</move>
 		</moves>
@@ -14329,7 +14329,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -14453,7 +14453,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Drain</move>
 			<move>Stun Spore</move>
 			<move>Sleep Powder</move>
@@ -14464,7 +14464,7 @@
 			<move>Absorb</move>
 			<move>Mega Drain</move>
 			<move>Petal Dance</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Sweet Scent</move>
 			<move>Aromatherapy</move>
 			<move>Lucky Chant</move>
@@ -14498,7 +14498,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -14644,7 +14644,7 @@
 			<move>Aromatherapy</move>
 			<move>Leech Life</move>
 			<move>X-Scissor</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Slash</move>
 			<move>Giga Drain</move>
 		</moves>
@@ -14683,7 +14683,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -14956,7 +14956,7 @@
 			<move>Cross Poison</move>
 			<move>Leech Life</move>
 			<move>X-Scissor</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Slash</move>
 			<move>Giga Drain</move>
 		</moves>
@@ -14996,7 +14996,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -15239,7 +15239,7 @@
 			<move>Zen Headbutt</move>
 			<move>Confusion</move>
 			<move>Leech Life</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Signal Beam</move>
 			<move>Psybeam</move>
 			<move>Disable</move>
@@ -15267,7 +15267,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Psychic</move>
@@ -15380,7 +15380,7 @@
 			<move>Zen Headbutt</move>
 			<move>Poison Fang</move>
 			<move>Psychic</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
@@ -15413,7 +15413,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -16995,7 +16995,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -17204,7 +17204,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -17529,7 +17529,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -18589,7 +18589,7 @@
 			<move>Substitute</move>
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Mega Punch</move>
@@ -18659,7 +18659,7 @@
 			<move>Energy Ball</move>
 		</moves>
 		<moves origin="egg">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Knock Off</move>
 			<move>Guard Swap</move>
 			<move>Power Trick</move>
@@ -18798,7 +18798,7 @@
 			<move>Substitute</move>
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Mega Punch</move>
@@ -18868,7 +18868,7 @@
 			<move>Energy Ball</move>
 		</moves>
 		<moves origin="egg">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Knock Off</move>
 			<move>Guard Swap</move>
 			<move>Power Trick</move>
@@ -19008,7 +19008,7 @@
 			<move>Substitute</move>
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Mega Punch</move>
@@ -19081,7 +19081,7 @@
 			<move>Energy Ball</move>
 		</moves>
 		<moves origin="egg">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Knock Off</move>
 			<move>Guard Swap</move>
 			<move>Power Trick</move>
@@ -19219,7 +19219,7 @@
 			<move>Fire Punch</move>
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Superpower</move>
@@ -19281,7 +19281,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Close Combat</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Light Screen</move>
 			<move>Meditate</move>
@@ -19499,7 +19499,7 @@
 			<move>Fire Punch</move>
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Superpower</move>
@@ -19561,7 +19561,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Close Combat</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Light Screen</move>
 			<move>Meditate</move>
@@ -19755,7 +19755,7 @@
 			<move>Fire Punch</move>
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Superpower</move>
@@ -19820,7 +19820,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Close Combat</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Light Screen</move>
 			<move>Meditate</move>
@@ -20002,7 +20002,7 @@
 			<move>Acid</move>
 			<move>Wring Out</move>
 			<move>Slam</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Growth</move>
 			<move>Knock Off</move>
 			<move>Wrap</move>
@@ -20037,7 +20037,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -20213,7 +20213,7 @@
 			<move>Growth</move>
 			<move>Knock Off</move>
 			<move>Morning Sun</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Razor Leaf</move>
 			<move>Wrap</move>
 		</moves>
@@ -20243,7 +20243,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -20449,7 +20449,7 @@
 			<move>Leaf Storm</move>
 			<move>Knock Off</move>
 			<move>Morning Sun</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Stockpile</move>
 			<move>Razor Leaf</move>
 			<move>Swallow</move>
@@ -20487,7 +20487,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -21109,7 +21109,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -21299,7 +21299,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -21490,7 +21490,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -21707,7 +21707,7 @@
 			<move>Swift</move>
 		</moves>
 		<moves origin="tm">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Double Team</move>
 			<move>Sleep Talk</move>
@@ -21836,7 +21836,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -22286,13 +22286,13 @@
 		<moves origin="level">
 			<move>Discharge</move>
 			<move>Tackle</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Spark</move>
 			<move>Screech</move>
 			<move>Supersonic</move>
 			<move>SonicBoom</move>
 			<move>Magnet Rise</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Metal Sound</move>
 			<move>Mirror Shot</move>
 			<move>Magnet Bomb</move>
@@ -22370,14 +22370,14 @@
 		<moves origin="level">
 			<move>Discharge</move>
 			<move>Tackle</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Spark</move>
 			<move>Screech</move>
 			<move>Supersonic</move>
 			<move>Refresh</move>
 			<move>SonicBoom</move>
 			<move>Magnet Rise</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Metal Sound</move>
 			<move>Mirror Shot</move>
 			<move>Tri Attack</move>
@@ -23440,7 +23440,7 @@
 			<move>null</move>
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>DynamicPunch</move>
@@ -23738,7 +23738,7 @@
 			<move>null</move>
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
@@ -24432,7 +24432,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Trick</move>
@@ -24492,7 +24492,7 @@
 		<moves origin="egg">
 			<move>Fire Punch</move>
 			<move>Psywave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Astonish</move>
 			<move>Ice Punch</move>
 			<move>Perish Song</move>
@@ -24605,7 +24605,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Trick</move>
@@ -24668,7 +24668,7 @@
 		<moves origin="egg">
 			<move>Fire Punch</move>
 			<move>Psywave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Astonish</move>
 			<move>Ice Punch</move>
 			<move>Perish Song</move>
@@ -24780,7 +24780,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Explosion</move>
 			<move>Uproar</move>
@@ -24863,7 +24863,7 @@
 		<moves origin="egg">
 			<move>Fire Punch</move>
 			<move>Psywave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Astonish</move>
 			<move>Ice Punch</move>
 			<move>Perish Song</move>
@@ -25229,7 +25229,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
@@ -25292,7 +25292,7 @@
 			<move>Return</move>
 		</moves>
 		<moves origin="egg">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Flatter</move>
 			<move>Psycho Cut</move>
 			<move>Ice Punch</move>
@@ -25596,7 +25596,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Mega Punch</move>
@@ -25663,7 +25663,7 @@
 			<move>Return</move>
 		</moves>
 		<moves origin="egg">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Flatter</move>
 			<move>Psycho Cut</move>
 			<move>Ice Punch</move>
@@ -25923,7 +25923,7 @@
 			<move>Mud Sport</move>
 			<move>BubbleBeam</move>
 			<move>Flail</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Crabhammer</move>
 			<move>Protect</move>
 			<move>Mud Shot</move>
@@ -26069,7 +26069,7 @@
 			<move>Mud Sport</move>
 			<move>BubbleBeam</move>
 			<move>Flail</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Crabhammer</move>
 			<move>Protect</move>
 			<move>Mud Shot</move>
@@ -26377,7 +26377,7 @@
 			<move>Bullet Seed</move>
 			<move>Nightmare</move>
 			<move>Uproar</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Worry Seed</move>
 			<move>Leech Seed</move>
 			<move>Confusion</move>
@@ -26388,7 +26388,7 @@
 			<move>Reflect</move>
 			<move>Barrage</move>
 			<move>Psychic</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Selfdestruct</move>
 			<move>Hypnosis</move>
 			<move>Wish</move>
@@ -26427,7 +26427,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Trick Room</move>
 			<move>Substitute</move>
@@ -26639,7 +26639,7 @@
 			<move>Bullet Seed</move>
 			<move>Nightmare</move>
 			<move>Uproar</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Wood Hammer</move>
 			<move>Worry Seed</move>
 			<move>Seed Bomb</move>
@@ -26656,7 +26656,7 @@
 			<move>Reflect</move>
 			<move>Psychic</move>
 			<move>Stomp</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Selfdestruct</move>
 			<move>Hypnosis</move>
 			<move>Wish</move>
@@ -26699,7 +26699,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -26840,7 +26840,7 @@
 			<move>Refresh</move>
 		</combo>
 		<combo>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Refresh</move>
 		</combo>
 		<combo>
@@ -26956,7 +26956,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -27293,7 +27293,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Iron Defense</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -27861,7 +27861,7 @@
 			<move>Tackle</move>
 			<move>Sky Uppercut</move>
 			<move>Bullet Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Detect</move>
 			<move>Agility</move>
 			<move>Counter</move>
@@ -27877,7 +27877,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Foresight</move>
 			<move>Uproar</move>
 			<move>Mega Kick</move>
@@ -28023,7 +28023,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Dream Eater</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -28074,7 +28074,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -28784,7 +28784,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -29111,7 +29111,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
@@ -29177,7 +29177,7 @@
 			<move>Attract</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Snatch</move>
 			<move>Water Pulse</move>
 			<move>Charge Beam</move>
@@ -29496,7 +29496,7 @@
 			<move>Growth</move>
 			<move>Knock Off</move>
 			<move>Morning Sun</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Power Whip</move>
 			<move>Constrict</move>
 		</moves>
@@ -29533,7 +29533,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -29748,7 +29748,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -29815,7 +29815,7 @@
 			<move>Rock Slide</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Water Pulse</move>
 			<move>Frustration</move>
 			<move>Rock Tomb</move>
@@ -31143,7 +31143,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Iron Defense</move>
 			<move>Uproar</move>
@@ -31212,7 +31212,7 @@
 			<move>Attract</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Snatch</move>
 			<move>Charge Beam</move>
 			<move>Frustration</move>
@@ -32316,10 +32316,10 @@
 			<move>Quick Attack</move>
 			<move>Thunder</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Low Kick</move>
 			<move>Screech</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Leer</move>
 			<move>Follow Me</move>
 			<move>Shock Wave</move>
@@ -32330,7 +32330,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
@@ -32523,7 +32523,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Heat Wave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Uproar</move>
@@ -32581,7 +32581,7 @@
 			<move>Cross Chop</move>
 			<move>Mach Punch</move>
 			<move>Screech</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>null</move>
 			<move>Karate Chop</move>
 			<move>DynamicPunch</move>
@@ -32783,7 +32783,7 @@
 			<move>Guillotine</move>
 			<move>Swords Dance</move>
 			<move>Submission</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Superpower</move>
 			<move>Bind</move>
 			<move>Helping Hand</move>
@@ -33053,7 +33053,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -33793,7 +33793,7 @@
 			<move>Bite</move>
 			<move>Pin Missile</move>
 			<move>Tail Whip</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Helping Hand</move>
 			<move>Thunder Wave</move>
 		</moves>
@@ -34094,7 +34094,7 @@
 			<move>Agility</move>
 			<move>Magnet Rise</move>
 			<move>Psybeam</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Tri Attack</move>
 			<move>Magic Coat</move>
 			<move>Sharpen</move>
@@ -34142,7 +34142,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -35201,7 +35201,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
@@ -35252,7 +35252,7 @@
 			<move>Hyper Beam</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -35882,7 +35882,7 @@
 			<move>Baton Pass</move>
 			<move>Sky Attack</move>
 			<move>Thunder</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Drill Peck</move>
 			<move>Detect</move>
 			<move>Roost</move>
@@ -35970,7 +35970,7 @@
 		<moves origin="level">
 			<move>Fire Spin</move>
 			<move>Agility</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>AncientPower</move>
 			<move>Flamethrower</move>
 			<move>Sky Attack</move>
@@ -36022,7 +36022,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -36395,7 +36395,7 @@
 			<move>Dragon Rage</move>
 			<move>Heal Bell</move>
 			<move>Safeguard</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Twister</move>
 			<move>Dragon Dance</move>
 			<move>Agility</move>
@@ -36413,7 +36413,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Twister</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>DynamicPunch</move>
 			<move>Mud-Slap</move>
@@ -36653,7 +36653,7 @@
 			<move>Substitute</move>
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Mega Punch</move>
@@ -36731,7 +36731,7 @@
 			<move>Swagger</move>
 			<move>Rock Slide</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -36793,7 +36793,7 @@
 			<move>Hypnosis</move>
 		</moves>
 		<moves origin="tutor">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
@@ -36929,7 +36929,7 @@
 			<move>Rock Slide</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -37080,14 +37080,14 @@
 			<move>Magical Leaf</move>
 			<move>Growl</move>
 			<move>Safeguard</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Natural Gift</move>
 			<move>Sweet Scent</move>
 			<move>Aromatherapy</move>
 			<move>Reflect</move>
 			<move>Body Slam</move>
 			<move>Light Screen</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Synthesis</move>
 			<move>Frenzy Plant</move>
 			<move>Razor Leaf</move>
@@ -37124,7 +37124,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -37332,14 +37332,14 @@
 			<move>Magical Leaf</move>
 			<move>Growl</move>
 			<move>Safeguard</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Natural Gift</move>
 			<move>Sweet Scent</move>
 			<move>Aromatherapy</move>
 			<move>Reflect</move>
 			<move>Body Slam</move>
 			<move>Light Screen</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Synthesis</move>
 			<move>Frenzy Plant</move>
 			<move>Razor Leaf</move>
@@ -37376,7 +37376,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -37586,7 +37586,7 @@
 			<move>Magical Leaf</move>
 			<move>Growl</move>
 			<move>Safeguard</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Natural Gift</move>
 			<move>Sweet Scent</move>
 			<move>Aromatherapy</move>
@@ -37594,7 +37594,7 @@
 			<move>Body Slam</move>
 			<move>Petal Dance</move>
 			<move>Light Screen</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Synthesis</move>
 			<move>Frenzy Plant</move>
 			<move>Razor Leaf</move>
@@ -37636,7 +37636,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -38142,7 +38142,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -38186,7 +38186,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -39076,7 +39076,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Aqua Tail</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -39115,7 +39115,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Toxic</move>
@@ -39212,7 +39212,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -39257,7 +39257,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -39810,7 +39810,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ominous Wind</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -39848,7 +39848,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Frustration</move>
@@ -39962,7 +39962,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Ominous Wind</move>
 			<move>Swagger</move>
@@ -40003,7 +40003,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -40148,7 +40148,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Psychic</move>
@@ -40324,7 +40324,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -40946,7 +40946,7 @@
 			<move>Charm</move>
 			<move>Nasty Plot</move>
 			<move>Sweet Kiss</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Tail Whip</move>
 			<move>Thunder Wave</move>
 			<move>Teeter Dance</move>
@@ -41006,7 +41006,7 @@
 		</moves>
 		<moves origin="egg">
 			<move>Charge</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Reversal</move>
 			<move>Volt Tackle</move>
 			<move>Wish</move>
@@ -41468,7 +41468,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -41806,7 +41806,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -42009,7 +42009,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -42405,7 +42405,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -42811,7 +42811,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Trick Room</move>
 			<move>Substitute</move>
@@ -43016,7 +43016,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -43152,7 +43152,7 @@
 			<move>Thunder</move>
 			<move>Tackle</move>
 			<move>Cotton Spore</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Growl</move>
 			<move>Signal Beam</move>
 			<move>Charge</move>
@@ -43264,7 +43264,7 @@
 			<move>Thunder</move>
 			<move>Tackle</move>
 			<move>Cotton Spore</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Growl</move>
 			<move>Signal Beam</move>
 			<move>Charge</move>
@@ -43276,7 +43276,7 @@
 			<move>null</move>
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
@@ -43432,10 +43432,10 @@
 			<move>Thunder</move>
 			<move>Tackle</move>
 			<move>Cotton Spore</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Growl</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Charge</move>
 			<move>Power Gem</move>
 			<move>Light Screen</move>
@@ -43445,7 +43445,7 @@
 			<move>Fire Punch</move>
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
@@ -43600,7 +43600,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Drain</move>
 			<move>Stun Spore</move>
 			<move>Sleep Powder</move>
@@ -43612,7 +43612,7 @@
 			<move>Mega Drain</move>
 			<move>Magical Leaf</move>
 			<move>Petal Dance</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Leaf Storm</move>
 			<move>Sweet Scent</move>
 			<move>Sunny Day</move>
@@ -43649,7 +43649,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -45450,7 +45450,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
@@ -46154,7 +46154,7 @@
 			<move>Mega Drain</move>
 			<move>Synthesis</move>
 			<move>Bounce</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Cotton Spore</move>
 			<move>Tail Whip</move>
 			<move>U-turn</move>
@@ -46186,7 +46186,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -46290,7 +46290,7 @@
 			<move>Mega Drain</move>
 			<move>Synthesis</move>
 			<move>Bounce</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Cotton Spore</move>
 			<move>Tail Whip</move>
 			<move>U-turn</move>
@@ -46322,7 +46322,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -46418,7 +46418,7 @@
 			<move>Mega Drain</move>
 			<move>Synthesis</move>
 			<move>Bounce</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Cotton Spore</move>
 			<move>Tail Whip</move>
 			<move>U-turn</move>
@@ -46454,7 +46454,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -46558,7 +46558,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -46611,7 +46611,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -46788,7 +46788,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -46866,7 +46866,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Drain</move>
 			<move>Worry Seed</move>
 			<move>Seed Bomb</move>
@@ -46916,7 +46916,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -47039,7 +47039,7 @@
 			<move>Attract</move>
 			<move>null</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Psychic</move>
@@ -48818,7 +48818,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Frustration</move>
@@ -49063,7 +49063,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -49307,7 +49307,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -49813,7 +49813,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Superpower</move>
@@ -49859,7 +49859,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Bulk Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -50078,7 +50078,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -50130,7 +50130,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Bulk Up</move>
 			<move>Stone Edge</move>
@@ -51184,7 +51184,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
 			<move>Mega Punch</move>
@@ -51501,7 +51501,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
@@ -52030,7 +52030,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -52841,7 +52841,7 @@
 			<move>Ice Beam</move>
 			<move>Aurora Beam</move>
 			<move>Psybeam</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Focus Energy</move>
 			<move>Water Pulse</move>
 			<move>Water Gun</move>
@@ -53030,7 +53030,7 @@
 			<move>Ice Beam</move>
 			<move>Aurora Beam</move>
 			<move>Psybeam</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Gunk Shot</move>
 			<move>Focus Energy</move>
 			<move>Water Pulse</move>
@@ -53847,7 +53847,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Snatch</move>
 			<move>Toxic</move>
@@ -54039,7 +54039,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Snatch</move>
@@ -54657,7 +54657,7 @@
 			<move>Agility</move>
 			<move>Magnet Rise</move>
 			<move>Psybeam</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Tri Attack</move>
 			<move>Magic Coat</move>
 			<move>Hyper Beam</move>
@@ -54708,7 +54708,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -54808,7 +54808,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -54960,7 +54960,7 @@
 			<move>Confuse Ray</move>
 			<move>Agility</move>
 			<move>Whirlpool</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Horn Drill</move>
 			<move>Spacial Rend</move>
 			<move>Stone Edge</move>
@@ -55160,7 +55160,7 @@
 			<move>Refresh</move>
 			<move>Sunny Day</move>
 			<move>Mega Kick</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Gastro Acid</move>
 			<move>Weather Ball</move>
 			<move>Copycat</move>
@@ -55248,7 +55248,7 @@
 			<move>Heal Bell</move>
 			<move>Hail</move>
 			<move>Present</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Counter</move>
 			<move>Hyper Voice</move>
 			<move>Shadow Claw</move>
@@ -55285,7 +55285,7 @@
 			<move>Leaf Blade</move>
 			<move>Seed Flare</move>
 			<move>Horn Attack</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Aurora Beam</move>
 			<move>Magnet Rise</move>
 			<move>Bind</move>
@@ -55342,7 +55342,7 @@
 			<move>Pursuit</move>
 			<move>Crush Claw</move>
 			<move>Dream Eater</move>
-			<move>Roar Of Time</move>
+			<move>Roar of Time</move>
 			<move>Pain Split</move>
 			<move>Ice Ball</move>
 			<move>Mist Ball</move>
@@ -55364,7 +55364,7 @@
 			<move>Disable</move>
 			<move>Nightmare</move>
 			<move>False Swipe</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>FeatherDance</move>
 			<move>Roar</move>
 			<move>Feint</move>
@@ -55387,7 +55387,7 @@
 			<move>Torment</move>
 			<move>Hidden Power</move>
 			<move>Encore</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 		</moves>
 	</moveset>
 </species>
@@ -55976,21 +55976,21 @@
 			<move>Swift</move>
 			<move>Quick Attack</move>
 			<move>Shock Wave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Light Screen</move>
 			<move>Discharge</move>
 			<move>Thunder</move>
 			<move>Leer</move>
 			<move>Screech</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Low Kick</move>
 		</moves>
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
@@ -56152,7 +56152,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Heat Wave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Uproar</move>
@@ -56205,7 +56205,7 @@
 			<move>Cross Chop</move>
 			<move>Mach Punch</move>
 			<move>Screech</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>null</move>
 			<move>Karate Chop</move>
 			<move>DynamicPunch</move>
@@ -56393,7 +56393,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
 			<move>Mega Punch</move>
@@ -56441,7 +56441,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -56588,7 +56588,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Dream Eater</move>
 			<move>Helping Hand</move>
@@ -56660,7 +56660,7 @@
 			<move>Attract</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Snatch</move>
 			<move>Water Pulse</move>
 			<move>Charge Beam</move>
@@ -56974,7 +56974,7 @@
 			<move>Calm Mind</move>
 			<move>Bite</move>
 			<move>Extrasensory</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Crunch</move>
 		</moves>
 		<moves origin="tutor">
@@ -57540,7 +57540,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
@@ -59140,7 +59140,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -59806,7 +59806,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -59917,7 +59917,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
@@ -59997,7 +59997,7 @@
 			<move>Substitute</move>
 			<move>Seed Bomb</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Swagger</move>
@@ -60036,7 +60036,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -60421,7 +60421,7 @@
 			<move>Substitute</move>
 			<move>Seed Bomb</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Swagger</move>
@@ -60462,7 +60462,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -60815,7 +60815,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -60866,7 +60866,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Frenzy Plant</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -61471,7 +61471,7 @@
 			<move>Substitute</move>
 			<move>Heat Wave</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Swagger</move>
@@ -61758,7 +61758,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
 			<move>Mega Punch</move>
@@ -61809,7 +61809,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Bulk Up</move>
 			<move>Stone Edge</move>
@@ -64142,7 +64142,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>null</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -64271,7 +64271,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -64364,7 +64364,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Toxic</move>
@@ -64486,7 +64486,7 @@
 			<move>Substitute</move>
 			<move>Seed Bomb</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Icy Wind</move>
 			<move>DynamicPunch</move>
@@ -64520,7 +64520,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Toxic</move>
@@ -64650,7 +64650,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -64697,7 +64697,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -64869,7 +64869,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -65053,7 +65053,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -65259,7 +65259,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -66032,7 +66032,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Helping Hand</move>
@@ -66332,7 +66332,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Helping Hand</move>
@@ -66634,7 +66634,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Helping Hand</move>
@@ -66920,7 +66920,7 @@
 			<move>Attract</move>
 			<move>Secret Power</move>
 			<move>Water Sport</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -67065,7 +67065,7 @@
 			<move>Attract</move>
 			<move>Secret Power</move>
 			<move>Water Sport</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -67179,7 +67179,7 @@
 			<move>Stun Spore</move>
 			<move>Growth</move>
 			<move>Headbutt</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Giga Drain</move>
 		</moves>
 		<moves origin="tutor">
@@ -67210,7 +67210,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Snatch</move>
 			<move>Toxic</move>
@@ -67324,12 +67324,12 @@
 			<move>Stun Spore</move>
 			<move>Growth</move>
 			<move>Headbutt</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Giga Drain</move>
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
 			<move>Mega Punch</move>
@@ -67371,7 +67371,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Bulk Up</move>
 			<move>Stone Edge</move>
@@ -67498,7 +67498,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Swagger</move>
@@ -67541,7 +67541,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Bulk Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -67670,7 +67670,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
@@ -67718,7 +67718,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Bulk Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -67853,7 +67853,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Gunk Shot</move>
 			<move>Mega Punch</move>
@@ -67901,7 +67901,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Bulk Up</move>
 			<move>Substitute</move>
@@ -68026,7 +68026,7 @@
 			<move>Aerial Ace</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Frustration</move>
@@ -68163,7 +68163,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -68298,7 +68298,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -68449,7 +68449,7 @@
 			<move>Poison Jab</move>
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
 			<move>Swagger</move>
@@ -68487,7 +68487,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Toxic</move>
@@ -68693,7 +68693,7 @@
 			<move>Poison Jab</move>
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
 			<move>Rock Slide</move>
@@ -68738,7 +68738,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Toxic</move>
@@ -68952,7 +68952,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -69002,7 +69002,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -69222,7 +69222,7 @@
 		<moves origin="tutor">
 			<move>Fire Punch</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Mega Kick</move>
 			<move>Superpower</move>
@@ -69589,7 +69589,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Superpower</move>
@@ -70128,7 +70128,7 @@
 			<move>Tackle</move>
 			<move>Rock Throw</move>
 			<move>Sandstorm</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Rock Slide</move>
 			<move>Helping Hand</move>
 			<move>Harden</move>
@@ -70143,7 +70143,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -70298,7 +70298,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -70469,7 +70469,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -70656,7 +70656,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Spite</move>
 			<move>Dream Eater</move>
@@ -70989,7 +70989,7 @@
 			<move>Iron Head</move>
 			<move>Iron Defense</move>
 			<move>Astonish</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Sweet Scent</move>
 			<move>Fake Tears</move>
 			<move>Sing</move>
@@ -71002,7 +71002,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Iron Defense</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
@@ -71051,7 +71051,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>null</move>
@@ -71690,7 +71690,7 @@
 			<move>Substitute</move>
 			<move>Iron Head</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
@@ -71765,7 +71765,7 @@
 			<move>Rock Slide</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Water Pulse</move>
 			<move>Frustration</move>
 			<move>Rock Tomb</move>
@@ -71981,7 +71981,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -72053,7 +72053,7 @@
 			<move>Baton Pass</move>
 			<move>Foresight</move>
 			<move>Power Swap</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Psycho Cut</move>
 			<move>Guard Swap</move>
 			<move>Ice Punch</move>
@@ -72319,7 +72319,7 @@
 	<moveset>
 		<moves origin="level">
 			<move>Psych Up</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Hidden Power</move>
 			<move>Mind Reader</move>
 			<move>Force Palm</move>
@@ -72340,7 +72340,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -72416,7 +72416,7 @@
 			<move>Baton Pass</move>
 			<move>Foresight</move>
 			<move>Power Swap</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Psycho Cut</move>
 			<move>Guard Swap</move>
 			<move>Ice Punch</move>
@@ -72977,7 +72977,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
@@ -73219,7 +73219,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
@@ -73458,7 +73458,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Growl</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -73505,7 +73505,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -73601,7 +73601,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Growl</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
 			<move>Mega Punch</move>
@@ -73647,7 +73647,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -73791,7 +73791,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Grass Knot</move>
 			<move>Toxic</move>
@@ -74084,7 +74084,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Seed Bomb</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Counter</move>
 			<move>Explosion</move>
 			<move>Dream Eater</move>
@@ -74118,7 +74118,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -74272,7 +74272,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -74312,7 +74312,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -75110,7 +75110,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -75306,7 +75306,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -75553,7 +75553,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Dream Eater</move>
 			<move>Swagger</move>
@@ -75757,7 +75757,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -76068,7 +76068,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Frustration</move>
@@ -76212,7 +76212,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Frustration</move>
@@ -76326,7 +76326,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Twister</move>
 			<move>Swagger</move>
 			<move>Mud-Slap</move>
@@ -76369,7 +76369,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -76486,7 +76486,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Swords Dance</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Counter</move>
 			<move>Swagger</move>
@@ -76522,7 +76522,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -76730,7 +76730,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -76772,7 +76772,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -77031,7 +77031,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -77263,7 +77263,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
@@ -77437,7 +77437,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -77504,7 +77504,7 @@
 			<move>Rock Slide</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Water Pulse</move>
 			<move>Frustration</move>
 			<move>Rock Tomb</move>
@@ -78018,7 +78018,7 @@
 			<move>Cosmic Power</move>
 			<move>Explosion</move>
 			<move>Confusion</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Heal Block</move>
 			<move>Rock Slide</move>
 			<move>null</move>
@@ -78076,7 +78076,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
@@ -78427,7 +78427,7 @@
 			<move>Guillotine</move>
 			<move>Night Slash</move>
 			<move>Swords Dance</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Protect</move>
 			<move>Leer</move>
 			<move>Harden</move>
@@ -78575,7 +78575,7 @@
 			<move>Guillotine</move>
 			<move>Night Slash</move>
 			<move>Swords Dance</move>
-			<move>Vicegrip</move>
+			<move>ViceGrip</move>
 			<move>Protect</move>
 			<move>Leer</move>
 			<move>Harden</move>
@@ -78786,7 +78786,7 @@
 			<move>Rock Slide</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Trick Room</move>
 			<move>Substitute</move>
@@ -78889,7 +78889,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
@@ -78982,7 +78982,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
 			<move>Grass Knot</move>
@@ -79131,7 +79131,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Stone Edge</move>
 			<move>Substitute</move>
@@ -80144,7 +80144,7 @@
 			<move>Sunny Day</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -80269,7 +80269,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
 			<move>Mega Punch</move>
@@ -80339,7 +80339,7 @@
 			<move>Rock Slide</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Snatch</move>
@@ -81086,7 +81086,7 @@
 			<move>Nightmare</move>
 			<move>Gravity</move>
 			<move>Confuse Ray</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Foresight</move>
 			<move>Pursuit</move>
 			<move>Bind</move>
@@ -81104,7 +81104,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -81334,7 +81334,7 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Stomp</move>
 			<move>Natural Gift</move>
 			<move>Whirlwind</move>
@@ -81388,7 +81388,7 @@
 			<move>Hyper Beam</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -84102,7 +84102,7 @@
 			<move>Substitute</move>
 			<move>Iron Head</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Trick</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
@@ -84210,7 +84210,7 @@
 			<move>Iron Head</move>
 			<move>Iron Defense</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
@@ -84304,7 +84304,7 @@
 			<move>Charge Beam</move>
 			<move>Explosion</move>
 			<move>Superpower</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>AncientPower</move>
 			<move>Hyper Beam</move>
 			<move>Stone Edge</move>
@@ -84316,7 +84316,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -84413,7 +84413,7 @@
 			<move>Ice Beam</move>
 			<move>Explosion</move>
 			<move>Superpower</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>AncientPower</move>
 			<move>Icy Wind</move>
 			<move>Hyper Beam</move>
@@ -84426,7 +84426,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Signal Beam</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
@@ -84525,7 +84525,7 @@
 			<move>Metal Claw</move>
 			<move>Explosion</move>
 			<move>Superpower</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>AncientPower</move>
 			<move>Hyper Beam</move>
 			<move>Flash Cannon</move>
@@ -84537,7 +84537,7 @@
 			<move>null</move>
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Iron Defense</move>
 			<move>Explosion</move>
 			<move>Swagger</move>
@@ -84712,7 +84712,7 @@
 			<move>Swagger</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Charge Beam</move>
@@ -84832,7 +84832,7 @@
 			<move>Swagger</move>
 			<move>Attract</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Charge Beam</move>
@@ -84968,7 +84968,7 @@
 	<moveset>
 		<moves origin="level">
 			<move>Bulk Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Mud Shot</move>
 			<move>Fissure</move>
 			<move>AncientPower</move>
@@ -84983,7 +84983,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -85038,7 +85038,7 @@
 			<move>Sunny Day</move>
 			<move>Hyper Beam</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Giga Impact</move>
 			<move>Bulk Up</move>
@@ -85164,7 +85164,7 @@
 			<move>Swagger</move>
 			<move>Rock Slide</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Psych Up</move>
 			<move>Water Pulse</move>
 			<move>Frustration</move>
@@ -85204,7 +85204,7 @@
 		<moves origin="level">
 			<move>Nightmare</move>
 			<move>Gravity</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Cosmic Power</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -85237,7 +85237,7 @@
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
 			<move>Helping Hand</move>
@@ -85350,7 +85350,7 @@
 		<moves origin="level">
 			<move>Spikes</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Iron Defense</move>
 			<move>Cosmic Power</move>
 			<move>Agility</move>
@@ -85394,7 +85394,7 @@
 		<moves origin="tutor">
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -85429,7 +85429,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Return</move>
@@ -85568,7 +85568,7 @@
 		<moves origin="level">
 			<move>Spikes</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Iron Defense</move>
 			<move>Cosmic Power</move>
 			<move>Agility</move>
@@ -85612,7 +85612,7 @@
 		<moves origin="tutor">
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -85647,7 +85647,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Return</move>
@@ -85716,7 +85716,7 @@
 		<moves origin="level">
 			<move>Spikes</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Cosmic Power</move>
 			<move>Iron Defense</move>
 			<move>Agility</move>
@@ -85760,7 +85760,7 @@
 		<moves origin="tutor">
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -85795,7 +85795,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Return</move>
@@ -85864,7 +85864,7 @@
 		<moves origin="level">
 			<move>Spikes</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Cosmic Power</move>
 			<move>Iron Defense</move>
 			<move>Agility</move>
@@ -85908,7 +85908,7 @@
 		<moves origin="tutor">
 			<move>Nightmare</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
 			<move>DynamicPunch</move>
@@ -85943,7 +85943,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Return</move>
@@ -86038,7 +86038,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Return</move>
 			<move>Double Team</move>
@@ -86225,7 +86225,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Return</move>
 			<move>Double Team</move>
@@ -86422,7 +86422,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Earthquake</move>
 			<move>Return</move>
@@ -86664,7 +86664,7 @@
 			<move>Focus Energy</move>
 			<move>Heat Wave</move>
 			<move>Helping Hand</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 		</moves>
 	</moveset>
 </species>
@@ -86770,7 +86770,7 @@
 			<move>Focus Energy</move>
 			<move>Heat Wave</move>
 			<move>Helping Hand</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 		</moves>
 	</moveset>
 </species>
@@ -86818,7 +86818,7 @@
 			<move>Snore</move>
 			<move>Mud-Slap</move>
 			<move>Heat Wave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Endeavor</move>
 			<move>Vacuum Wave</move>
@@ -86838,7 +86838,7 @@
 			<move>Hyper Beam</move>
 			<move>Protect</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Earthquake</move>
 			<move>Return</move>
@@ -86891,7 +86891,7 @@
 			<move>Focus Energy</move>
 			<move>Heat Wave</move>
 			<move>Helping Hand</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 		</moves>
 	</moveset>
 </species>
@@ -88133,7 +88133,7 @@
 			<move>Rain Dance</move>
 			<move>Giga Drain</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Shadow Ball</move>
 			<move>Double Team</move>
@@ -88322,7 +88322,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Grass Knot</move>
@@ -88610,7 +88610,7 @@
 			<move>Snore</move>
 			<move>Mud-Slap</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Zen Headbutt</move>
 			<move>Spite</move>
 			<move>Uproar</move>
@@ -88762,7 +88762,7 @@
 			<move>Head Smash</move>
 		</moves>
 		<moves origin="tutor">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Fire Punch</move>
 			<move>Zen Headbutt</move>
 			<move>Mud-Slap</move>
@@ -89244,7 +89244,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Psychic</move>
 			<move>Shadow Ball</move>
@@ -89454,7 +89454,7 @@
 			<move>Hidden Power</move>
 			<move>Confusion</move>
 			<move>Gust</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Psybeam</move>
 			<move>Camouflage</move>
 			<move>Silver Wind</move>
@@ -89482,7 +89482,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Psychic</move>
 			<move>Shadow Ball</move>
@@ -89663,7 +89663,7 @@
 			<move>Last Resort</move>
 		</moves>
 		<moves origin="tutor">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Snore</move>
 			<move>Helping Hand</move>
 			<move>Magnet Rise</move>
@@ -89928,7 +89928,7 @@
 			<move>Sunny Day</move>
 			<move>Worry Seed</move>
 			<move>Take Down</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Lucky Chant</move>
 		</moves>
 		<moves origin="tutor">
@@ -89946,7 +89946,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Double Team</move>
 			<move>Facade</move>
@@ -90020,7 +90020,7 @@
 			<move>Petal Dance</move>
 			<move>Worry Seed</move>
 			<move>Take Down</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Lucky Chant</move>
 		</moves>
 		<moves origin="tutor">
@@ -90040,7 +90040,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Double Team</move>
 			<move>Facade</move>
@@ -90555,7 +90555,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Nightmare</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -90611,7 +90611,7 @@
 			<move>Hyper Beam</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Snatch</move>
@@ -99463,7 +99463,7 @@
 			<move>Protect</move>
 			<move>Rain Dance</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Thunderbolt</move>
 			<move>Return</move>
@@ -99503,7 +99503,7 @@
 			<move>Sky Uppercut</move>
 			<move>Sweet Kiss</move>
 			<move>Switcheroo</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 		</moves>
 	</moveset>
 </species>
@@ -99547,7 +99547,7 @@
 		<moves origin="tutor">
 			<move>Fury Cutter</move>
 			<move>Ice Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Fire Punch</move>
 			<move>Mud-Slap</move>
 			<move>Endeavor</move>
@@ -99570,7 +99570,7 @@
 			<move>Protect</move>
 			<move>Rain Dance</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
@@ -99614,7 +99614,7 @@
 			<move>Sky Uppercut</move>
 			<move>Sweet Kiss</move>
 			<move>Switcheroo</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 		</moves>
 	</moveset>
 </species>
@@ -100632,7 +100632,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Earthquake</move>
 			<move>Return</move>
 			<move>Psychic</move>
@@ -100723,7 +100723,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Earthquake</move>
 			<move>Return</move>
 			<move>Psychic</move>
@@ -100899,7 +100899,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Return</move>
@@ -101089,7 +101089,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Psychic</move>
 			<move>Shadow Ball</move>
@@ -101790,7 +101790,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Icy Wind</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Fire Punch</move>
 			<move>Ice Punch</move>
 			<move>Zen Headbutt</move>
@@ -101814,7 +101814,7 @@
 			<move>Protect</move>
 			<move>Rain Dance</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
 			<move>Earthquake</move>
@@ -101958,7 +101958,7 @@
 			<move>Snore</move>
 			<move>Mud-Slap</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Zen Headbutt</move>
 			<move>Ice Punch</move>
 			<move>Vacuum Wave</move>
@@ -102214,7 +102214,7 @@
 			<move>Magnet Rise</move>
 			<move>Swift</move>
 			<move>Fury Cutter</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ice Punch</move>
 			<move>Zen Headbutt</move>
 			<move>Vacuum Wave</move>
@@ -102808,7 +102808,7 @@
 		<moves origin="tutor">
 			<move>Fury Cutter</move>
 			<move>Icy Wind</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ice Punch</move>
 			<move>Vacuum Wave</move>
 			<move>Knock Off</move>
@@ -102984,7 +102984,7 @@
 			<move>Helping Hand</move>
 			<move>Fury Cutter</move>
 			<move>Icy Wind</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ice Punch</move>
 			<move>Vacuum Wave</move>
 			<move>Knock Off</move>
@@ -103172,7 +103172,7 @@
 			<move>Protect</move>
 			<move>Giga Drain</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Double Team</move>
 			<move>Sludge Bomb</move>
@@ -103665,7 +103665,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Return</move>
 			<move>Shadow Ball</move>
@@ -103776,7 +103776,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Earthquake</move>
 			<move>Return</move>
@@ -104084,7 +104084,7 @@
 			<move>Mirror Shot</move>
 			<move>Metal Sound</move>
 			<move>Spark</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Discharge</move>
 			<move>Tackle</move>
 			<move>Magnet Bomb</move>
@@ -104094,7 +104094,7 @@
 			<move>Tri Attack</move>
 			<move>Magnet Rise</move>
 			<move>SonicBoom</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Thunder Wave</move>
 			<move>Barrier</move>
 			<move>Refresh</move>
@@ -104196,7 +104196,7 @@
 		<moves origin="tutor">
 			<move>null</move>
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Dream Eater</move>
 			<move>Swagger</move>
 			<move>Mega Punch</move>
@@ -104249,7 +104249,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -109522,7 +109522,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Iron Head</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Uproar</move>
 			<move>Swagger</move>
@@ -109839,7 +109839,7 @@
 			<move>Absorb</move>
 			<move>Mega Drain</move>
 			<move>Slam</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 			<move>Knock Off</move>
 			<move>Growth</move>
 			<move>Power Whip</move>
@@ -109888,7 +109888,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Grass Knot</move>
@@ -110258,7 +110258,7 @@
 			<move>Giga Impact</move>
 			<move>Quick Attack</move>
 			<move>Follow Me</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Shock Wave</move>
 			<move>Light Screen</move>
 			<move>Discharge</move>
@@ -110266,14 +110266,14 @@
 			<move>Leer</move>
 			<move>Screech</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Fire Punch</move>
 			<move>Low Kick</move>
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Uproar</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
@@ -110459,7 +110459,7 @@
 			<move>Faint Attack</move>
 			<move>SmokeScreen</move>
 			<move>Follow Me</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ember</move>
 			<move>Fire Blast</move>
 			<move>Confuse Ray</move>
@@ -110476,7 +110476,7 @@
 			<move>Fire Punch</move>
 			<move>Substitute</move>
 			<move>Heat Wave</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Mega Kick</move>
 			<move>Counter</move>
 			<move>Uproar</move>
@@ -110516,7 +110516,7 @@
 			<move>Hyper Beam</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -110541,7 +110541,7 @@
 			<move>Cross Chop</move>
 			<move>Screech</move>
 			<move>Mach Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>null</move>
 			<move>Karate Chop</move>
 			<move>DynamicPunch</move>
@@ -110826,7 +110826,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Water Pulse</move>
@@ -111207,7 +111207,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Toxic</move>
@@ -111429,7 +111429,7 @@
 			<move>Hyper Beam</move>
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Substitute</move>
 			<move>Grass Knot</move>
@@ -114934,7 +114934,7 @@
 			<move>Zap Cannon</move>
 			<move>Trick Room</move>
 			<move>Agility</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Discharge</move>
 			<move>Tackle</move>
 			<move>Recycle</move>
@@ -114996,7 +114996,7 @@
 			<move>Sunny Day</move>
 			<move>Secret Power</move>
 			<move>Psych Up</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Giga Impact</move>
 			<move>Trick Room</move>
 			<move>Substitute</move>
@@ -115066,7 +115066,7 @@
 		<moves origin="tutor">
 			<move>Substitute</move>
 			<move>Signal Beam</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
 			<move>Helping Hand</move>
@@ -115376,7 +115376,7 @@
 			<move>Stone Edge</move>
 			<move>Block</move>
 			<move>Harden</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Discharge</move>
 			<move>Tackle</move>
 			<move>Magnet Bomb</move>
@@ -115395,7 +115395,7 @@
 			<move>Substitute</move>
 			<move>Iron Head</move>
 			<move>Iron Defense</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Magnet Rise</move>
 			<move>Swagger</move>
 			<move>AncientPower</move>
@@ -115495,7 +115495,7 @@
 			<move>Shadow Sneak</move>
 			<move>Foresight</move>
 			<move>Night Shade</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Bind</move>
 			<move>Curse</move>
 			<move>Confuse Ray</move>
@@ -115516,7 +115516,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Substitute</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Spite</move>
 			<move>Swagger</move>
 			<move>Dream Eater</move>
@@ -115922,7 +115922,7 @@
 			<move>Trick</move>
 			<move>Astonish</move>
 			<move>Thunder Wave</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Confuse Ray</move>
 			<move>Uproar</move>
 			<move>Double Team</move>
@@ -116010,7 +116010,7 @@
 		<moves origin="tutor">
 			<move>Ice Punch</move>
 			<move>Fire Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Zen Headbutt</move>
 			<move>Trick</move>
 			<move>Knock Off</move>
@@ -116033,7 +116033,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
@@ -116100,7 +116100,7 @@
 			<move>Healing Wish</move>
 		</moves>
 		<moves origin="tutor">
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ice Punch</move>
 			<move>Fire Punch</move>
 			<move>Zen Headbutt</move>
@@ -116193,7 +116193,7 @@
 		</moves>
 		<moves origin="tutor">
 			<move>Ice Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Fire Punch</move>
 			<move>Zen Headbutt</move>
 			<move>Trick</move>
@@ -116283,7 +116283,7 @@
 			<move>Metal Claw</move>
 			<move>AncientPower</move>
 			<move>Dragon Claw</move>
-			<move>Roar Of Time</move>
+			<move>Roar of Time</move>
 			<move>Heal Block</move>
 			<move>Earth Power</move>
 			<move>Slash</move>
@@ -116513,7 +116513,7 @@
 			<move>Hyper Beam</move>
 			<move>Protect</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Earthquake</move>
 			<move>Return</move>
 			<move>Dig</move>
@@ -116676,7 +116676,7 @@
 			<move>Confuse Ray</move>
 			<move>Knock Off</move>
 			<move>Mega Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Ice Punch</move>
 			<move>Superpower</move>
 			<move>Zen Headbutt</move>
@@ -116687,7 +116687,7 @@
 			<move>Icy Wind</move>
 			<move>Fire Punch</move>
 			<move>Ice Punch</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Zen Headbutt</move>
 			<move>Snore</move>
 			<move>Mud-Slap</move>
@@ -116899,7 +116899,7 @@
 			<move>Rain Dance</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Psychic</move>
 			<move>Shadow Ball</move>
@@ -117120,7 +117120,7 @@
 			<move>Disable</move>
 			<move>Night Shade</move>
 			<move>Pursuit</move>
-			<move>Roar Of Time</move>
+			<move>Roar of Time</move>
 			<move>Dream Eater</move>
 			<move>Haze</move>
 			<move>Spacial Rend</move>
@@ -117264,7 +117264,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Return</move>
 			<move>Psychic</move>
 			<move>Double Team</move>
@@ -117358,7 +117358,7 @@
 			<move>Giga Drain</move>
 			<move>Safeguard</move>
 			<move>Frustration</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Iron Tail</move>
 			<move>Thunderbolt</move>
 			<move>Thunder</move>
@@ -117477,7 +117477,7 @@
 			<move>Thunder</move>
 			<move>Thunder Wave</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Toxic</move>
 			<move>Trick</move>
 			<move>Uproar</move>
@@ -117545,7 +117545,7 @@
 			<move>Thunder</move>
 			<move>Thunder Wave</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Toxic</move>
 			<move>Trick</move>
 			<move>Uproar</move>
@@ -117613,7 +117613,7 @@
 			<move>Thunder</move>
 			<move>Thunder Wave</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Toxic</move>
 			<move>Trick</move>
 			<move>Uproar</move>
@@ -117681,7 +117681,7 @@
 			<move>Thunder</move>
 			<move>Thunder Wave</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Toxic</move>
 			<move>Trick</move>
 			<move>Uproar</move>
@@ -117749,7 +117749,7 @@
 			<move>Thunder</move>
 			<move>Thunder Wave</move>
 			<move>Thunderbolt</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Toxic</move>
 			<move>Trick</move>
 			<move>Uproar</move>
@@ -117901,7 +117901,7 @@
 			<move>Quick Attack</move>
 			<move>Bullet Seed</move>
 			<move>Substitute</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Protect</move>
 			<move>Growth</move>
 			<move>Aromatherapy</move>

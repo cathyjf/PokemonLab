@@ -5323,7 +5323,7 @@ makePartyBuffMove(this, MoveClass.SPECIAL);
 </init>
 </move>
 
-<move name="Lock-on" id="219">
+<move name="Lock-On" id="219">
 <type>Normal</type>
 <class>Other</class>
 <power>0</power>
@@ -6918,7 +6918,7 @@ makeStatusMove(this, [[PoisonEffect, 0.1]]);
 </init>
 </move>
 
-<move name="Poisonpowder" id="287">
+<move name="PoisonPowder" id="287">
 <type>Poison</type>
 <class>Other</class>
 <power>0</power>
@@ -7681,7 +7681,7 @@ makeRandomSwitchMove(this);
 </init>
 </move>
 
-<move name="Roar Of Time" id="320">
+<move name="Roar of Time" id="320">
 <type>Dragon</type>
 <class>Special</class>
 <power>150</power>
@@ -8608,7 +8608,7 @@ makeStatusMove(this, [[SleepEffect]]);
 this.forbidden_ = ["Assist", "Bide", "Chatter", "Copycat", "Focus Punch",
                    "Me First", "Metronome", "Mirror Move", "Sleep Talk",
                    "Uproar", "Skull Bash", "Razor Wind", "Sky Attack",
-                   "Solarbeam", "Fly", "Dig", "Dive", "Bounce", "Shadow Force"];
+                   "SolarBeam", "Fly", "Dig", "Dive", "Bounce", "Shadow Force"];
 ]]>
 </init>
 <use>
@@ -8807,7 +8807,7 @@ makeRecoveryMove(this);
 </init>
 </move>
 
-<move name="Solarbeam" id="375">
+<move name="SolarBeam" id="375">
 <type>Grass</type>
 <class>Special</class>
 <power>120</power>
@@ -9295,7 +9295,7 @@ makeRecoilMove(this, 4);
 <![CDATA[
 this.forbidden_ = ["Acupressure", "Block", "Dream Eater", "Embargo",
                    "Gastro Acid", "Grudge", "Heal Block", "Leech Seed",
-                   "Lock-on", "Mean Look", "Mimic", "Mind Reader",
+                   "Lock-On", "Mean Look", "Mimic", "Mind Reader",
                    "Nightmare", "Pain Split", "Psycho Shift", "Spider Web",
                    "Sketch", "Switcheroo", "Trick", "Worry Seed", "Yawn",
                    "Swagger", "Flatter"];
@@ -9996,7 +9996,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </init>
 </move>
 
-<move name="Thunderpunch" id="425">
+<move name="ThunderPunch" id="425">
 <type>Electric</type>
 <class>Physical</class>
 <power>75</power>
@@ -10015,7 +10015,7 @@ makeStatusMove(this, [[ParalysisEffect, 0.1]]);
 </init>
 </move>
 
-<move name="Thundershock" id="426">
+<move name="ThunderShock" id="426">
 <type>Electric</type>
 <class>Special</class>
 <power>40</power>
@@ -10458,7 +10458,7 @@ this.prepareSelf = function(field, user) {
 </flags>
 </move>
 
-<move name="Vicegrip" id="442">
+<move name="ViceGrip" id="442">
 <type>Normal</type>
 <class>Physical</class>
 <power>55</power>
