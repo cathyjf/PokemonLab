@@ -51,6 +51,7 @@
 #include "network.h"
 #include "Channel.h"
 #include "NetworkBattle.h"
+#include "../database/Authenticator.h"
 #include "../database/DatabaseRegistry.h"
 #include "../text/Text.h"
 #include "../shoddybattle/Pokemon.h"
@@ -237,14 +238,18 @@ private:
 
 class WelcomeMessage : public OutMessage {
 public:
-    WelcomeMessage(const int version, const string name, const string &message):
-            OutMessage(WELCOME_MESSAGE) {
+    WelcomeMessage(): OutMessage(WELCOME_MESSAGE) { }
+
+    WelcomeMessage(const int version, const string name, const string &message,
+            const string &loginInfo, const bool registrations,
+            const string &registrationInfo):
+                OutMessage(WELCOME_MESSAGE) {
         *this << version;
         *this << name;
         *this << message;
-
-        // Whether registrations are allowed.
-        *this << (unsigned char)true;
+        *this << (unsigned char)registrations;
+        *this << loginInfo;
+        *this << registrationInfo;
         finalise();
     }
 };
@@ -561,13 +566,14 @@ typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
 public:
-    ServerImpl(Server *, tcp::endpoint &, const string &, const string &);
+    ServerImpl(Server *, tcp::endpoint &);
     Server *getServer() const { return m_server; }
     void installSignalHandlers();
     void run();
     void stop();
     void removeClient(ClientImplPtr client);
     void broadcast(const OutMessage &msg);
+    void initialiseWelcomeMessage(const std::string &, const std::string &);
     void initialiseChannels();
     void initialiseMatchmaking(const string &);
     void initialiseClauses();
@@ -638,7 +644,7 @@ private:
     thread m_phantomClientWorker;
     shared_ptr<MetagameList> m_metagameList;
     vector<CLAUSE_PAIR> m_clauses;
-    const WelcomeMessage m_welcomeMessage;
+    WelcomeMessage m_welcomeMessage;
     Server *m_server;
 
     static ServerImpl *m_blockingServer;
@@ -646,9 +652,9 @@ private:
 
 ServerImpl *ServerImpl::m_blockingServer = NULL;
 
-Server::Server(const int port, const string &name, const string &welcome) {
+Server::Server(const int port) {
     tcp::endpoint endpoint(tcp::v4(), port);
-    m_impl = new ServerImpl(this, endpoint, name, welcome);
+    m_impl = new ServerImpl(this, endpoint);
 }
 
 void Server::installSignalHandlers() {
@@ -665,6 +671,11 @@ database::DatabaseRegistry *Server::getRegistry() {
 
 ScriptMachine *Server::getMachine() {
     return m_impl->getMachine();
+}
+
+void Server::initialiseWelcomeMessage(const string &name,
+        const string &welcome) {
+    m_impl->initialiseWelcomeMessage(name, welcome);
 }
 
 void Server::initialiseChannels() {
@@ -1937,10 +1948,8 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
     finalise();
 }
 
-ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint,
-        const string &name, const string &welcome):
+ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
             m_acceptor(m_service, endpoint, true),
-            m_welcomeMessage(2, name, welcome),
             m_server(server) {
     acceptClient();
     m_phantomClientWorker = boost::thread(boost::bind(
@@ -1977,6 +1986,13 @@ ChannelPtr ServerImpl::getChannel(const string &name) {
             return *i;
     }
     return ChannelPtr();
+}
+
+void ServerImpl::initialiseWelcomeMessage(const string &name,
+        const string &welcome) {
+    shared_ptr<database::Authenticator> auth = m_registry.getAuthenticator();
+    m_welcomeMessage = WelcomeMessage(2, name, welcome, auth->getLoginInfo(),
+            auth->allowsRegistration(), auth->getRegistrationInfo());
 }
 
 /**

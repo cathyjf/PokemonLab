@@ -45,8 +45,12 @@ SECRET_PAIR DefaultAuthenticator::getSecret(ScopedConnection &conn,
     return SECRET_PAIR(value, string());
 }
 
-VBulletinAuthenticator::VBulletinAuthenticator(const string &database):
-        m_database(database) { }
+VBulletinAuthenticator::VBulletinAuthenticator(const string &login,
+        const string &registration,
+        const string &database):
+            m_database(database),
+            m_loginInfo(login),
+            m_registrationInfo(registration) { }
 
 SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
         const string &user, const string &ip) {

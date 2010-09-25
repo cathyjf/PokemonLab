@@ -140,6 +140,10 @@ struct DatabaseRegistry::DatabaseRegistryImpl {
 DatabaseRegistry::DatabaseRegistry():
         m_impl(new DatabaseRegistryImpl()) { }
 
+shared_ptr<Authenticator> DatabaseRegistry::getAuthenticator() const {
+    return m_impl->authenticator;
+}
+
 void DatabaseRegistry::setAuthenticator(
         shared_ptr<Authenticator> authenticator) {
     m_impl->authenticator = authenticator;

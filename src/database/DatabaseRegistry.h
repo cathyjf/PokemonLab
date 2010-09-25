@@ -70,6 +70,7 @@ public:
 
     DatabaseRegistry();
 
+    boost::shared_ptr<Authenticator> getAuthenticator() const;
     void setAuthenticator(boost::shared_ptr<Authenticator>);
 
     static std::string getHexHash(const std::string &);

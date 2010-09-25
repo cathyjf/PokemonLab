@@ -49,6 +49,9 @@ public:
             const std::string &, const std::string &, const bool match) {
         return match;
     }
+    virtual std::string getLoginInfo() const = 0;
+    virtual bool allowsRegistration() const = 0;
+    virtual std::string getRegistrationInfo() const = 0;
     virtual ~Authenticator() { }
 };
 
@@ -57,18 +60,25 @@ public:
     int getSecretStyle() { return SECRET_UNADORNED; }
     SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
             const std::string &);
+    std::string getLoginInfo() const { return std::string(); }
+    bool allowsRegistration() const { return true; }
+    std::string getRegistrationInfo() const { return std::string(); }
 };
 
 class VBulletinAuthenticator : public Authenticator {
 public:
-    VBulletinAuthenticator(const std::string &database = "vbulletin");
+    VBulletinAuthenticator(const std::string &, const std::string &,
+            const std::string &database = "vbulletin");
     int getSecretStyle() { return SECERT_MD5_SALT; }
     SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
             const std::string &);
     bool finishAuthentication(ScopedConnection &, const std::string &,
             const std::string &, const bool);
+    std::string getLoginInfo() const { return m_loginInfo; }
+    bool allowsRegistration() const { return false; }
+    std::string getRegistrationInfo() const { return m_registrationInfo; }
 private:
-    const std::string m_database;
+    const std::string m_database, m_loginInfo, m_registrationInfo;
 };
 
 }} // namespace shoddybattle::database

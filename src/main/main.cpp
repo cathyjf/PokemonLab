@@ -58,7 +58,7 @@ int initialise(int argc, char **argv, bool &daemon) {
     int port, databasePort, workerThreads;
     string serverName, welcomeFile, welcomeMessage;
     string databaseName, databaseHost, databaseUser, databasePassword;
-    string authParameter;
+    string authParameter, loginParameter, registerParameter;
 
     po::options_description generic("Options");
     generic.add_options()
@@ -86,6 +86,12 @@ int initialise(int argc, char **argv, bool &daemon) {
                 po::value<string>(
                     &authParameter)->implicit_value("vbulletin"),
                 "use vbulletin authentication")
+            ("auth.vbulletin.login",
+                po::value<string>(&loginParameter),
+                "login HTML message")
+            ("auth.vbulletin.register",
+                po::value<string>(&registerParameter),
+                "registration HTML message")
             ("mysql.name",
                 po::value<string>(&databaseName)->default_value(
                     "shoddybattle2"),
@@ -249,7 +255,7 @@ int initialise(int argc, char **argv, bool &daemon) {
         }
     }
 
-    network::Server server(port, serverName, welcomeMessage);
+    network::Server server(port);
     server.installSignalHandlers();
 
     ScriptMachine *machine = server.getMachine();
@@ -263,9 +269,11 @@ int initialise(int argc, char **argv, bool &daemon) {
 
     if (vm.count("auth.vbulletin")) {
         registry->setAuthenticator(boost::shared_ptr<database::Authenticator>(
-                new database::VBulletinAuthenticator(authParameter)));
+                new database::VBulletinAuthenticator(loginParameter,
+                        registerParameter, authParameter)));
     }
 
+    server.initialiseWelcomeMessage(serverName, welcomeMessage);
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");
     server.initialiseClauses();

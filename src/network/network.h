@@ -68,12 +68,13 @@ protected:
 
 class Server {
 public:
-    Server(const int port, const std::string &, const std::string &);
+    Server(const int port);
     ~Server();
     void installSignalHandlers();
     void run();
     database::DatabaseRegistry *getRegistry();
     ScriptMachine *getMachine();
+    void initialiseWelcomeMessage(const std::string &, const std::string &);
     void initialiseChannels();
     void initialiseMatchmaking(const std::string &);
     void initialiseClauses();
