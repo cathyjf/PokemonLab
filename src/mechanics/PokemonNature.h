@@ -38,8 +38,9 @@ public:
         return &m_natures[idx];
     }
 
-    static const PokemonNature *getNatureByCanonicalName(std::string name) {
-        for (int i = 0; i < m_natureCount; i++) {
+    static const PokemonNature *getNatureByCanonicalName(
+            const std::string &name) {
+        for (int i = 0; i < m_natureCount; ++i) {
             const PokemonNature *nature = &m_natures[i];
             if (nature->m_name == name) {
                 return nature;
