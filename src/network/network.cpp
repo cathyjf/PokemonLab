@@ -354,6 +354,9 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     msg >> speciesId >> nickname >> shiny >> gender >> happiness >> level
             >> item >> ability >> nature >> moveCount;
 
+    if (nickname.size() > 15) {
+        nickname.resize(15);
+    }
     nickname = trim(nickname);
 
     moves.resize(moveCount);
