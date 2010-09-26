@@ -468,8 +468,10 @@ struct NetworkBattleImpl {
             return;
         }
 
-        turn.pop_back();
-        requestAction(party);
+        if (turn.size() != 0) {
+            turn.pop_back();
+            requestAction(party);
+        }
     }
 
     void broadcast(const OutMessage &msg, ClientPtr client = ClientPtr()) {

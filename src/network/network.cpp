@@ -162,7 +162,8 @@ public:
         USER_PERSONAL_MESSAGE = 16,
         USER_MESSAGE_REQUEST = 17,
         CLIENT_ACTIVITY = 18,
-        CANCEL_QUEUE = 19
+        CANCEL_QUEUE = 19,
+        CANCEL_BATTLE_ACTION = 20
     };
 
     InMessage() {
@@ -1414,6 +1415,26 @@ private:
         queue->removeClient(shared_from_this());
     }
 
+    /**
+     * int32 : field id
+     * byte : turn type
+     * byte : index
+     * byte : target
+     */
+    void handleCancelBattleAction(InMessage &msg) {
+        int field;
+        msg >> field;
+
+        lock_guard<mutex> lock(m_battleMutex);
+        NetworkBattle::PTR p = getBattle(field);
+        if (p) {
+            const int party = p->getParty(shared_from_this());
+            if (party != -1) {
+                p->handleCancelTurn(party);
+            }
+        }
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -1463,7 +1484,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handlePersonalMessage,
     &ClientImpl::handlePersonalMessageRequest,
     &ClientImpl::handleActivityMessage,
-    &ClientImpl::handleCancelQueue
+    &ClientImpl::handleCancelQueue,
+    &ClientImpl::handleCancelBattleAction
 };
 
 const int ClientImpl::MESSAGE_COUNT =
