@@ -38,6 +38,16 @@ public:
         return &m_natures[idx];
     }
 
+    static const PokemonNature *getNatureByCanonicalName(std::string name) {
+        for (int i = 0; i < m_natureCount; i++) {
+            const PokemonNature *nature = &m_natures[i];
+            if (nature->m_name == name) {
+                return nature;
+            }
+        }
+        return NULL;
+    }
+
     /** Determine if two natures are equal. **/
     bool operator==(const PokemonNature &rhs) const {
         return m_id == rhs.m_id;
@@ -55,7 +65,7 @@ public:
     double getEffect(STAT i) const {
         return (i == m_benefit) ? 1.1 : ((i == m_harm) ? 0.9 : 1.0);
     }
-    
+
     /** Return which stat this nature benefits. **/
     STAT getBenefits() const {
         return m_benefit;
@@ -69,9 +79,11 @@ public:
 private:
     STAT m_benefit, m_harm;
     unsigned int m_id; /** Internal ID of the nature. **/
-    PokemonNature(int internal, STAT benefit, STAT harm):
-       m_benefit(benefit), m_harm(harm), m_id(internal) { }
+    std::string m_name;
+    PokemonNature(int internal, STAT benefit, STAT harm, std::string name):
+       m_benefit(benefit), m_harm(harm), m_id(internal), m_name(name) { }
     static const PokemonNature m_natures[25];
+    static const int m_natureCount;
 };
 
 }

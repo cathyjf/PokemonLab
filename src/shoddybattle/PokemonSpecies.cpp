@@ -36,6 +36,7 @@
 
 #include "PokemonSpecies.h"
 #include "../mechanics/PokemonType.h"
+#include "../mechanics/PokemonNature.h"
 #include "../moves/PokemonMove.h"
 #include "../scripting/ScriptMachine.h"
 #include "../main/Log.h"
@@ -334,9 +335,10 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
             // nature
             XMLString::transcode("nature", tempStr, 19);
             list2 = comboNode->getElementsByTagName(tempStr);
+            combo.nature = NULL;
             if (list2->getLength() != 0) {
                 string txt = getTextFromElement((DOMElement *)list2->item(0));
-                combo.nature = txt;
+                combo.nature = PokemonNature::getNatureByCanonicalName(txt);
             }
 
             // ability

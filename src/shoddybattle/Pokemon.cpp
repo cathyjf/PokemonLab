@@ -1123,9 +1123,7 @@ bool validateMoveCombinations(ScriptContext *cx, const PokemonSpecies *species,
             continue;
         }
         
-        // TODO: Find a way to check nature, until then, all illegals
-        // that involve nature will be ignored
-        if (combo.nature.size() != 0) {
+        if (combo.nature && (combo.nature != p->getNature())) {
             continue;
         }
         

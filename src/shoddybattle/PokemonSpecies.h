@@ -31,6 +31,7 @@
 #include <map>
 #include <memory>
 #include "../mechanics/stat.h"
+#include "../mechanics/PokemonNature.h"
 
 namespace shoddybattle {
 
@@ -65,7 +66,7 @@ class PokemonType;
 typedef std::vector<const PokemonType *> TYPE_LIST;
 
 struct Combination {
-    std::string nature;
+    const PokemonNature *nature;
     std::string ability;
     unsigned int gender;
     std::vector<std::string> moves;
