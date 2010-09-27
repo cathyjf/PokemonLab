@@ -468,7 +468,7 @@ struct NetworkBattleImpl {
             return;
         }
 
-        if (turn.size() != 0) {
+        if (!turn.empty()) {
             turn.pop_back();
             requestAction(party);
         }
@@ -1043,7 +1043,7 @@ void NetworkBattle::beginBattle() {
     }
     BattleField::beginBattle();
     m_impl->beginTurn();
-    getContext()->clearContextThread();
+    BattleField::getContext()->clearContextThread();
     m_impl->m_server->addChannel(m_impl->m_channel);
 }
 
@@ -1077,8 +1077,8 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
         return;
     }
     const int slot = req[present];
-    Pokemon *pokemon = getActivePokemon(party, slot).get();
-    if (!isTurnLegal(pokemon, &turn, m_impl->m_replacement)) {
+    Pokemon *pokemon = BattleField::getActivePokemon(party, slot).get();
+    if (!BattleField::isTurnLegal(pokemon, &turn, m_impl->m_replacement)) {
         // todo: inform illegal move?
         m_impl->requestAction(party);
         return;
@@ -1377,7 +1377,7 @@ void NetworkBattle::informFainted(Pokemon *pokemon) {
  */
 void NetworkBattle::informStatusChange(Pokemon *p, StatusObject *effect,
         const bool applied) {
-    ScriptContext *cx = getContext();
+    ScriptContext *cx = BattleField::getContext();
     string text = effect->toString(cx);
     if (text.empty()) {
         return;

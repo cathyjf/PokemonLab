@@ -1417,12 +1417,9 @@ private:
 
     /**
      * int32 : field id
-     * byte : turn type
-     * byte : index
-     * byte : target
      */
     void handleCancelBattleAction(InMessage &msg) {
-        int field;
+        int32_t field;
         msg >> field;
 
         lock_guard<mutex> lock(m_battleMutex);
