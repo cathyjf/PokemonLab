@@ -62,7 +62,7 @@ bool PokemonSpecies::hasRestrictedIvs() const {
     return false;
 }
 
-const int ORIGIN_COUNT = 5;
+const int ORIGIN_COUNT = 7;
 
 /**
  * Names for types used within the XML format.
