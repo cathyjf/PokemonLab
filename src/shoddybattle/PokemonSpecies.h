@@ -40,10 +40,12 @@ namespace shoddybattle {
  */
 enum MOVE_ORIGIN {
     MO_LEVEL,
-    MO_TUTOR,
-    MO_TM,
-    MO_HM,
     MO_EGG,
+    MO_TUTOR,
+    MO_MACHINE,
+    MO_EVENT,
+    MO_LIGHT_BALL,
+    MO_EVOLUTION,
     MO_NONE = -1
 };
 
@@ -57,7 +59,7 @@ enum GENDER {
 class MoveTemplate;
 typedef std::map<std::string, const MoveTemplate *> MOVE_LIST;
 
-typedef std::map<MOVE_ORIGIN, std::vector<std::string> > MOVESET;
+typedef std::map<MOVE_ORIGIN, std::set<std::string> > MOVESET;
 
 class PokemonSpecies;
 typedef std::map<int, PokemonSpecies *> SPECIES_SET;

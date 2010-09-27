@@ -46,12 +46,12 @@ using namespace xercesc;
 
 namespace shoddybattle {
 
-const string PokemonSpecies::m_restricted[] = {"Arceus", "Articuno", 
+const string PokemonSpecies::m_restricted[] = { "Arceus", "Articuno",
         "Azelf", "Celebi", "Cresselia", "Darkrai","Deoxys", "Deoxys-f", 
         "Groudon", "Heatran", "Ho-oh", "Jirachi","Kyogre", "Latias", "Latios", 
         "Lugia", "Manaphy", "Mesprit", "Mew","Mewtwo", "Moltres", "Palkia", 
         "Raikou", "Rayquaza", "Regice", "Regigigas", "Regirock", "Registeel", 
-        "Shaymin", "Suicune", "Unown", "Uxie", "Zapdos"};
+        "Shaymin", "Suicune", "Unown", "Uxie", "Zapdos" };
 
 bool PokemonSpecies::hasRestrictedIvs() const { 
     const int size = sizeof(m_restricted) / sizeof(string);
@@ -83,10 +83,12 @@ STAT_PAIR statNames[] = {
 typedef pair<string, MOVE_ORIGIN> ORIGIN_PAIR;
 ORIGIN_PAIR originNames[] = {
     ORIGIN_PAIR("level", MO_LEVEL),
-    ORIGIN_PAIR("tutor", MO_TUTOR),
-    ORIGIN_PAIR("tm", MO_TM),
-    ORIGIN_PAIR("hm", MO_HM),
     ORIGIN_PAIR("egg", MO_EGG),
+    ORIGIN_PAIR("tutor", MO_TUTOR),
+    ORIGIN_PAIR("machine", MO_MACHINE),
+    ORIGIN_PAIR("event", MO_EVENT),
+    ORIGIN_PAIR("pikalightball", MO_LIGHT_BALL),
+    ORIGIN_PAIR("prevevo", MO_EVOLUTION),
 };
 
 template <typename T>
@@ -107,7 +109,7 @@ struct SPECIES {
     int gender;
     int base[6];
     double mass;
-    map<MOVE_ORIGIN, vector<string> > moves;
+    map<MOVE_ORIGIN, set<string> > moves;
     COMBINATION_LIST illegal;
     ABILITY_LIST abilities;
 };
@@ -292,7 +294,7 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
             if (v == MO_NONE)
                 continue;
 
-            vector<string> moveVector;
+            set<string> moveSet;
 
             XMLString::transcode("move", tempStr, 19);
             DOMNodeList *list2 = moves->getElementsByTagName(tempStr);
@@ -301,10 +303,10 @@ void getSpecies(DOMElement *node, SPECIES *pSpecies) {
                 DOMElement *move = (DOMElement *)list2->item(j);
                 string strMove = getTextFromElement(move);
                 if (!strMove.empty()) {
-                    moveVector.push_back(strMove);
+                    moveSet.insert(strMove);
                 }
             }
-            pSpecies->moves[v] = moveVector;
+            pSpecies->moves[v] = moveSet;
         }
     }
 
@@ -431,8 +433,8 @@ set<string> PokemonSpecies::populateMoveList(const MoveDatabase &p) {
     set<string> ret;
     m_moves.clear();
     for (int i = 0; i < ORIGIN_COUNT; ++i) {
-        vector<string> &moves = m_moveset[(MOVE_ORIGIN)i];
-        vector<string>::iterator j = moves.begin();
+        set<string> &moves = m_moveset[(MOVE_ORIGIN)i];
+        set<string>::iterator j = moves.begin();
         for (; j != moves.end(); ++j) {
             const string name = *j;
             const MoveTemplate *move = p.getMove(name);
