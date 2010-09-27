@@ -1036,18 +1036,12 @@ private:
     void handleRequestUserInfo(InMessage &msg) {
         string user;
         msg >> user;
-        bool auth = false;
-        lock_guard<shared_mutex> lock(m_channelMutex);
-        CHANNEL_LIST::iterator i = m_channels.begin();
-        for (; i != m_channels.end(); ++i) {
-            Channel::FLAGS flags = (*i)->getStatusFlags(shared_from_this());
-            if (flags[Channel::OP] || flags[Channel::PROTECTED]) {
-                auth = true;
-                break;
-            }
+        ChannelPtr main = m_server->getMainChannel();
+        Channel::FLAGS flags = main->getStatusFlags(shared_from_this());
+        if (!flags[Channel::OP] && !flags[Channel::PROTECTED]) {
+            return;
         }
-        if (!auth) return;
-        string ip = m_server->getRegistry()->getIp(user);
+        const string ip = m_server->getRegistry()->getIp(user);
         if (ip.empty()) {
             sendMessage(UserDetailMessage());
         } else {
