@@ -82,6 +82,7 @@ function makeStatusImmuneAbility(ability, immune) {
         },
         tier : 0, // TODO
         tick : function() {
+            // TODO: immune is actually an array...
             var effect = this.subject.getStatus(immune);
             if (effect) {
                 this.subject.removeStatus(effect);
@@ -407,6 +408,7 @@ makeAbility({
         if (this.subject.position != -1) {
             this.informActivate();
         }
+        return true;
     },
     tick : function() {
         if (--this.turns_ > 0)

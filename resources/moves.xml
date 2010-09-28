@@ -5257,9 +5257,11 @@ effect.tick = function() {
     this.subject.hp -= damage;
     if (target.sendMessage("informDrainHealth", p, damage))
         return;
-    var adjusted = this.subject.sendMessage("informAbsorbHealth", this.subject, damage);
-    if (adjusted)
+    var adjusted = this.subject.sendMessage("informAbsorbHealth",
+            this.subject, damage);
+    if (adjusted) {
         damage = adjusted;
+    }
     p.hp += damage;
 };
 target.applyStatus(user, effect);
@@ -7027,6 +7029,7 @@ effect.applyEffect = effect.unapplyEffect = function() {
     var defence = this.subject.getRawStat(Stat.DEFENCE);
     this.subject.setRawStat(Stat.ATTACK, defence);
     this.subject.setRawStat(Stat.DEFENCE, attack);
+    return true;
 };
 user.applyStatus(user, effect);
 ]]>
