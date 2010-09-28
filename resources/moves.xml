@@ -9311,6 +9311,7 @@ if (user.getStatus("SubstituteEffect") || (user.hp <= hp)) {
     field.print(Text.battle_messages(0));
     return;
 }
+user.sendMessage("forceDirectDamage");
 user.hp -= hp;
 var effect = new StatusEffect("SubstituteEffect");
 effect.name = Text.battle_messages_unique(133);
