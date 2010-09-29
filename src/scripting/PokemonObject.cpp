@@ -658,7 +658,15 @@ JSBool execute(JSContext *cx,
     assert(JSVAL_IS_OBJECT(argv[0]));
     JSObject *moveObj = JSVAL_TO_OBJECT(argv[0]);
     MoveObject *pMoveObj = (MoveObject *)JS_GetPrivate(cx, moveObj);
-    MoveObjectPtr move = pMoveObj->shared_from_this();
+    MoveObjectPtr move;
+    try {
+        move = pMoveObj->shared_from_this();
+    } catch (boost::bad_weak_ptr &) {
+        // This move object isn't owned by any MoveObjectPtr, so we introduce
+        // a new root to take ownership of it.
+        ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
+        move = scx->addRoot(new MoveObject(moveObj));
+    }
     Pokemon *target = NULL;
     if (argv[1] != JSVAL_VOID) {
         assert(JSVAL_IS_OBJECT(argv[1]));
