@@ -35,6 +35,9 @@ public:
 
     /** Obtain an arbitrary nature by index. **/
     static const PokemonNature *getNature(const int idx) {
+        if ((idx < 0) || (idx >= m_natureCount)) {
+            return NULL;
+        }
         return &m_natures[idx];
     }
 

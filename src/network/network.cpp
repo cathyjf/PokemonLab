@@ -138,8 +138,9 @@ OutMessage &OutMessage::operator<<(const string &str) {
  */
 class InMessage {
 public:
-    class InvalidMessage {
-
+    class InvalidMessage : public runtime_error {
+    public:
+        InvalidMessage() : runtime_error("Client send an invalid message.") { }
     };
 
     enum TYPE {
@@ -345,7 +346,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     int level;
     string item;
     string ability;
-    int nature;
+    int natureId;
     int moveCount;
     vector<string> moves;
     vector<int> ppUp;
@@ -353,7 +354,7 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
     int evs[STAT_COUNT];
 
     msg >> speciesId >> nickname >> shiny >> gender >> happiness >> level
-            >> item >> ability >> nature >> moveCount;
+            >> item >> ability >> natureId >> moveCount;
 
     if (nickname.size() > 15) {
         nickname.resize(15);
@@ -373,11 +374,19 @@ Pokemon::PTR readPokemon(SpeciesDatabase *speciesData,
         msg >> ivs[i] >> evs[i];
     }
 
+    const PokemonNature *nature = PokemonNature::getNature(natureId);
+    if (!nature) {
+        throw InMessage::InvalidMessage();
+    }
+
     const PokemonSpecies *species = speciesData->getSpecies(speciesId);
+    if (!species) {
+        throw InMessage::InvalidMessage();
+    }
 
     return Pokemon::PTR(new Pokemon(species,
             nickname,
-            PokemonNature::getNature(nature),
+            nature,
             ability,
             item,
             ivs,
