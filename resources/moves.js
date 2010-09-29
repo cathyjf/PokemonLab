@@ -1215,6 +1215,8 @@ function makeCounterMove(move, cls, ratio) {
         while ((recent = user.popRecentDamage()) != null) {
             var move = recent[1];
             if ((cls == undefined) || (move.moveClass == cls)) {
+                // TODO: We need to save (party, position) in the recent move
+                //       stack rather than calculate it here.
                 var party = recent[0].party;
                 var position = recent[0].position;
                 if (party == user.party) {

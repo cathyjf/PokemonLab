@@ -4337,16 +4337,16 @@ effect.turns = 5;
 var forbidden_ = this.forbidden_;
 effect.vetoSelection = function(user, move) {
     if (user != this.subject)
-        return null;
+        return false;
     return (forbidden_.indexOf(move.name) != -1);
 };
 effect.vetoExecution = function(field, user, target, move) {
     if (target != null)
-        return null;
+        return false;
     if (user != this.subject)
-        return null;
+        return false;
     if (forbidden_.indexOf(move.name) == -1)
-        return null;
+        return false;
     field.print(Text.battle_messages_unique(128, this.subject, move));
     return true;
 };
