@@ -121,6 +121,20 @@ JSBool getActivePokemon(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool getAliveCount(JSContext *cx,
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
+    BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
+    int party = 0;
+    JS_ConvertArguments(cx, 1, argv, "i", &party);
+    if ((party != 0) && (party != 1)) {
+        JS_ReportError(cx, "getAliveCount: party must be 0 or 1");
+        return JS_FALSE;
+    }
+    const int alive = field->getAliveCount(party, false);
+    *ret = INT_TO_JSVAL(alive);
+    return JS_TRUE;
+}
+
 JSBool getTurn(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
     BattleField *field = (BattleField *)JS_GetPrivate(cx, obj);
@@ -638,6 +652,7 @@ JSFunctionSpec fieldFunctions[] = {
     JS_FS("getRandomTarget", getRandomTarget, 1, 0, 0),
     JS_FS("getTrainer", getTrainer, 1, 0, 0),
     JS_FS("getTurn", getTurn, 2, 0, 0),
+    JS_FS("getAliveCount", getAliveCount, 1, 0, 0),
     JS_FS_END
 };
 

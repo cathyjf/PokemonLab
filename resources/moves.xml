@@ -10369,6 +10369,12 @@ var damage = field.calculate(this, user, target, targets);
 if (!damage)
     return;
 target.hp -= damage;
+if (user.hp <= 0) {
+    return;
+}
+if (field.getAliveCount(target.party) == 0) {
+    return;
+}
 var selection = field.requestInactivePokemon(user);
 if (selection) {
     user.replaceBy(selection);
