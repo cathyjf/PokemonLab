@@ -1662,7 +1662,7 @@ makeAbility({
         var party = user.party;
         for (var i = 0; i < user.field.partySize; i++) {
             var opponent = user.field.getActivePokemon(1 - party, i);
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < opponent.moveCount; j++) {
                 var move = opponent.getMove(j);
                 if ((move == null) || (move.power < 1)) continue;
                 if (user.field.getEffectiveness(move.type, user) > 1) {
@@ -1731,9 +1731,9 @@ makeAbility({
     informActivate : function() {
         var party = this.subject.party;
         var move = null;
-        for (var i = 0; i < this.subject.field.partySize; i++) {
+        for (var i = 0; i < this.subject.field.partySize; ++i) {
             var opponent = this.subject.field.getActivePokemon(1 - party, i);
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < opponent.moveCount; ++j) {
                 var m = opponent.getMove(j);
                 if ((move == null) || (m.power > move.power)) {
                     move = m;
@@ -1780,7 +1780,7 @@ makeAbility({
         return this.loaf_;
     },
     informFinishedSubjectExecution : function() {
-        // It is impossible to do a tick event after a switch, so the swap is 
+        // It is impossible to do a tick event after a switch, so the swap is
         // done here. The effect should be the same.
         this.loaf_ = !this.loaf_;
     }
