@@ -844,7 +844,11 @@ struct NetworkBattleImpl {
         boost::unique_lock<boost::recursive_mutex>
                 lock(m_mutex, boost::adopt_lock);
 
-        if (m_waiting) {
+        // This flag is set here to prevent a deadlock if the game logic also
+        // attempts to call informVictory.
+        m_victory = true;
+
+        while (m_waiting) {
             // One client is in the middle of selecting a pokemon for a move
             // like U-turn or Baton Pass. To allow the battle to exit nicely,
             // we have to pick a pokemon for the client.
