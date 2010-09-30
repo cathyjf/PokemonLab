@@ -51,7 +51,8 @@ public:
 
     enum LOG_MODE {
         MODE_CONSOLE = 1,
-        MODE_FILE = 2
+        MODE_FILE = 2,
+        MODE_BOTH = MODE_CONSOLE | MODE_FILE
     };
     
     class tempstream {

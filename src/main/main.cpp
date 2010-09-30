@@ -74,6 +74,8 @@ int initialise(int argc, char **argv, bool &daemon) {
             ("server.welcome",
                 po::value<string>(&welcomeFile),
                 "welcome message file")
+            ("server.log",
+                "write server messages to file")
             ("server.port",
                 po::value<int>(&port)->default_value(
                      8446),
@@ -176,6 +178,10 @@ int initialise(int argc, char **argv, bool &daemon) {
         file.read(text, length);
         text[length] = '\0';
         welcomeMessage = text;
+    }
+
+    if (vm.count("server.log")) {
+        Log::out.setMode(Log::MODE_BOTH);
     }
 
     const bool serverDetach = vm.count("server.detach");
