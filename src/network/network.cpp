@@ -1766,6 +1766,7 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     if (m_rated) {
         client->joinLadder(m_metagame->getId());
     }
+    m_clients.insert(client);
     m_queue.push_back(QUEUE_ENTRY(client, team));
     return true;
 }
