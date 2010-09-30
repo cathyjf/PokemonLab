@@ -426,7 +426,6 @@ struct NetworkBattleImpl {
         m_waiting = m_replacement = true;
         m_requests[party].push_back(user->getSlot());
         requestAction(party);
-        m_timer->startTimer(party);
 
         ScriptContextPtr cx = m_field->getContext()->shared_from_this();
         
@@ -794,6 +793,7 @@ struct NetworkBattleImpl {
         if (client) {
             client->sendMessage(msg);
         }
+        m_timer->startTimer(party);
     }
 
     bool requestReplacements() {
@@ -816,7 +816,6 @@ struct NetworkBattleImpl {
         for (int i = 0; i < TEAM_COUNT; ++i) {
             if (!m_requests[i].empty()) {
                 requestAction(i);
-                m_timer->startTimer(i);
             }
         }
         return true;
@@ -858,7 +857,7 @@ struct NetworkBattleImpl {
             m_requests[party].clear();
             m_turns[party].clear();
             m_condition.notify_one();
-            while (m_selection) {
+            while (m_selection && !m_waiting) {
                 m_condition.wait(lock);
             }
         }
