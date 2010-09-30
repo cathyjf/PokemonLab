@@ -1639,6 +1639,9 @@ makeAbility({
         var user = this.subject;
         var party = user.party;
         var opponent = user.field.getRandomTarget(1 - party);
+        if (!opponent) {
+            return;
+        }
         var stat = (opponent.getRawStat(Stat.ATTACK) >
             opponent.getRawStat(Stat.SPATTACK)) ?
                 Stat.ATTACK : Stat.SPATTACK;
