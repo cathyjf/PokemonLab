@@ -1736,6 +1736,9 @@ makeAbility({
         var move = null;
         for (var i = 0; i < this.subject.field.partySize; ++i) {
             var opponent = this.subject.field.getActivePokemon(1 - party, i);
+            if (!opponent) {
+                continue;
+            }
             for (var j = 0; j < opponent.moveCount; ++j) {
                 var m = opponent.getMove(j);
                 if ((move == null) || (m.power > move.power)) {
