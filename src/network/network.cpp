@@ -740,18 +740,18 @@ public:
                     shared_from_this(), placeholders::error));
         }
     }
-    bool start() {
+    boost::system::error_code start() {
         boost::system::error_code ec;
         const tcp::endpoint &endpoint = m_socket.remote_endpoint(ec);
         if (ec) {
-            return false;
+            return ec;
         }
         m_ip = endpoint.address().to_string();
 
         async_read(m_socket, buffer(m_msg()),
                 boost::bind(&ClientImpl::handleReadHeader,
                 shared_from_this(), placeholders::error));
-        return true;
+        return boost::system::error_code();
     }
     string getIp() const {
         return m_ip;
@@ -2236,14 +2236,23 @@ void ServerImpl::acceptClient() {
 void ServerImpl::handleAccept(ClientImplPtr client,
         const boost::system::error_code &error) {
     acceptClient();
-    if (!error && client->start()) {
-        {
-            lock_guard<shared_mutex> lock(m_clientMutex);
-            m_clients.insert(client);
-        }
-        Log::out() << "Accepted client from " << client->getIp() << "." << endl;
-        client->sendMessage(m_welcomeMessage);
+    if (error) {
+        Log::out() << "Error in ServerImpl::handleAccept(): "
+                << error.message() << endl;
+        return;
     }
+    const boost::system::error_code startError = client->start();
+    if (startError) {
+        Log::out() << "Error in ClientImpl::start(): "
+                << startError.message() << endl;
+        return;
+    }
+    {
+        lock_guard<shared_mutex> lock(m_clientMutex);
+        m_clients.insert(client);
+    }
+    Log::out() << "Accepted client from " << client->getIp() << "." << endl;
+    client->sendMessage(m_welcomeMessage);
 }
 
 
