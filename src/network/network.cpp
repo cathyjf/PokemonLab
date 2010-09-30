@@ -776,11 +776,11 @@ public:
         // dynamic downcast...
         ClientImpl *impl = dynamic_cast<ClientImpl *>(client.get());
         if (impl) {
-            lock_guard<mutex> lock(impl->m_battleMutex);
+            lock_guard<recursive_mutex> lock(impl->m_battleMutex);
             impl->m_battles.erase(p);
         }
         {
-            lock_guard<mutex> lock(m_battleMutex);
+            lock_guard<recursive_mutex> lock(m_battleMutex);
             m_battles.erase(p);
         }
     }
@@ -788,7 +788,7 @@ public:
     void joinChannel(ChannelPtr channel);
     void partChannel(ChannelPtr channel);
     void insertBattle(NetworkBattle::PTR battle) {
-        lock_guard<mutex> lock(m_battleMutex);
+        lock_guard<recursive_mutex> lock(m_battleMutex);
         m_battles.insert(battle);
     }
     void joinLadder(const string &ladder) {
@@ -1337,7 +1337,14 @@ private:
         msg >> field >> tt >> idx >> target;
         PokemonTurn turn((TURN_TYPE)tt, idx, target);
 
-        lock_guard<mutex> lock(m_battleMutex);
+        // If handleTurn ends up calling ClientImpl::terminateBattle (via
+        // Timer::tick()), this thread will attempt to lock m_battleMutex a
+        // second time and will permanently block. To solve this, I have made
+        // m_battleMutex a recursive_mutex, but in case this turns out to be
+        // insufficient, I have left this comment to remind myself of the
+        // problem.
+
+        lock_guard<recursive_mutex> lock(m_battleMutex);
         NetworkBattle::PTR p = getBattle(field);
         if (p) {
             const int party = p->getParty(shared_from_this());
@@ -1431,7 +1438,7 @@ private:
         int32_t field;
         msg >> field;
 
-        lock_guard<mutex> lock(m_battleMutex);
+        lock_guard<recursive_mutex> lock(m_battleMutex);
         NetworkBattle::PTR p = getBattle(field);
         if (p) {
             const int party = p->getParty(shared_from_this());
@@ -1452,7 +1459,7 @@ private:
     mutex m_challengeMutex;
 
     BATTLE_LIST m_battles;
-    mutex m_battleMutex;
+    recursive_mutex m_battleMutex;
 
     InMessage m_msg;
     deque<OutMessage> m_queue;
