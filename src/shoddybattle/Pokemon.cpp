@@ -93,6 +93,7 @@ Pokemon::Pokemon(const PokemonSpecies *species,
     m_legalSwitch = true;
     m_slot = -1;
     m_acted = false;
+    m_damaged = false;
     m_revealed = false;
     m_turn = NULL;
 }
