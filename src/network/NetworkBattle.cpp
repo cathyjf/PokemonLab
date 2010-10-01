@@ -85,9 +85,9 @@ public:
             };
     bool isEnabled() const { return m_enabled; }
     int getPeriods() const { return m_periods; }
-    void tick();
+    bool tick();
     void startTimer(const int party);
-    void stopTimer(const int party);
+    bool stopTimer(const int party);
     int getRemaining(const int party) {
         boost::unique_lock<boost::shared_mutex> lock(m_players[party].mutex);
         return m_players[party].remaining;
@@ -1066,11 +1066,18 @@ int NetworkBattle::getParty(boost::shared_ptr<network::Client> client) const {
 
 void NetworkBattle::handleCancelTurn(const int party) {
     boost::lock_guard<boost::recursive_mutex> lock(m_impl->m_mutex);
+    if (m_impl->m_terminated) {
+        return;
+    }
     m_impl->cancelAction(party);
 }
 
 void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     boost::unique_lock<boost::recursive_mutex> lock(m_impl->m_mutex);
+    
+    if (m_impl->m_terminated) {
+        return;
+    }
 
     PARTY_REQUEST &req = m_impl->m_requests[party];
     PARTY_TURN &pturn = m_impl->m_turns[party];
@@ -1098,7 +1105,9 @@ void NetworkBattle::handleTurn(const int party, const PokemonTurn &turn) {
     }
     pturn.push_back(turn);
 
-    m_impl->m_timer->stopTimer(party);
+    if (m_impl->m_timer->stopTimer(party)) {
+        return;
+    }
 
     const int size = pturn.size();
     if (size < max) {
@@ -1429,7 +1438,7 @@ void NetworkBattle::startTimerThread() {
             boost::bind(&handleTiming));
 }
 
-void Timer::tick() {
+bool Timer::tick() {
     time_t now = time(NULL);
     int delta = now - m_lastTime;
     m_lastTime = now;
@@ -1444,13 +1453,14 @@ void Timer::tick() {
                 m_battle->timeExpired(i);
                 // Note: 'this' is invalid here! We must return and not
                 //       touch 'this'.
-                return;
+                return true;
             }
             pt.remaining = m_periodLength + diff;
         } else {
             pt.remaining = diff;
         }
     }
+    return false;
 }
 
 void Timer::startTimer(const int party) {
@@ -1460,9 +1470,11 @@ void Timer::startTimer(const int party) {
     pt.stopped = false;
 }
 
-void Timer::stopTimer(const int party) {
-    if (!m_enabled) return;
-    tick();
+bool Timer::stopTimer(const int party) {
+    if (!m_enabled) return false;
+    if (tick()) {
+        return true;
+    }
     PlayerTimer &pt = m_players[party];
     boost::unique_lock<boost::shared_mutex> lock(pt.mutex);
     pt.stopped = true;
@@ -1470,6 +1482,7 @@ void Timer::stopTimer(const int party) {
     if (pt.periods != m_periods) {
         pt.remaining = m_periodLength;
     }
+    return false;
 }
 
 

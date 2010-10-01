@@ -832,8 +832,8 @@ private:
         return i->second;
     }
 
-    // to be called from within a critical section on m_battleMutex
     NetworkBattle::PTR getBattle(const int id) {
+        lock_guard<recursive_mutex> lock(m_battleMutex);
         BATTLE_LIST::iterator i = m_battles.begin();
         for (; i != m_battles.end(); ++i) {
             if ((*i)->getId() == id)
@@ -1337,14 +1337,6 @@ private:
         msg >> field >> tt >> idx >> target;
         PokemonTurn turn((TURN_TYPE)tt, idx, target);
 
-        // If handleTurn ends up calling ClientImpl::terminateBattle (via
-        // Timer::tick()), this thread will attempt to lock m_battleMutex a
-        // second time and will permanently block. To solve this, I have made
-        // m_battleMutex a recursive_mutex, but in case this turns out to be
-        // insufficient, I have left this comment to remind myself of the
-        // problem.
-
-        lock_guard<recursive_mutex> lock(m_battleMutex);
         NetworkBattle::PTR p = getBattle(field);
         if (p) {
             const int party = p->getParty(shared_from_this());
@@ -1438,7 +1430,6 @@ private:
         int32_t field;
         msg >> field;
 
-        lock_guard<recursive_mutex> lock(m_battleMutex);
         NetworkBattle::PTR p = getBattle(field);
         if (p) {
             const int party = p->getParty(shared_from_this());
