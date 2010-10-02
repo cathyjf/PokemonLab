@@ -140,6 +140,40 @@ makeClause({
 });
 
 makeClause({
+    name : "Level 50 Clause",
+    description : "Pokemon cannot be higher than level 50",
+    validateTeam : function(team) {
+        for (var i in team) {
+            var p = team[i];
+            if (p.level > 50)
+                return false;
+        }
+        return true;
+    }
+});
+
+makeClause({
+    name : "Little Cup Clause",
+    description : "Rules for the Little Cup metagame",
+    validateTeam : function(team) {
+        for (var i in team) {
+            var p = team[i];
+            if (p.level > 5)
+                return false;
+            if (p.getMoveId("SonicBoom") != -1)
+                return false;
+            if (p.getMoveId("Dragon Rage") != -1)
+                return false;
+            if (p.itemName == "DeepSeaTooth")
+                return false;
+            if (p.itemName == "Berry Juice")
+                return false;
+        }
+        return true;
+    }
+});
+
+makeClause({
     name : "Item Clause",
     description : "All Pokemon on a team must have different items",
     validateTeam : function(team) {
