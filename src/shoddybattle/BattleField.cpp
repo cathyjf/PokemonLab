@@ -1101,7 +1101,7 @@ void BattleField::executePendingMoveAction(Pokemon *p) {
     // Note that the following line can change the fields of *turn.
     p->sendMessage("informBeginExecution", 0, NULL);
 
-    const bool choice = (p->getForcedTurn() == NULL);
+    const bool choice = !p->isExecutingForcedTurn();
     const int id = turn->id;
     MoveObjectPtr move = p->getMove(id);
     Pokemon *target = NULL;
@@ -1157,7 +1157,7 @@ bool BattleField::executePendingAction(Pokemon *p) {
             executeSwitchAction(p, turn->id);
         }
     }
-    p->setTurn(NULL);
+    p->setTurn(NULL, false);
     return execute;
 }
 
@@ -1172,21 +1172,24 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
         throw BattleFieldException();
 
     for_each(inactive.begin(), inactive.end(),
-            boost::bind(&Pokemon::setTurn, _1, &PokemonTurn::NOP));
+            boost::bind(&Pokemon::setTurn, _1, &PokemonTurn::NOP, false));
     
     vector<const PokemonTurn *> ordered;
     for (int i = 0; i < count; ++i) {
         Pokemon::PTR p = pokemon[i];
         PokemonTurn *turn = &turns[i];
+        bool forced = false;
 
-        PokemonTurn *forced = p->getForcedTurn();
+        PokemonTurn *forcedTurn = p->getForcedTurn();
         Pokemon::FORCED_TYPE type = p->getForcedType();
-        if (forced && ((type == Pokemon::FORCED_ACTION)
+        if (forcedTurn && ((type == Pokemon::FORCED_ACTION)
                 || (turn->type != TT_SWITCH))) {
-            turn = forced;
+            turns[i] = *forcedTurn;
+            turn = &turns[i];
+            forced = true;
         }
         
-        p->setTurn(turn);
+        p->setTurn(turn, forced);
         ordered.push_back(turn);
         p->clearDamagedFlag();
     }
@@ -1197,7 +1200,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
     // effects speed sorting should be present on all pokemon.
     ScriptValue v = pokemon[0]->sendMessage("informSpeedSort", 0, NULL);
     m_impl->descendingSpeed = v.failed() ? true : v.getBool();
-    
+
     m_impl->sortInTurnOrder(pokemon, ordered);
 
     // Begin the turn.
@@ -1229,7 +1232,7 @@ void BattleField::processTurn(vector<PokemonTurn> &turns) {
     }
 
     for_each(inactive.begin(), inactive.end(),
-            boost::bind(&Pokemon::setTurn, _1, (PokemonTurn *)NULL));
+            boost::bind(&Pokemon::setTurn, _1, (PokemonTurn *)NULL, false));
 
     // Execute end of turn effects.
     tickEffects();

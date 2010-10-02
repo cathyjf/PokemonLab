@@ -99,8 +99,14 @@ public:
 
     ScriptValue sendMessage(const std::string &, int, ScriptValue *);
 
-    void setTurn(PokemonTurn *turn) { m_turn = turn; }
+    void setTurn(PokemonTurn *turn, const bool forced) {
+        m_turn = turn;
+        m_executingForcedTurn = forced;
+    }
     PokemonTurn *getTurn() { return m_turn; }
+    bool isExecutingForcedTurn() const {
+        return m_executingForcedTurn;
+    }
 
     int getInherentPriority() const;
     int getCriticalModifier() const;
@@ -351,6 +357,7 @@ private:
 
     STATUSES m_effects;
 
+    bool m_executingForcedTurn;
     PokemonTurn *m_turn;
     boost::shared_ptr<PokemonTurn> m_forcedTurn;
     boost::shared_ptr<MoveObject> m_forcedMove;
