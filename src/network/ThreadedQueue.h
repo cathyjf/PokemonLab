@@ -29,6 +29,7 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 namespace shoddybattle { namespace network {
@@ -45,21 +46,24 @@ public:
 
     ThreadedQueue(DELEGATE delegate):
             m_delegate(delegate),
-            m_work(new boost::asio::io_service::work(m_service)),
-            m_thread(boost::bind(&boost::asio::io_service::run, &m_service)) {
+            m_service(new boost::asio::io_service()),
+            m_work(new boost::asio::io_service::work(*m_service)),
+            m_thread(boost::bind(&ThreadedQueue::run, this)) {
     }
 
     void post(T elem) {
-        m_service.post(boost::bind(m_delegate, elem));
+        m_service->post(boost::bind(m_delegate, elem));
     }
 
     template <class U> void post(U elem) {
-        m_service.post(elem);
+        m_service->post(elem);
     }
 
     void join() {
         m_work.reset();
-        m_thread.join();
+        if (m_thread.get_id() != boost::this_thread::get_id()) {
+            m_thread.join();
+        }
     }
 
     ~ThreadedQueue() {
@@ -67,9 +71,16 @@ public:
     }
 
 private:
+    void run() {
+        // We make a copy of the shared_ptr<> holding the io_service so that
+        // the io_service does not get deconstructed until after run() exits.
+        boost::shared_ptr<boost::asio::io_service> service = m_service;
+        service->run();
+    }
+
     DELEGATE m_delegate;
     // Note: Do not change the order of the following three declarations.
-    boost::asio::io_service m_service;
+    boost::shared_ptr<boost::asio::io_service> m_service;
     std::auto_ptr<boost::asio::io_service::work> m_work;
     boost::thread m_thread;
 };
