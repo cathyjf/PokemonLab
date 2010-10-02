@@ -216,7 +216,7 @@ int initialise(int argc, char **argv, bool &daemon) {
             Log::out() << "Failed to create pipe." << endl;
             return EXIT_FAILURE;
         }
-        if ((pid = daemon_fork()) < 0) {
+        if ((pid = fork()) < 0) {
             daemon_retval_done();
             return EXIT_FAILURE;
         }
@@ -239,6 +239,9 @@ int initialise(int argc, char **argv, bool &daemon) {
             return EXIT_SUCCESS;
         } else {
             // This is the daemon process.
+            fclose(stdin);
+            fclose(stdout);
+            fclose(stderr);
             
             // This technique isn't advised, but I'm going to do it anyway
             // to allow paths relative to the program's location.
