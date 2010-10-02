@@ -160,9 +160,9 @@ makeClause({
             var p = team[i];
             if (p.level > 5)
                 return false;
-            if (p.getMoveId("SonicBoom") != -1)
+            if (p.hasMove("SonicBoom"))
                 return false;
-            if (p.getMoveId("Dragon Rage") != -1)
+            if (p.hasMove("Dragon Rage"))
                 return false;
             if (p.itemName == "DeepSeaTooth")
                 return false;

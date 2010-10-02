@@ -443,6 +443,20 @@ JSBool getMoveId(JSContext *cx,
     return JS_TRUE;
 }
 
+JSBool hasMove(JSContext *cx,
+        JSObject *obj, uintN /*argc*/, jsval *argv, jsval *ret) {
+    jsval v = argv[0];
+    if (!JSVAL_IS_STRING(v)) {
+        return JS_FALSE;
+    }
+
+    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
+    const int id = p->getMove(str);
+    *ret = BOOLEAN_TO_JSVAL(id != -1);
+    return JS_TRUE;
+}
+
 /**
  * pokemon.getPp(move)
  *
@@ -1028,6 +1042,7 @@ JSFunctionSpec pokemonFunctions[] = {
     JS_FS("getMove", getMove, 1, 0, 0),
     JS_FS("setMove", setMove, 4, 0, 0),
     JS_FS("getMoveId", getMoveId, 1, 0, 0),
+    JS_FS("hasMove", hasMove, 1, 0, 0),
     JS_FS("isMoveUsed", isMoveUsed, 1, 0, 0),
     JS_FS("popRecentDamage", popRecentDamage, 0, 0, 0),
     JS_FS("getStatLevel", getStatLevel, 1, 0, 0),
