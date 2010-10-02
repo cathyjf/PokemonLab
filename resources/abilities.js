@@ -1642,9 +1642,9 @@ makeAbility({
         if (!opponent) {
             return;
         }
-        var stat = (opponent.getRawStat(Stat.ATTACK) >
-            opponent.getRawStat(Stat.SPATTACK)) ?
-                Stat.ATTACK : Stat.SPATTACK;
+        var stat = (opponent.getRawStat(Stat.DEFENCE) >=
+            opponent.getRawStat(Stat.SPDEFENCE)) ?
+                Stat.SPATTACK : Stat.ATTACK;
         var effect = new StatChangeEffect(stat, 1);
         effect.silent = true;
         if (user.applyStatus(this.subject, effect)) {
