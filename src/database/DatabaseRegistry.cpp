@@ -509,12 +509,24 @@ int DatabaseRegistry::getMaxLevel(const int channel, const string &user) {
     }
 }
 
-void DatabaseRegistry::getBan(const int channel, const string &user, int &date, int &flags) {
+void DatabaseRegistry::getGlobalBan(const std::string &user,
+        const std::string &ip, int &date, int &flags) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select expiry, flags from bans where channel=");
-    query << channel << " and id=(select id from users where name= %0q )";
+    Query query = conn->query(
+            "SELECT expiry, flags "
+            "FROM bans "
+            "WHERE channel=-1 "
+                "AND ("
+                    "id=(SELECT id FROM users WHERE name=%0q) "
+                    "OR ("
+                        "ip_ban AND id IN ("
+                            "SELECT id FROM users WHERE ip=%1q)"
+                    ")"
+                ")"
+            "ORDER BY expiry DESC"
+            "LIMIT 0, 1");
     query.parse();
-    StoreQueryResult res = query.store(user);
+    StoreQueryResult res = query.store(user, ip);
     if (res.empty()) {
         date = flags = 0;
         return;
@@ -523,8 +535,26 @@ void DatabaseRegistry::getBan(const int channel, const string &user, int &date, 
     flags = (int)res[0][1];
 }
 
-bool DatabaseRegistry::setBan(const int channel, const string &user, 
-                                    const int flags, const long date) {
+void DatabaseRegistry::getBan(const int channel, const string &user,
+        int &date, int &flags) {
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query(
+            "SELECT expiry, flags "
+            "FROM bans "
+            "WHERE channel=%0q "
+                "AND id=(SELECT id FROM users WHERE name= %1q )");
+    query.parse();
+    StoreQueryResult res = query.store(channel, user);
+    if (res.empty()) {
+        date = flags = 0;
+        return;
+    }
+    date = (int)DateTime(res[0][0]);
+    flags = (int)res[0][1];
+}
+
+bool DatabaseRegistry::setBan(const int channel, const string &user,
+        const int flags, const long date, const bool ipBan) {
     ScopedConnection conn(m_impl->pool);
     {
         Query query = conn->query("delete from bans where channel=");
@@ -536,13 +566,16 @@ bool DatabaseRegistry::setBan(const int channel, const string &user,
     if (date < time(NULL)) {
         return true;
     } else {
-        Query query = conn->query("insert into bans values(");
-        query << "%0q, (select id from users where name= %1q ), %2q, %3q)";
+        Query query = conn->query(
+                "INSERT INTO bans "
+                    "(channel, id, flags, expiry, ip_ban) "
+                "VALUES (%0q, (select id from users where name= %1q ), %2q, "
+                    "%3q, %4q)");
         query.parse();
-        query.execute(channel, user, flags, DateTime(date));
+        query.execute(channel, user, flags, DateTime(date), ipBan);
         return false;
     }
-}   
+}
 
 void DatabaseRegistry::updateIp(const string &user, const string &ip) {
     ScopedConnection conn(m_impl->pool);
@@ -583,19 +616,22 @@ const vector<string> DatabaseRegistry::getAliases(const string &user) {
 
 const DatabaseRegistry::BAN_LIST DatabaseRegistry::getBans(const string &user) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select bans.channel, users.name, bans.expiry from bans ");
-    query << "join users on users.id=bans.id where users.ip=";
-    query << "(select ip from users where name= %0q )";
+    Query query = conn->query("SELECT bans.channel, users.name, bans.expiry, "
+                "bans.ip_ban "
+            "FROM bans ");
+    query << "JOIN users ON users.id=bans.id WHERE users.ip=";
+    query << "(SELECT ip FROM users WHERE name= %0q )";
     query.parse();
     StoreQueryResult res = query.store(user);
     DatabaseRegistry::BAN_LIST bans;
     const int count = res.num_rows();
     for (int i = 0; i < count; ++i) {
         Row r = res[i];
-        int id = r[0];
-        string name = string(r[1].c_str());
-        int date = (int)DateTime(r[2]);
-        bans.push_back(BAN_ELEMENT(id, name, date));
+        const int id = r[0];
+        const string name = string(r[1].c_str());
+        const int date = (int)DateTime(r[2]);
+        const bool ipBan = (bool)r[3];
+        bans.push_back(BAN_ELEMENT(id, name, date, ipBan));
     }
     return bans;
 }

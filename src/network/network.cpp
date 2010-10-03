@@ -219,12 +219,19 @@ public:
         return *this;
     }
 
+    template <class T> bool hasMoreData() const {
+        return hasMoreData(sizeof(T));
+    };
+
     virtual ~InMessage() { }
 
 private:
+    bool hasMoreData(const int count) const {
+        return ((m_data.size() - m_pos) >= count);
+    }
+
     void ensureMoreData(const int count) const {
-        const int length = m_data.size();
-        if ((length - m_pos) < count) {
+        if (!hasMoreData(count)) {
             throw InvalidMessage();
         }
     }
@@ -502,6 +509,8 @@ public:
         DatabaseRegistry::BAN_LIST::iterator j = bans.begin();
         for (; j != bans.end(); ++j) {
             *this << (int)(j->get<0>()) << j->get<1>() << (int)(j->get<2>());
+            // TODO: Also send IP bans some time in the future once everybody
+            //       has the newer client.
         }
         finalise();
     }
@@ -611,7 +620,8 @@ public:
         return m_queues[METAGAME_PAIR(metagame, rated)];
     }
     void postLadderMatch(const int, vector<ClientPtr> &, const int);
-    bool commitBan(const int, const string &, const int, const int);
+    bool commitBan(const int, const string &, const int, const int,
+            const bool = false);
     void commitPersonalMessage(const string& user, const string& msg);
     void loadPersonalMessage(const string &user, string &msg);
 
@@ -899,7 +909,7 @@ private:
         msg >> user;
         int ban;
         int flags;
-        m_server->getRegistry()->getBan(-1, user, ban, flags);
+        m_server->getRegistry()->getGlobalBan(user, m_ip, ban, flags);
         if (ban > 0) {
             if (ban < time(NULL)) {
                 //ban expired remove the ban
@@ -1059,7 +1069,8 @@ private:
             sendMessage(UserDetailMessage());
         } else {
             vector<string> aliases = m_server->getRegistry()->getAliases(user);
-            database::DatabaseRegistry::BAN_LIST bans = m_server->getRegistry()->getBans(user);
+            database::DatabaseRegistry::BAN_LIST bans =
+                    m_server->getRegistry()->getBans(user);
             sendMessage(UserDetailMessage(user, ip, aliases, bans));
         }
     }
@@ -1604,13 +1615,20 @@ void kickUser(ServerImpl *server, ChannelPtr channel, const string &kicker,
 /**
  * int32 : channel id
  * string : user to ban
- * int32 : ban expiry - call me up if this program lasts until 2038
+ * int32 : ban expiry
+ * byte : whether this is an IP ban (applies only for channel id == -1)
  */
 void ClientImpl::handleBanMessage(InMessage &msg) {
     int id;
     string target;
     int date;
+    unsigned char ipBan = 0;
     msg >> id >> target >> date;
+    // If there is an unsigned char left to read.
+    if (msg.hasMoreData<unsigned char>()) {
+        msg >> ipBan;
+    }
+
     ChannelPtr channel = (id == -1) ?
             m_server->getMainChannel() : getChannel(id);
     if (!channel) {
@@ -1657,7 +1675,8 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         }
 
         string msg;
-        bool unban = m_server->commitBan(id, target, auth.to_ulong(), date);
+        const bool unban = m_server->commitBan(id, target, auth.to_ulong(),
+                date, ipBan);
         if (unban && (ban > 0)) {
             msg = (id == -1) ? "[unban global] " : "[unban] ";
             msg += m_name + " -> " + target;
@@ -1723,8 +1742,8 @@ void ServerImpl::loadPersonalMessage(const string &user, string &message) {
 }
 
 bool ServerImpl::commitBan(const int channel, const string &user, 
-                                const int auth, const int date) {
-    return m_registry.setBan(channel, user, auth, date);
+        const int auth, const int date, const bool ipBan) {
+    return m_registry.setBan(channel, user, auth, date, ipBan);
 }
 
 void ServerImpl::postLadderMatch(const int metagame,

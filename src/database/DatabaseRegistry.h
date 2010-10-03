@@ -63,7 +63,7 @@ public:
     typedef std::pair<bool, int> AUTH_PAIR;
     typedef boost::tuple<std::string, std::string, int> INFO_ELEMENT;
     typedef std::map<int, INFO_ELEMENT> CHANNEL_INFO;
-    typedef boost::tuple<int, std::string, int> BAN_ELEMENT;
+    typedef boost::tuple<int, std::string, int, bool> BAN_ELEMENT;
     typedef std::vector<BAN_ELEMENT> BAN_LIST;
     typedef boost::tuple<int, double> ESTIMATE_ELEMENT;
     typedef std::vector<ESTIMATE_ELEMENT> ESTIMATE_LIST;
@@ -148,13 +148,16 @@ public:
      */
     void getBan(const int channel, const std::string &user, int &date,
             int &flags);
+
+    void getGlobalBan(const std::string &user, const std::string &ip,
+            int &date, int &flags);
     
     /**
      * Sets the ban for a user on a channel
      * Returns if the user was unbanned
      */
     bool setBan(const int channel, const std::string &user, const int flags,
-            const long date);
+            const long date, const bool ipBan = false);
     
     /**
      * Gets the maximum level of a user (including their alts)
