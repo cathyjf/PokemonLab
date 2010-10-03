@@ -76,8 +76,9 @@ HoldItem.prototype.checkCondition_ = function() {
     return true;
 };
 HoldItem.prototype.informFinishedExecution = function(subject, move) {
+    if (this.checkCondition_())
+        return;
     StatusEffect.prototype.informFinishedExecution.call(this, subject, move);
-    this.checkCondition_();
 };
 HoldItem.prototype.tier = 10;
 HoldItem.prototype.tick = HoldItem.prototype.checkCondition_;
