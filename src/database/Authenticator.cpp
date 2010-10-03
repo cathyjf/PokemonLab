@@ -108,7 +108,9 @@ bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
     }
 
     Query query = conn->query(
-            "SELECT userid FROM " + m_database + ".user WHERE username = %0q"
+            "SELECT userid FROM " + m_database + ".user "
+            "WHERE username = %0q "
+                "AND NOT usergroupid IN (3, 8)"
         );
     query.parse();
     StoreQueryResult result = query.store(user);
