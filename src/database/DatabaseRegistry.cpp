@@ -522,8 +522,8 @@ void DatabaseRegistry::getGlobalBan(const std::string &user,
                         "ip_ban AND id IN ("
                             "SELECT id FROM users WHERE ip=%1q)"
                     ")"
-                ")"
-            "ORDER BY expiry DESC"
+                ") "
+            "ORDER BY expiry DESC "
             "LIMIT 0, 1");
     query.parse();
     StoreQueryResult res = query.store(user, ip);
