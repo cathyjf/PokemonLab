@@ -54,6 +54,7 @@ makeEffect(StatusEffect, {
     lock : StatusEffect.SPECIAL_EFFECT,
     name : Text.status_effects_freeze(0),
     vetoTier : 0,
+    switchOut : function() { return false; },
     applyEffect : function() {
         if (this.subject.isType(Type.ICE)
                 || this.subject.getStatus("SunEffect")) {
