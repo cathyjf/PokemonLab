@@ -90,6 +90,14 @@ private:
     Server &operator=(const Server &);
 };
 
+class OutMessageBuffer : public std::vector<unsigned char> {
+public:
+    OutMessageBuffer &operator<<(const int16_t);
+    OutMessageBuffer &operator<<(const int32_t);
+    OutMessageBuffer &operator<<(const unsigned char);
+    OutMessageBuffer &operator<<(const std::string &);
+};
+
 /**
  * A message that the server sends to a client.
  */
@@ -151,16 +159,19 @@ public:
 
     void finalise();
     
-    const std::vector<unsigned char> &operator()() const;
+    const OutMessageBuffer &operator()() const {
+        return m_data;
+    }
 
-    OutMessage &operator<<(const int16_t);
-    OutMessage &operator<<(const int32_t);
-    OutMessage &operator<<(const unsigned char);
-    OutMessage &operator<<(const std::string &);
+    template <class T>
+    OutMessage &operator<<(const T &data) {
+        m_data << data;
+        return *this;
+    }
 
     virtual ~OutMessage() { }
 private:
-    std::vector<unsigned char> m_data;
+    OutMessageBuffer m_data;
 };
 
 struct TimerOptions {

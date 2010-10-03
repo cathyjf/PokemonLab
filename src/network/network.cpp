@@ -90,28 +90,24 @@ void OutMessage::finalise() {
             htonl(m_data.size() - HEADER_SIZE);
 }
 
-const vector<unsigned char> &OutMessage::operator()() const {
-    return m_data;
-}
-
-OutMessage &OutMessage::operator<<(const int16_t i) {
-    const int pos = m_data.size();
-    m_data.resize(pos + sizeof(int16_t), 0);
-    unsigned char *p = &m_data[pos];
+OutMessageBuffer &OutMessageBuffer::operator<<(const int16_t i) {
+    const int pos = size();
+    resize(pos + sizeof(int16_t), 0);
+    unsigned char *p = &(*this)[pos];
     *reinterpret_cast<int16_t *>(p) = htons(i);
     return *this;
 }
 
-OutMessage &OutMessage::operator<<(const int32_t i) {
-    const int pos = m_data.size();
-    m_data.resize(pos + sizeof(int32_t), 0);
-    unsigned char *p = &m_data[pos];
+OutMessageBuffer &OutMessageBuffer::operator<<(const int32_t i) {
+    const int pos = size();
+    resize(pos + sizeof(int32_t), 0);
+    unsigned char *p = &(*this)[pos];
     *reinterpret_cast<int32_t *>(p) = htonl(i);
     return *this;
 }
 
-OutMessage &OutMessage::operator<<(const unsigned char byte) {
-    m_data.push_back(byte);
+OutMessageBuffer &OutMessageBuffer::operator<<(const unsigned char byte) {
+    push_back(byte);
     return *this;
 }
 
@@ -122,12 +118,12 @@ OutMessage &OutMessage::operator<<(const unsigned char byte) {
  * The first two bytes are a network byte order unsigned short specifying
  * the number of additional bytes to be written.
  */
-OutMessage &OutMessage::operator<<(const string &str) {
-    const int pos = m_data.size();
+OutMessageBuffer &OutMessageBuffer::operator<<(const string &str) {
+    const int pos = size();
     const int length = str.length();
-    m_data.resize(pos + length + sizeof(uint16_t), 0);
-    uint16_t l = htons(length);
-    unsigned char *p = &m_data[pos];
+    resize(pos + length + sizeof(uint16_t), 0);
+    const uint16_t l = htons(length);
+    unsigned char *p = &(*this)[pos];
     *reinterpret_cast<uint16_t *>(p) = l;
     memcpy(p + sizeof(uint16_t), str.c_str(), length);
     return *this;
@@ -579,7 +575,7 @@ typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
 public:
-    ServerImpl(Server *, tcp::endpoint &);
+    ServerImpl(Server *, const int);
     Server *getServer() const { return m_server; }
     void installSignalHandlers();
     void run();
@@ -625,6 +621,7 @@ private:
             const boost::system::error_code &error);
     void handleMatchmaking();
     void handlePhantomClients();
+    void runPopulationServer(const int port);
     static void handleSignal(int signum);
 
     class ChannelList : public OutMessage {
@@ -646,6 +643,7 @@ private:
     shared_mutex m_channelMutex;
     ChannelPtr m_mainChannel;
     CLIENT_LIST m_clients;
+    int m_population;
     shared_mutex m_clientMutex;
     io_service m_service;
     tcp::acceptor m_acceptor;
@@ -655,6 +653,7 @@ private:
     map<METAGAME_PAIR, MetagameQueuePtr> m_queues;
     thread m_matchmaking;
     thread m_phantomClientWorker;
+    thread m_populationThread;
     shared_ptr<MetagameList> m_metagameList;
     vector<CLAUSE_PAIR> m_clauses;
     WelcomeMessage m_welcomeMessage;
@@ -666,8 +665,7 @@ private:
 ServerImpl *ServerImpl::m_blockingServer = NULL;
 
 Server::Server(const int port) {
-    tcp::endpoint endpoint(tcp::v4(), port);
-    m_impl = new ServerImpl(this, endpoint);
+    m_impl = new ServerImpl(this, port);
 }
 
 void Server::installSignalHandlers() {
@@ -1978,12 +1976,30 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
     finalise();
 }
 
-ServerImpl::ServerImpl(Server *server, tcp::endpoint &endpoint):
-            m_acceptor(m_service, endpoint, true),
+ServerImpl::ServerImpl(Server *server, const int port):
+            m_population(0),
+            m_acceptor(m_service, tcp::endpoint(tcp::v4(), port), true),
             m_server(server) {
     acceptClient();
     m_phantomClientWorker = boost::thread(boost::bind(
             &ServerImpl::handlePhantomClients, this));
+    m_populationThread = boost::thread(boost::bind(
+            &ServerImpl::runPopulationServer, this, port));
+}
+
+void ServerImpl::runPopulationServer(const int port) {
+    udp::socket socket(m_service, udp::endpoint(udp::v4(), port));
+    while (true) {
+        udp::endpoint endpoint;
+        boost::system::error_code ec;
+        socket.receive_from(buffer((void *)NULL, 0), endpoint, 0, ec);
+        if (ec) continue;
+        OutMessageBuffer output;
+        // No synchronisation needed here since reading and writing from an
+        // int should be atomic.
+        output << m_population;
+        socket.send_to(buffer(output), endpoint);
+    }
 }
 
 bool ServerImpl::authenticateClient(ClientImplPtr client) {
@@ -2214,6 +2230,7 @@ void ServerImpl::removeClient(ClientImplPtr client) {
     // Remove the client from the list of clients.
     lock_guard<shared_mutex> lock(m_clientMutex);
     m_clients.erase(client);
+    m_population = m_clients.size();
 }
 
 /**
@@ -2249,6 +2266,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
     {
         lock_guard<shared_mutex> lock(m_clientMutex);
         m_clients.insert(client);
+        m_population = m_clients.size();
     }
     Log::out() << "Accepted client from " << client->getIp() << "." << endl;
     client->sendMessage(m_welcomeMessage);
