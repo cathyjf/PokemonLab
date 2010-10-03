@@ -1998,7 +1998,7 @@ void ServerImpl::runPopulationServer(const int port) {
         // No synchronisation needed here since reading and writing from an
         // int should be atomic.
         output << m_population;
-        socket.send_to(buffer(output), endpoint);
+        socket.send_to(buffer(output), endpoint, 0, ec);
     }
 }
 
