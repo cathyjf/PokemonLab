@@ -1019,3 +1019,22 @@ makeItem({
         return true;
     }
 });
+
+makeItem({
+    name : "Iron Ball",
+    getState : null,
+    // @stat SPEED, 6, Iron Ball
+    statModifier : function(field, stat, subject) {
+        if (subject != this.subject)
+            return null;
+        if (stat != Stat.SPEED)
+            return null;
+        return [0.5, 3];
+    },
+    vulnerability : function(user, target) {
+        if (target != this.subject) {
+            return -1;
+        }
+        return Type.GROUND;
+    },
+});
