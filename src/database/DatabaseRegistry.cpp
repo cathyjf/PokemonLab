@@ -517,9 +517,9 @@ void DatabaseRegistry::getGlobalBan(const std::string &user,
             "FROM bans "
             "WHERE channel=-1 "
                 "AND ("
-                    "id=(SELECT id FROM users WHERE name=%0q) "
+                    "user_id=(SELECT id FROM users WHERE name=%0q) "
                     "OR ("
-                        "ip_ban AND id IN ("
+                        "ip_ban AND user_id IN ("
                             "SELECT id FROM users WHERE ip=%1q)"
                     ")"
                 ") "
@@ -542,7 +542,7 @@ void DatabaseRegistry::getBan(const int channel, const string &user,
             "SELECT expiry, flags "
             "FROM bans "
             "WHERE channel=%0q "
-                "AND id=(SELECT id FROM users WHERE name= %1q )");
+                "AND user_id=(SELECT id FROM users WHERE name= %1q )");
     query.parse();
     StoreQueryResult res = query.store(channel, user);
     if (res.empty()) {
@@ -558,7 +558,8 @@ bool DatabaseRegistry::setBan(const int channel, const string &user,
     ScopedConnection conn(m_impl->pool);
     {
         Query query = conn->query("delete from bans where channel=");
-        query << channel << " and id=(select id from users where name= %0q )";
+        query << channel
+                << " and user_id=(select id from users where name= %0q )";
         query.parse();
         query.execute(user);
     }
@@ -568,7 +569,7 @@ bool DatabaseRegistry::setBan(const int channel, const string &user,
     } else {
         Query query = conn->query(
                 "INSERT INTO bans "
-                    "(channel, id, flags, expiry, ip_ban) "
+                    "(channel, user_id, flags, expiry, ip_ban) "
                 "VALUES (%0q, (select id from users where name= %1q ), %2q, "
                     "%3q, %4q)");
         query.parse();
@@ -619,7 +620,7 @@ const DatabaseRegistry::BAN_LIST DatabaseRegistry::getBans(const string &user) {
     Query query = conn->query("SELECT bans.channel, users.name, bans.expiry, "
                 "bans.ip_ban "
             "FROM bans ");
-    query << "JOIN users ON users.id=bans.id WHERE users.ip=";
+    query << "JOIN users ON users.id=bans.user_id WHERE users.ip=";
     query << "(SELECT ip FROM users WHERE name= %0q )";
     query.parse();
     StoreQueryResult res = query.store(user);
