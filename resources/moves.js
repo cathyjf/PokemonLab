@@ -1026,9 +1026,7 @@ function makeTwoHitMove(move) {
 function makeMultipleHitMove(move) {
     move.use = function(field, user, target, targets) {
         var hits = user.sendMessage("informMultipleHitMove");
-
-        var item = target.item;
-        var hasFocus = target.sendMessage("informFocusItem");
+        target.sendMessage("informPartialDamage");
 
         if (!hits) {
             var rand = field.random(0, 1000);
@@ -1053,19 +1051,8 @@ function makeMultipleHitMove(move) {
 		return;
             }
 
-            if (hasFocus && damage >= target.hp) {
-                if (target.hp == 1) {
-                    target.informDamaged(user,
-                            user.getMove(user.turn.move), 0);
-                } else {
-                    target.hp = 1;
-                }
-                target.sendMessage("informFocusTriggered");
-                i++;
-                break;
-            } else {
-                target.hp -= damage;
-            }
+            // Todo: Count how many actually hit
+            target.hp -= damage;
         }
 
         field.print(Text.battle_messages_unique(0, i));

@@ -921,84 +921,55 @@ makeItem({
     }
 });
 
-makeItem({
-    name : "Focus Sash",
-    transformHealthChange : function(delta, user, indirect) {
-        // Multihit moves take Sash into account in their own method.
-        var subject = this.subject;
-        var maxHp = subject.getStat(Stat.HP);
-        if (indirect)
-            return delta;
-        if (delta < subject.hp)
-            return delta;
-        if (!this.informFocusItem())
-            return delta;
-        this.used_ = true;
+function makeFocusItem(item, consumable, condition) {
+    makeItem({
+        name : item,
+        transformHealthChange : function(delta, user, indirect) {
+            var subject = this.subject;
+            if (indirect)
+                return delta;
+            if (delta < subject.hp)
+                return delta;
+            if (!this.defendMultihit_ && !condition(subject))
+                return delta;
+            if (this.defendMultihit_ && this.used_)
+                return 0;
 
-        // Shedinja
-        if (subject.hp == 1) {
-            subject.informDamaged(user, subject.field.execution, 0);
+            this.used_ = true;
+
+            // Shedinja or the final nick of a multihit move
+            if (subject.hp == 1) {
+                subject.informDamaged(user, subject.field.execution, 0);
+            }
+            return subject.hp - 1;
+        },
+        informPartialDamage : function() {
+            var maxHp = this.subject.getStat(Stat.HP);
+            if (condition(this.subject)) {
+                this.defendMultihit_ = true;
+            }
+        },
+        informFinishedExecution: function() {
+            if (this.used_) {
+                this.subject.field.print(Text.item_messages(10, this.subject,
+                    this.name));
+                if (consumable) {
+                    this.consume();
+                }
+            }
+            this.defendMultihit_ = false;
+            this.used_ = false;
         }
-        return maxHp - 1;
-    },
-    use : function() {
-        this.subject.field.print(Text.item_messages(10, this.subject,
-                this.name));
-        this.consume();
-    },
-    informFocusItem : function() {
-        var maxHp = this.subject.getStat(Stat.HP);
-        return this.subject.hp == maxHp;
-    },
-    informFocusTriggered: function() {
-        this.use();
-    },
-    informDamaged : function(user, move, damage) {
-        if (this.used_) {
-            this.informFocusTriggered();
-        }
-    }
+    });
+}
+
+makeFocusItem("Focus Sash", true, function(subject) {
+    var maxHp = subject.getStat(Stat.HP);
+    return subject.hp == maxHp;
 });
 
-makeItem({
-    name : "Focus Band",
-    transformHealthChange : function(delta, user, indirect) {
-        // Multihit moves take Band into account in their own method.
-        var subject = this.subject;
-        if (indirect || this.disabled_ || (delta < subject.hp))
-            return delta;
-        if (subject.field.random(0, 10) != 0)
-            return delta;
-        this.used_ = true;
-
-        // Shedinja
-        if (subject.hp == 1) {
-            subject.informDamaged(user, subject.field.execution, 0);
-        }
-        return subject.hp - 1;
-    },
-    informFocusItem : function(damage) {
-        // "Disabling" the item for the turn is necessary, otherwise the
-        // focus user will have 2 shots to survive certain multi-hit moves
-        if (this.subject.field.random(0, 10) == 0) {
-            this.disabled_ = true;
-            return true;
-        }
-        return false;
-    },
-    informFocusTriggered: function() {
-        this.subject.field.print(Text.item_messages(10, this.subject,
-                this.name));
-    },
-    informDamaged : function(user, move, damage) {
-        if (this.used_) {
-            this.informFocusTriggered();
-        }
-    },
-    informFinishedExecution : function() {
-        this.used_ = false;
-        this.disabled_ = false;
-    },
+makeFocusItem("Focus Band", false, function(subject) {
+    return subject.field.random(0, 10) == 0;
 });
 
 makeItem({
