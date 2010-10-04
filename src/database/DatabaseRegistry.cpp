@@ -220,25 +220,22 @@ void DatabaseRegistry::setChannelFlags(const int channel, const int flags) {
 void DatabaseRegistry::setUserFlags(const int channel, const int idx,
         const int flags) {
     ScopedConnection conn(m_impl->pool);
-    {
-        Query query = conn->query("delete from channel");
-        query << channel << " where id = " << idx;
-        query.execute();
-    }
-    {
-        Query query = conn->query("insert into channel");
-        query << channel << " values (" << idx << "," << flags << ")";
-        query.execute();
-    }
+    Query query = conn->query(
+            "INSERT INTO channel_users (channel_id, user_id, flags) "
+            "VALUES (%0q, %1q, %2q) "
+            "ON DUPLICATE KEY UPDATE flags=%2q");
+    query.parse();
+    query.execute(channel, idx, flags);
 }
 
 int DatabaseRegistry::getUserFlags(const int channel, const string &user) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select flags from channel");
-    query << channel << " join users on channel" << channel;
-    query << ".id=users.id where name=%0q";
+    Query query = conn->query(
+            "SELECT flags FROM channel_users "
+            "WHERE channel_id=%0q "
+                "AND user_id=(SELECT id FROM users WHERE name=%1q)");
     query.parse();
-    StoreQueryResult result = query.store(user);
+    StoreQueryResult result = query.store(channel, user);
     if (result.empty())
         return 0;
     return result[0][0];
@@ -246,13 +243,33 @@ int DatabaseRegistry::getUserFlags(const int channel, const string &user) {
 
 int DatabaseRegistry::getUserFlags(const int channel, const int idx) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select flags from channel");
-    query << channel << " where id = " << idx;
+    Query query = conn->query(
+            "SELECT flags FROM channel_users "
+            "WHERE channel_id=%0q AND user_id=%1q");
     query.parse();
-    StoreQueryResult result = query.store();
+    StoreQueryResult result = query.store(channel, idx);
     if (result.empty())
         return 0;
     return result[0][0];
+}
+
+int DatabaseRegistry::getMaxLevel(const int channel, const string &user) {
+    // Note: This function is currently unused, but it is flawed anyway,
+    //       because the maximum level is not the numerically highest value
+    //       of flags.
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query(
+            "SELECT MAX(flags) FROM channel_users "
+            "WHERE channel_id=%0q "
+                "AND user_id IN (SELECT id FROM users WHERE ip=("
+                    "SELECT ip FROM users WHERE name=%1q"
+                "))");
+    query.parse();
+    StoreQueryResult res = query.store(channel, user);
+    if (res.empty()) {
+        return 0;
+    }
+    return res[0][0];
 }
 
 double DatabaseRegistry::getRatingEstimate(const int id, const std::string &ladder) {
@@ -485,28 +502,6 @@ bool DatabaseRegistry::registerUser(const string name,
     query.insert(row);
     query.execute();
     return true;
-}
-
-int DatabaseRegistry::getMaxLevel(const int channel, const string &user) {
-    ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("select flags from channel");
-    query << channel << " join users on channel" << channel;
-    query << ".id=users.id where ip=(select ip from users where name= %0q )";
-    query.parse();
-    StoreQueryResult res = query.store(user);
-
-    if (res.empty()) {
-        return 0;
-    } else {
-        int max = 0;
-        int length = res.num_rows();
-        for (int i = 0; i < length; ++i) {
-            if ((int)res[i][0] > max) {
-                max = (int)res[i][0];
-            }
-        }
-        return max;
-    }
 }
 
 void DatabaseRegistry::getGlobalBan(const std::string &user,
