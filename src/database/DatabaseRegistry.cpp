@@ -89,11 +89,13 @@ public:
     }
 protected:
     Connection *create() {
-        return new Connection(m_db.c_str(),
+        Connection *conn = new Connection(false);
+        conn->connect(m_db.c_str(),
                 m_server.c_str(),
                 m_user.c_str(),
                 m_password.c_str(),
                 m_port);
+        return conn;
     }
     void destroy(Connection *conn) {
         delete conn;
