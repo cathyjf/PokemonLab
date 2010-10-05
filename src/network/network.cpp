@@ -978,7 +978,6 @@ private:
         m_server->getRegistry()->updateIp(m_name, m_ip);
         loadPersonalMessage();
         m_server->sendClauseList(shared_from_this());
-
     }
 
     /**

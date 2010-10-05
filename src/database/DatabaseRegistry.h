@@ -105,7 +105,7 @@ public:
     /**
      * Determine whether the response to the challenge is valid.
      */
-    AUTH_PAIR isResponseValid(const std::string &name,
+    AUTH_PAIR isResponseValid(std::string &name,
             const std::string &ip,
             const int challenge,
             const unsigned char *response);

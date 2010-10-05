@@ -414,7 +414,7 @@ void DatabaseRegistry::postLadderMatch(const string &ladder,
 }
 
 DatabaseRegistry::AUTH_PAIR DatabaseRegistry::isResponseValid(
-        const string &name,
+        string &name,
         const string &ip,
         const int challenge,
         const unsigned char *response) {

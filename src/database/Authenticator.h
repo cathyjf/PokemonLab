@@ -46,7 +46,7 @@ public:
             const std::string &userName,
             const std::string &ipAddress) = 0;
     virtual bool finishAuthentication(ScopedConnection &,
-            const std::string &, const std::string &, const bool match) {
+            std::string &, const std::string &, const bool match) {
         return match;
     }
     virtual std::string getLoginInfo() const = 0;
@@ -72,7 +72,7 @@ public:
     int getSecretStyle() { return SECERT_MD5_SALT; }
     SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
             const std::string &);
-    bool finishAuthentication(ScopedConnection &, const std::string &,
+    bool finishAuthentication(ScopedConnection &, std::string &,
             const std::string &, const bool);
     std::string getLoginInfo() const { return m_loginInfo; }
     bool allowsRegistration() const { return false; }

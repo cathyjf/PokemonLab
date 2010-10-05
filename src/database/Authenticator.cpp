@@ -95,7 +95,7 @@ SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
 }
 
 bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
-        const std::string &user, const std::string &ip, const bool success) {
+        std::string &user, const std::string &ip, const bool success) {
     if (!success) {
         // Give a strike to the IP.
         Query query = conn->query(
@@ -109,7 +109,7 @@ bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
     }
 
     Query query = conn->query(
-            "SELECT userid FROM " + m_database + ".user "
+            "SELECT username, userid FROM " + m_database + ".user "
             "WHERE username = %0q"
         );
     query.parse();
@@ -119,7 +119,8 @@ bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
         // "right" time.
         return false;
     }
-    const int foreignId = result[0][0];
+    result[0][0].to_string(user);
+    const int foreignId = result[0][1];
     
     Query q2 = conn->query(
             "INSERT INTO users (name, foreign_id, level, activity, ip) "
