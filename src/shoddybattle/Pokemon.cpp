@@ -310,6 +310,7 @@ bool Pokemon::vetoExecution(Pokemon *user, Pokemon *target, MoveObject *move) {
  * Send this pokemon out onto the field.
  */
 void Pokemon::switchIn() {
+    m_acted = false;
     // Inform status effects of switching in.
     for (STATUSES::const_iterator i = m_effects.begin();
             i != m_effects.end(); ++i) {
