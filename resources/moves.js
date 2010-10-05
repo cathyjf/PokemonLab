@@ -35,20 +35,12 @@ function makeSacrificeMove(move, func) {
         }
         user.faint();
         var slot = user.position;
-        while (true) {
-            user.switchOut();
-            field.sendMessage("informReplacePokemon", user);
-            selection.sendOut(slot);
-            if (!selection.fainted)
-                break;
-            user = selection;
-            selection = field.requestInactivePokemon(user);
-            if (!selection) {
-                // The user has lost.
-                return;
-            }
+        user.switchOut();
+        field.sendMessage("informReplacePokemon", user);
+        selection.sendOut(slot);
+        if (!selection.fainted) {
+            func(field, selection);
         }
-        func(field, selection);
     };
 }
 
