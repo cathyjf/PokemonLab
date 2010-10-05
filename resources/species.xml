@@ -56963,16 +56963,470 @@
 	</abilities>
 	<moveset>
 		<moves origin="level">
-			<move level="1">Sketch</move>
-			<move level="11">Sketch</move>
-			<move level="21">Sketch</move>
-			<move level="31">Sketch</move>
-			<move level="41">Sketch</move>
-			<move level="51">Sketch</move>
-			<move level="61">Sketch</move>
-			<move level="71">Sketch</move>
-			<move level="81">Sketch</move>
-			<move level="91">Sketch</move>
+			<move>Energy Ball</move>
+			<move>Explosion</move>
+			<move>Sonicboom</move>
+			<move>Mean Look</move>
+			<move>Aeroblast</move>
+			<move>Helping Hand</move>
+			<move>Flamethrower</move>
+			<move>Magnet Bomb</move>
+			<move>Fire Fang</move>
+			<move>Zen Headbutt</move>
+			<move>Shadow Ball</move>
+			<move>Kinesis</move>
+			<move>Bubblebeam</move>
+			<move>Crush Grip</move>
+			<move>Wrap</move>
+			<move>Meteor Mash</move>
+			<move>Fake Out</move>
+			<move>Spike Cannon</move>
+			<move>Recover</move>
+			<move>Destiny Bond</move>
+			<move>Detect</move>
+			<move>Spore</move>
+			<move>Sweet Scent</move>
+			<move>Psych Up</move>
+			<move>Water Gun</move>
+			<move>Focus Blast</move>
+			<move>Role Play</move>
+			<move>Grass Knot</move>
+			<move>Stomp</move>
+			<move>Shadow Punch</move>
+			<move>Heart Swap</move>
+			<move>Faint Attack</move>
+			<move>Bullet Punch</move>
+			<move>Confuse Ray</move>
+			<move>Agility</move>
+			<move>Whirlpool</move>
+			<move>Solarbeam</move>
+			<move>Horn Drill</move>
+			<move>Spacial Rend</move>
+			<move>Stone Edge</move>
+			<move>Power Swap</move>
+			<move>Lunar Dance</move>
+			<move>Blaze Kick</move>
+			<move>Vacuum Wave</move>
+			<move>Double Hit</move>
+			<move>Double Team</move>
+			<move>Low Kick</move>
+			<move>Harden</move>
+			<move>Yawn</move>
+			<move>Mud Sport</move>
+			<move>Strength</move>
+			<move>Focus Punch</move>
+			<move>Dragonbreath</move>
+			<move>Jump Kick</move>
+			<move>Sleep Talk</move>
+			<move>Muddy Water</move>
+			<move>Spider Web</move>
+			<move>Water Sport</move>
+			<move>Blast Burn</move>
+			<move>Hypnosis</move>
+			<move>Whirlwind</move>
+			<move>Giga Drain</move>
+			<move>Covet</move>
+			<move>Cut</move>
+			<move>Cosmic Power</move>
+			<move>Aqua Ring</move>
+			<move>Giga Impact</move>
+			<move>Absorb</move>
+			<move>Flail</move>
+			<move>Take Down</move>
+			<move>Mirror Shot</move>
+			<move>Fake Tears</move>
+			<move>Bide</move>
+			<move>Assurance</move>
+			<move>Magic Coat</move>
+			<move>Bug Bite</move>
+			<move>Revenge</move>
+			<move>Head Smash</move>
+			<move>Synthesis</move>
+			<move>Razor Leaf</move>
+			<move>Nature Power</move>
+			<move>Aqua Tail</move>
+			<move>Snore</move>
+			<move>Poison Fang</move>
+			<move>Return</move>
+			<move>Psychic</move>
+			<move>Thunder Wave</move>
+			<move>Frenzy Plant</move>
+			<move>Overheat</move>
+			<move>U-turn</move>
+			<move>Payback</move>
+			<move>Crunch</move>
+			<move>Dizzy Punch</move>
+			<move>Spikes</move>
+			<move>Substitute</move>
+			<move>Lovely Kiss</move>
+			<move>Signal Beam</move>
+			<move>Twister</move>
+			<move>Mud Shot</move>
+			<move>Metal Sound</move>
+			<move>Double Kick</move>
+			<move>Water Pulse</move>
+			<move>Super Fang</move>
+			<move>Aromatherapy</move>
+			<move>Defense Curl</move>
+			<move>Rest</move>
+			<move>Conversion 2</move>
+			<move>Light Screen</move>
+			<move>Cotton Spore</move>
+			<move>Swords Dance</move>
+			<move>Supersonic</move>
+			<move>Will-o-wisp</move>
+			<move>Heal Block</move>
+			<move>Power Gem</move>
+			<move>Odor Sleuth</move>
+			<move>Sludge Bomb</move>
+			<move>Silver Wind</move>
+			<move>Last Resort</move>
+			<move>Psycho Boost</move>
+			<move>Double-edge</move>
+			<move>Body Slam</move>
+			<move>Sucker Punch</move>
+			<move>Hi Jump Kick</move>
+			<move>Sweet Kiss</move>
+			<move>Scratch</move>
+			<move>Stealth Rock</move>
+			<move>Calm Mind</move>
+			<move>Trump Card</move>
+			<move>Sky Attack</move>
+			<move>Assist</move>
+			<move>Dark Pulse</move>
+			<move>Glare</move>
+			<move>Dive</move>
+			<move>Rock Blast</move>
+			<move>Tackle</move>
+			<move>Defog</move>
+			<move>Leech Seed</move>
+			<move>Attract</move>
+			<move>Skull Bash</move>
+			<move>Frustration</move>
+			<move>Withdraw</move>
+			<move>Sandstorm</move>
+			<move>Confusion</move>
+			<move>Charge</move>
+			<move>Psybeam</move>
+			<move>Sludge</move>
+			<move>Mud Bomb</move>
+			<move>Hydro Cannon</move>
+			<move>Fire Blast</move>
+			<move>Sharpen</move>
+			<move>Secret Power</move>
+			<move>Psycho Shift</move>
+			<move>Fury Cutter</move>
+			<move>Aura Sphere</move>
+			<move>Bullet Seed</move>
+			<move>Gust</move>
+			<move>Sky Uppercut</move>
+			<move>Gravity</move>
+			<move>Iron Head</move>
+			<move>Foresight</move>
+			<move>Draco Meteor</move>
+			<move>Moonlight</move>
+			<move>Mind Reader</move>
+			<move>Ancientpower</move>
+			<move>Slam</move>
+			<move>Psycho Cut</move>
+			<move>Bounce</move>
+			<move>Growth</move>
+			<move>Flame Wheel</move>
+			<move>Grasswhistle</move>
+			<move>Rain Dance</move>
+			<move>Earthquake</move>
+			<move>Outrage</move>
+			<move>Swallow</move>
+			<move>Poison Jab</move>
+			<move>Punishment</move>
+			<move>Bulk Up</move>
+			<move>Night Shade</move>
+			<move>Roost</move>
+			<move>Ominous Wind</move>
+			<move>Hyper Fang</move>
+			<move>Surf</move>
+			<move>Icy Wind</move>
+			<move>Rolling Kick</move>
+			<move>Drain Punch</move>
+			<move>Lucky Chant</move>
+			<move>Crabhammer</move>
+			<move>Avalanche</move>
+			<move>Earth Power</move>
+			<move>Dragon Dance</move>
+			<move>Submission</move>
+			<move>Swagger</move>
+			<move>Barrier</move>
+			<move>Pound</move>
+			<move>Icicle Spear</move>
+			<move>Taunt</move>
+			<move>Baton Pass</move>
+			<move>Gyro Ball</move>
+			<move>Poison Sting</move>
+			<move>Ice Shard</move>
+			<move>Embargo</move>
+			<move>Needle Arm</move>
+			<move>Safeguard</move>
+			<move>Trick</move>
+			<move>Charm</move>
+			<move>Power Trick</move>
+			<move>Rapid Spin</move>
+			<move>Seismic Toss</move>
+			<move>Heal Order</move>
+			<move>Extrasensory</move>
+			<move>Conversion</move>
+			<move>Poison Gas</move>
+			<move>Eruption</move>
+			<move>Water Spout</move>
+			<move>Iron Defense</move>
+			<move>Razor Wind</move>
+			<move>Perish Song</move>
+			<move>Brave Bird</move>
+			<move>Protect</move>
+			<move>Hydro Pump</move>
+			<move>Flash</move>
+			<move>Leech Life</move>
+			<move>Fury Swipes</move>
+			<move>Smellingsalt</move>
+			<move>Switcheroo</move>
+			<move>Tail Whip</move>
+			<move>Poison Tail</move>
+			<move>Ember</move>
+			<move>Spit Up</move>
+			<move>Magical Leaf</move>
+			<move>Seed Bomb</move>
+			<move>Twineedle</move>
+			<move>Heat Wave</move>
+			<move>Refresh</move>
+			<move>Sunny Day</move>
+			<move>Mega Kick</move>
+			<move>Lock-on</move>
+			<move>Gastro Acid</move>
+			<move>Weather Ball</move>
+			<move>Copycat</move>
+			<move>Barrage</move>
+			<move>Selfdestruct</move>
+			<move>Mach Punch</move>
+			<move>Fire Spin</move>
+			<move>Force Palm</move>
+			<move>Magnitude</move>
+			<move>Ice Beam</move>
+			<move>Splash</move>
+			<move>Acid Armor</move>
+			<move>Pin Missile</move>
+			<move>Mega Punch</move>
+			<move>String Shot</move>
+			<move>Mega Drain</move>
+			<move>Ice Punch</move>
+			<move>Doom Desire</move>
+			<move>Aqua Jet</move>
+			<move>Sand Tomb</move>
+			<move>Defend Order</move>
+			<move>Dragon Pulse</move>
+			<move>Zap Cannon</move>
+			<move>Stockpile</move>
+			<move>Amnesia</move>
+			<move>Fire Punch</move>
+			<move>Metal Burst</move>
+			<move>Egg Bomb</move>
+			<move>Astonish</move>
+			<move>Aerial Ace</move>
+			<move>Sleep Powder</move>
+			<move>Bone Rush</move>
+			<move>Air Slash</move>
+			<move>Metronome</move>
+			<move>Belly Drum</move>
+			<move>Extremespeed</move>
+			<move>Thrash</move>
+			<move>Endure</move>
+			<move>Tailwind</move>
+			<move>Fury Attack</move>
+			<move>Flash Cannon</move>
+			<move>Headbutt</move>
+			<move>Nasty Plot</move>
+			<move>Bug Buzz</move>
+			<move>Megahorn</move>
+			<move>Screech</move>
+			<move>Howl</move>
+			<move>Sheer Cold</move>
+			<move>Mud-Slap</move>
+			<move>Close Combat</move>
+			<move>Air Cutter</move>
+			<move>Thunder Fang</move>
+			<move>Beat Up</move>
+			<move>Block</move>
+			<move>Softboiled</move>
+			<move>Bite</move>
+			<move>Flatter</move>
+			<move>Thunder</move>
+			<move>Meditate</move>
+			<move>Drill Peck</move>
+			<move>Charge Beam</move>
+			<move>Natural Gift</move>
+			<move>Toxic</move>
+			<move>Follow Me</move>
+			<move>Leaf Storm</move>
+			<move>Petal Dance</move>
+			<move>Rock Wrecker</move>
+			<move>Slash</move>
+			<move>Wish</move>
+			<move>Skill Swap</move>
+			<move>Curse</move>
+			<move>Volt Tackle</move>
+			<move>Magma Storm</move>
+			<move>Uproar</move>
+			<move>Dynamicpunch</move>
+			<move>Psywave</move>
+			<move>Wood Hammer</move>
+			<move>Octazooka</move>
+			<move>Blizzard</move>
+			<move>Mimic</move>
+			<move>X-Scissor</move>
+			<move>Healing Wish</move>
+			<move>Power Whip</move>
+			<move>Thief</move>
+			<move>Heal Bell</move>
+			<move>Hail</move>
+			<move>Present</move>
+			<move>Thundershock</move>
+			<move>Counter</move>
+			<move>Hyper Voice</move>
+			<move>Shadow Claw</move>
+			<move>Dig</move>
+			<move>Tri Attack</move>
+			<move>Hyper Beam</move>
+			<move>Acupressure</move>
+			<move>Tickle</move>
+			<move>Spite</move>
+			<move>Toxic Spikes</move>
+			<move>Fling</move>
+			<move>Lick</move>
+			<move>Pluck</move>
+			<move>Focus Energy</move>
+			<move>Transform</move>
+			<move>Memento</move>
+			<move>Bonemerang</move>
+			<move>Peck</move>
+			<move>Mirror Coat</move>
+			<move>Bubble</move>
+			<move>Mirror Move</move>
+			<move>Shadow Force</move>
+			<move>Guillotine</move>
+			<move>Spark</move>
+			<move>Wing Attack</move>
+			<move>Fissure</move>
+			<move>Rock Slide</move>
+			<move>Brine</move>
+			<move>Vital Throw</move>
+			<move>Triple Kick</move>
+			<move>Morning Sun</move>
+			<move>Trick Room</move>
+			<move>Camouflage</move>
+			<move>Leaf Blade</move>
+			<move>Seed Flare</move>
+			<move>Horn Attack</move>
+			<move>Thunderpunch</move>
+			<move>Aurora Beam</move>
+			<move>Magnet Rise</move>
+			<move>Bind</move>
+			<move>Leer</move>
+			<move>Haze</move>
+			<move>Rock Polish</move>
+			<move>Karate Chop</move>
+			<move>Attack Order</move>
+			<move>Facade</move>
+			<move>Pay Day</move>
+			<move>Dragon Rage</move>
+			<move>Dragon Claw</move>
+			<move>Ingrain</move>
+			<move>Teleport</move>
+			<move>Powder Snow</move>
+			<move>Fly</move>
+			<move>Reflect</move>
+			<move>Dragon Rush</move>
+			<move>Doubleslap</move>
+			<move>Ice Fang</move>
+			<move>Scary Face</move>
+			<move>Reversal</move>
+			<move>Swift</move>
+			<move>Grudge</move>
+			<move>Wring Out</move>
+			<move>Lava Plume</move>
+			<move>Luster Purge</move>
+			<move>Wake-up Slap</move>
+			<move>Gunk Shot</move>
+			<move>Captivate</move>
+			<move>Slack Off</move>
+			<move>Rock Climb</move>
+			<move>Steel Wing</move>
+			<move>Hammer Arm</move>
+			<move>Smog</move>
+			<move>Guard Swap</move>
+			<move>Worry Seed</move>
+			<move>Arm Thrust</move>
+			<move>Night Slash</move>
+			<move>Vine Whip</move>
+			<move>Flare Blitz</move>
+			<move>Me First</move>
+			<move>Rock Tomb</move>
+			<move>Sacred Fire</move>
+			<move>Brick Break</move>
+			<move>Judgment</move>
+			<move>Sand-Attack</move>
+			<move>Cross Chop</move>
+			<move>Sing</move>
+			<move>Knock Off</move>
+			<move>Comet Punch</move>
+			<move>Waterfall</move>
+			<move>Miracle Eye</move>
+			<move>Pursuit</move>
+			<move>Crush Claw</move>
+			<move>Dream Eater</move>
+			<move>Roar Of Time</move>
+			<move>Pain Split</move>
+			<move>Ice Ball</move>
+			<move>Mist Ball</move>
+			<move>Tail Glow</move>
+			<move>Thunderbolt</move>
+			<move>Metal Claw</move>
+			<move>Bone Club</move>
+			<move>Milk Drink</move>
+			<move>Rage</move>
+			<move>Teeter Dance</move>
+			<move>Shock Wave</move>
+			<move>Recycle</move>
+			<move>Snatch</move>
+			<move>Constrict</move>
+			<move>Discharge</move>
+			<move>Minimize</move>
+			<move>Quick Attack</move>
+			<move>Growl</move>
+			<move>Disable</move>
+			<move>Nightmare</move>
+			<move>False Swipe</move>
+			<move>Vicegrip</move>
+			<move>Featherdance</move>
+			<move>Roar</move>
+			<move>Feint</move>
+			<move>Mist</move>
+			<move>Future Sight</move>
+			<move>Endeavor</move>
+			<move>Dark Void</move>
+			<move>Acid</move>
+			<move>Rock Throw</move>
+			<move>Smokescreen</move>
+			<move>Superpower</move>
+			<move>Clamp</move>
+			<move>Iron Tail</move>
+			<move>Imprison</move>
+			<move>Shadow Sneak</move>
+			<move>Rock Smash</move>
+			<move>Rollout</move>
+			<move>Stun Spore</move>
+			<move>Cross Poison</move>
+			<move>Torment</move>
+			<move>Hidden Power</move>
+			<move>Encore</move>
+			<move>Poisonpowder</move>
 		</moves>
 	</moveset>
 </species>
