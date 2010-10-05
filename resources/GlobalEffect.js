@@ -111,7 +111,9 @@ makeEffect(GlobalEffect, {
                 field.print(Text.weather_hail(3, subject));
             }
 
-            subject.hp -= Math.floor(subject.getStat(Stat.HP) / denominator);
+            var damage = Math.floor(subject.getStat(Stat.HP) / denominator);
+            if (damage < 1) damage = 1;
+            subject.hp -= damage;
         }
     }
 });
