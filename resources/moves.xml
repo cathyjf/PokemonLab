@@ -9321,7 +9321,9 @@ effect.getEffectiveHp = function() {
 };
 effect.takeDamage = function(delta) {
     this.hp_ -= delta;
-    field.print(Text.battle_messages_unique(135, this.subject));
+    if (delta > 0) {
+        field.print(Text.battle_messages_unique(135, this.subject));
+    }
     if (this.hp_ > 0)
         return false;
     this.hp_ = 0;
