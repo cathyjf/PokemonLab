@@ -411,7 +411,7 @@ makeAbility({
         return true;
     },
     tick : function() {
-        if (--this.turns_ > 0)
+        if (--this.turns_ != 0)
             return;
         this.subject.field.print(Text.ability_messages(58, this.subject));
     },
