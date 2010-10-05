@@ -8825,8 +8825,16 @@ makeRecoveryMove(this);
 <init>
 <![CDATA[
 makeChargeMove(this, Text.battle_messages_charge.wrap(0));
-var parent = this.use;
+var parentPrepareSelf = this.prepareSelf;
+var parentUse = this.use;
 var power_ = this.power;
+this.prepareSelf = function(field, user, target) {
+    var flags = getGlobalController(field).getFlags();
+    if (flags[GlobalEffect.SUN]) {
+        return;
+    }
+    parentPrepareSelf.call(this, field, user, target);
+};
 this.use = function(field, user, target, targets) {
     this.power = power_;
     var flags = getGlobalController(field).getFlags();
@@ -8839,7 +8847,7 @@ this.use = function(field, user, target, targets) {
         target.hp -= field.calculate(this, user, target, targets);
         return;
     }
-    parent.call(this, field, user, target, targets);
+    parentUse.call(this, field, user, target, targets);
 };
 ]]>
 </init>
