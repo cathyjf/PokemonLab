@@ -153,6 +153,26 @@ makeClause({
 });
 
 makeClause({
+    name : "Arceus EV Restriction Clause",
+    description : "Arceus can have at most 100 EVs in each stat",
+    validateTeam : function(team) {
+        for (var i in team) {
+            var p = team[i];
+            if (p.species != "Arceus")
+                continue;
+            var ev = p.ev;
+            for (var j in ev) {
+                var v = ev[j];
+                if (v > 100) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+});
+
+makeClause({
     name : "Little Cup Clause",
     description : "Rules for the Little Cup metagame",
     validateTeam : function(team) {
