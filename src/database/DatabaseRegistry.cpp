@@ -506,13 +506,13 @@ bool DatabaseRegistry::registerUser(const string name,
     return true;
 }
 
-void DatabaseRegistry::getGlobalBan(const std::string &user,
-        const std::string &ip, int &date, int &flags) {
+int DatabaseRegistry::getGlobalBan(const std::string &user,
+        const std::string &ip) {
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query(
-            "SELECT expiry, flags "
+            "SELECT expiry "
             "FROM bans "
-            "WHERE channel=-1 "
+            "WHERE channel_id=-1 "
                 "AND ("
                     "user_id=(SELECT id FROM users WHERE name=%0q) "
                     "OR ("
@@ -525,21 +525,22 @@ void DatabaseRegistry::getGlobalBan(const std::string &user,
     query.parse();
     StoreQueryResult res = query.store(user, ip);
     if (res.empty()) {
-        date = flags = 0;
-        return;
+        return 0;
     }
-    date = (int)DateTime(res[0][0]);
-    flags = (int)res[0][1];
+    return (int)DateTime(res[0][0]);
 }
 
 void DatabaseRegistry::getBan(const int channel, const string &user,
         int &date, int &flags) {
     ScopedConnection conn(m_impl->pool);
     Query query = conn->query(
-            "SELECT expiry, flags "
+            "SELECT expiry, IF(channel_users.flags, channel_users.flags, 0) "
             "FROM bans "
-            "WHERE channel=%0q "
-                "AND user_id=(SELECT id FROM users WHERE name= %1q )");
+                "LEFT JOIN channel_users "
+                    "ON mod_id=channel_users.user_id "
+                        "AND channel_users.channel_id=bans.channel_id "
+            "WHERE bans.channel_id=%0q "
+                "AND bans.user_id=(SELECT id FROM users WHERE name=%1q)");
     query.parse();
     StoreQueryResult res = query.store(channel, user);
     if (res.empty()) {
@@ -550,29 +551,33 @@ void DatabaseRegistry::getBan(const int channel, const string &user,
     flags = (int)res[0][1];
 }
 
-bool DatabaseRegistry::setBan(const int channel, const string &user,
-        const int flags, const long date, const bool ipBan) {
+void DatabaseRegistry::removeBan(const int channel, const string &user) {
     ScopedConnection conn(m_impl->pool);
-    {
-        Query query = conn->query("delete from bans where channel=");
-        query << channel
-                << " and user_id=(select id from users where name= %0q )";
-        query.parse();
-        query.execute(user);
-    }
-    
+    Query query = conn->query(
+            "DELETE FROM bans WHERE channel_id=%0q AND user_id=("
+                    "SELECT id FROM users WHERE name=%1q"
+                ")"
+            );
+    query.parse();
+    query.execute(channel, user);
+}
+
+bool DatabaseRegistry::setBan(const int channel, const string &user,
+        const int modId, const long date, const bool ipBan) {
     if (date < time(NULL)) {
-        return true;
-    } else {
-        Query query = conn->query(
-                "INSERT INTO bans "
-                    "(channel, user_id, flags, expiry, ip_ban) "
-                "VALUES (%0q, (select id from users where name= %1q ), %2q, "
-                    "%3q, %4q)");
-        query.parse();
-        query.execute(channel, user, flags, DateTime(date), ipBan);
+        // No ban to set.
         return false;
     }
+    ScopedConnection conn(m_impl->pool);
+    Query query = conn->query(
+            "INSERT INTO bans "
+                "(channel_id, user_id, mod_id, expiry, ip_ban) "
+            "VALUES (%0q, (SELECT id FROM users WHERE name=%1q), %2q, "
+                "%3q, %4q) "
+            "ON DUPLICATE KEY UPDATE mod_id=%2q, expiry=%3q, ip_ban=%4q");
+    query.parse();
+    query.execute(channel, user, modId, DateTime(date), ipBan);
+    return true;
 }
 
 void DatabaseRegistry::updateIp(const string &user, const string &ip) {
@@ -614,11 +619,11 @@ const vector<string> DatabaseRegistry::getAliases(const string &user) {
 
 const DatabaseRegistry::BAN_LIST DatabaseRegistry::getBans(const string &user) {
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query("SELECT bans.channel, users.name, bans.expiry, "
-                "bans.ip_ban "
-            "FROM bans ");
-    query << "JOIN users ON users.id=bans.user_id WHERE users.ip=";
-    query << "(SELECT ip FROM users WHERE name= %0q )";
+    Query query = conn->query(
+            "SELECT bans.channel_id, users.name, bans.expiry, bans.ip_ban "
+            "FROM bans "
+                "JOIN users ON users.id=bans.user_id "
+            "WHERE users.ip=(SELECT ip FROM users WHERE name=%0q)");
     query.parse();
     StoreQueryResult res = query.store(user);
     DatabaseRegistry::BAN_LIST bans;

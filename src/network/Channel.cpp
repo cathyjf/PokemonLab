@@ -363,16 +363,16 @@ bool Channel::join(ClientPtr client) {
 
 bool Channel::handleBan(ClientPtr client) {
     int ban, flags;
-    m_impl->server->getRegistry()->getBan(m_impl->id, client->getName(), ban,
+    database::DatabaseRegistry *registry = m_impl->server->getRegistry();
+    registry->getBan(m_impl->id, client->getName(), ban,
             flags);
     if (ban < time(NULL)) {
         // ban expired; remove it
-        m_impl->server->commitBan(m_impl->id, client->getName(), 0, 0);
+        registry->removeBan(m_impl->id, client->getName());
         return false;
-    } else {
-        client->informBanned(ban);
-        return true;
     }
+    client->informBanned(ban);
+    return true;
 }
 
 void Channel::part(ClientPtr client) {

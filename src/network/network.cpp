@@ -42,6 +42,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/random.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/integer_traits.hpp>
 #include <vector>
 #include <deque>
 #include <set>
@@ -127,6 +128,20 @@ OutMessageBuffer &OutMessageBuffer::operator<<(const string &str) {
     *reinterpret_cast<uint16_t *>(p) = l;
     memcpy(p + sizeof(uint16_t), str.c_str(), length);
     return *this;
+}
+
+namespace {
+
+/**
+ * Truncate a collection such that its length can be stored in an object of the
+ * type T.
+ */
+template <class T, class U> void truncate(U &collection) {
+    if (collection.size() > integer_traits<T>::const_max) {
+        collection.resize(integer_traits<T>::const_max);
+    }
+}
+
 }
 
 /**
@@ -494,17 +509,20 @@ public:
         *this << (unsigned char)0;
         finalise();
     }
-    UserDetailMessage(const string& name, const string &ip, vector<string> &aliases, 
+    UserDetailMessage(const string& name, const string &ip,
+            vector<string> &aliases,
             database::DatabaseRegistry::BAN_LIST &bans) :
                 OutMessage(USER_DETAILS) {
         using database::DatabaseRegistry;
         *this << name;
         *this << ip;
+        truncate<unsigned char>(aliases);
         *this << (unsigned char)aliases.size();
         vector<string>::iterator i = aliases.begin();
         for (; i != aliases.end(); ++i) {
             *this << *i;
         }
+        truncate<unsigned char>(bans);
         *this << (unsigned char)bans.size();
         DatabaseRegistry::BAN_LIST::iterator j = bans.begin();
         for (; j != bans.end(); ++j) {
@@ -524,7 +542,7 @@ public:
         using database::DatabaseRegistry;
         *this << name;
         *this << *msg;
-
+        truncate<unsigned char>(estimates);
         *this << (unsigned char)estimates.size();
         DatabaseRegistry::ESTIMATE_LIST::iterator i = estimates.begin();
         for (; i != estimates.end(); ++i) {
@@ -715,9 +733,9 @@ ChannelPtr Server::getMainChannel() const {
     return m_impl->getMainChannel();
 }
 
-bool Server::commitBan(const int id, const string &user, const int auth,
+bool Server::commitBan(const int id, const string &user, const int bannerId,
         const int date) {
-    return m_impl->commitBan(id, user, auth, date);
+    return m_impl->commitBan(id, user, bannerId, date);
 }
 
 Server::~Server() {
@@ -907,13 +925,11 @@ private:
     void handleRequestChallenge(InMessage &msg) {
         string user;
         msg >> user;
-        int ban;
-        int flags;
-        m_server->getRegistry()->getGlobalBan(user, m_ip, ban, flags);
+        const int ban = m_server->getRegistry()->getGlobalBan(user, m_ip);
         if (ban > 0) {
             if (ban < time(NULL)) {
-                //ban expired remove the ban
-                m_server->commitBan(-1, user, 0, 0);
+                // ban expired remove the ban
+                m_server->getRegistry()->removeBan(-1, user);
             } else {
                 informBanned(ban);
                 return;
@@ -1634,8 +1650,10 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         return;
     }
 
+    database::DatabaseRegistry *registry = m_server->getRegistry();
+
     // Escape if the target doesn't exist.
-    if (!m_server->getRegistry()->userExists(target)) {
+    if (!registry->userExists(target)) {
         sendMessage(ErrorMessage(ErrorMessage::NONEXISTENT_USER));
         return;
     }
@@ -1662,7 +1680,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         int setter;
         
         if (id == -1) {
-            m_server->getRegistry()->getBan(-1, target, ban, setter);
+            registry->getBan(-1, target, ban, setter);
         } else {
             channel->getBan(target, ban, setter);
         }
@@ -1674,15 +1692,15 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         }
 
         string msg;
-        const bool unban = m_server->commitBan(id, target, auth.to_ulong(),
-                date, ipBan);
-        if (unban && (ban > 0)) {
+        const bool banned = m_server->commitBan(id, target, m_id, date, ipBan);
+        if (!banned && (ban > 0)) {
+            registry->removeBan(id, target);
             msg = (id == -1) ? "[unban global] " : "[unban] ";
             msg += m_name + " -> " + target;
             
             // Inform the invoker that the user was unbanned.
             sendMessage(KickBanMessage(channel->getId(), m_name, target, -1));
-        } else if (!unban) {
+        } else if (banned) {
             msg = (id == -1) ? "[ban global] " : "[ban] ";
             msg += getBanString(m_name, target, date);
 
@@ -1693,7 +1711,9 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
                 sendMessage(KickBanMessage(id, m_name, target, date));
             }
         }
-        channel->writeLog(msg);
+        if (!msg.empty()) {
+            channel->writeLog(msg);
+        }
     }
 }
 
@@ -1740,9 +1760,9 @@ void ServerImpl::loadPersonalMessage(const string &user, string &message) {
     m_registry.loadPersonalMessage(user, message);
 }
 
-bool ServerImpl::commitBan(const int channel, const string &user, 
-        const int auth, const int date, const bool ipBan) {
-    return m_registry.setBan(channel, user, auth, date, ipBan);
+bool ServerImpl::commitBan(const int channel, const string &user,
+        const int bannerId, const int date, const bool ipBan) {
+    return m_registry.setBan(channel, user, bannerId, date, ipBan);
 }
 
 void ServerImpl::postLadderMatch(const int metagame,

@@ -149,15 +149,18 @@ public:
     void getBan(const int channel, const std::string &user, int &date,
             int &flags);
 
-    void getGlobalBan(const std::string &user, const std::string &ip,
-            int &date, int &flags);
+    int getGlobalBan(const std::string &user, const std::string &ip);
     
     /**
-     * Sets the ban for a user on a channel
-     * Returns if the user was unbanned
+     * Sets the ban for a user on a channel.
      */
-    bool setBan(const int channel, const std::string &user, const int flags,
+    bool setBan(const int channel, const std::string &user, const int bannerId,
             const long date, const bool ipBan = false);
+
+    /**
+     * Remove a ban.
+     */
+    void removeBan(const int channel, const std::string &user);
     
     /**
      * Gets the maximum level of a user (including their alts)
