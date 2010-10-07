@@ -138,7 +138,8 @@ public:
         BATTLE_STATUS_CHANGE = 30,
         CLAUSE_LIST = 31,
         INVALID_TEAM = 32,
-        ERROR_MESSAGE = 33
+        ERROR_MESSAGE = 33,
+        PRIVATE_MESSAGE = 34
     };
 
     // variable size message

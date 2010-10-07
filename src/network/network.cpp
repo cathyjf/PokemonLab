@@ -175,7 +175,8 @@ public:
         USER_MESSAGE_REQUEST = 17,
         CLIENT_ACTIVITY = 18,
         CANCEL_QUEUE = 19,
-        CANCEL_BATTLE_ACTION = 20
+        CANCEL_BATTLE_ACTION = 20,
+        PRIVATE_MESSAGE = 21
     };
 
     InMessage() {
@@ -566,6 +567,18 @@ public:
         for (; i != cls.end(); ++i) {
             *this << (int16_t)(*i);
         }
+        finalise();
+    }
+};
+
+class PrivateMessage : public OutMessage {
+public:
+    PrivateMessage(const string &user, const string &sender,
+            const string &message):
+                OutMessage(PRIVATE_MESSAGE) {
+        *this << user;
+        *this << sender;
+        *this << message;
         finalise();
     }
 };
@@ -1463,6 +1476,29 @@ private:
         }
     }
 
+    /**
+     * string : target of private message
+     * string : content of private message
+     */
+    void handlePrivateMessage(InMessage &msg) {
+        string target, content;
+        msg >> target >> content;
+
+        ClientImplPtr client = m_server->getClient(target);
+        if (!client) {
+            // The empty private message denotes that the target does not
+            // exist.
+            sendMessage(PrivateMessage(target, string(), string()));
+            return;
+        }
+        if (content.size() > 250) {
+            content.resize(250);
+            content += "(truncated)";
+        }
+        sendMessage(PrivateMessage(target, m_name, content));
+        client->sendMessage(PrivateMessage(m_name, target, content));
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -1513,7 +1549,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handlePersonalMessageRequest,
     &ClientImpl::handleActivityMessage,
     &ClientImpl::handleCancelQueue,
-    &ClientImpl::handleCancelBattleAction
+    &ClientImpl::handleCancelBattleAction,
+    &ClientImpl::handlePrivateMessage
 };
 
 const int ClientImpl::MESSAGE_COUNT =
