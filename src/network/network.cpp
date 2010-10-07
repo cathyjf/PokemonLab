@@ -1496,7 +1496,7 @@ private:
             content += "(truncated)";
         }
         sendMessage(PrivateMessage(target, m_name, content));
-        client->sendMessage(PrivateMessage(m_name, target, content));
+        client->sendMessage(PrivateMessage(m_name, m_name, content));
     }
 
     string m_name;
