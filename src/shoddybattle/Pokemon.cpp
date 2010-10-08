@@ -1200,7 +1200,7 @@ bool Pokemon::validate(ScriptContext *cx, set<unsigned int> &violations) {
     const ABILITY_LIST &abilities = m_species->getAbilities();
     ABILITY_LIST::const_iterator ability = 
         find(abilities.begin(), abilities.end(), m_abilityName);
-    if (*ability != m_abilityName) {
+    if (ability == abilities.end()) {
         violations.insert(5);
     }
 
