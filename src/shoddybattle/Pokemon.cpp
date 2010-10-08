@@ -1026,6 +1026,9 @@ void Pokemon::setPp(const int i, const int pp) {
  * Deduct PP from a move slot.
  */
 void Pokemon::deductPp(const int i) {
+    if ((i < 0) || (i >= m_pp.size())) {
+        return;
+    }
     setPp(i, m_pp[i] - 1);
     m_moveUsed[i] = true;
 }
