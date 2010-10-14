@@ -555,7 +555,7 @@ JSBool isSelectable(JSContext *cx,
 JSBool switchOut(JSContext *cx,
         JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval * /*ret*/) {
     Pokemon *p = (Pokemon *)JS_GetPrivate(cx, obj);
-    p->switchOut();
+    p->getField()->withdrawPokemon(p);
     return JS_TRUE;
 }
 
