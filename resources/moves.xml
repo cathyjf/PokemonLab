@@ -589,9 +589,9 @@ this.effects_.forEach(function(i) {
         field.narration = true;
     }
 });
+field.sendMessage("informBatonPass", user);
 var slot = user.position;
 user.switchOut();
-field.sendMessage("informBatonPass", user);
 selection.sendOut(slot);
 ]]>
 </use>

@@ -34,9 +34,9 @@ function makeSacrificeMove(move, func) {
             return;
         }
         user.faint();
-        var slot = user.position;
-        user.switchOut();
         field.sendMessage("informReplacePokemon", user);
+        var slot = user.position;
+        user.switchOut(); // note: sets user.position to -1.
         selection.sendOut(slot);
         if (!selection.fainted) {
             func(field, selection);
@@ -231,9 +231,9 @@ function makeRandomSwitchMove(move) {
             return;
         }
         var choice = choices[field.random(0, length - 1)];
+        field.sendMessage("informReplacePokemon", target);
         var slot = target.position;
         target.switchOut(); // note: sets target.position to -1.
-        field.sendMessage("informReplacePokemon", target);
         choice.sendOut(slot);
     };
 }
