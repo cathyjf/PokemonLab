@@ -1603,8 +1603,8 @@ void ClientImpl::joinChannel(ChannelPtr channel) {
 }
 
 void ClientImpl::partChannel(ChannelPtr channel) {
-    lock_guard<shared_mutex> lock(m_channelMutex);
     channel->part(shared_from_this());
+    lock_guard<shared_mutex> lock(m_channelMutex);
     m_channels.erase(channel);
 }
 
