@@ -1850,3 +1850,32 @@ makeAbility({
         return indirect ? 0 : delta;
     }
 });
+
+/*******************
+ * Multitype
+ *******************/
+makeAbility({
+    name: "Multitype",
+    informActivate : function() {
+        var subject = this.subject;
+        if (!subject.item || !subject.item.plate_) {
+            return;
+        }
+
+        var type = subject.item.type_;
+        var effect = new StatusEffect("MultitypeEffect");
+        effect.name = Text.types(type);
+        effect.type_ = type;
+        effect.applyEffect = function() {
+            this.subject.setTypes([this.type_]);
+            return true;
+        };
+        effect.informRemoveItem = function() {
+            return true;
+        };
+        effect.switchOut = function() {
+            return true;
+        };
+        subject.applyStatus(subject, effect);
+    }
+});
