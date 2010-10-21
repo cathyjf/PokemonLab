@@ -1009,3 +1009,17 @@ makeItem({
         return Type.GROUND;
     },
 });
+
+makeItem({
+    name : "Griseous Orb",
+    informRemoveItem : function() {
+        // Griseous Orb is usable by any pokemon in Gen 5, but cannot be
+        // tricked on or off Giratina (of any form)
+        // TODO: Prevent Griseous Orb from being tricked onto Giratina
+        var subject = this.subject;
+        if (subject.species == "Giratina-o") {
+            return true;
+        }
+        return false;
+    }
+});

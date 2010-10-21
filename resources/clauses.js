@@ -173,6 +173,22 @@ makeClause({
 });
 
 makeClause({
+    name: "Griseous Orb Limitation",
+    description: "Giratina-O must have Griseous Orb, and other pokemon " +
+        "can't use it",
+    validateTeam : function(team) {
+        for (var i in team) {
+            var p = team[i];
+            if ((p.species == "Giratina-o") && (p.itemName != "Griseous Orb"))
+                return false;
+            if ((p.species != "Giratina-o") && (p.itemName == "Griseous Orb"))
+                return false;
+        }
+        return true;
+    }
+});
+
+makeClause({
     name : "Little Cup Clause",
     description : "Rules for the Little Cup metagame",
     validateTeam : function(team) {

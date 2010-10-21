@@ -42,6 +42,7 @@
         <clause>Classic Freeze Clause</clause>
         <clause>Strict Damage Clause</clause>
         <clause>Evasion Clause</clause>
+        <clause>Griseous Orb Limitation</clause>
     </clauses>
     <timer>
         <pool>300</pool>
@@ -64,6 +65,7 @@
         <clause>Classic Freeze Clause</clause>
         <clause>Strict Damage Clause</clause>
         <clause>Evasion Clause</clause>
+        <clause>Griseous Orb Limitation</clause>
     </clauses>
     <timer>
         <pool>300</pool>
@@ -98,6 +100,7 @@
         <clause>Item Clause</clause>
         <clause>Soul Dew Clause</clause>
         <clause>Strict Damage Clause</clause>
+        <clause>Griseous Orb Limitation</clause>
     </clauses>
     <timer>
         <pool>300</pool>
