@@ -35276,7 +35276,7 @@
 	<moveset>
 		<moves origin="level">
 			<move level="1">Conversion</move>
-			<move level="1">Conversion2</move>
+			<move level="1">Conversion 2</move>
 			<move level="1">Sharpen</move>
 			<move level="1">Tackle</move>
 			<move level="7">Psybeam</move>
@@ -56659,7 +56659,7 @@
 	<moveset>
 		<moves origin="level">
 			<move level="1">Conversion</move>
-			<move level="1">Conversion2</move>
+			<move level="1">Conversion 2</move>
 			<move level="1">Defense Curl</move>
 			<move level="1">Tackle</move>
 			<move level="7">Psybeam</move>
@@ -56965,7 +56965,7 @@
 		<moves origin="level">
 			<move>Energy Ball</move>
 			<move>Explosion</move>
-			<move>Sonicboom</move>
+			<move>SonicBoom</move>
 			<move>Mean Look</move>
 			<move>Aeroblast</move>
 			<move>Helping Hand</move>
@@ -56975,7 +56975,7 @@
 			<move>Zen Headbutt</move>
 			<move>Shadow Ball</move>
 			<move>Kinesis</move>
-			<move>Bubblebeam</move>
+			<move>BubbleBeam</move>
 			<move>Crush Grip</move>
 			<move>Wrap</move>
 			<move>Meteor Mash</move>
@@ -56999,7 +56999,7 @@
 			<move>Confuse Ray</move>
 			<move>Agility</move>
 			<move>Whirlpool</move>
-			<move>Solarbeam</move>
+			<move>SolarBeam</move>
 			<move>Horn Drill</move>
 			<move>Spacial Rend</move>
 			<move>Stone Edge</move>
@@ -57015,7 +57015,7 @@
 			<move>Mud Sport</move>
 			<move>Strength</move>
 			<move>Focus Punch</move>
-			<move>Dragonbreath</move>
+			<move>DragonBreath</move>
 			<move>Jump Kick</move>
 			<move>Sleep Talk</move>
 			<move>Muddy Water</move>
@@ -57074,7 +57074,7 @@
 			<move>Cotton Spore</move>
 			<move>Swords Dance</move>
 			<move>Supersonic</move>
-			<move>Will-o-wisp</move>
+			<move>Will-O-Wisp</move>
 			<move>Heal Block</move>
 			<move>Power Gem</move>
 			<move>Odor Sleuth</move>
@@ -57082,7 +57082,7 @@
 			<move>Silver Wind</move>
 			<move>Last Resort</move>
 			<move>Psycho Boost</move>
-			<move>Double-edge</move>
+			<move>Double-Edge</move>
 			<move>Body Slam</move>
 			<move>Sucker Punch</move>
 			<move>Hi Jump Kick</move>
@@ -57126,13 +57126,13 @@
 			<move>Draco Meteor</move>
 			<move>Moonlight</move>
 			<move>Mind Reader</move>
-			<move>Ancientpower</move>
+			<move>AncientPower</move>
 			<move>Slam</move>
 			<move>Psycho Cut</move>
 			<move>Bounce</move>
 			<move>Growth</move>
 			<move>Flame Wheel</move>
-			<move>Grasswhistle</move>
+			<move>GrassWhistle</move>
 			<move>Rain Dance</move>
 			<move>Earthquake</move>
 			<move>Outrage</move>
@@ -57186,7 +57186,7 @@
 			<move>Flash</move>
 			<move>Leech Life</move>
 			<move>Fury Swipes</move>
-			<move>Smellingsalt</move>
+			<move>SmellingSalt</move>
 			<move>Switcheroo</move>
 			<move>Tail Whip</move>
 			<move>Poison Tail</move>
@@ -57199,7 +57199,7 @@
 			<move>Refresh</move>
 			<move>Sunny Day</move>
 			<move>Mega Kick</move>
-			<move>Lock-on</move>
+			<move>Lock-On</move>
 			<move>Gastro Acid</move>
 			<move>Weather Ball</move>
 			<move>Copycat</move>
@@ -57235,7 +57235,7 @@
 			<move>Air Slash</move>
 			<move>Metronome</move>
 			<move>Belly Drum</move>
-			<move>Extremespeed</move>
+			<move>ExtremeSpeed</move>
 			<move>Thrash</move>
 			<move>Endure</move>
 			<move>Tailwind</move>
@@ -57274,7 +57274,7 @@
 			<move>Volt Tackle</move>
 			<move>Magma Storm</move>
 			<move>Uproar</move>
-			<move>Dynamicpunch</move>
+			<move>DynamicPunch</move>
 			<move>Psywave</move>
 			<move>Wood Hammer</move>
 			<move>Octazooka</move>
@@ -57287,7 +57287,7 @@
 			<move>Heal Bell</move>
 			<move>Hail</move>
 			<move>Present</move>
-			<move>Thundershock</move>
+			<move>ThunderShock</move>
 			<move>Counter</move>
 			<move>Hyper Voice</move>
 			<move>Shadow Claw</move>
@@ -57324,7 +57324,7 @@
 			<move>Leaf Blade</move>
 			<move>Seed Flare</move>
 			<move>Horn Attack</move>
-			<move>Thunderpunch</move>
+			<move>ThunderPunch</move>
 			<move>Aurora Beam</move>
 			<move>Magnet Rise</move>
 			<move>Bind</move>
@@ -57343,7 +57343,7 @@
 			<move>Fly</move>
 			<move>Reflect</move>
 			<move>Dragon Rush</move>
-			<move>Doubleslap</move>
+			<move>DoubleSlap</move>
 			<move>Ice Fang</move>
 			<move>Scary Face</move>
 			<move>Reversal</move>
@@ -57352,7 +57352,7 @@
 			<move>Wring Out</move>
 			<move>Lava Plume</move>
 			<move>Luster Purge</move>
-			<move>Wake-up Slap</move>
+			<move>Wake-Up Slap</move>
 			<move>Gunk Shot</move>
 			<move>Captivate</move>
 			<move>Slack Off</move>
@@ -57381,7 +57381,7 @@
 			<move>Pursuit</move>
 			<move>Crush Claw</move>
 			<move>Dream Eater</move>
-			<move>Roar Of Time</move>
+			<move>Roar of Time</move>
 			<move>Pain Split</move>
 			<move>Ice Ball</move>
 			<move>Mist Ball</move>
@@ -57403,8 +57403,8 @@
 			<move>Disable</move>
 			<move>Nightmare</move>
 			<move>False Swipe</move>
-			<move>Vicegrip</move>
-			<move>Featherdance</move>
+			<move>ViceGrip</move>
+			<move>FeatherDance</move>
 			<move>Roar</move>
 			<move>Feint</move>
 			<move>Mist</move>
@@ -57413,7 +57413,7 @@
 			<move>Dark Void</move>
 			<move>Acid</move>
 			<move>Rock Throw</move>
-			<move>Smokescreen</move>
+			<move>SmokeScreen</move>
 			<move>Superpower</move>
 			<move>Clamp</move>
 			<move>Iron Tail</move>
@@ -57426,7 +57426,7 @@
 			<move>Torment</move>
 			<move>Hidden Power</move>
 			<move>Encore</move>
-			<move>Poisonpowder</move>
+			<move>PoisonPowder</move>
 		</moves>
 	</moveset>
 </species>
@@ -118551,7 +118551,7 @@
 	<moveset>
 		<moves origin="level">
 			<move level="1">Conversion</move>
-			<move level="1">Conversion2</move>
+			<move level="1">Conversion 2</move>
 			<move level="1">Nasty Plot</move>
 			<move level="1">Tackle</move>
 			<move level="1">Trick Room</move>
@@ -118657,7 +118657,7 @@
 			<move>Thunderbolt</move>
 			<move>Toxic</move>
 			<move level="1">Conversion</move>
-			<move level="1">Conversion2</move>
+			<move level="1">Conversion 2</move>
 			<move level="1">Defense Curl</move>
 			<move level="1">Sharpen</move>
 			<move level="1">Tackle</move>
@@ -120115,7 +120115,7 @@
 			<move level="20">AncientPower</move>
 			<move level="24">Metal Burst</move>
 			<move level="30">Dragon Claw</move>
-			<move level="40">Roar Of Time</move>
+			<move level="40">Roar of Time</move>
 			<move level="50">Heal Block</move>
 			<move level="60">Earth Power</move>
 			<move level="70">Slash</move>
@@ -121025,7 +121025,7 @@
 			<move>X-Scissor</move>
 		</moves>
 		<moves origin="event">
-			<move>Roar Of Time</move>
+			<move>Roar of Time</move>
 			<move>Spacial Rend</move>
 		</moves>
 	</moveset>
