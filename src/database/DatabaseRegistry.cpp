@@ -28,8 +28,8 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/locks.hpp>
 #include <boost/random.hpp>
-#include <mysql++.h>
-#include <ssqls.h>
+#include <mysql++/mysql++.h>
+#include <mysql++/ssqls.h>
 #include <string>
 #include <sstream>
 #include <ctime>

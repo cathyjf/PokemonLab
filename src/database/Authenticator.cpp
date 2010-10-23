@@ -25,7 +25,7 @@
 #include "Authenticator.h"
 #include "DatabaseRegistry.h"
 #include <string>
-#include <mysql++.h>
+#include <mysql++/mysql++.h>
 
 using namespace std;
 using namespace mysqlpp;
