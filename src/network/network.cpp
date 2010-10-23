@@ -176,7 +176,8 @@ public:
         CLIENT_ACTIVITY = 18,
         CANCEL_QUEUE = 19,
         CANCEL_BATTLE_ACTION = 20,
-        PRIVATE_MESSAGE = 21
+        PRIVATE_MESSAGE = 21,
+        IMPORTANT_MESSAGE = 22
     };
 
     InMessage() {
@@ -577,6 +578,17 @@ public:
             const string &message):
                 OutMessage(PRIVATE_MESSAGE) {
         *this << user;
+        *this << sender;
+        *this << message;
+        finalise();
+    }
+};
+
+class ImportantMessage : public OutMessage {
+public:
+    ImportantMessage(const int channel, const string &sender,
+            const string &message): OutMessage(IMPORTANT_MESSAGE) {
+        *this << channel;
         *this << sender;
         *this << message;
         finalise();
@@ -1499,6 +1511,41 @@ private:
         client->sendMessage(PrivateMessage(m_name, m_name, content));
     }
 
+    /**
+     * int32  : channel (-1 for global)
+     * string : the message to display
+     */
+    void handleImportantMessage(InMessage &msg) {
+        int channelId;
+        string message;
+        msg >> channelId >> message;
+        
+        ChannelPtr channel = (channelId == -1) ?
+            m_server->getMainChannel() : getChannel(channelId);
+        if (!channel) {
+            return;
+        }
+
+        Channel::Type::TYPE type = channel->getChannelType();
+        Channel::FLAGS auth = channel->getStatusFlags(shared_from_this());
+        if ((type == Channel::Type::BATTLE) && !auth[Channel::PROTECTED]) {
+            return;
+        }
+        if (!auth[Channel::OP]) {
+            return;
+        }
+
+        m_server->broadcast(ImportantMessage(channelId, m_name, message));
+
+        string logMessage;
+        if (channelId == -1) {
+            logMessage = "[important-global] " + m_name + ": " + message;
+        } else {
+            logMessage = "[important] " + m_name + ": " + message;
+        }
+        channel->writeLog(logMessage);
+    }
+
     string m_name;
     int m_id;   // user id
     bool m_authenticated;
@@ -1550,7 +1597,8 @@ const ClientImpl::MESSAGE_HANDLER ClientImpl::m_handlers[] = {
     &ClientImpl::handleActivityMessage,
     &ClientImpl::handleCancelQueue,
     &ClientImpl::handleCancelBattleAction,
-    &ClientImpl::handlePrivateMessage
+    &ClientImpl::handlePrivateMessage,
+    &ClientImpl::handleImportantMessage
 };
 
 const int ClientImpl::MESSAGE_COUNT =

@@ -139,7 +139,8 @@ public:
         CLAUSE_LIST = 31,
         INVALID_TEAM = 32,
         ERROR_MESSAGE = 33,
-        PRIVATE_MESSAGE = 34
+        PRIVATE_MESSAGE = 34,
+        IMPORTANT_MESSAGE = 35
     };
 
     // variable size message
