@@ -149,8 +149,8 @@ bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
     const int foreignId = result[0][1];
     
     Query q2 = conn->query(
-            "INSERT INTO users (name, foreign_id, level, activity, ip) "
-            "VALUES (%0q, %1q, 0, now(), %2q) "
+            "INSERT INTO users (name, foreign_id, activity, ip) "
+            "VALUES (%0q, %1q, now(), %2q) "
             "ON DUPLICATE KEY UPDATE name=%0q, activity=now()"
         );
     q2.parse();

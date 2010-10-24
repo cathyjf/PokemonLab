@@ -59,15 +59,6 @@ const double SYSTEM_CONSTANT = 1.2;
 const char *TABLE_STATS_PREFIX = "ladder_stats_";
 const char *TABLE_MATCHES_PREFIX = "ladder_matches_";
 
-// MySQL users table
-sql_create_6(users, 1, 6,
-        sql_int, id,
-        sql_varchar, name,
-        sql_varchar, password,
-        sql_int, level,
-        sql_datetime, activity, // last activity
-        sql_varchar, ip);
-
 class ShoddyConnectionPool : public ConnectionPool {
 public:
     ShoddyConnectionPool() {
