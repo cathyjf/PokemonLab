@@ -68,7 +68,7 @@ protected:
 
 class Server {
 public:
-    Server(const int port);
+    Server(const int port, const int userLimit);
     ~Server();
     void installSignalHandlers();
     void run();

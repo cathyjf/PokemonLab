@@ -55,7 +55,7 @@ const char *getPidFileName() {
 
 int initialise(int argc, char **argv, bool &daemon) {
     string configFile;
-    int port, databasePort, workerThreads, serverUid;
+    int port, databasePort, workerThreads, serverUid, userLimit;
     string serverName, welcomeFile, welcomeMessage;
     string databaseName, databaseHost, databaseUser, databasePassword;
     string authParameter, loginParameter, registerParameter;
@@ -80,6 +80,10 @@ int initialise(int argc, char **argv, bool &daemon) {
                 po::value<int>(&port)->default_value(
                      8446),
                 "server port")
+            ("server.limit",
+                po::value<int>(&userLimit)->default_value(
+                     -1),
+                "maximum number of users allowed")
             ("server.threads",
                 po::value<int>(&workerThreads)->default_value(
                      20),
@@ -88,7 +92,7 @@ int initialise(int argc, char **argv, bool &daemon) {
                 po::value<int>(&serverUid),
                 "UID to run the server process as")
             ("auth.salt",
-                "use simple simple authentication")
+                "use simple salt authentication")
             ("auth.vbulletin",
                 po::value<string>(
                     &authParameter)->implicit_value("vbulletin"),
@@ -278,7 +282,7 @@ int initialise(int argc, char **argv, bool &daemon) {
         }
     }
 
-    network::Server server(port);
+    network::Server server(port, userLimit);
     server.installSignalHandlers();
 
     ScriptMachine *machine = server.getMachine();

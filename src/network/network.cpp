@@ -627,7 +627,7 @@ typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
 public:
-    ServerImpl(Server *, const int);
+    ServerImpl(Server *, const int, const int);
     Server *getServer() const { return m_server; }
     void installSignalHandlers();
     void run();
@@ -697,6 +697,7 @@ private:
     ChannelPtr m_mainChannel;
     CLIENT_LIST m_clients;
     int m_population;
+    const int m_userLimit;
     shared_mutex m_clientMutex;
     io_service m_service;
     tcp::acceptor m_acceptor;
@@ -717,8 +718,8 @@ private:
 
 ServerImpl *ServerImpl::m_blockingServer = NULL;
 
-Server::Server(const int port) {
-    m_impl = new ServerImpl(this, port);
+Server::Server(const int port, const int userLimit) {
+    m_impl = new ServerImpl(this, port, userLimit);
 }
 
 void Server::installSignalHandlers() {
@@ -2099,8 +2100,9 @@ ServerImpl::ClauseList::ClauseList(vector<CLAUSE_PAIR> &clauses)
     finalise();
 }
 
-ServerImpl::ServerImpl(Server *server, const int port):
+ServerImpl::ServerImpl(Server *server, const int port, const int userLimit):
             m_population(0),
+            m_userLimit(userLimit),
             m_acceptor(m_service, tcp::endpoint(tcp::v4(), port), true),
             m_server(server) {
     acceptClient();
@@ -2378,6 +2380,11 @@ void ServerImpl::handleAccept(ClientImplPtr client,
     if (error) {
         Log::out() << "Error in ServerImpl::handleAccept(): "
                 << error.message() << endl;
+        return;
+    }
+    if (m_population > m_userLimit) {
+        boost::system::error_code ec;
+        client->getSocket().close(ec);
         return;
     }
     const boost::system::error_code startError = client->start();
