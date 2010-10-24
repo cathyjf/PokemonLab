@@ -26,6 +26,8 @@
 #define _AUTHENTICATOR_H_
 
 #include <string>
+#include <boost/shared_ptr.hpp>
+#include <boost/noncopyable.hpp>
 
 namespace shoddybattle { namespace database {
 
@@ -33,7 +35,7 @@ typedef std::pair<std::string, std::string> SECRET_PAIR;
 
 class ScopedConnection;
 
-class Authenticator {
+class Authenticator : boost::noncopyable {
 public:
     enum {
         SECRET_UNADORNED = 0,   // secret := password
@@ -49,6 +51,8 @@ public:
             std::string &, const std::string &, const bool match) {
         return match;
     }
+    virtual bool registerUser(ScopedConnection &,
+            const std::string &, const std::string &, const std::string &) = 0;
     virtual std::string getLoginInfo() const = 0;
     virtual bool allowsRegistration() const = 0;
     virtual std::string getRegistrationInfo() const = 0;
@@ -60,9 +64,27 @@ public:
     int getSecretStyle() { return SECRET_UNADORNED; }
     SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
             const std::string &);
+    bool registerUser(ScopedConnection &,
+            const std::string &, const std::string &, const std::string &);
     std::string getLoginInfo() const { return std::string(); }
     bool allowsRegistration() const { return true; }
     std::string getRegistrationInfo() const { return std::string(); }
+};
+
+class SaltAuthenticator : public Authenticator {
+public:
+    SaltAuthenticator();
+    int getSecretStyle() { return SECERT_MD5_SALT; }
+    SECRET_PAIR getSecret(ScopedConnection &, const std::string &,
+            const std::string &);
+    bool registerUser(ScopedConnection &,
+            const std::string &, const std::string &, const std::string &);
+    std::string getLoginInfo() const { return std::string(); }
+    bool allowsRegistration() const { return true; }
+    std::string getRegistrationInfo() const { return std::string(); }
+private:
+    class SaltAuthenticatorImpl;
+    boost::shared_ptr<SaltAuthenticatorImpl> m_impl;
 };
 
 class VBulletinAuthenticator : public Authenticator {
@@ -74,6 +96,10 @@ public:
             const std::string &);
     bool finishAuthentication(ScopedConnection &, std::string &,
             const std::string &, const bool);
+    bool registerUser(ScopedConnection &,
+            const std::string &, const std::string &, const std::string &) {
+        return false;
+    }
     std::string getLoginInfo() const { return m_loginInfo; }
     bool allowsRegistration() const { return false; }
     std::string getRegistrationInfo() const { return m_registrationInfo; }

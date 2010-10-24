@@ -34,6 +34,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/moves/PokemonMove.o \
 	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
 	${OBJECTDIR}/src/scripting/StatusObject.o \
+	${OBJECTDIR}/src/database/md5.o \
 	${OBJECTDIR}/src/mechanics/stat.o \
 	${OBJECTDIR}/src/scripting/FieldObject.o \
 	${OBJECTDIR}/src/main/LogFile.o \
@@ -133,6 +134,11 @@ ${OBJECTDIR}/src/matchmaking/MetagameList.h.gch: nbproject/Makefile-${CND_CONF}.
 	${MKDIR} -p ${OBJECTDIR}/src/matchmaking
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -I/usr/local/include/boost-1_38/ -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o $@ src/matchmaking/MetagameList.h
+
+${OBJECTDIR}/src/database/md5.o: nbproject/Makefile-${CND_CONF}.mk src/database/md5.c 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/md5.o src/database/md5.c
 
 ${OBJECTDIR}/src/mechanics/stat.o: nbproject/Makefile-${CND_CONF}.mk src/mechanics/stat.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/mechanics

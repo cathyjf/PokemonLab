@@ -24,26 +24,51 @@
 
 #include "Authenticator.h"
 #include "DatabaseRegistry.h"
+#include "md5.h"
 #include <string>
+#include <boost/random.hpp>
 #include <mysql++/mysql++.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/locks.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 using namespace mysqlpp;
 
 namespace shoddybattle { namespace database {
 
+/****************************************************************************
+ * DefaultAuthenticator
+ ****************************************************************************/
+
 SECRET_PAIR DefaultAuthenticator::getSecret(ScopedConnection &conn,
         const string &user, const string &) {
     Query query = conn->query("SELECT password FROM users WHERE name = %0q");
     query.parse();
     StoreQueryResult result = query.store(user);
-    if (result.empty())
+    if (result.empty()) {
         return SECRET_PAIR();
+    }
 
     string value;
     result[0][0].to_string(value);
     return SECRET_PAIR(value, string());
 }
+
+bool DefaultAuthenticator::registerUser(ScopedConnection &conn,
+        const string &user, const string &password, const string &ip) {
+    Query query = conn->query(
+            "INSERT INTO users (name, password, activity, ip) "
+            "VALUES (%0q, %1q, now(), %2q)"
+        );
+    query.parse();
+    query.execute(user, password, ip);
+    return true;
+}
+
+/****************************************************************************
+ * VBulletinAuthenticator
+ ****************************************************************************/
 
 VBulletinAuthenticator::VBulletinAuthenticator(const string &login,
         const string &registration,
@@ -85,13 +110,14 @@ SECRET_PAIR VBulletinAuthenticator::getSecret(ScopedConnection &conn,
         );
     query.parse();
     StoreQueryResult result = query.store(user);
-    if (result.empty())
+    if (result.empty()) {
         return SECRET_PAIR();
+    }
 
     string secret, salt;
     result[0][0].to_string(secret);
     result[0][1].to_string(salt);
-    return SECRET_PAIR(DatabaseRegistry::getHexHash(secret), salt);
+    return SECRET_PAIR(DatabaseRegistry::getShaHexHash(secret), salt);
 }
 
 bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
@@ -129,6 +155,69 @@ bool VBulletinAuthenticator::finishAuthentication(ScopedConnection &conn,
         );
     q2.parse();
     q2.execute(user, foreignId, ip);
+    return true;
+}
+
+/****************************************************************************
+ * SaltAuthenticator
+ ****************************************************************************/
+
+struct SaltAuthenticator::SaltAuthenticatorImpl {
+    typedef boost::variate_generator<boost::mt11213b &,
+            boost::uniform_int<> > GENERATOR;
+    boost::mt11213b rand;
+    boost::mutex randMutex;
+    SaltAuthenticatorImpl() {
+        rand = boost::mt11213b(time(NULL));
+    }
+    string generateSalt(const int length) {
+        string salt(length, ' ');
+        // As far as I can tell, there's no real reason why salts should be
+        // limited to printable characters, but that was the vbulletin
+        // convention, so I stick to it for now.
+        boost::lock_guard<boost::mutex> lock(randMutex);
+        boost::uniform_int<> range(32, 126);
+        GENERATOR r(rand, range);
+        for (int i = 0; i < length; ++i) {
+            salt[i] = char(r());
+        }
+        return salt;
+    };
+};
+
+SaltAuthenticator::SaltAuthenticator():
+            m_impl(new SaltAuthenticatorImpl()) { }
+
+SECRET_PAIR SaltAuthenticator::getSecret(ScopedConnection &conn,
+        const string &user, const string &) {
+    Query query = conn->query(
+            "SELECT password, salt FROM users "
+            "WHERE name = %0q"
+        );
+    query.parse();
+    StoreQueryResult result = query.store(user);
+    if (result.empty()) {
+        return SECRET_PAIR();
+    }
+    string secret, salt;
+    result[0][0].to_string(secret);
+    result[0][1].to_string(salt);
+    return SECRET_PAIR(DatabaseRegistry::getShaHexHash(secret), salt);
+}
+
+bool SaltAuthenticator::registerUser(ScopedConnection &conn,
+        const string &user, const string &password, const string &ip) {
+    const string salt = m_impl->generateSalt(3);
+    string hexPassword = DatabaseRegistry::getMd5HexHash(password);
+    boost::to_lower(hexPassword);
+    string secret = DatabaseRegistry::getMd5HexHash(hexPassword + salt);
+    boost::to_lower(secret);
+    Query query = conn->query(
+            "INSERT INTO users (name, password, salt, activity, ip) "
+            "VALUES (%0q, %1q, %2q, now(), %3q)"
+        );
+    query.parse();
+    query.execute(user, secret, salt, ip);
     return true;
 }
 

@@ -26,6 +26,8 @@
         <itemPath>src/database/Authenticator.h</itemPath>
         <itemPath>src/database/DatabaseRegistry.cpp</itemPath>
         <itemPath>src/database/DatabaseRegistry.h</itemPath>
+        <itemPath>src/database/md5.c</itemPath>
+        <itemPath>src/database/md5.h</itemPath>
         <itemPath>src/database/rijndael.cpp</itemPath>
         <itemPath>src/database/rijndael.h</itemPath>
         <itemPath>src/database/sha2.c</itemPath>

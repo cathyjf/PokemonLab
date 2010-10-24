@@ -35,6 +35,7 @@
 #include <ctime>
 #include "../matchmaking/glicko2.h"
 #include "sha2.h"
+#include "md5.h"
 #include "rijndael.h"
 #include "DatabaseRegistry.h"
 #include "../matchmaking/MetagameList.h"
@@ -157,12 +158,11 @@ bool DatabaseRegistry::startThread() {
 
 static const char *HEX_TABLE = "0123456789ABCDEF";
 
-string DatabaseRegistry::getHexHash(const string &message) {
-    unsigned char digest[32];
-    sha256(reinterpret_cast<const unsigned char *>(message.c_str()),
-            message.length(), digest);
-    string hex(64, ' ');
-    for (int i = 0; i < 32; ++i) {
+namespace {
+
+string getHexString(const unsigned char *digest, const int length) {
+    string hex(length * 2, ' ');
+    for (int i = 0; i < length; ++i) {
         const int high = (digest[i] & 0xf0) >> 4;
         const int low = (digest[i] &  0x0f);
         hex[i * 2] = HEX_TABLE[high];
@@ -171,11 +171,11 @@ string DatabaseRegistry::getHexHash(const string &message) {
     return hex;
 }
 
-static string fromHex(const string message) {
+string fromHex(const string message) {
     int length = message.length();
-    if (length % 2)
+    if (length % 2) {
         return string();
-
+    }
     string ret(length / 2, ' ');
     int j = 0;
     for (int i = 0; i < length; i += 2) {
@@ -184,6 +184,25 @@ static string fromHex(const string message) {
         ret[j++] = (char)(((high << 4) & 0xf0) | (low & 0x0f));
     }
     return ret;
+}
+
+} // anonymous namespace
+
+string DatabaseRegistry::getShaHexHash(const string &message) {
+    unsigned char digest[32];
+    sha256(reinterpret_cast<const unsigned char *>(message.c_str()),
+            message.length(), digest);
+    return getHexString(digest, 32);
+}
+
+string DatabaseRegistry::getMd5HexHash(const string &message) {
+    unsigned char digest[16];
+    md5_state_t pms;
+    md5_init(&pms);
+    md5_append(&pms, reinterpret_cast<const unsigned char *>(message.c_str()),
+            message.length());
+    md5_finish(&pms, digest);
+    return getHexString(digest, 16);
 }
 
 bool DatabaseRegistry::userExists(const string name) {
@@ -495,15 +514,11 @@ void DatabaseRegistry::connect(const string db, const string server,
 
 bool DatabaseRegistry::registerUser(const string name,
         const string password, const string ip) {
-    if (userExists(name))
+    if (userExists(name)) {
         return false;
-    const string hex = getHexHash(password);
-    users row(0, name, hex, 0, DateTime(time(NULL)), ip);
+    }
     ScopedConnection conn(m_impl->pool);
-    Query query = conn->query();
-    query.insert(row);
-    query.execute();
-    return true;
+    return m_impl->authenticator->registerUser(conn, name, password, ip);
 }
 
 int DatabaseRegistry::getGlobalBan(const std::string &user,

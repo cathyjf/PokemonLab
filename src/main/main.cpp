@@ -87,6 +87,8 @@ int initialise(int argc, char **argv, bool &daemon) {
             ("server.uid",
                 po::value<int>(&serverUid),
                 "UID to run the server process as")
+            ("auth.salt",
+                "use simple simple authentication")
             ("auth.vbulletin",
                 po::value<string>(
                     &authParameter)->implicit_value("vbulletin"),
@@ -287,6 +289,11 @@ int initialise(int argc, char **argv, bool &daemon) {
     registry->connect(databaseName, databaseHost,
             databaseUser, databasePassword, databasePort);
     registry->startThread();
+
+    if (vm.count("auth.salt")) {
+        registry->setAuthenticator(boost::shared_ptr<database::Authenticator>(
+                new database::SaltAuthenticator()));
+    }
 
     if (vm.count("auth.vbulletin")) {
         registry->setAuthenticator(boost::shared_ptr<database::Authenticator>(

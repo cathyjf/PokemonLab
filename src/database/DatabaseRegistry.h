@@ -73,7 +73,8 @@ public:
     boost::shared_ptr<Authenticator> getAuthenticator() const;
     void setAuthenticator(boost::shared_ptr<Authenticator>);
 
-    static std::string getHexHash(const std::string &);
+    static std::string getShaHexHash(const std::string &);
+    static std::string getMd5HexHash(const std::string &);
 
     /**
      * This needs to be called by every thread that is going to be making
