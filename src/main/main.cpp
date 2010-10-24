@@ -55,7 +55,7 @@ const char *getPidFileName() {
 
 int initialise(int argc, char **argv, bool &daemon) {
     string configFile;
-    int port, databasePort, workerThreads;
+    int port, databasePort, workerThreads, serverUid;
     string serverName, welcomeFile, welcomeMessage;
     string databaseName, databaseHost, databaseUser, databasePassword;
     string authParameter, loginParameter, registerParameter;
@@ -84,6 +84,9 @@ int initialise(int argc, char **argv, bool &daemon) {
                 po::value<int>(&workerThreads)->default_value(
                      20),
                 "number of worker threads for network I/O")
+            ("server.uid",
+                po::value<int>(&serverUid),
+                "UID to run the server process as")
             ("auth.vbulletin",
                 po::value<string>(
                     &authParameter)->implicit_value("vbulletin"),
@@ -162,6 +165,15 @@ int initialise(int argc, char **argv, bool &daemon) {
             return EXIT_FAILURE;
         }
         po::notify(vm);
+    }
+
+    if (vm.count("server.uid")) {
+        if (seteuid(serverUid)) {
+            // Failed to set the UID.
+            Log::out() << "Failed to set the effective UID to " << serverUid
+                    << ". Try\n\n    sudo shoddybattle2\n\ninstead." << endl;
+            return EXIT_FAILURE;
+        }
     }
 
     if (vm.count("server.welcome")) {
