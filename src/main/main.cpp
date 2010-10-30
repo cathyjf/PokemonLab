@@ -82,7 +82,7 @@ int initialise(int argc, char **argv, bool &daemon) {
                 "server port")
             ("server.limit",
                 po::value<int>(&userLimit)->default_value(
-                     -1),
+                     20),
                 "maximum number of users allowed")
             ("server.threads",
                 po::value<int>(&workerThreads)->default_value(
