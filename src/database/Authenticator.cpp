@@ -57,12 +57,13 @@ SECRET_PAIR DefaultAuthenticator::getSecret(ScopedConnection &conn,
 
 bool DefaultAuthenticator::registerUser(ScopedConnection &conn,
         const string &user, const string &password, const string &ip) {
+    string hexPassword = DatabaseRegistry::getShaHexHash(password);
     Query query = conn->query(
             "INSERT INTO users (name, password, activity, ip) "
             "VALUES (%0q, %1q, now(), %2q)"
         );
     query.parse();
-    query.execute(user, password, ip);
+    query.execute(user, hexPassword, ip);
     return true;
 }
 
