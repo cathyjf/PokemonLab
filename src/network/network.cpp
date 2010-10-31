@@ -305,7 +305,8 @@ public:
         INVALID_RESPONSE = 5,
         USER_BANNED = 6,
         SUCCESSFUL_LOGIN = 7,
-        USER_ALREADY_ON = 8
+        USER_ALREADY_ON = 8,
+        SERVER_FULL = 9
     };
     RegistryResponse(const TYPE type, const string &details = string()):
             OutMessage(REGISTRY_RESPONSE) {
@@ -2383,6 +2384,7 @@ void ServerImpl::handleAccept(ClientImplPtr client,
         return;
     }
     if (m_population > m_userLimit) {
+        client->sendMessage(RegistryResponse(RegistryResponse::SERVER_FULL));
         boost::system::error_code ec;
         client->getSocket().close(ec);
         return;
