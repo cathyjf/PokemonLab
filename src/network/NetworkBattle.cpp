@@ -734,6 +734,8 @@ struct NetworkBattleImpl {
      * byte  : slot of relevant pokemon
      * byte  : position of relevant pokemon
      * byte  : whether this is a replacement
+     * byte  : index of the request sequence
+     * byte  : number of sequential requests
      * int32 : number of pokemon
      * for each pokemon:
      *      byte : whether it is legal to switch to this pokemon
@@ -756,6 +758,8 @@ struct NetworkBattleImpl {
         msg << (unsigned char)(p->getSlot());
         msg << (unsigned char)(p->getPosition());
         msg << (unsigned char)m_replacement;
+        msg << (unsigned char)turn.size();
+        msg << (unsigned char)m_requests[party].size();
 
         vector<bool> switches;
         m_field->getLegalSwitches(p.get(), switches);
