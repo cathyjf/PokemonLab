@@ -287,7 +287,7 @@ int initialise(int argc, char **argv, bool &daemon) {
 
     ScriptMachine *machine = server.getMachine();
     machine->acquireContext()->runFile("resources/main.js");
-    machine->getSpeciesDatabase()->verifyAbilities(machine);
+    machine->finalise();
 
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect(databaseName, databaseHost,

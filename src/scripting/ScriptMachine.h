@@ -395,6 +395,8 @@ public:
     void includeMoves(const std::string);
     void includeSpecies(const std::string);
     void populateMoveLists();
+
+    void finalise();
     
 private:
     friend class ScriptContext;

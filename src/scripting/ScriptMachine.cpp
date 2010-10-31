@@ -645,6 +645,10 @@ void ScriptContext::setContextThread(const int depth) {
     JS_ResumeRequest((JSContext *)m_p, depth);
 }
 
+void ScriptMachine::finalise() {
+    getSpeciesDatabase()->verifyAbilities(this);
+}
+
 static JSFunctionSpec globalFunctions[] = {
     JS_FS("print", printFunction, 1, 0, 0),
     JS_FS("loadText", loadText, 2, 0, 0),
