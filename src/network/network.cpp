@@ -324,9 +324,9 @@ class ErrorMessage : public OutMessage {
 public:
     enum TYPE {
         NONEXISTENT_USER = 0,
-
         USER_NOT_ONLINE = 1,
-        BAD_CHALLENGE = 2
+        BAD_CHALLENGE = 2,
+        UNAUTHORIZED_ACTION = 3
     };
     ErrorMessage(const TYPE type, const string &details = string()):
             OutMessage(ERROR_MESSAGE) {
@@ -1741,7 +1741,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
 
     // Escape if the target doesn't exist.
     if (!registry->userExists(target)) {
-        sendMessage(ErrorMessage(ErrorMessage::NONEXISTENT_USER));
+        sendMessage(ErrorMessage(ErrorMessage::NONEXISTENT_USER, target));
         return;
     }
 
@@ -1751,6 +1751,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
     if (!auth[Channel::OP] || uauth[Channel::PROTECTED]
             || (!auth[Channel::PROTECTED] && uauth[Channel::OP])) {
         // You don't have the authority to do anything to this user
+        sendMessage(ErrorMessage(ErrorMessage::UNAUTHORIZED_ACTION));
         return;
     }
 
@@ -1760,7 +1761,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
             kickUser(m_server, channel, m_name, client, date, id);
         } else if (!client) {
             // The user isn't online, so inform the kicker.
-            sendMessage(ErrorMessage(ErrorMessage::USER_NOT_ONLINE));
+            sendMessage(ErrorMessage(ErrorMessage::USER_NOT_ONLINE, target));
         }
     } else {
         int ban;
@@ -1775,6 +1776,7 @@ void ClientImpl::handleBanMessage(InMessage &msg) {
         // Can't change ban made by user with a higher level.
         Channel::FLAGS flags = setter;
         if (!auth[Channel::PROTECTED] && flags[Channel::PROTECTED]) {
+            sendMessage(ErrorMessage(ErrorMessage::UNAUTHORIZED_ACTION));
             return;
         }
 
