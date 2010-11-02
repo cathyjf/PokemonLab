@@ -147,6 +147,86 @@ bool DatabaseRegistry::startThread() {
     return Connection::thread_start();
 }
 
+namespace {
+
+void createChannelsTable(ScopedConnection &conn) {
+    {
+        Query query = conn->query(
+                "CREATE TABLE IF NOT EXISTS channels ("
+                    "id int(11) primary key auto_increment,"
+                    "name varchar(30), "
+                    "topic varchar(200),"
+                    "flags int(11),"
+                    "type int(11))");
+        query.parse();
+        query.execute();
+    }
+    {
+        Query query = conn->query(
+                "SELECT count(id) "
+                "FROM channels "
+                "WHERE name = %0q");
+        query.parse();
+        int count = query.store("main")[0][0];
+        if (count == 0) {
+            Query query2 = conn->query(
+                    "INSERT INTO channels (id, name, topic, flags, type) "
+                    "VALUES (null, %0q, %1q, 0, 0)");
+            query2.parse();
+            query2.execute("main", "main channel");
+        }
+    }
+}
+
+void createUsersTable(ScopedConnection &conn) {
+    Query query = conn->query(
+            "CREATE TABLE IF NOT EXISTS users ("
+                "id int(11) primary key auto_increment,"
+                "name varchar(20),"
+                "password varchar(100),"
+                "activity datetime,"
+                "ip varchar(30),"
+                "message varchar(300))");
+    query.parse();
+    query.execute();
+}
+
+void createChannelUsersTable(ScopedConnection &conn) {
+    Query query = conn->query(
+            "CREATE TABLE IF NOT EXISTS channel_users ("
+                "id int(11) primary key auto_increment,"
+                "channel_id int(11),"
+                "user_id int(11),"
+                "flags int(11),"
+                "UNIQUE KEY channel_user (channel_id ,user_id))");
+    query.parse();
+    query.execute();
+}
+
+void createBansTable(ScopedConnection &conn) {
+    Query query = conn->query(
+            "CREATE TABLE IF NOT EXISTS bans ("
+                "channel_id int(11),"
+                "user_id int(11),"
+                "mod_id int(11),"
+                "expiry datetime,"
+                "ip_ban tinyint(1),"
+                "UNIQUE KEY ban_idx (channel_id, user_id))");
+    query.parse();
+    query.execute();
+}
+
+} //anonymous namespace
+
+void DatabaseRegistry::createDefaultDatabase() {
+    ScopedConnection conn(m_impl->pool);
+    
+    createChannelsTable(conn);
+    createUsersTable(conn);
+    createChannelUsersTable(conn);
+    createBansTable(conn);
+}
+
 static const char *HEX_TABLE = "0123456789ABCDEF";
 
 namespace {

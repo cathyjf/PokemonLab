@@ -305,6 +305,8 @@ int initialise(int argc, char **argv, bool &daemon) {
                         registerParameter, authParameter)));
     }
 
+    registry->createDefaultDatabase();
+
     server.initialiseWelcomeMessage(serverName, welcomeMessage);
     server.initialiseChannels();
     server.initialiseMatchmaking("resources/metagames.xml");

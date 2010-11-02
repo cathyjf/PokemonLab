@@ -92,6 +92,11 @@ public:
             const unsigned int port = 3306);
 
     /**
+     * Initialize the database if it hasn't been done so already.
+     */
+    void createDefaultDatabase();
+
+    /**
      * Get an authentication challenge for the given user.
      */
     CHALLENGE_INFO getAuthChallenge(const std::string &name,
