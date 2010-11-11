@@ -53,7 +53,7 @@ public:
     NetworkBattle(Server *server,
             boost::shared_ptr<network::Client> *clients,
             Pokemon::ARRAY *teams,
-            const GENERATION generation,
+            Generation *generation,
             const int partySize,
             const int maxTeamLength,
             std::vector<StatusObject> &clauses,

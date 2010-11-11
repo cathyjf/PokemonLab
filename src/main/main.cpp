@@ -284,6 +284,7 @@ int initialise(int argc, char **argv, bool &daemon) {
 
     network::Server server(port, userLimit);
     server.installSignalHandlers();
+    server.readMetagames("resources/metagames.xml");
 
     ScriptMachine *machine = server.getMachine();
     machine->acquireContext()->runFile("resources/main.js");
@@ -306,10 +307,11 @@ int initialise(int argc, char **argv, bool &daemon) {
     }
 
     registry->createDefaultDatabase();
-
+    
     server.initialiseWelcomeMessage(serverName, welcomeMessage);
     server.initialiseChannels();
-    server.initialiseMatchmaking("resources/metagames.xml");
+    server.initialiseMetagames();
+    server.initialiseMatchmaking();
     server.initialiseClauses();
 
     network::NetworkBattle::startTimerThread();

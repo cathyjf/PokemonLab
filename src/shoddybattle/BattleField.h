@@ -30,16 +30,12 @@
 #include <vector>
 #include <set>
 #include "Pokemon.h"
+#include "../matchmaking/MetagameList.h"
 #include "../scripting/ObjectWrapper.h"
 
 namespace shoddybattle {
 
 const int TEAM_COUNT = 2;
-
-enum GENERATION {
-    GEN_DP,             // Diamond and Pearl
-    GEN_PLATINUM,       // Platinum
-};
 
 class BattleFieldImpl;
 class PokemonSlotImpl;
@@ -147,7 +143,7 @@ public:
      * no equilvalent mode in the real game.
      */
     void initialise(const BattleMechanics *mech,
-            const GENERATION,
+            Generation *,
             ScriptMachine *machine,
             Pokemon::ARRAY teams[TEAM_COUNT],
             const std::string trainer[TEAM_COUNT],
@@ -365,7 +361,7 @@ public:
 
     ScriptObject *getObject();
 
-    GENERATION getGeneration() const;
+    Generation *getGeneration() const;
     
     /**
      * Begin the battle.

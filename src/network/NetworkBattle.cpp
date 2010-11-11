@@ -668,6 +668,7 @@ struct NetworkBattleImpl {
      * int32  : field id
      * string : opponent
      * byte   : party
+     * byte   : generation
      * int16  : metagame (-1 for a direct challenge)
      * byte   : rated
      * string : unique battle ID
@@ -678,6 +679,7 @@ struct NetworkBattleImpl {
 
         OutMessage msg(OutMessage::BATTLE_BEGIN);
         msg << id << opponent << ((unsigned char)party);
+        msg << (unsigned char)m_field->getGeneration()->getIdx();
         msg << (int16_t)m_metagame;
         msg << (unsigned char)m_rated;
         msg << m_log->getId();
@@ -993,7 +995,7 @@ void NetworkBattle::terminate() {
 NetworkBattle::NetworkBattle(Server *server,
         ClientPtr *clients,
         Pokemon::ARRAY *teams,
-        const GENERATION generation,
+        Generation *generation,
         const int partySize,
         const int maxTeamLength,
         vector<StatusObject> &clauses,
@@ -1027,7 +1029,7 @@ NetworkBattle::NetworkBattle(Server *server,
     // Encode some metadata into the channel topic.
     const string topic = m_impl->m_trainer[0] + ","
             + m_impl->m_trainer[1] + ","
-            + boost::lexical_cast<string>(generation) + ","
+            + boost::lexical_cast<string>(generation->getIdx()) + ","
             + boost::lexical_cast<string>(partySize) + ","
             + boost::lexical_cast<string>(maxTeamLength) + ","
             + boost::lexical_cast<string>(metagame) + ","
@@ -1181,8 +1183,9 @@ void NetworkBattle::informVictory(const int party) {
     m_impl->broadcast(msg.getMsg());
 
     if (m_impl->m_rated) {
-        m_impl->m_server->postLadderMatch(m_impl->m_metagame,
-                m_impl->m_clients, party);
+        MetagamePtr meta = getGeneration()->getMetagames()[m_impl->m_metagame];
+        string ladder = meta->getId();
+        m_impl->m_server->postLadderMatch(ladder, m_impl->m_clients, party);
     }
 
     // terminate this battle

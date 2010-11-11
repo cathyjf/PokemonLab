@@ -202,7 +202,7 @@ public:
      * Get a user's ladder estimates
      */
     ESTIMATE_LIST getEstimates(const int id, 
-            const std::vector<MetagamePtr> &metagames);
+            const std::vector<GenerationPtr> &metagames);
 
     /**
      * Initialise the tables required for a ladder.

@@ -74,14 +74,17 @@ public:
     void run();
     database::DatabaseRegistry *getRegistry();
     ScriptMachine *getMachine();
+    void readMetagames(const std::string &);
+    void initialiseMetagames();
     void initialiseWelcomeMessage(const std::string &, const std::string &);
     void initialiseChannels();
-    void initialiseMatchmaking(const std::string &);
+    void initialiseMatchmaking();
     void initialiseClauses();
     boost::shared_ptr<Channel> getMainChannel() const;
     void addChannel(boost::shared_ptr<Channel>);
     void removeChannel(boost::shared_ptr<Channel>);
-    void postLadderMatch(const int, std::vector<ClientPtr> &, const int);
+    void postLadderMatch(const std::string &, std::vector<ClientPtr> &,
+            const int);
     bool commitBan(const int, const std::string &, const int, const int);
 
 private:

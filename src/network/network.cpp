@@ -435,7 +435,7 @@ void readTeam(SpeciesDatabase *speciesData,
 struct Challenge {
     mutex mx;
     Pokemon::ARRAY teams[TEAM_COUNT];
-    GENERATION generation;
+    int generation;
     int partySize;
     int teamLength;
     int metagame;
@@ -601,18 +601,21 @@ public:
     typedef pair<ClientImplPtr, Pokemon::ARRAY> QUEUE_ENTRY;
     typedef variate_generator<mt11213b &, uniform_int<> > GENERATOR;
 
-    MetagameQueue(MetagamePtr metagame, bool rated, ServerImpl *server):
+    MetagameQueue(int generation, int metagame, bool rated, ServerImpl *server):
+            m_generation(generation),
             m_metagame(metagame),
             m_rated(rated),
             m_server(server),
             m_rand(mt11213b(time(NULL))) { }
-            
+
+    MetagamePtr getMetagame();
     bool queueClient(ClientImplPtr, Pokemon::ARRAY &);
     void removeClient(ClientImplPtr);
     void startMatches();
 
 private:
-    MetagamePtr m_metagame;
+    int m_generation;
+    int m_metagame;
     bool m_rated;
     CLIENT_LIST m_clients;
     vector<QUEUE_ENTRY> m_queue;
@@ -623,7 +626,8 @@ private:
 };
 
 typedef shared_ptr<MetagameQueue> MetagameQueuePtr;
-typedef pair<int, bool> METAGAME_PAIR;
+typedef pair<int, int> METAGAME;
+typedef pair<METAGAME, bool> METAGAME_PAIR;
 typedef pair<string, string> CLAUSE_PAIR;
 
 class ServerImpl {
@@ -635,10 +639,15 @@ public:
     void stop();
     void removeClient(ClientImplPtr client);
     void broadcast(const OutMessage &msg);
+
+    void readMetagames(const string &);
+    void initialiseMetagames();
+
     void initialiseWelcomeMessage(const std::string &, const std::string &);
     void initialiseChannels();
-    void initialiseMatchmaking(const string &);
+    void initialiseMatchmaking();
     void initialiseClauses();
+
     bool validateTeam(ScriptContextPtr, Pokemon::ARRAY &,
             vector<StatusObject> &, vector<int> &, const set<unsigned int> &);
     database::DatabaseRegistry *getRegistry() { return &m_registry; }
@@ -646,24 +655,27 @@ public:
     ChannelPtr getMainChannel() const { return m_mainChannel; }
     void sendChannelList(ClientImplPtr client);
     void sendMetagameList(ClientImplPtr client);
-    void getMetagameClauses(const int metagame, vector<string> &clauses);
-    const vector<MetagamePtr> &getMetagames() const { return m_metagames; }
+    const vector<GenerationPtr> &getGenerations() const {
+        return m_generations;
+    }
     void sendClauseList(ClientImplPtr client);
-    void fetchClauses(ScriptContextPtr scx, vector<int> &clauses, 
-                                            vector<StatusObject> &ret);
-    void fetchClauses(ScriptContextPtr scx, const int metagame, 
-                                            vector<StatusObject> &ret);
-    void getMetagameBans(const int metagame, set<unsigned int> &bans);
+    void fetchClauses(ScriptContextPtr scx, vector<int> &clauses,
+            vector<StatusObject> &ret);
+    void fetchClauses(ScriptContextPtr scx, MetagamePtr metagame,
+            vector<StatusObject> &ret);
+    void fetchClauses(ScriptContextPtr scx, const int metagame,
+            const int generation, vector<StatusObject> &ret);
 
     ChannelPtr getChannel(const string &);
     ClientImplPtr getClient(const string &);
     bool authenticateClient(ClientImplPtr client);
     void addChannel(ChannelPtr);
     void removeChannel(ChannelPtr);
-    MetagameQueuePtr getMetagameQueue(const int metagame, const bool rated) {
-        return m_queues[METAGAME_PAIR(metagame, rated)];
+    MetagameQueuePtr getMetagameQueue(const int generation, const int metagame,
+            const bool rated) {
+        return m_queues[METAGAME_PAIR(METAGAME(generation, metagame), rated)];
     }
-    void postLadderMatch(const int, vector<ClientPtr> &, const int);
+    void postLadderMatch(const string &, vector<ClientPtr> &, const int);
     bool commitBan(const int, const string &, const int, const int,
             const bool = false);
     void commitPersonalMessage(const string& user, const string& msg);
@@ -685,7 +697,7 @@ private:
 
     class MetagameList : public OutMessage {
     public:
-        MetagameList(const vector<MetagamePtr> &);
+        MetagameList(const vector<GenerationPtr> &);
     };
     
     class ClauseList : public OutMessage {
@@ -704,7 +716,7 @@ private:
     tcp::acceptor m_acceptor;
     database::DatabaseRegistry m_registry;
     ScriptMachine m_machine;
-    vector<MetagamePtr> m_metagames;
+    vector<GenerationPtr> m_generations;
     map<METAGAME_PAIR, MetagameQueuePtr> m_queues;
     thread m_matchmaking;
     thread m_phantomClientWorker;
@@ -739,6 +751,14 @@ ScriptMachine *Server::getMachine() {
     return m_impl->getMachine();
 }
 
+void Server::readMetagames(const string &file) {
+    m_impl->readMetagames(file);
+}
+
+void Server::initialiseMetagames() {
+    m_impl->initialiseMetagames();
+}
+
 void Server::initialiseWelcomeMessage(const string &name,
         const string &welcome) {
     m_impl->initialiseWelcomeMessage(name, welcome);
@@ -748,8 +768,8 @@ void Server::initialiseChannels() {
     m_impl->initialiseChannels();
 }
 
-void Server::initialiseMatchmaking(const string &file) {
-    m_impl->initialiseMatchmaking(file);
+void Server::initialiseMatchmaking() {
+    m_impl->initialiseMatchmaking();
 }
 
 void Server::initialiseClauses() {
@@ -1141,17 +1161,25 @@ private:
         int teamLength;
         msg >> opponent >> generation >> partySize >> teamLength;
         int metagame;
-        msg >> metagame;
+        msg >> metagame;        
 
         // Check for bad challenge info
-        const vector<MetagamePtr> &metagames = m_server->getMetagames();
-        const int metagameCount = metagames.size();
-        if ((partySize < 1) || (teamLength < 1) || (metagame < -1) ||
-                (metagame >= metagameCount)) {
+        const vector<GenerationPtr> &generations = m_server->getGenerations();
+        const int generationCount = generations.size();
+        if ((generation >= generationCount) || (partySize < 1) ||
+                (teamLength < 1)) {
             sendMessage(ErrorMessage(ErrorMessage::BAD_CHALLENGE, opponent));
             return;
         }
 
+        GenerationPtr gen = generations[generation];
+        const vector<MetagamePtr> &metagames = gen->getMetagames();
+        const int metagameCount = metagames.size();
+        if ((metagame < -1) || (metagame >= metagameCount)) {
+            sendMessage(ErrorMessage(ErrorMessage::BAD_CHALLENGE, opponent));
+            return;
+        }
+        
         if (metagame == -1) {
             unsigned char clauseCount;
             msg >> clauseCount;
@@ -1180,11 +1208,11 @@ private:
             }
         }
         
-        challenge->generation = (GENERATION)generation;
+        challenge->generation = generation;
         challenge->partySize = partySize;
         challenge->teamLength = teamLength;
         challenge->metagame = metagame;
-        
+
 
         lock_guard<mutex> lock(m_challengeMutex);
 
@@ -1239,15 +1267,17 @@ private:
         // created - ScriptContextLock is necessary!!
         ScriptContextLock cxLock(cx);
         vector<StatusObject> clauses;
+        int generation = challenge->generation;
         int metagame = challenge->metagame;
         if (metagame == -1) {
             m_server->fetchClauses(cx, challenge->clauses, clauses);
         } else {
-            m_server->fetchClauses(cx, metagame, clauses);
+            m_server->fetchClauses(cx, generation, metagame, clauses);
         }
 
         set<unsigned int> bans;
-        m_server->getMetagameBans(metagame, bans);
+        GenerationPtr gen = m_server->getGenerations()[generation];
+        gen->getMetagameBans(metagame, bans);
 
         vector<int> violations;
         if (!m_server->validateTeam(cx, team, clauses, violations, bans)) {
@@ -1273,13 +1303,16 @@ private:
         if (!client) {
             return;
         }
+        
         ChallengePtr challenge = m_challenges[opponent];
-
         unique_lock<mutex> lock2(challenge->mx);
         if (challenge->teams[1].empty()) {
             return;
         }
-        
+
+        const vector<GenerationPtr> &generations = m_server->getGenerations();
+        GenerationPtr generation = generations[challenge->generation];
+
         ScriptMachine *machine = m_server->getMachine();
         readTeam(machine->getSpeciesDatabase(),
                 machine->getMoveDatabase(),
@@ -1296,15 +1329,16 @@ private:
         // created - ScriptContextLock is necessary!!
         ScriptContextLock cxLock(cx);
         vector<StatusObject> clauses;
+        int generationId = challenge->generation;
         int metagame = challenge->metagame;
         if (metagame == -1) {
             m_server->fetchClauses(cx, challenge->clauses, clauses);
         } else {
-            m_server->fetchClauses(cx, metagame, clauses);
+            m_server->fetchClauses(cx, generationId, metagame, clauses);
         }
 
         set<unsigned int> bans;
-        m_server->getMetagameBans(metagame, bans);
+        generation->getMetagameBans(metagame, bans);
         
         vector<int> violations;
         if (!m_server->validateTeam(cx, challenge->teams[0], clauses, 
@@ -1316,7 +1350,7 @@ private:
         TimerOptions timerOpts = TimerOptions();
         bool validMetagame = false;
         if (metagame >= 0) {
-            const vector<MetagamePtr> &metagames = m_server->getMetagames();
+            const vector<MetagamePtr> &metagames = generation->getMetagames();
             const int size = metagames.size();
             if (metagame >= size) {
                 validMetagame = false;
@@ -1337,7 +1371,7 @@ private:
         NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
                 clients,
                 challenge->teams,
-                challenge->generation,
+                generation.get(),
                 challenge->partySize,
                 challenge->teamLength,
                 clauses,
@@ -1414,15 +1448,18 @@ private:
     }
 
     /**
+     * byte : generation id
      * byte : metagame id
      * byte : rated
      * team : the pokemon team to queue
      */
     void handleQueueTeam(InMessage &msg) {
+        unsigned char generation;
         unsigned char metagame;
         unsigned char rated;
-        msg >> metagame >> rated;
-        MetagameQueuePtr queue = m_server->getMetagameQueue(metagame, rated);
+        msg >> generation >> metagame >> rated;
+        MetagameQueuePtr queue = m_server->getMetagameQueue(generation,
+                metagame, rated);
         if (!queue) {
             return;
         }
@@ -1450,9 +1487,9 @@ private:
         ClientImplPtr client = m_server->getClient(user);
         if (client) {
             const int id = client->getId();
-            const vector<MetagamePtr> &metagames = m_server->getMetagames();
+            const vector<GenerationPtr> &gens = m_server->getGenerations();
             database::DatabaseRegistry::ESTIMATE_LIST estimates =
-                    m_server->getRegistry()->getEstimates(id, metagames);
+                    m_server->getRegistry()->getEstimates(id, gens);
             sendMessage(UserPersonalMessage(user, client->getPersonalMessage(),
                     estimates));
         }
@@ -1463,10 +1500,12 @@ private:
     }
 
     void handleCancelQueue(InMessage &msg) {
+        unsigned char generation;
         unsigned char metagame;
         unsigned char rated;
-        msg >> metagame >> rated;
-        MetagameQueuePtr queue = m_server->getMetagameQueue(metagame, rated);
+        msg >> generation >> metagame >> rated;
+        MetagameQueuePtr queue = m_server->getMetagameQueue(generation,
+                metagame, rated);
         if (!queue) {
             return;
         }
@@ -1854,24 +1893,31 @@ bool ServerImpl::commitBan(const int channel, const string &user,
     return m_registry.setBan(channel, user, bannerId, date, ipBan);
 }
 
-void ServerImpl::postLadderMatch(const int metagame,
+void ServerImpl::postLadderMatch(const string &ladder,
         vector<ClientPtr> &clients, const int victor) {
     ClientImpl *impl0 = dynamic_cast<ClientImpl *>(clients[0].get());
     ClientImpl *impl1 = dynamic_cast<ClientImpl *>(clients[1].get());
     if (!impl0 || !impl1)
         return;
-    const string ladder = m_metagames[metagame]->getId();
     m_registry.postLadderMatch(ladder, impl0->getId(), impl1->getId(), victor);
     impl0->updateLadderStats(ladder);
     impl1->updateLadderStats(ladder);
+}
+
+MetagamePtr MetagameQueue::getMetagame() {
+    const vector<GenerationPtr> &generations = m_server->getGenerations();
+    GenerationPtr generation = generations[m_generation];
+    return generation->getMetagames()[m_metagame];
 }
 
 bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     lock_guard<mutex> lock(m_mutex);
     if (m_clients.find(client) != m_clients.end())
         return false;
+
+    MetagamePtr metagame = getMetagame();
     const int size = team.size();
-    if (size > m_metagame->getMaxTeamLength())
+    if (size > metagame->getMaxTeamLength())
         return false;
         
     ScriptContextPtr scx = m_server->getMachine()->acquireContext();
@@ -1879,15 +1925,15 @@ bool MetagameQueue::queueClient(ClientImplPtr client, Pokemon::ARRAY &team) {
     // created - ScriptContextLock is necessary!!
     ScriptContextLock cxLock(scx);
     vector<StatusObject> clauses;
-    m_server->fetchClauses(scx, m_metagame->getIdx(), clauses);
+    m_server->fetchClauses(scx, metagame, clauses);
     vector<int> violations;
     if (!m_server->validateTeam(scx, team, clauses, violations,
-            m_metagame->getBanList())) {
+            metagame->getBanList())) {
         client->sendMessage(InvalidTeamMessage(string(), size, violations));
         return false;
     }
     if (m_rated) {
-        client->joinLadder(m_metagame->getId());
+        client->joinLadder(metagame->getId());
     }
     m_clients.insert(client);
     m_queue.push_back(QUEUE_ENTRY(client, team));
@@ -1916,7 +1962,9 @@ void MetagameQueue::startMatches() {
         GENERATOR generator(m_rand, uniform_int<>());
         random_shuffle(m_queue.begin(), m_queue.end(), generator);
     }
+
     // TODO: Use the generations map to prevent rematches.
+    MetagamePtr metagame = getMetagame();
     QUEUE_ENTRY remainder;
     int size = m_queue.size();
     const bool hasRemainder = size % 2;
@@ -1930,18 +1978,19 @@ void MetagameQueue::startMatches() {
         ClientPtr clients[] = { q1.first, q2.first };
         Pokemon::ARRAY teams[] = { q1.second, q2.second };
         vector<StatusObject> clauses;
-        m_server->fetchClauses(m_server->getMachine()->acquireContext(), 
-                                            m_metagame->getIdx(), clauses);
+        m_server->fetchClauses(m_server->getMachine()->acquireContext(),
+                metagame, clauses);
         shared_ptr<void> monitor;
-        NetworkBattle::PTR field(new NetworkBattle(m_server->getServer(),
+        NetworkBattle::PTR field(new NetworkBattle(
+                m_server->getServer(),
                 clients,
                 teams,
-                (GENERATION)m_metagame->getGeneration(),
-                m_metagame->getActivePartySize(),
-                m_metagame->getMaxTeamLength(),
+                metagame->getGeneration(),
+                metagame->getActivePartySize(),
+                metagame->getMaxTeamLength(),
                 clauses,
-                m_metagame->getTimerOptions(),
-                m_metagame->getIdx(),
+                metagame->getTimerOptions(),
+                metagame->getIdx(),
                 m_rated,
                 monitor));
         field->beginBattle();
@@ -1965,18 +2014,6 @@ void ServerImpl::sendMetagameList(ClientImplPtr client) {
     client->sendMessage(*m_metagameList);
 }
 
-void ServerImpl::getMetagameClauses(const int idx, vector<string> &ret) {
-    const int metagamesize = m_metagames.size();
-    if ((idx < 0) || (idx > metagamesize))
-        return;
-    MetagamePtr p = m_metagames[idx];
-    const vector<string> &clauses = p->getClauses();
-    const int size = clauses.size();
-    for (int i = 0; i < size; ++i) {
-        ret.push_back(clauses[i]);
-    }
-}
-
 void ServerImpl::sendClauseList(ClientImplPtr client) {
     client->sendMessage(ClauseList(m_clauses));
 }
@@ -1994,27 +2031,20 @@ void ServerImpl::fetchClauses(ScriptContextPtr scx, vector<int> &clauses,
     }
 }
 
-void ServerImpl::fetchClauses(ScriptContextPtr scx, const int metagame, 
-                                                vector<StatusObject> &ret) {
-    vector<string> clauses;
-    getMetagameClauses(metagame, clauses);
-    vector<string>::iterator i = clauses.begin();
+void ServerImpl::fetchClauses(ScriptContextPtr scx, MetagamePtr metagame,
+        vector<StatusObject> &ret) {
+    const vector<string> &clauses = metagame->getClauses();
+    vector<string>::const_iterator i = clauses.begin();
     for (; i != clauses.end(); ++i) {
         ret.push_back(scx->getClause(*i));
     }
 }
 
-void ServerImpl::getMetagameBans(const int metagame, set<unsigned int> &ret) {
-    const int metagameSize = m_metagames.size();
-    if ((metagame < 0) || (metagame > metagameSize)) {
-        return;
-    }
-    MetagamePtr p = m_metagames[metagame];
-    const set<unsigned int> &bans = p->getBanList();
-    set<unsigned int>::const_iterator i = bans.begin();
-    for (; i != bans.end(); ++i) {
-        ret.insert(*i);
-    }
+void ServerImpl::fetchClauses(ScriptContextPtr scx, const int generation,
+        const int metagame, vector<StatusObject> &ret) {
+    GenerationPtr gen = m_generations[generation];
+    MetagamePtr meta = gen->getMetagames()[metagame];
+    fetchClauses(scx, meta, ret);
 }
 
 void ServerImpl::addChannel(ChannelPtr p) {
@@ -2035,9 +2065,9 @@ void Server::removeChannel(ChannelPtr p) {
     m_impl->removeChannel(p);
 }
 
-void Server::postLadderMatch(const int metagame,
-        vector<ClientPtr> &clients, const int victor) {
-    m_impl->postLadderMatch(metagame, clients, victor);
+void Server::postLadderMatch(const string &ladder, vector<ClientPtr> &clients,
+        const int victor) {
+    m_impl->postLadderMatch(ladder, clients, victor);
 }
 
 ServerImpl::ChannelList::ChannelList(ServerImpl *server):
@@ -2055,38 +2085,47 @@ ServerImpl::ChannelList::ChannelList(ServerImpl *server):
     finalise();
 }
 
-ServerImpl::MetagameList::MetagameList(const vector<MetagamePtr> &metagames):
-        OutMessage(METAGAME_LIST) {
-    const int size = metagames.size();
-    *this << (int16_t)size;
-    for (int i = 0; i < size; ++i) {
-        MetagamePtr p = metagames[i];
-        *this << (unsigned char)p->getIdx();
-        *this << p->getName();
-        *this << p->getId();
-        *this << p->getDescription();
-        *this << (unsigned char)p->getActivePartySize();
-        *this << (unsigned char)p->getMaxTeamLength();
-        const set<unsigned int> &banList = p->getBanList();
-        *this << (int16_t)banList.size();
-        set<unsigned int>::const_iterator j = banList.begin();
-        for (; j != banList.end(); ++j) {
-            *this << (int16_t)(*j);
-        }
-        const vector<string> &clauses = p->getClauses();
-        const int size2 = clauses.size();
-        *this << (int16_t)size2;
-        for (int k = 0; k < size2; ++k) {
-            *this << clauses[k];
-        }
-        const TimerOptions ops = p->getTimerOptions();
-        if (ops.enabled) {
-            *this << (unsigned char)1;
-            *this << (int16_t)ops.pool;
-            *this << (unsigned char)ops.periods;
-            *this << (int16_t)ops.periodLength;
-        } else {
-            *this << (unsigned char)0;
+ServerImpl::MetagameList::MetagameList(const vector<GenerationPtr>
+        &generations): OutMessage(METAGAME_LIST) {
+    *this << (unsigned char)generations.size();
+
+    vector<GenerationPtr>::const_iterator i = generations.begin();
+    for (; i != generations.end(); ++i) {
+        GenerationPtr generation = *i;
+        const vector<MetagamePtr> &metagames = generation->getMetagames();
+        *this << generation->getId();
+        *this << generation->getName();
+        *this << (unsigned char)metagames.size();
+
+        vector<MetagamePtr>::const_iterator j = metagames.begin();
+        for (; j != metagames.end(); ++j) {
+            MetagamePtr p = *j;
+            *this << p->getId();
+            *this << p->getName();
+            *this << p->getDescription();
+            *this << (unsigned char)p->getActivePartySize();
+            *this << (unsigned char)p->getMaxTeamLength();
+            const set<unsigned int> &banList = p->getBanList();
+            *this << (int16_t)banList.size();
+            set<unsigned int>::const_iterator j = banList.begin();
+            for (; j != banList.end(); ++j) {
+                *this << (int16_t)(*j);
+            }
+            const vector<string> &clauses = p->getClauses();
+            const int size2 = clauses.size();
+            *this << (int16_t)size2;
+            for (int k = 0; k < size2; ++k) {
+                *this << clauses[k];
+            }
+            const TimerOptions ops = p->getTimerOptions();
+            if (ops.enabled) {
+                *this << (unsigned char)1;
+                *this << (int16_t)ops.pool;
+                *this << (unsigned char)ops.periods;
+                *this << (int16_t)ops.periodLength;
+            } else {
+                *this << (unsigned char)0;
+            }
         }
     }
     finalise();
@@ -2162,6 +2201,18 @@ ChannelPtr ServerImpl::getChannel(const string &name) {
     return ChannelPtr();
 }
 
+void ServerImpl::readMetagames(const string& file) {
+    Generation::readGenerations(file, m_generations);
+}
+
+void ServerImpl::initialiseMetagames() {
+    SpeciesDatabase *species = m_machine.getSpeciesDatabase();
+    vector<GenerationPtr>::iterator i = m_generations.begin();
+    for (; i != m_generations.end(); ++i) {
+        (*i)->initialiseMetagames(species);
+    }
+}
+
 void ServerImpl::initialiseWelcomeMessage(const string &name,
         const string &welcome) {
     shared_ptr<database::Authenticator> auth = m_registry.getAuthenticator();
@@ -2198,21 +2249,28 @@ void ServerImpl::initialiseChannels() {
     assert(m_mainChannel);
 }
 
-void ServerImpl::initialiseMatchmaking(const string &file) {
-    SpeciesDatabase *species = m_machine.getSpeciesDatabase();
-    Metagame::readMetagames(file, species, m_metagames);
-    vector<MetagamePtr>::const_iterator i = m_metagames.begin();
-    for (; i != m_metagames.end(); ++i) {
-        m_registry.initialiseLadder((*i)->getId());
-        const int idx = (*i)->getIdx();
-        // rated queue
-        m_queues[METAGAME_PAIR(idx, true)] =
-                MetagameQueuePtr(new MetagameQueue(*i, true, this));
-        // unrated queue
-        m_queues[METAGAME_PAIR(idx, false)] =
-                MetagameQueuePtr(new MetagameQueue(*i, false, this));
+void ServerImpl::initialiseMatchmaking() {
+    vector<GenerationPtr>::const_iterator i = m_generations.begin();
+    for (; i != m_generations.end(); ++i) {
+        GenerationPtr generation = *i;
+        const vector<MetagamePtr> &metagames = generation->getMetagames();
+        vector<MetagamePtr>::const_iterator j = metagames.begin();
+        for (; j != metagames.end(); ++j) {
+            m_registry.initialiseLadder((*j)->getId());
+
+            int genIdx = generation->getIdx();
+            int metaIdx = (*j)->getIdx();
+            METAGAME meta(genIdx, metaIdx);
+            // rated queue
+            m_queues[METAGAME_PAIR(meta, true)] = MetagameQueuePtr(
+                    new MetagameQueue(genIdx, metaIdx, true, this));
+            // unrated queue
+            m_queues[METAGAME_PAIR(meta, false)] = MetagameQueuePtr(
+                    new MetagameQueue(genIdx, metaIdx, false, this));
+        }
     }
-    m_metagameList = shared_ptr<MetagameList>(new MetagameList(m_metagames));
+
+    m_metagameList = shared_ptr<MetagameList>(new MetagameList(m_generations));
     m_matchmaking = thread(boost::bind(&ServerImpl::handleMatchmaking, this));
 }
 
@@ -2283,7 +2341,7 @@ bool ServerImpl::validateTeam(ScriptContextPtr scx, Pokemon::ARRAY &team,
 void ServerImpl::handleMatchmaking() {
     while (true) {
         this_thread::sleep(posix_time::seconds(15));
-        map<pair<int, bool>, MetagameQueuePtr>::iterator i = m_queues.begin();
+        map<METAGAME_PAIR, MetagameQueuePtr>::iterator i = m_queues.begin();
         for (; i != m_queues.end(); ++i) {
             i->second->startMatches();
         }
@@ -2347,7 +2405,7 @@ void ServerImpl::stop() {
  */
 void ServerImpl::removeClient(ClientImplPtr client) {
     // Remove the client from any metagame queues that the client may be in.
-    map<pair<int, bool>, MetagameQueuePtr>::iterator i = m_queues.begin();
+    map<METAGAME_PAIR, MetagameQueuePtr>::iterator i = m_queues.begin();
     for (; i != m_queues.end(); ++i) {
         i->second->removeClient(client);
     }

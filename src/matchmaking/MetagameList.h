@@ -33,32 +33,55 @@
 
 namespace shoddybattle {
 
+class Generation;
 class Metagame;
 typedef boost::shared_ptr<Metagame> MetagamePtr;
+typedef boost::shared_ptr<Generation> GenerationPtr;
 
 class SpeciesDatabase;
 
 class Metagame {
 public:
-    static void readMetagames(const std::string &, SpeciesDatabase *,
-            std::vector<MetagamePtr> &);
-
     Metagame();
 
     std::string getName() const;
     std::string getId() const;
     int getIdx() const;
     std::string getDescription() const;
-    int getGeneration() const;
+    Generation *getGeneration() const;
     int getActivePartySize() const;
     int getMaxTeamLength() const;
     const std::set<unsigned int> &getBanList() const;
     const std::vector<std::string> &getClauses() const;
     const network::TimerOptions &getTimerOptions() const;
 
+    void initialise(SpeciesDatabase *);
+
 private:
     class MetagameImpl;
     boost::shared_ptr<MetagameImpl> m_impl;
+    friend class Generation;
+};
+
+class Generation {
+public:
+    static void readGenerations(const std::string &,
+            std::vector<GenerationPtr> &);
+
+    Generation();
+    
+    std::string getId() const;
+    std::string getName() const;
+    int getIdx() const;
+    const std::vector<MetagamePtr> &getMetagames() const;
+    void getMetagameClauses(const int idx, std::vector<std::string> &clauses);
+    void getMetagameBans(const int idx, std::set<unsigned int> &bans);
+
+    void initialiseMetagames(SpeciesDatabase *);
+    
+private:
+    class GenerationImpl;
+    boost::shared_ptr<GenerationImpl> m_impl;
 };
 
 } // namespace shoddybattle

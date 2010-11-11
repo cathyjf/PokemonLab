@@ -54,6 +54,7 @@ JSClass fieldClass = {
     
 enum FIELD_TINYID {
     FTI_GENERATION,
+    FTI_GENERATION_ID,
     FTI_LAST_MOVE,
     FTI_PARTY_SIZE,
     FTI_NARRATION,
@@ -580,7 +581,14 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
     int tid = JSVAL_TO_INT(id);
     switch (tid) {
         case FTI_GENERATION: {
-            *vp = INT_TO_JSVAL(p->getGeneration());
+            *vp = INT_TO_JSVAL(0);
+            // TODO: Return the actual object itself
+        } break;
+        case FTI_GENERATION_ID: {
+            string id = p->getGeneration()->getId();
+            char *pstr = JS_strdup(cx, id.c_str());
+            JSString *str = JS_NewString(cx, pstr, id.length());
+            *vp = STRING_TO_JSVAL(str);
         } break;
         case FTI_LAST_MOVE: {
             MoveObjectPtr move = p->getLastMove();
@@ -622,6 +630,7 @@ JSBool fieldGet(JSContext *cx, JSObject *obj, jsval id, jsval *vp) {
 JSPropertySpec fieldProperties[] = {
     { "damage", 0, JSPROP_PERMANENT, NULL, NULL },
     { "generation", FTI_GENERATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
+    { "generationId", FTI_GENERATION_ID, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "lastMove", FTI_LAST_MOVE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "partySize", FTI_PARTY_SIZE, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, NULL },
     { "narration", FTI_NARRATION, JSPROP_PERMANENT | JSPROP_SHARED, fieldGet, fieldSet },

@@ -48,34 +48,92 @@ struct Metagame::MetagameImpl {
     string m_id;
     int m_idx;
     string m_description;
-    int m_generation;
+    Generation *m_generation;
     int m_partySize;
     int m_maxTeamLength;
     set<unsigned int> m_banList;
+    set<string> m_banListProto;
     vector<string> m_clauses;
     network::TimerOptions m_timerOptions;
 
-    void getMetagame(SpeciesDatabase *, DOMElement *);
+    void getMetagame(DOMElement *);
+
+    void initialise(SpeciesDatabase *species) {
+        set<string>::iterator i = m_banListProto.begin();
+        for (; i != m_banListProto.end(); ++i) {
+            string name = *i;
+            const PokemonSpecies *p = species->getSpecies(name);
+            if (!p) {
+                Log::out() << "Unknown species: " << name << endl;
+            } else {
+                m_banList.insert(p->getSpeciesId());
+            }
+        }
+    }
+};
+
+struct Generation::GenerationImpl {
+    Generation *m_owner;
+    string m_id;
+    string m_name;
+    int m_idx;
+    vector<MetagamePtr> m_metagames;
+
+    void getGeneration(DOMElement *);
+
+    void getMetagameClauses(const int idx, vector<string> &ret) {
+        const int metagamesize = m_metagames.size();
+        if ((idx < 0) || (idx > metagamesize)) {
+            return;
+        }
+
+        MetagamePtr p = m_metagames[idx];
+        const vector<string> &clauses = p->getClauses();
+        const int size = clauses.size();
+        for (int i = 0; i < size; ++i) {
+            ret.push_back(clauses[i]);
+        }
+    }
+    
+    void getMetagameBans(const int idx, set<unsigned int> &ret) {
+        const int metagameSize = m_metagames.size();
+        if ((idx < 0) || (idx > metagameSize)) {
+            return;
+        }
+
+        MetagamePtr p = m_metagames[idx];
+        const set<unsigned int> &bans = p->getBanList();
+        set<unsigned int>::const_iterator i = bans.begin();
+        for (; i != bans.end(); ++i) {
+            ret.insert(*i);
+        }
+    }
+
+    void initialiseMetagames(SpeciesDatabase *species) {
+        vector<MetagamePtr>::iterator i = m_metagames.begin();
+        for (; i != m_metagames.end(); ++i) {
+            (*i)->initialise(species);
+        }
+    }
 };
 
 int getIntNodeValue(DOMNode *node);
 string getStringNodeValue(DOMNode *node, bool text = false);
 string getTextFromElement(DOMElement *element, bool text = false);
 
-void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
-        DOMElement *node) {
+void Metagame::MetagameImpl::getMetagame(DOMElement *node) {
     XMLCh tempStr[20];
+
+    XMLString::transcode("id", tempStr, 19);
+    DOMNode *p = node->getAttributes()->getNamedItem(tempStr);
+    if (p) {
+        m_id = getStringNodeValue(p);
+    }
 
     XMLString::transcode("name", tempStr, 19);
     DOMNodeList *list = node->getElementsByTagName(tempStr);
     if (list->getLength() != 0) {
         m_name = getTextFromElement((DOMElement *)list->item(0));
-    }
-
-    XMLString::transcode("id", tempStr, 19);
-    list = node->getElementsByTagName(tempStr);
-    if (list->getLength() != 0) {
-        m_id = getTextFromElement((DOMElement *)list->item(0));
     }
 
     XMLString::transcode("description", tempStr, 19);
@@ -108,12 +166,7 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
         for (int i = 0; i < length; ++i) {
             DOMElement *pokemon = (DOMElement *)list->item(i);
             string txt = getTextFromElement(pokemon);
-            const PokemonSpecies *p = species->getSpecies(txt);
-            if (!p) {
-                Log::out() << "Unknown species: " << txt << endl;
-            } else {
-                m_banList.insert(p->getSpeciesId());
-            }
+            m_banListProto.insert(txt);
         }
     }
 
@@ -161,8 +214,39 @@ void Metagame::MetagameImpl::getMetagame(SpeciesDatabase *species,
         m_timerOptions.periods = periods;
         m_timerOptions.periodLength = periodLength;
     }
+}
 
-    m_generation = GEN_PLATINUM; // TODO
+void Generation::GenerationImpl::getGeneration(DOMElement *node) {
+    XMLCh tempStr[20];
+
+    XMLString::transcode("id", tempStr, 19);
+    DOMNode *p = node->getAttributes()->getNamedItem(tempStr);
+    if (p) {
+        m_id = getStringNodeValue(p);
+    }
+
+    XMLString::transcode("name", tempStr, 19);
+    DOMNodeList *list = node->getElementsByTagName(tempStr);
+    if (list->getLength() != 0) {
+        m_name = getTextFromElement((DOMElement *)list->item(0));
+    }
+
+    XMLString::transcode("metagames", tempStr, 19);
+    list = node->getElementsByTagName(tempStr);
+    if (list->getLength() != 0) {
+        DOMElement *metagames = (DOMElement *)list->item(0);
+        XMLString::transcode("metagame", tempStr, 19);
+        list = metagames->getElementsByTagName(tempStr);
+        const int length = list->getLength();
+        for (int i = 0; i < length; ++i) {
+            DOMElement *item = (DOMElement *)list->item(i);
+            MetagamePtr metagame(new Metagame());
+            metagame.get()->m_impl->getMetagame(item);
+            metagame.get()->m_impl->m_idx = i;
+            metagame.get()->m_impl->m_generation = m_owner;
+            m_metagames.push_back(metagame);
+        }
+    }
 }
 
 string Metagame::getName() const {
@@ -181,7 +265,7 @@ string Metagame::getDescription() const {
     return m_impl->m_description;
 }
 
-int Metagame::getGeneration() const {
+Generation *Metagame::getGeneration() const {
     return m_impl->m_generation;
 }
 
@@ -205,7 +289,17 @@ const network::TimerOptions &Metagame::getTimerOptions() const {
     return m_impl->m_timerOptions;
 }
 
-class MetagameErrorHandler : public HandlerBase {
+void Metagame::initialise(SpeciesDatabase *species) {
+    m_impl->initialise(species);
+}
+
+Metagame::Metagame():
+        m_impl(boost::shared_ptr<MetagameImpl>(new MetagameImpl())) { }
+
+Generation::Generation():
+        m_impl(boost::shared_ptr<GenerationImpl>(new GenerationImpl())) { }
+
+class GenerationErrorHandler : public HandlerBase {
     void error(const SAXParseException& e) {
         fatalError(e);
     }
@@ -219,15 +313,12 @@ class MetagameErrorHandler : public HandlerBase {
     }
 };
 
-Metagame::Metagame():
-        m_impl(boost::shared_ptr<MetagameImpl>(new MetagameImpl())) { }
-
-void Metagame::readMetagames(const string &file, SpeciesDatabase *species,
-        vector<MetagamePtr> &metagames) {
+void Generation::readGenerations(const string &file,
+        vector<GenerationPtr> &generations) {
     XMLPlatformUtils::Initialize();
     XercesDOMParser parser;
 
-    MetagameErrorHandler handler;
+    GenerationErrorHandler handler;
     parser.setErrorHandler(&handler);
     parser.setEntityResolver(&handler);
 
@@ -237,17 +328,46 @@ void Metagame::readMetagames(const string &file, SpeciesDatabase *species,
     DOMElement *root = doc->getDocumentElement();
 
     XMLCh tempStr[12];
-    XMLString::transcode("metagame", tempStr, 11);
+    XMLString::transcode("generation", tempStr, 11);
     DOMNodeList *list = root->getElementsByTagName(tempStr);
 
     int length = list->getLength();
     for (int i = 0; i < length; ++i) {
         DOMElement *item = (DOMElement *)list->item(i);
-        MetagamePtr metagame(new Metagame());
-        metagame.get()->m_impl->getMetagame(species, item);
-        metagame.get()->m_impl->m_idx = i;
-        metagames.push_back(metagame);
+        GenerationPtr generation(new Generation());
+        generation->m_impl->m_owner = generation.get();
+        generation->m_impl->getGeneration(item);
+        generation->m_impl->m_idx = i;
+        generations.push_back(generation);
     }
+}
+
+string Generation::getId() const {
+    return m_impl->m_id;
+}
+
+string Generation::getName() const {
+    return m_impl->m_name;
+}
+
+int Generation::getIdx() const {
+    return m_impl->m_idx;
+}
+
+const vector<MetagamePtr> &Generation::getMetagames() const {
+    return m_impl->m_metagames;
+}
+
+void Generation::getMetagameClauses(const int meta, vector<string> &clauses) {
+    m_impl->getMetagameClauses(meta, clauses);
+}
+
+void Generation::getMetagameBans(const int metagame, set<unsigned int> &bans) {
+    m_impl->getMetagameBans(metagame, bans);
+}
+
+void Generation::initialiseMetagames(SpeciesDatabase *species) {
+    m_impl->initialiseMetagames(species);
 }
 
 }
