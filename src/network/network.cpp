@@ -1697,6 +1697,9 @@ void ClientImpl::handleChannelMessage(InMessage &msg) {
     msg >> id >> message;
     ChannelPtr p = getChannel(id);
     if (p) {
+		if(message.length() > 4000) {
+			message = message.substr(0,4000).append("... (truncated)");
+		}
         p->sendMessage(message, shared_from_this());
     }
 }
