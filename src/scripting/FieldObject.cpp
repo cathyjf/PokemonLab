@@ -408,7 +408,7 @@ JSBool calculate(JSContext *cx,
     const bool weight = (argc > 4) ? JSVAL_TO_BOOLEAN(argv[4]) : true;
 
     const BattleMechanics *mech = p->getMechanics();
-    const int damage = mech->calculateDamage(*p, move, *user, *target,
+    const unsigned long damage = mech->calculateDamage(*p, move, *user, *target,
             targets, weight);
 
     *ret = INT_TO_JSVAL(damage);

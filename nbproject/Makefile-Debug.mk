@@ -65,8 +65,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon
-CXXFLAGS=-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon
+CCFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon
+CXXFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon
 
 # Fortran Compiler Flags
 FFLAGS=

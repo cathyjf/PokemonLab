@@ -32,6 +32,7 @@
 #include "../moves/PokemonMove.h"
 #include "../scripting/ScriptMachine.h"
 #include "stat.h"
+#include "../main/Log.h"
 
 #include <ctime>
 
@@ -164,7 +165,7 @@ inline int multiplyOut(PRIORITY_MAP &elements) {
     return int(value);
 }
 
-inline void multiplyBy(int &damage, const int position, MODIFIERS &mods) {
+inline void multiplyBy(unsigned long &damage, const int position, MODIFIERS &mods) {
     multiplyBy(damage, mods[position]);
 }
 
@@ -205,7 +206,7 @@ double JewelMechanics::getEffectiveness(BattleField &field,
 /**
  * Calculate damage.
  */
-int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
+unsigned long JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
         Pokemon &user, Pokemon &target, const int targets,
         const bool weight) const {
     
@@ -254,8 +255,13 @@ int JewelMechanics::calculateDamage(BattleField &field, MoveObject &move,
 
     mods[0][0] = move.getPower(cx); // base power
     const int power = multiplyOut(mods[0]);
+
+	if(defence < 1) {
+		defence = 1;
+		Log::out() << "Prevented defence < 1";
+	}
     
-    int damage = user.getLevel() * 2 / 5;
+    unsigned long damage = user.getLevel() * 2 / 5;
     damage += 2;
     damage *= power;
     damage *= attack;

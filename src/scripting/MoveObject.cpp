@@ -172,7 +172,7 @@ void MoveObject::use(ScriptContext *scx, BattleField *field,
         scx->callFunctionByName(this, "use", 4, val);
     } else {
         // just do a basic move use
-        int damage = field->getMechanics()->calculateDamage(*field,
+        unsigned long damage = field->getMechanics()->calculateDamage(*field,
                 *this, *user, *target, targets);
         target->setHp(target->getHp() - damage);
     }
