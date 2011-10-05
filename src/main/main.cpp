@@ -54,6 +54,10 @@ const char *getPidFileName() {
 }
 
 int initialise(int argc, char **argv, bool &daemon) {
+
+cout << "Init..." << endl;
+
+
     string configFile;
     int port, databasePort, workerThreads, serverUid, userLimit;
     string serverName, welcomeFile, welcomeMessage;
@@ -124,6 +128,8 @@ int initialise(int argc, char **argv, bool &daemon) {
                     ""),
                 "MySQL password")
     ;
+    
+    cout << "Init 1..." << endl;
 
     po::options_description hidden("Hidden options");
     hidden.add_options()
@@ -146,6 +152,8 @@ int initialise(int argc, char **argv, bool &daemon) {
         return EXIT_FAILURE;
     }
     po::notify(vm);
+    
+     cout << "Init 2..." << endl;
 
     if (vm.count("help")) {
         Log::out() << "Usage: shoddybattle2 [options] [config-file = config]"
@@ -172,6 +180,8 @@ int initialise(int argc, char **argv, bool &daemon) {
         }
         po::notify(vm);
     }
+    
+     cout << "Init 3..." << endl;
 
     if (vm.count("server.uid")) {
         if (seteuid(serverUid)) {
@@ -201,6 +211,8 @@ int initialise(int argc, char **argv, bool &daemon) {
     if (vm.count("server.log")) {
         Log::out.setMode(Log::MODE_BOTH);
     }
+    
+     cout << "Init 4..." << endl;
 
     const bool serverDetach = vm.count("server.detach");
     const bool serverKill = vm.count("server.kill");
@@ -210,7 +222,7 @@ int initialise(int argc, char **argv, bool &daemon) {
         path = path.normalize() / "shoddybattle2.pid";
         pidFile = path.string();
         daemon_pid_file_proc = getPidFileName;
-        const string baseDir = path.remove_filename().file_string();
+        const string baseDir = path.remove_filename().string();
         
         if (serverKill) {
             const int ret = daemon_pid_file_kill_wait(SIGTERM, 10);
@@ -282,12 +294,23 @@ int initialise(int argc, char **argv, bool &daemon) {
         }
     }
 
+ cout << "Init 5..." << endl;
+ cout << "Init 5x..." << endl;
     network::Server server(port, userLimit);
+     cout << "Init 5y..." << endl;
+     
     server.installSignalHandlers();
+     cout << "Init 5z..." << endl;
+    
+     cout << "Init 5a..." << endl;
 
     ScriptMachine *machine = server.getMachine();
+     cout << "Init 5b..." << endl;
     machine->acquireContext()->runFile("resources/main.js");
+     cout << "Init 5c..." << endl;
     machine->finalise();
+    
+     cout << "Init 6..." << endl;
 
     database::DatabaseRegistry *registry = server.getRegistry();
     registry->connect(databaseName, databaseHost,
@@ -304,8 +327,12 @@ int initialise(int argc, char **argv, bool &daemon) {
                 new database::VBulletinAuthenticator(loginParameter,
                         registerParameter, authParameter)));
     }
+    
+     cout << "Init 7..." << endl;
 
     registry->createDefaultDatabase();
+    
+     cout << "Init 8..." << endl;
 
     server.initialiseWelcomeMessage(serverName, welcomeMessage);
     server.initialiseChannels();
@@ -313,6 +340,8 @@ int initialise(int argc, char **argv, bool &daemon) {
     server.initialiseClauses();
 
     network::NetworkBattle::startTimerThread();
+    
+     cout << "Init 9..." << endl;
 
     vector<boost::shared_ptr<boost::thread> > threads;
     for (int i = 0; i < workerThreads; ++i) {
@@ -323,6 +352,8 @@ int initialise(int argc, char **argv, bool &daemon) {
     if (daemon) {
         daemon_retval_send(0); // started up successfully
     }
+    
+     cout << "Init 10..." << endl;
 
     // This call will block until the process receives one of SIGTERM and
     // friends, at which point this function will be able to end gracefully.
@@ -336,6 +367,7 @@ int initialise(int argc, char **argv, bool &daemon) {
 }
 
 int main(int argc, char **argv) {
+cout << "Start..." << endl;
     bool daemon = false;
     try {
         const int ret = initialise(argc, argv, daemon);

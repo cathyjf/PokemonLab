@@ -49,6 +49,7 @@
 #include <bitset>
 #include <map>
 #include <cstring>
+#include <csignal>
 #include "network.h"
 #include "Channel.h"
 #include "NetworkBattle.h"
@@ -2111,11 +2112,15 @@ ServerImpl::ServerImpl(Server *server, const int port, const int userLimit):
             m_userLimit(userLimit),
             m_acceptor(m_service, tcp::endpoint(tcp::v4(), port), true),
             m_server(server) {
+             cout << "Init SI 1..." << endl;
     acceptClient();
+    cout << "Init SI 2..." << endl;
     m_phantomClientWorker = boost::thread(boost::bind(
             &ServerImpl::handlePhantomClients, this));
+            cout << "Init SI 3..." << endl;
     m_populationThread = boost::thread(boost::bind(
             &ServerImpl::runPopulationServer, this, port));
+            cout << "Init SI 4..." << endl;
 }
 
 void ServerImpl::runPopulationServer(const int port) {

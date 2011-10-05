@@ -61,7 +61,7 @@ namespace shoddybattle {
 /* The class of the global object. */
 static JSClass globalClass = {
     "global", JSCLASS_GLOBAL_FLAGS,
-    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
     JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
     JSCLASS_NO_OPTIONAL_MEMBERS
 };
@@ -220,13 +220,12 @@ MoveDatabase *ScriptMachine::getMoveDatabase() const {
     return &m_impl->state->moves;
 }
 
-static JSBool includeMoves(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
+static JSBool includeMoves(JSContext *cx, uintN /*argc*/, jsval *argv) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
     }
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    char *str = JS_EncodeString(cx, JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     jsrefcount ref = JS_SuspendRequest(cx);
     scx->getMachine()->includeMoves(str);
@@ -234,23 +233,21 @@ static JSBool includeMoves(JSContext *cx,
     return JS_TRUE;
 }
 
-static JSBool include(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
+static JSBool include(JSContext *cx, uintN /*argc*/, jsval *argv) {
     jsval val = argv[0];
     JSString *str = JS_ValueToString(cx, val);
-    char *pstr = JS_GetStringBytes(str);
+    char *pstr = JS_EncodeString(cx, str);
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     scx->runFile(pstr);
     return JS_TRUE;
 }
 
-static JSBool includeSpecies(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
+static JSBool includeSpecies(JSContext *cx, uintN /*argc*/, jsval *argv) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
     }
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    char *str = JS_EncodeString(cx, JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     jsrefcount ref = JS_SuspendRequest(cx);
     scx->getMachine()->includeSpecies(str);
@@ -267,9 +264,9 @@ public:
     }
     int operator()(const string name) {
         char *pstr = JS_strdup(m_cx, name.c_str());
-        JSString *str = JS_NewString(m_cx, pstr, name.length());
+        JSString *str = JS_NewStringCopyN(m_cx, pstr, name.length());
         jsval jsv = STRING_TO_JSVAL(str);
-        ScriptValue argv[1] = { ScriptValue((void *)jsv) };
+        ScriptValue argv[1] = { ScriptValue(JSVAL_TO_PRIVATE(jsv)) };
         ScriptValue v = m_scx->callFunction(NULL, &m_func, 1, argv);
         return v.getInt();
     }
@@ -279,8 +276,7 @@ private:
     ScriptFunction m_func;
 };
 
-static JSBool getText(JSContext *cx,
-        JSObject * /*obj*/, uintN argc, jsval *argv, jsval *ret) {
+static JSBool getText(JSContext *cx, uintN argc, jsval *argv) {
     int32 category, text;
     JS_ConvertArguments(cx, 2, argv, "ii", &category, &text);
     const int count = argc - 2;
@@ -288,14 +284,14 @@ static JSBool getText(JSContext *cx,
     for (int i = 0; i < count; ++i) {
         jsval v = argv[2 + i];
         JSString *str = JS_ValueToString(cx, v);
-        char *pstr = JS_GetStringBytes(str);
+        char *pstr = JS_EncodeString(cx, str);
         args[i] = pstr;
     }
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     string sret = scx->getMachine()->getText(category, text, count, args);
     char *pstr = JS_strdup(cx, sret.c_str());
-    JSString *str = JS_NewString(cx, pstr, sret.length());
-    *ret = STRING_TO_JSVAL(str);
+    JSString *str = JS_NewStringCopyN(cx, pstr, sret.length());
+    JS_SET_RVAL(cx, argv, STRING_TO_JSVAL(str));
     return JS_TRUE;
 }
 
@@ -303,8 +299,7 @@ string ScriptMachine::getText(int i, int j, int argc, const char **argv) {
     return m_impl->state->text.getText(i, j, argc, argv);
 }
 
-static JSBool loadText(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
+static JSBool loadText(JSContext *cx, uintN /*argc*/, jsval *argv) {
     jsval v = argv[0];
     if (!JSVAL_IS_STRING(v)) {
         return JS_FALSE;
@@ -314,7 +309,7 @@ static JSBool loadText(JSContext *cx,
         return JS_FALSE;
     }
     ScriptFunction func(JSVAL_TO_OBJECT(v2));
-    char *str = JS_GetStringBytes(JSVAL_TO_STRING(v));
+    char *str = JS_EncodeString(cx, JSVAL_TO_STRING(v));
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     TextLookup lookup(cx, scx, func);
     try {
@@ -325,15 +320,13 @@ static JSBool loadText(JSContext *cx,
     return JS_TRUE;
 }
 
-static JSBool populateMoveLists(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval * /*argv*/, jsval *) {
+static JSBool populateMoveLists(JSContext *cx, uintN /*argc*/, jsval * /*argv*/) {
     ScriptContext *scx = (ScriptContext *)JS_GetContextPrivate(cx);
     scx->getMachine()->populateMoveLists();
     return JS_TRUE;
 }
 
-static JSBool printFunction(JSContext *cx,
-        JSObject * /*obj*/, uintN /*argc*/, jsval *argv, jsval *) {
+static JSBool printFunction(JSContext *cx, uintN /*argc*/, jsval *argv) {
     jsval v = argv[0];
     JSString *jsstr;
     if (!JSVAL_IS_STRING(v)) {
@@ -342,7 +335,7 @@ static JSBool printFunction(JSContext *cx,
         jsstr = JSVAL_TO_STRING(v);
     }
         
-    char *str = JS_GetStringBytes(jsstr);
+    char *str = JS_EncodeString(cx, jsstr);
     Log::out() << str << endl;
     return JS_TRUE;
 }
@@ -377,7 +370,7 @@ ScriptValue ScriptArray::operator[](const int i) {
     jsval val;
     JS_GetElement(cx, (JSObject *)m_p, i, &val);
     JS_EndRequest(cx);
-    return ScriptValue((void *)val);
+    return ScriptValue(JSVAL_TO_PRIVATE(val));
 }
 
 ScriptArrayPtr ScriptArray::newTeamArray(const Pokemon::ARRAY &team,
@@ -398,31 +391,31 @@ ScriptArrayPtr ScriptArray::newTeamArray(const Pokemon::ARRAY &team,
 
 ScriptValue::ScriptValue(const ScriptObject *object) {
     m_fail = false;
-    m_val = (void *)OBJECT_TO_JSVAL((JSObject *)object->getObject());
+    m_val = JSVAL_TO_PRIVATE(OBJECT_TO_JSVAL((JSObject *)object->getObject()));
 }
 
 ScriptValue::ScriptValue(int i) {
     m_fail = false;
-    m_val = (void *)INT_TO_JSVAL(i);
+    m_val = JSVAL_TO_PRIVATE(INT_TO_JSVAL(i));
 }
 
 ScriptValue::ScriptValue(bool b) {
     m_fail = false;
-    m_val = (void *)BOOLEAN_TO_JSVAL(b);
+    m_val = JSVAL_TO_PRIVATE(BOOLEAN_TO_JSVAL(b));
 }
 
 int ScriptValue::getInt() const {
-    return JSVAL_TO_INT((jsval)m_val);
+    return JSVAL_TO_INT(PRIVATE_TO_JSVAL(m_val));
 }
 
 bool ScriptValue::isNull() const {
-    return JSVAL_IS_NULL((jsval)m_val);
+    return JSVAL_IS_NULL(PRIVATE_TO_JSVAL(m_val));
 }
 
 double ScriptValue::getDouble(ScriptContext *scx) const {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
-    jsval val = (jsval)m_val;
+    jsval val = PRIVATE_TO_JSVAL(m_val);
     jsdouble p;
     JS_ValueToNumber(cx, val, &p);
     JS_EndRequest(cx);
@@ -430,12 +423,12 @@ double ScriptValue::getDouble(ScriptContext *scx) const {
 }
 
 ScriptObject ScriptValue::getObject() const {
-    JSObject *obj = JSVAL_TO_OBJECT((jsval)m_val);
+    JSObject *obj = JSVAL_TO_OBJECT(PRIVATE_TO_JSVAL(m_val));
     return ScriptObject(obj);
 }
 
 bool ScriptValue::getBool() const {
-    return JSVAL_TO_BOOLEAN((jsval)m_val);
+    return JSVAL_TO_BOOLEAN(PRIVATE_TO_JSVAL(m_val));
 }
 
 StatusObject ScriptContext::getAbility(const string &name) const {
@@ -478,7 +471,7 @@ ScriptValue ScriptContext::callFunctionByName(ScriptObject *sobj,
     JSObject *obj = sobj ? (JSObject *)sobj->getObject() : NULL;
     jsval argv[argc];
     for (int i = 0; i < argc; ++i) {
-        argv[i] = (jsval)sargv[i].getValue();
+        argv[i] = PRIVATE_TO_JSVAL(sargv[i].getValue());
     }
     jsval ret;
     JSContext *cx = (JSContext *)m_p;
@@ -490,7 +483,7 @@ ScriptValue ScriptContext::callFunctionByName(ScriptObject *sobj,
         v.setFailure();
         return v;
     }
-    return ScriptValue((void *)ret);
+    return ScriptValue(JSVAL_TO_PRIVATE(ret));
 }
 
 ScriptValue ScriptContext::callFunction(ScriptObject *sobj,
@@ -500,14 +493,14 @@ ScriptValue ScriptContext::callFunction(ScriptObject *sobj,
     JSFunction *func = (JSFunction *)sfunc->getObject();
     jsval argv[argc];
     for (int i = 0; i < argc; ++i) {
-        argv[i] = (jsval)sargv[i].getValue();
+        argv[i] = PRIVATE_TO_JSVAL(sargv[i].getValue());
     }
     jsval ret;
     JSContext *cx = (JSContext *)m_p;
     JS_BeginRequest(cx);
     JS_CallFunction(cx, obj, func, argc, argv, &ret);
     JS_EndRequest(cx);
-    return ScriptValue((void *)ret);
+    return ScriptValue(JSVAL_TO_PRIVATE(ret));
 }
 
 ScriptContext::ScriptContext(void *p) {
@@ -650,13 +643,13 @@ void ScriptMachine::finalise() {
 }
 
 static JSFunctionSpec globalFunctions[] = {
-    JS_FS("print", printFunction, 1, 0, 0),
-    JS_FS("loadText", loadText, 2, 0, 0),
-    JS_FS("getText", getText, 2, 0, 0),
-    JS_FS("includeMoves", includeMoves, 1, 0, 0),
-    JS_FS("includeSpecies", includeSpecies, 1, 0, 0),
-    JS_FS("populateMoveLists", populateMoveLists, 0, 0, 0),
-    JS_FS("include", include, 1, 0, 0),
+    JS_FS("print", &printFunction, 1, 0),
+    JS_FS("loadText", &loadText, 2, 0),
+    JS_FS("getText", &getText, 2, 0),
+    JS_FS("includeMoves", &includeMoves, 1, 0),
+    JS_FS("includeSpecies", &includeSpecies, 1, 0),
+    JS_FS("populateMoveLists", &populateMoveLists, 0, 0),
+    JS_FS("include", &include, 1, 0),
     JS_FS_END
 };
 
@@ -683,7 +676,7 @@ ScriptMachine::ScriptMachine() throw(ScriptMachineException) {
     //JS_SetGCZeal(m_impl->cx, 2);
 
     JS_BeginRequest(m_impl->cx);
-    m_impl->global = JS_NewObject(m_impl->cx, &globalClass, NULL, NULL);
+    m_impl->global = JS_NewGlobalObject(m_impl->cx, &globalClass);
     JS_EndRequest(m_impl->cx);
 
     if (m_impl->global == NULL) {

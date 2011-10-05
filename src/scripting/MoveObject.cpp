@@ -47,9 +47,9 @@ namespace shoddybattle {
 JSClass moveClass = {
     "MoveObject",
     JSCLASS_HAS_PRIVATE,
-    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_PropertyStub,
+    JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
     JS_EnumerateStub, JS_ResolveStub, JS_ConvertStub, JS_FinalizeStub,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+    JSCLASS_NO_OPTIONAL_MEMBERS
 };
 
 string MoveObject::getName(ScriptContext *scx) const {
@@ -57,7 +57,7 @@ string MoveObject::getName(ScriptContext *scx) const {
     jsval val;
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "name", &val);
-    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    string ret = JS_EncodeString(cx, JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
     return ret;
 }
@@ -190,15 +190,14 @@ const MoveTemplate *MoveObject::getTemplate(ScriptContext *scx) const {
 
 namespace {
 
-JSBool toString(JSContext *cx,
-        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
+JSBool toString(JSContext *cx, uintN /*argc*/, jsval *argv) {
     /**const string str = "whatever";
     char *pstr = JS_strdup(cx, str.c_str());
-    JSString *ostr = JS_NewString(cx, pstr, str.length());
+    JSString *ostr = JS_NewStringCopyN(cx, pstr, str.length());
     *ret = STRING_TO_JSVAL(ostr);**/
 
     // TODO: internationalisation
-    JS_GetProperty(cx, obj, "name", ret);
+    JS_GetProperty(cx, JS_THIS_OBJECT(cx,argv), "name", argv);
 
     return JS_TRUE;
 }
@@ -216,7 +215,7 @@ MoveObjectPtr ScriptContext::newMoveObject(const MoveTemplate *p) {
     
     string name = p->getName();
     char *pstr = JS_strdup(cx, name.c_str());
-    JSString *str = JS_NewString(cx, pstr, name.length());
+    JSString *str = JS_NewStringCopyN(cx, pstr, name.length());
     jsval val = STRING_TO_JSVAL(str);
     JS_SetProperty(cx, obj, "name", &val);
 

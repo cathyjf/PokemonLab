@@ -279,7 +279,7 @@ string StatusObject::getId(ScriptContext *scx) const {
     JS_BeginRequest(cx);
     JS_GetProperty(cx, (JSObject *)m_p, "id", &val);
     assert(JSVAL_IS_STRING(val));
-    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    string ret = JS_EncodeString(cx, JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
     return ret;
 }
@@ -302,8 +302,8 @@ string StatusObject::toString(ScriptContext *scx) {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
     ScriptValue v = scx->callFunctionByName(this, "toString", 0, NULL);
-    jsval val = (jsval)v.getValue();
-    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    jsval val = PRIVATE_TO_JSVAL(v.getValue());
+    string ret = JS_EncodeString(cx, JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
     return ret;
 }
@@ -316,7 +316,7 @@ string StatusObject::getDescription(ScriptContext *scx) {
         return string();
     JS_GetProperty(cx, (JSObject *)m_p, "description", &val);
     assert(JSVAL_IS_STRING(val));
-    string ret = JS_GetStringBytes(JSVAL_TO_STRING(val));
+    string ret = JS_EncodeString(cx, JSVAL_TO_STRING(val));
     JS_EndRequest(cx);
     return ret;
 }
@@ -446,7 +446,7 @@ string StatusObject::getName(ScriptContext *scx) const {
     } else {
         jsstr = JSVAL_TO_STRING(val);
     }
-    string ret = JS_GetStringBytes(jsstr);
+    string ret = JS_EncodeString(cx, jsstr);
     JS_EndRequest(cx);
     return ret;
 }
@@ -496,9 +496,9 @@ int StatusObject::getVetoTier(ScriptContext *scx) const {
 
 namespace {
 
-JSBool returnSelf(JSContext * /*cx*/,
-        JSObject *obj, uintN /*argc*/, jsval * /*argv*/, jsval *ret) {
-    *ret = OBJECT_TO_JSVAL(obj);
+JSBool returnSelf(JSContext *cx, uintN /*argc*/, jsval *vp) {
+    jsval ret = JS_THIS(cx, vp);
+    JS_SET_RVAL(cx, vp, ret);
     return JS_TRUE;
 }
 
@@ -507,7 +507,7 @@ JSBool returnSelf(JSContext * /*cx*/,
 void StatusObject::disableClone(ScriptContext *scx) {
     JSContext *cx = (JSContext *)scx->m_p;
     JS_BeginRequest(cx);
-    JS_DefineFunction(cx, (JSObject *)m_p, "copy", returnSelf, 0, 0);
+    JS_DefineFunction(cx, (JSObject *)m_p, "copy", &returnSelf, 0, 0);
     JS_EndRequest(cx);
 }
 
