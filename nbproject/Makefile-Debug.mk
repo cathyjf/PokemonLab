@@ -10,63 +10,67 @@
 # Environment
 MKDIR=mkdir
 CP=cp
+GREP=grep
+NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=
-AS=
+FC=gfortran
+AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
 CND_CONF=Debug
 CND_DISTDIR=dist
+CND_BUILDDIR=build
 
 # Include project Makefile
 include Makefile
 
 # Object Directory
-OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
+OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/moves/PokemonMove.o \
-	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
-	${OBJECTDIR}/src/scripting/StatusObject.o \
-	${OBJECTDIR}/src/database/md5.o \
-	${OBJECTDIR}/src/mechanics/stat.o \
-	${OBJECTDIR}/src/scripting/FieldObject.o \
-	${OBJECTDIR}/src/main/LogFile.o \
-	${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o \
+	${OBJECTDIR}/src/network/network.o \
 	${OBJECTDIR}/src/shoddybattle/BattleField.o \
 	${OBJECTDIR}/src/text/Text.o \
-	${OBJECTDIR}/src/main/main.o \
-	${OBJECTDIR}/src/main/Log.o \
-	${OBJECTDIR}/src/database/rijndael.o \
+	${OBJECTDIR}/src/scripting/StatusObject.o \
 	${OBJECTDIR}/src/matchmaking/MetagameList.o \
-	${OBJECTDIR}/src/network/NetworkBattle.o \
-	${OBJECTDIR}/src/scripting/ScriptMachine.o \
-	${OBJECTDIR}/src/mechanics/PokemonType.o \
-	${OBJECTDIR}/src/matchmaking/glicko2.o \
-	${OBJECTDIR}/src/mechanics/JewelMechanics.o \
-	${OBJECTDIR}/src/database/DatabaseRegistry.o \
-	${OBJECTDIR}/src/mechanics/PokemonNature.o \
-	${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o \
-	${OBJECTDIR}/src/network/network.o \
-	${OBJECTDIR}/src/scripting/MoveObject.o \
-	${OBJECTDIR}/src/database/Authenticator.o \
+	${OBJECTDIR}/src/moves/PokemonMove.o \
+	${OBJECTDIR}/src/shoddybattle/Team.o \
+	${OBJECTDIR}/src/scripting/FieldObject.o \
 	${OBJECTDIR}/src/network/Channel.o \
-	${OBJECTDIR}/src/scripting/PokemonObject.o \
 	${OBJECTDIR}/src/database/sha2.o \
-	${OBJECTDIR}/src/shoddybattle/Team.o
+	${OBJECTDIR}/src/scripting/PokemonObject.o \
+	${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o \
+	${OBJECTDIR}/src/shoddybattle/Pokemon.o \
+	${OBJECTDIR}/src/main/Log.o \
+	${OBJECTDIR}/src/database/md5.o \
+	${OBJECTDIR}/src/mechanics/PokemonType.o \
+	${OBJECTDIR}/src/database/rijndael.o \
+	${OBJECTDIR}/src/mechanics/JewelMechanics.o \
+	${OBJECTDIR}/src/main/LogFile.o \
+	${OBJECTDIR}/src/database/DatabaseRegistry.o \
+	${OBJECTDIR}/src/mechanics/stat.o \
+	${OBJECTDIR}/src/mechanics/PokemonNature.o \
+	${OBJECTDIR}/src/main/main.o \
+	${OBJECTDIR}/src/database/Authenticator.o \
+	${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o \
+	${OBJECTDIR}/src/network/NetworkBattle.o \
+	${OBJECTDIR}/src/matchmaking/glicko2.o \
+	${OBJECTDIR}/src/scripting/ScriptMachine.o \
+	${OBJECTDIR}/src/scripting/MoveObject.o
+
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon -DJS_NO_JSVAL_JSID_STRUCT_TYPES
-CXXFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon -DJS_NO_JSVAL_JSID_STRUCT_TYPES
+CCFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon
+CXXFLAGS=-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -79,164 +83,164 @@ LDLIBSOPTIONS=-L/usr/lib/mysql -L/usr/local/lib -L/usr/lib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/GNU-Linux-x86/shoddybattle2
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/server
 
-dist/Debug/GNU-Linux-x86/shoddybattle2: ${OBJECTFILES}
-	${MKDIR} -p dist/Debug/GNU-Linux-x86
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/shoddybattle2 ${OBJECTFILES} ${LDLIBSOPTIONS} 
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/server: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/server ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/src/moves/PokemonMove.o: nbproject/Makefile-${CND_CONF}.mk src/moves/PokemonMove.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/moves
+${OBJECTDIR}/src/network/network.o: src/network/network.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/network
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/moves/PokemonMove.o src/moves/PokemonMove.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/network.o src/network/network.cpp
 
-${OBJECTDIR}/src/shoddybattle/Pokemon.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/Pokemon.cpp 
+${OBJECTDIR}/src/shoddybattle/BattleField.o: src/shoddybattle/BattleField.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/Pokemon.o src/shoddybattle/Pokemon.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/BattleField.o src/shoddybattle/BattleField.cpp
 
-${OBJECTDIR}/src/scripting/StatusObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/StatusObject.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/scripting
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/StatusObject.o src/scripting/StatusObject.cpp
-
-${OBJECTDIR}/src/database/md5.o: nbproject/Makefile-${CND_CONF}.mk src/database/md5.c 
-	${MKDIR} -p ${OBJECTDIR}/src/database
-	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/md5.o src/database/md5.c
-
-${OBJECTDIR}/src/mechanics/stat.o: nbproject/Makefile-${CND_CONF}.mk src/mechanics/stat.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/mechanics
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/stat.o src/mechanics/stat.cpp
-
-${OBJECTDIR}/src/scripting/FieldObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/FieldObject.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/scripting
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/FieldObject.o src/scripting/FieldObject.cpp
-
-${OBJECTDIR}/src/main/LogFile.o: nbproject/Makefile-${CND_CONF}.mk src/main/LogFile.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/main
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/LogFile.o src/main/LogFile.cpp
-
-${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/PokemonSpecies.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o src/shoddybattle/PokemonSpecies.cpp
-
-${OBJECTDIR}/src/shoddybattle/BattleField.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/BattleField.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/BattleField.o src/shoddybattle/BattleField.cpp
-
-${OBJECTDIR}/src/text/Text.o: nbproject/Makefile-${CND_CONF}.mk src/text/Text.cpp 
+${OBJECTDIR}/src/text/Text.o: src/text/Text.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/text
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/text/Text.o src/text/Text.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/text/Text.o src/text/Text.cpp
 
-${OBJECTDIR}/src/main/main.o: nbproject/Makefile-${CND_CONF}.mk src/main/main.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/main
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/main.o src/main/main.cpp
-
-${OBJECTDIR}/src/main/Log.o: nbproject/Makefile-${CND_CONF}.mk src/main/Log.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/main
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/Log.o src/main/Log.cpp
-
-${OBJECTDIR}/src/database/rijndael.o: nbproject/Makefile-${CND_CONF}.mk src/database/rijndael.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/database
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/rijndael.o src/database/rijndael.cpp
-
-${OBJECTDIR}/src/matchmaking/MetagameList.o: nbproject/Makefile-${CND_CONF}.mk src/matchmaking/MetagameList.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/matchmaking
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/matchmaking/MetagameList.o src/matchmaking/MetagameList.cpp
-
-${OBJECTDIR}/src/network/NetworkBattle.o: nbproject/Makefile-${CND_CONF}.mk src/network/NetworkBattle.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/network
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/NetworkBattle.o src/network/NetworkBattle.cpp
-
-${OBJECTDIR}/src/scripting/ScriptMachine.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/ScriptMachine.cpp 
+${OBJECTDIR}/src/scripting/StatusObject.o: src/scripting/StatusObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/ScriptMachine.o src/scripting/ScriptMachine.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/StatusObject.o src/scripting/StatusObject.cpp
 
-${OBJECTDIR}/src/mechanics/PokemonType.o: nbproject/Makefile-${CND_CONF}.mk src/mechanics/PokemonType.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/mechanics
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/PokemonType.o src/mechanics/PokemonType.cpp
-
-${OBJECTDIR}/src/matchmaking/glicko2.o: nbproject/Makefile-${CND_CONF}.mk src/matchmaking/glicko2.cpp 
+${OBJECTDIR}/src/matchmaking/MetagameList.o: src/matchmaking/MetagameList.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/matchmaking
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/matchmaking/glicko2.o src/matchmaking/glicko2.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/matchmaking/MetagameList.o src/matchmaking/MetagameList.cpp
 
-${OBJECTDIR}/src/mechanics/JewelMechanics.o: nbproject/Makefile-${CND_CONF}.mk src/mechanics/JewelMechanics.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/mechanics
+${OBJECTDIR}/src/moves/PokemonMove.o: src/moves/PokemonMove.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/moves
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/JewelMechanics.o src/mechanics/JewelMechanics.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/moves/PokemonMove.o src/moves/PokemonMove.cpp
 
-${OBJECTDIR}/src/database/DatabaseRegistry.o: nbproject/Makefile-${CND_CONF}.mk src/database/DatabaseRegistry.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/database
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/DatabaseRegistry.o src/database/DatabaseRegistry.cpp
-
-${OBJECTDIR}/src/mechanics/PokemonNature.o: nbproject/Makefile-${CND_CONF}.mk src/mechanics/PokemonNature.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/mechanics
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/PokemonNature.o src/mechanics/PokemonNature.cpp
-
-${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/ObjectTeamFile.cpp 
+${OBJECTDIR}/src/shoddybattle/Team.o: src/shoddybattle/Team.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o src/shoddybattle/ObjectTeamFile.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/Team.o src/shoddybattle/Team.cpp
 
-${OBJECTDIR}/src/network/network.o: nbproject/Makefile-${CND_CONF}.mk src/network/network.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/network
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/network.o src/network/network.cpp
-
-${OBJECTDIR}/src/scripting/MoveObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/MoveObject.cpp 
+${OBJECTDIR}/src/scripting/FieldObject.o: src/scripting/FieldObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/scripting
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/MoveObject.o src/scripting/MoveObject.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/FieldObject.o src/scripting/FieldObject.cpp
 
-${OBJECTDIR}/src/database/Authenticator.o: nbproject/Makefile-${CND_CONF}.mk src/database/Authenticator.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/database
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/Authenticator.o src/database/Authenticator.cpp
-
-${OBJECTDIR}/src/network/Channel.o: nbproject/Makefile-${CND_CONF}.mk src/network/Channel.cpp 
+${OBJECTDIR}/src/network/Channel.o: src/network/Channel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/network
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/Channel.o src/network/Channel.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/Channel.o src/network/Channel.cpp
 
-${OBJECTDIR}/src/scripting/PokemonObject.o: nbproject/Makefile-${CND_CONF}.mk src/scripting/PokemonObject.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/scripting
-	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/PokemonObject.o src/scripting/PokemonObject.cpp
-
-${OBJECTDIR}/src/database/sha2.o: nbproject/Makefile-${CND_CONF}.mk src/database/sha2.c 
+${OBJECTDIR}/src/database/sha2.o: src/database/sha2.c 
 	${MKDIR} -p ${OBJECTDIR}/src/database
 	${RM} $@.d
 	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/sha2.o src/database/sha2.c
 
-${OBJECTDIR}/src/shoddybattle/Team.o: nbproject/Makefile-${CND_CONF}.mk src/shoddybattle/Team.cpp 
+${OBJECTDIR}/src/scripting/PokemonObject.o: src/scripting/PokemonObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/PokemonObject.o src/scripting/PokemonObject.cpp
+
+${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o: src/shoddybattle/PokemonSpecies.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
 	${RM} $@.d
-	$(COMPILE.cc) -g -DDEBUG -I/usr/local/include/mysql++ -I/usr/include/mysql -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/Team.o src/shoddybattle/Team.cpp
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/PokemonSpecies.o src/shoddybattle/PokemonSpecies.cpp
+
+${OBJECTDIR}/src/shoddybattle/Pokemon.o: src/shoddybattle/Pokemon.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/Pokemon.o src/shoddybattle/Pokemon.cpp
+
+${OBJECTDIR}/src/main/Log.o: src/main/Log.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/Log.o src/main/Log.cpp
+
+${OBJECTDIR}/src/database/md5.o: src/database/md5.c 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/md5.o src/database/md5.c
+
+${OBJECTDIR}/src/mechanics/PokemonType.o: src/mechanics/PokemonType.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/mechanics
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/PokemonType.o src/mechanics/PokemonType.cpp
+
+${OBJECTDIR}/src/database/rijndael.o: src/database/rijndael.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/rijndael.o src/database/rijndael.cpp
+
+${OBJECTDIR}/src/mechanics/JewelMechanics.o: src/mechanics/JewelMechanics.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/mechanics
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/JewelMechanics.o src/mechanics/JewelMechanics.cpp
+
+${OBJECTDIR}/src/main/LogFile.o: src/main/LogFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/LogFile.o src/main/LogFile.cpp
+
+${OBJECTDIR}/src/database/DatabaseRegistry.o: src/database/DatabaseRegistry.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/DatabaseRegistry.o src/database/DatabaseRegistry.cpp
+
+${OBJECTDIR}/src/mechanics/stat.o: src/mechanics/stat.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/mechanics
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/stat.o src/mechanics/stat.cpp
+
+${OBJECTDIR}/src/mechanics/PokemonNature.o: src/mechanics/PokemonNature.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/mechanics
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/mechanics/PokemonNature.o src/mechanics/PokemonNature.cpp
+
+${OBJECTDIR}/src/main/main.o: src/main/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/main
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main/main.o src/main/main.cpp
+
+${OBJECTDIR}/src/database/Authenticator.o: src/database/Authenticator.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/database
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/database/Authenticator.o src/database/Authenticator.cpp
+
+${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o: src/shoddybattle/ObjectTeamFile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/shoddybattle
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/shoddybattle/ObjectTeamFile.o src/shoddybattle/ObjectTeamFile.cpp
+
+${OBJECTDIR}/src/network/NetworkBattle.o: src/network/NetworkBattle.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/network
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/network/NetworkBattle.o src/network/NetworkBattle.cpp
+
+${OBJECTDIR}/src/matchmaking/glicko2.o: src/matchmaking/glicko2.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/matchmaking
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/matchmaking/glicko2.o src/matchmaking/glicko2.cpp
+
+${OBJECTDIR}/src/scripting/ScriptMachine.o: src/scripting/ScriptMachine.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/ScriptMachine.o src/scripting/ScriptMachine.cpp
+
+${OBJECTDIR}/src/scripting/MoveObject.o: src/scripting/MoveObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/scripting
+	${RM} $@.d
+	$(COMPILE.cc) -g -DDEBUG -DJS_NO_JSVAL_JSID_STRUCT_TYPES -I/usr/local/include/mysql++ -I/usr/include/mysql -I/usr/include/mozjs -I/usr/include/mozjs/mozilla -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/scripting/MoveObject.o src/scripting/MoveObject.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
-	${RM} -r build/Debug
-	${RM} dist/Debug/GNU-Linux-x86/shoddybattle2
+.clean-conf: ${CLEAN_SUBPROJECTS}
+	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/server
 
 # Subprojects
 .clean-subprojects:

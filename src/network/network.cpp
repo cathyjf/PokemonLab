@@ -2111,7 +2111,8 @@ ServerImpl::ServerImpl(Server *server, const int port, const int userLimit):
             m_population(0),
             m_userLimit(userLimit),
             m_acceptor(m_service, tcp::endpoint(tcp::v4(), port), true),
-            m_server(server) {
+            m_server(server) 
+{
              cout << "Init SI 1..." << endl;
     acceptClient();
     cout << "Init SI 2..." << endl;
