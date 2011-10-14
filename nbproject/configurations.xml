@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
-  <logicalFolder name="root" displayName="root" projectFiles="true">
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
@@ -105,24 +105,21 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>src</Elem>
+    <Elem>/home/pokelab/Desktop/Source/server/src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
         <ccTool>
           <incDir>
-            <pElem>/usr/local/include/boost-1_38/</pElem>
-            <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon</commandLine>
           <preprocessorList>
             <Elem>DEBUG</Elem>
           </preprocessorList>
@@ -133,16 +130,13 @@
             <pElem>/usr/local/lib</pElem>
             <pElem>/usr/lib</pElem>
           </linkerAddLib>
-          <linkerLibItems>
-          </linkerLibItems>
         </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>
@@ -166,57 +160,55 @@
             <pElem>/usr/lib</pElem>
             <pElem>/usr/local/lib</pElem>
           </linkerAddLib>
-          <linkerLibItems>
-          </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="src/database/Authenticator.h" ex="false" tool="1">
+      <item path="src/database/Authenticator.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/database/DatabaseRegistry.h" ex="false" tool="1">
+      <item path="src/database/DatabaseRegistry.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/database/rijndael.h" ex="false" tool="1">
+      <item path="src/database/rijndael.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/database/sha2.h" ex="false" tool="1">
+      <item path="src/database/sha2.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/matchmaking/MetagameList.h" ex="false" tool="1">
+      <item path="src/matchmaking/MetagameList.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/matchmaking/glicko2.h" ex="false" tool="1">
+      <item path="src/matchmaking/glicko2.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/mechanics/BattleMechanics.h" ex="false" tool="1">
+      <item path="src/mechanics/BattleMechanics.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/mechanics/JewelMechanics.h" ex="false" tool="1">
+      <item path="src/mechanics/JewelMechanics.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/mechanics/PokemonNature.h" ex="false" tool="1">
+      <item path="src/mechanics/PokemonNature.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/mechanics/PokemonType.h" ex="false" tool="1">
+      <item path="src/mechanics/PokemonType.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/mechanics/stat.h" ex="false" tool="1">
+      <item path="src/mechanics/stat.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/moves/PokemonMove.h" ex="false" tool="1">
+      <item path="src/moves/PokemonMove.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/network/Channel.h" ex="false" tool="1">
+      <item path="src/network/Channel.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/network/NetworkBattle.h" ex="false" tool="1">
+      <item path="src/network/NetworkBattle.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/network/ThreadedQueue.h" ex="false" tool="1">
+      <item path="src/network/ThreadedQueue.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/network/network.h" ex="false" tool="1">
+      <item path="src/network/network.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/scripting/ObjectWrapper.h" ex="false" tool="1">
+      <item path="src/scripting/ObjectWrapper.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/scripting/ScriptMachine.h" ex="false" tool="1">
+      <item path="src/scripting/ScriptMachine.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/shoddybattle/BattleField.h" ex="false" tool="1">
+      <item path="src/shoddybattle/BattleField.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/shoddybattle/ObjectTeamFile.h" ex="false" tool="1">
+      <item path="src/shoddybattle/ObjectTeamFile.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/shoddybattle/Pokemon.h" ex="false" tool="1">
+      <item path="src/shoddybattle/Pokemon.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/shoddybattle/PokemonSpecies.h" ex="false" tool="1">
+      <item path="src/shoddybattle/PokemonSpecies.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/shoddybattle/Team.h" ex="false" tool="1">
+      <item path="src/shoddybattle/Team.h" ex="false" tool="1" flavor="0">
       </item>
-      <item path="src/text/Text.h" ex="false" tool="1">
+      <item path="src/text/Text.h" ex="false" tool="1" flavor="0">
       </item>
     </conf>
   </confs>
