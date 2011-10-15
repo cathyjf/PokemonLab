@@ -105,7 +105,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>/home/pokelab/Desktop/Source/server/src</Elem>
+    <Elem>src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -145,11 +145,9 @@
         <ccTool>
           <developmentMode>5</developmentMode>
           <incDir>
-            <pElem>/usr/local/include/boost-1_38/</pElem>
-            <pElem>/usr/local/include/mysql++</pElem>
             <pElem>/usr/include/mysql</pElem>
           </incDir>
-          <commandLine>-Wall -Wextra -lmozjs -lnspr -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-gcc42-mt -lboost_regex-gcc42-mt -lboost_system-gcc42-mt -lboost_filesystem -lboost_date_time -lboost_program_options-gcc42-mt -ldaemon</commandLine>
+          <commandLine>-Wall -Wextra -lmozjs -lnspr4 -lxerces-c -lmysqlclient -lmysqlpp -lboost_thread-mt -lboost_regex-mt -lboost_system-mt -lboost_filesystem -lboost_date_time -lboost_program_options-mt -ldaemon</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
