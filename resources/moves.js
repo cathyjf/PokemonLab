@@ -99,6 +99,7 @@ function makePluckMove(move) {
                 field.print(Text.battle_messages_unique(
                         147, user, target, target.item));
                 target.item.use(user);
+                target.item = null;
             }
         }
     };
